@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JodyApp
+namespace JodyApp.Domain
 {
-    public class Class1
+    public abstract class DomainObject
     {
+        public int Id { get; set; }
     }
 }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp", "JodyApp\JodyApp.csproj", "{B3E35E97-EF50-4357-83DE-38D24B553128}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Data", "JodyApp\JodyApp.Data.csproj", "{B3E35E97-EF50-4357-83DE-38D24B553128}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
