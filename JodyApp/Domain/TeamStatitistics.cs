@@ -15,5 +15,9 @@ namespace JodyApp.Domain
         public int GoalsFor { get; set; }
         public int GoalsAgast { get; set; }
 
+        public int GamesPlayed { get { return Wins + Loses + Ties; } }
+        public int GoalDifference {  get { return GoalsFor - GoalsAgast; } }
+        public int Points {  get { return 2 * Wins + Ties; } }
+
     }
 }

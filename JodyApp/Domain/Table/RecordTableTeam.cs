@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
 
-namespace JodyApp.Data.Domain.Table
+namespace JodyApp.Domain.Table
 {
-    public class TableTeam:Team
+    public class RecordTableTeam:Team
     {
-        TeamStatitistics stats;
+        public TeamStatitistics Stats { get; set; }
     }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Data", "JodyApp\Jod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Data.Test", "JodyApp.Data.Test\JodyApp.Data.Test.csproj", "{35D3759E-4C3F-4F48-958F-19122DB3BBB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Console", "JodyApp.Console\JodyApp.Console.csproj", "{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{35D3759E-4C3F-4F48-958F-19122DB3BBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35D3759E-4C3F-4F48-958F-19122DB3BBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35D3759E-4C3F-4F48-958F-19122DB3BBB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,7 +15,7 @@ namespace JodyApp.Domain
         {
             Team other = (Team)obj;
 
-            return other.Name.Equals(this.Name)                
+            return other.Name.Equals(this.Name);             
         }
 
         public override int GetHashCode()
