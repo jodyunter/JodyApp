@@ -21,21 +21,19 @@ namespace JodyApp.Domain
 
         public void Play(Random random)
         {
-            int differential = HomeTeam.Skill - AwayTeam.Skill;
-            differential /= 2;
-
-            int HomeScore = GetScore(HomeTeam, AwayTeam, random);
-            int AwayScore = GetScore(AwayTeam, HomeTeam, random);
+            HomeScore = GetScore(HomeTeam, AwayTeam, random);
+            AwayScore = GetScore(AwayTeam, HomeTeam, random);
 
             int currentOtPeriod = 1;
 
-            if (IsOTPeriodRequired(currentOtPeriod))
+            while (IsOTPeriodRequired(currentOtPeriod))
             {
                 PlayOTPeriod(random);
 
                 currentOtPeriod++;
             }
-            
+
+            Complete = true;
         }
 
         public void PlayOTPeriod(Random random)
@@ -47,6 +45,7 @@ namespace JodyApp.Domain
 
             if (score > 0) HomeScore++;
             else if (score < 0) AwayScore++;
+            
         }
 
         public int GetScore(Team team, Team opponent, Random random)
@@ -79,6 +78,22 @@ namespace JodyApp.Domain
                 return false;
             }
             
+        }
+
+        public Team GetWinner()
+        {
+            if (HomeScore > AwayScore) return HomeTeam;
+            if (AwayScore > HomeScore) return AwayTeam;
+
+            return null;
+        }
+
+        public Team GetLoser()
+        {
+            if (HomeScore > AwayScore) return AwayTeam;
+            if (AwayScore > HomeScore) return HomeTeam;
+
+            return null;
         }
     }
 }
