@@ -7,8 +7,8 @@
     <ProjectGuid>{B3E35E97-EF50-4357-83DE-38D24B553128}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JodyApp</RootNamespace>
-    <AssemblyName>JodyApp</AssemblyName>
+    <RootNamespace>JodyApp.Data</RootNamespace>
+    <AssemblyName>JodyApp.Data</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

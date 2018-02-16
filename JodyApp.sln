@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Data", "JodyApp\JodyApp.Data.csproj", "{B3E35E97-EF50-4357-83DE-38D24B553128}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Data.Test", "JodyApp.Data.Test\JodyApp.Data.Test.csproj", "{35D3759E-4C3F-4F48-958F-19122DB3BBB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B3E35E97-EF50-4357-83DE-38D24B553128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3E35E97-EF50-4357-83DE-38D24B553128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3E35E97-EF50-4357-83DE-38D24B553128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35D3759E-4C3F-4F48-958F-19122DB3BBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35D3759E-4C3F-4F48-958F-19122DB3BBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35D3759E-4C3F-4F48-958F-19122DB3BBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35D3759E-4C3F-4F48-958F-19122DB3BBB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

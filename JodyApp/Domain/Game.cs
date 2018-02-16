@@ -29,7 +29,7 @@ namespace JodyApp.Domain
 
             int currentOtPeriod = 1;
 
-            if (PlayAnotherOverTimePeriod(currentOtPeriod))
+            if (IsOTPeriodRequired(currentOtPeriod))
             {
                 PlayOTPeriod(random);
 
@@ -54,7 +54,7 @@ namespace JodyApp.Domain
             return random.Next(BASE_GAME_SCORE + (team.Skill - opponent.Skill) / 2);
         }
 
-        public bool PlayAnotherOverTimePeriod(int currentOtPeriod)
+        public bool IsOTPeriodRequired(int currentOtPeriod)
         {
             if (HomeScore == AwayScore)
             {
