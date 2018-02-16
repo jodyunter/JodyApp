@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Domain.Table;
 using JodyApp.Domain;
+using System.Collections.Generic;
 
 namespace JodyApp.Data.Test.Domain.Table
 {
@@ -50,13 +51,78 @@ namespace JodyApp.Data.Test.Domain.Table
         [TestMethod]
         public void ShouldProcessGameStatic()
         {
-            Fail("Not ready yet");
+            RecordTableTeam HomeTeam = new RecordTableTeam
+            {
+                Name = "Team 1",
+                Skill = 5,
+                Stats = new TeamStatitistics()
+            };
+
+            RecordTableTeam AwayTeam = new RecordTableTeam
+            {
+                Name = "Team 2",
+                Skill = 5,
+                Stats = new TeamStatitistics()
+            };
+
+            Game Game = new Game
+            {
+                HomeTeam = HomeTeam,
+                AwayTeam = AwayTeam,
+                HomeScore = 10,
+                AwayScore = 15,
+                Complete = true
+            };
+
+            RecordTable.ProcessGame(Game, HomeTeam.Stats, AwayTeam.Stats);
+
+            AreEqual(10, HomeTeam.Stats.GoalsFor);
+            AreEqual(10, AwayTeam.Stats.GoalsAgast);
+            AreEqual(1, AwayTeam.Stats.Wins);
+            AreEqual(1, HomeTeam.Stats.Loses);
         }
 
         [TestMethod]
         public void ShouldProcessGameNotStatic()
         {
-            Fail("Not ready yet");
+            RecordTableTeam HomeTeam = new RecordTableTeam
+            {
+                Name = "Team 1",
+                Skill = 5,
+                Stats = new TeamStatitistics()
+            };
+
+            RecordTableTeam AwayTeam = new RecordTableTeam
+            {
+                Name = "Team 2",
+                Skill = 5,
+                Stats = new TeamStatitistics()
+            };
+
+            Game game = new Game
+            {
+                HomeTeam = HomeTeam,
+                AwayTeam = AwayTeam,
+                HomeScore = 10,
+                AwayScore = 15,
+                Complete = true
+            };
+
+            RecordTable table = new RecordTable
+            {
+                Standings = new Dictionary<string, RecordTableTeam>
+                {
+                    {"Team 1", HomeTeam },
+                    {"Team 2", AwayTeam }
+                }
+            };
+
+            table.ProcessGame(game);
+
+            AreEqual(10, HomeTeam.Stats.GoalsFor);
+            AreEqual(10, AwayTeam.Stats.GoalsAgast);
+            AreEqual(1, AwayTeam.Stats.Wins);
+            AreEqual(1, HomeTeam.Stats.Loses);
         }
     }
 }

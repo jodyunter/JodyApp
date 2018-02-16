@@ -9,7 +9,7 @@ namespace JodyApp.Domain.Table
 {
     public class RecordTable
     {
-        Dictionary<string, RecordTableTeam> Standings { get; set; }
+        public Dictionary<string, RecordTableTeam> Standings { get; set; }
 
         public void ProcessGame(Game game)
         {
