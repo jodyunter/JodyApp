@@ -64,9 +64,9 @@ namespace JodyApp.Data.Test.Domain
 
             Random random = new Random(1234676765);
             int score = game.GetScore(game.HomeTeam, game.AwayTeam, random);
-            AreEqual(6, score);
-            score = game.GetScore(game.HomeTeam, game.AwayTeam, random);
             AreEqual(3, score);
+            score = game.GetScore(game.HomeTeam, game.AwayTeam, random);
+            AreEqual(2, score);
         }
 
         [TestMethod]
@@ -86,8 +86,8 @@ namespace JodyApp.Data.Test.Domain
             game.Play(random);
 
             IsTrue(game.Complete);
-            AreEqual(6, game.HomeScore);
-            AreEqual(3, game.AwayScore);
+            AreEqual(3, game.HomeScore);
+            AreEqual(2, game.AwayScore);
             AreEqual("Team 1", game.GetWinner().Name);
             AreEqual("Team 2", game.GetLoser().Name);
         }

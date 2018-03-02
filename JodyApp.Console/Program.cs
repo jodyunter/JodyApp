@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using JodyApp.Console.Setup;
+using JodyApp.Service;
 using JodyApp.Console.Display;
 
 using JodyApp.Domain.Table;
@@ -15,10 +15,13 @@ namespace JodyApp.Console
     {
         static void Main(string[] args)
         {
+            TeamService teamService = new TeamService();
+            SeasonService seasonService = new SeasonService();
+
             Random random = new Random();
             System.Console.WriteLine("TEST ME OUT");
 
-            RecordTable table = LoadData.GetStandings();
+            RecordTable table = teamService.GetStandings();
             table.TableName = "Standings";
 
             RecordTableTeam[] teamList = table.Standings.Values.ToArray<RecordTableTeam>();
@@ -39,7 +42,8 @@ namespace JodyApp.Console
                     };
 
                     game.Play(random);                    
-                    table.ProcessGame(game);
+                    //todo need to simplify this
+                    seasonService.ProcessGame(game, table);
                 }
 
 

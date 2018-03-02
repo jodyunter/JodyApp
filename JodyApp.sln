@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Data.Test", "JodyAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Console", "JodyApp.Console\JodyApp.Console.csproj", "{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Service", "JodyApp.Service\JodyApp.Service.csproj", "{064AD040-D294-4B98-B0CA-E4807989EF92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JodyApp.Service.Test", "JodyApp.Service.Test\JodyApp.Service.Test.csproj", "{8AEA7F76-E715-4B2E-80F8-C57F53C8A714}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{064AD040-D294-4B98-B0CA-E4807989EF92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{064AD040-D294-4B98-B0CA-E4807989EF92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{064AD040-D294-4B98-B0CA-E4807989EF92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{064AD040-D294-4B98-B0CA-E4807989EF92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AEA7F76-E715-4B2E-80F8-C57F53C8A714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AEA7F76-E715-4B2E-80F8-C57F53C8A714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AEA7F76-E715-4B2E-80F8-C57F53C8A714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AEA7F76-E715-4B2E-80F8-C57F53C8A714}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

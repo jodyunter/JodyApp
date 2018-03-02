@@ -45,12 +45,15 @@
     <Compile Include="Display\RecordTableDisplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Setup\LoadData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JodyApp.Service\JodyApp.Service.csproj">
+      <Project>{064ad040-d294-4b98-b0ca-e4807989ef92}</Project>
+      <Name>JodyApp.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JodyApp\JodyApp.Data.csproj">
       <Project>{b3e35e97-ef50-4357-83de-38d24b553128}</Project>
       <Name>JodyApp.Data</Name>

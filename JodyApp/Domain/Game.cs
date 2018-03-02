@@ -8,7 +8,7 @@ namespace JodyApp.Domain
 {
     public class Game
     {
-        static int BASE_GAME_SCORE = 10;
+        static int BASE_GAME_SCORE = 6;
 
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }        
