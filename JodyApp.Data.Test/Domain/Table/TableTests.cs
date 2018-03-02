@@ -20,7 +20,7 @@ namespace JodyApp.Data.Test.Domain.Table
             AreEqual(0, stats.Loses);
             AreEqual(0, stats.Ties);
             AreEqual(5, stats.GoalsFor);
-            AreEqual(4, stats.GoalsAgast);
+            AreEqual(4, stats.GoalsAgainst);
 
         }
         [TestMethod]
@@ -33,7 +33,7 @@ namespace JodyApp.Data.Test.Domain.Table
             AreEqual(1, stats.Loses);
             AreEqual(0, stats.Ties);
             AreEqual(5, stats.GoalsFor);
-            AreEqual(6, stats.GoalsAgast);
+            AreEqual(6, stats.GoalsAgainst);
         }
         [TestMethod]
         public void ShouldProcessTeamTie()
@@ -45,7 +45,7 @@ namespace JodyApp.Data.Test.Domain.Table
             AreEqual(0, stats.Loses);
             AreEqual(1, stats.Ties);
             AreEqual(15, stats.GoalsFor);
-            AreEqual(15, stats.GoalsAgast);
+            AreEqual(15, stats.GoalsAgainst);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace JodyApp.Data.Test.Domain.Table
             RecordTable.ProcessGame(Game, HomeTeam.Stats, AwayTeam.Stats);
 
             AreEqual(10, HomeTeam.Stats.GoalsFor);
-            AreEqual(10, AwayTeam.Stats.GoalsAgast);
+            AreEqual(10, AwayTeam.Stats.GoalsAgainst);
             AreEqual(1, AwayTeam.Stats.Wins);
             AreEqual(1, HomeTeam.Stats.Loses);
         }
@@ -120,7 +120,7 @@ namespace JodyApp.Data.Test.Domain.Table
             table.ProcessGame(game);
 
             AreEqual(10, HomeTeam.Stats.GoalsFor);
-            AreEqual(10, AwayTeam.Stats.GoalsAgast);
+            AreEqual(10, AwayTeam.Stats.GoalsAgainst);
             AreEqual(1, AwayTeam.Stats.Wins);
             AreEqual(1, HomeTeam.Stats.Loses);
         }

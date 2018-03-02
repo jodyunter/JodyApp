@@ -24,7 +24,7 @@ namespace JodyApp.Data.Test.Domain
             TeamStatitistics stats = new TeamStatitistics();
 
             stats.GoalsFor = 55;
-            stats.GoalsAgast = 255;
+            stats.GoalsAgainst = 255;
 
             AreEqual(-200, stats.GoalDifference);
         }

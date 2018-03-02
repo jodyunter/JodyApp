@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Common\FakeRandom.cs" />
     <Compile Include="Domain\GameTests.cs" />
+    <Compile Include="Domain\Table\RecordTableTeamTests.cs" />
     <Compile Include="Domain\Table\TableTests.cs" />
     <Compile Include="Domain\TeamStatisticsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

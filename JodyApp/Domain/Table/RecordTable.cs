@@ -11,6 +11,11 @@ namespace JodyApp.Domain.Table
     {
         public Dictionary<string, RecordTableTeam> Standings { get; set; }
 
+        public RecordTable()
+        {
+            Standings = new Dictionary<string, RecordTableTeam>();
+        }
+
         public void ProcessGame(Game game)
         {
             RecordTableTeam home = Standings[game.HomeTeam.Name];
@@ -42,7 +47,7 @@ namespace JodyApp.Domain.Table
             }
 
             TeamStats.GoalsFor += GoalsFor;
-            TeamStats.GoalsAgast += GoalsAgainst;
+            TeamStats.GoalsAgainst += GoalsAgainst;
         }
 
     }
