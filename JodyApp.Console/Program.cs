@@ -19,6 +19,7 @@ namespace JodyApp.Console
             System.Console.WriteLine("TEST ME OUT");
 
             RecordTable table = LoadData.GetStandings();
+            table.TableName = "Standings";
 
             RecordTableTeam[] teamList = table.Standings.Values.ToArray<RecordTableTeam>();
 
@@ -44,16 +45,10 @@ namespace JodyApp.Console
 
             }
 
-            List<RecordTableTeam> teams = table.Standings.Values.ToList<RecordTableTeam>();
-            teams.Sort();
-            teams.Reverse();
+            
+            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table));
 
-            System.Console.WriteLine(RecordTableDisplay.GetRecordTableRowHeader());
-            foreach (RecordTableTeam team in teams)
-            {
-                System.Console.WriteLine(RecordTableDisplay.GetRecordTableRow(team));
-            }
-
+            
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();
 

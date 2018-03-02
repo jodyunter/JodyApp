@@ -8,8 +8,10 @@ namespace JodyApp.Domain
 {    
     public class TeamStatitistics
     {
-        public enum Stats { Name, Wins, Loses, Ties, GoalsFor, GoalsAgainst, Points, GoalDifference, GamesPlayed }
+        public enum Stats { Rank, Name, Wins, Loses, Ties, GoalsFor, GoalsAgainst, Points, GoalDifference, GamesPlayed }
 
+        public Division Division { get; set; }
+        public int Rank { get; set; }
         public int Wins { get; set; }
         public int Loses { get; set; }
         public int Ties { get; set; }

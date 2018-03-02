@@ -9,6 +9,8 @@ namespace JodyApp.Domain.Table
 {
     public class RecordTable
     {
+        public String TableName = "";
+
         public Dictionary<string, RecordTableTeam> Standings { get; set; }
 
         public RecordTable()
@@ -48,6 +50,23 @@ namespace JodyApp.Domain.Table
 
             TeamStats.GoalsFor += GoalsFor;
             TeamStats.GoalsAgainst += GoalsAgainst;
+        }
+
+        public List<RecordTableTeam> GetSortedList()
+        {
+            List<RecordTableTeam> teams = Standings.Values.ToList<RecordTableTeam>();
+            teams.Sort();
+            teams.Reverse();
+
+            int rank = 1;
+
+            teams.ForEach(team =>
+            {
+                team.Stats.Rank = rank;
+                rank++;
+            });
+
+            return teams;
         }
 
     }
