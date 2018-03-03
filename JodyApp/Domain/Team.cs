@@ -10,6 +10,6 @@ namespace JodyApp.Domain
     {       
         public String Name;
         public int Skill;
-
+        public Division Division;
     }
 }

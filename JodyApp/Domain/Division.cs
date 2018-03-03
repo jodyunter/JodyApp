@@ -8,7 +8,8 @@ namespace JodyApp.Domain
 {
     public class Division
     {
-        List<Team> Team { get; set; }
-        Division Parent { get; set; }
+        public string Name { get; set; }
+        public List<Team> Teams { get; set; }
+        public Division Parent { get; set; }
     }
 }

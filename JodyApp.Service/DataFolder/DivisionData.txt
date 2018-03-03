@@ -1,0 +1,3 @@
+﻿League	
+East	League	Toronto	Montreal	Ottawa	Quebec City
+West	League	Calgary	Winnipeg	Edmonton	Vancouver

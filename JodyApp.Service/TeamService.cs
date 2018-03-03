@@ -5,21 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
+using JodyApp.Service.DataFolder;
 
 namespace JodyApp.Service
 {
     public class TeamService
     {
-        List<Team> GetAllTeams()
+        DataService dataService = DataService.Instance;
+
+        public List<Team> GetAllTeams()
         {
-            var teams = new List<Team>();
-
-            for (int i = 0; i < 21; i++)
-            {
-                teams.Add(new Team { Name = "Team " + i, Skill = 5 });
-            }
-
-            return teams;
+            return dataService.GetAllTeams();
         }
 
         public RecordTable GetStandings()

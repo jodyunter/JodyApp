@@ -9,7 +9,7 @@ namespace JodyApp.Console.Display
 {
     public class RecordTableDisplay
     {
-        public static String RecordTableTeamFormat = "{0,-5}{1,-10}{2,5}{3,5}{4,5}{5,5}{6,5}{7,5}{8,5}{9,5}";
+        public static String RecordTableTeamFormat = "{0,-5}{1,-15}{2,5}{3,5}{4,5}{5,5}{6,5}{7,5}{8,5}{9,5}{10,15}";
 
         public static string PrintRecordTable(RecordTable table)
         {
@@ -39,7 +39,8 @@ namespace JodyApp.Console.Display
                 "GP",
                 "GF",
                 "GA",
-                "GD"
+                "GD",
+                "Div"
                 );
 
             return result;
@@ -57,7 +58,8 @@ namespace JodyApp.Console.Display
                 team.Stats.GamesPlayed,
                 team.Stats.GoalsFor,
                 team.Stats.GoalsAgainst,
-                team.Stats.GoalDifference);
+                team.Stats.GoalDifference,
+                team.Division == null ? "null" : team.Division.Name);
 
 
             return result;

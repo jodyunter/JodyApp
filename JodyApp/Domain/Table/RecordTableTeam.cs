@@ -16,6 +16,7 @@ namespace JodyApp.Domain.Table
             this.Name = team.Name;
             this.Skill = team.Skill;
             this.Stats = new TeamStatitistics();
+            this.Division = team.Division;
         }
         public TeamStatitistics Stats { get; set; }
 
