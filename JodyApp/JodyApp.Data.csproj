@@ -50,6 +50,11 @@
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
+    <Compile Include="Domain\Season\Season.cs" />
+    <Compile Include="Domain\Season\SeasonDivision.cs" />
+    <Compile Include="Domain\Season\SeasonGame.cs" />
+    <Compile Include="Domain\Season\SeasonTable.cs" />
+    <Compile Include="Domain\Season\SeasonTeam.cs" />
     <Compile Include="Domain\Table\RecordTable.cs" />
     <Compile Include="Domain\Table\RecordTableTeam.cs" />
     <Compile Include="Domain\Table\StandingsSorter.cs" />
