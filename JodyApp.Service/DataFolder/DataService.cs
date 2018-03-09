@@ -70,9 +70,9 @@ namespace JodyApp.Service.DataFolder
         Division PopulateDivision(string[] input)
         {
             int NAME = 0;
-            int LEVEL = 1;
-            int ORDER = 2;
-            int PARENT = 3;
+            int LEVEL = 2;
+            int ORDER = 3;
+            int PARENT = 1;
             int START_OF_TEAM_LIST = 4;
 
             Division division = new Division
@@ -108,7 +108,9 @@ namespace JodyApp.Service.DataFolder
         void LoadData<T>(string fileName, List<T> dataList, PopulateObject<T> populateObject)
         {
             StreamReader teamReader = new StreamReader(fileName);
-            string line;            
+            string line;
+
+            line = teamReader.ReadLine(); //read header line!
 
             while ((line = teamReader.ReadLine()) != null)
             {
@@ -151,6 +153,27 @@ namespace JodyApp.Service.DataFolder
         public RecordTable GetStandings()
         {
             return Table;
+        }
+
+        public void Save(Team teamToSave)
+        {
+            Team oldTeam = null;
+
+            Teams.ForEach(team =>
+            {
+                if (team.Id.Equals(teamToSave.Id))
+                {
+                    oldTeam = team;
+                }
+            });
+
+            if (oldTeam == null)
+            {
+                throw new ApplicationException("Can't find team: " + teamToSave);
+            } else
+            {
+                oldTeam = teamToSave;
+            }
         }
     }
 }

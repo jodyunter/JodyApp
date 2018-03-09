@@ -1,4 +1,5 @@
-﻿Toronto	5
+﻿Name	Skill
+Toronto	5
 Montreal	5
 Quebec City	5
 Ottawa	5

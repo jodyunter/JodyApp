@@ -51,6 +51,7 @@
     <Compile Include="Common\FakeRandom.cs" />
     <Compile Include="Domain\GameTests.cs" />
     <Compile Include="Domain\Table\RecordTableTeamTests.cs" />
+    <Compile Include="Domain\Table\RecordTableTests.cs" />
     <Compile Include="Domain\TeamStatisticsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

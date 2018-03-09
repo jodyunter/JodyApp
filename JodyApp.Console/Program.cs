@@ -43,7 +43,7 @@ namespace JodyApp.Console
 
                     game.Play(random);                    
                     //todo need to simplify this
-                    seasonService.ProcessGame(game, table);
+                    table.ProcessGame(game);
                 }
 
 

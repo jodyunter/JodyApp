@@ -8,6 +8,6 @@ namespace JodyApp.Domain
 {
     public abstract class DomainObject
     {
-        public int Id { get; set; }
+        public int? Id { get; set; } //can be null if new object
     }
 }

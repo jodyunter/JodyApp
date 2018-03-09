@@ -41,6 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataFolder\DataService.cs" />
+    <Compile Include="DivisionService.cs" />
+    <Compile Include="DTO\DivisionDTO.cs" />
+    <Compile Include="DTO\TeamDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeasonService.cs" />
     <Compile Include="TeamService.cs" />
