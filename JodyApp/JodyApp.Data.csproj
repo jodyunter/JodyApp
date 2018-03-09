@@ -47,19 +47,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\JodyAppContext.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\Season\Season.cs" />
     <Compile Include="Domain\Season\SeasonDivision.cs" />
     <Compile Include="Domain\Season\SeasonGame.cs" />
-    <Compile Include="Domain\Season\SeasonTable.cs" />
     <Compile Include="Domain\Season\SeasonTeam.cs" />
     <Compile Include="Domain\Table\RecordTable.cs" />
     <Compile Include="Domain\Table\RecordTableTeam.cs" />
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatitistics.cs" />
+    <Compile Include="Migrations\201803092052155_First.cs" />
+    <Compile Include="Migrations\201803092052155_First.Designer.cs">
+      <DependentUpon>201803092052155_First.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +72,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Database\" />
+    <EmbeddedResource Include="Migrations\201803092052155_First.resx">
+      <DependentUpon>201803092052155_First.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

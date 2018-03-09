@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Entity;
 using System.IO;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
-using JodyApp.Database;
 
 namespace JodyApp.Service.DataFolder
 {
     public class DataService
     {
-        private static JodyAppContext db = new JodyAppContext();
-        private static DataService instance;
+        private static DataService instance;        
         static string BASE_DIR = "C:\\Users\\jody_unterschutz\\source\\repos\\JodyApp\\JodyApp.Service\\DataFolder\\";
         //string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service\\DataFolder\\";        
         string TeamFile = BASE_DIR + "TeamData.txt";
         string DivisionFile = BASE_DIR + "DivisionData.txt";
-                
+
+        List<Team> Teams { get; set; }
+        List<Division> Divisions { get; set; }
+        RecordTable Table { get; set; }
 
         public static DataService Instance
         {
@@ -34,11 +34,19 @@ namespace JodyApp.Service.DataFolder
         }
 
         public DataService()
-        {                        
+        {
+            Teams = new List<Team>();
+            Divisions = new List<Division>();
 
-            LoadData(TeamFile, db.Teams, PopulateTeam);
-            LoadData(DivisionFile, db.Divisions, PopulateDivision);
-            
+            LoadData(TeamFile, Teams, PopulateTeam);
+            LoadData(DivisionFile, Divisions, PopulateDivision);
+
+            Table = new RecordTable();
+
+            Teams.ForEach(team =>
+            {
+                Table.Standings.Add(team.Name, new RecordTableTeam(team));
+            });
             
         }
 
@@ -97,7 +105,7 @@ namespace JodyApp.Service.DataFolder
 
         }
 
-        void LoadData<T>(string fileName, DbSet<T> dataList, PopulateObject<T> populateObject) where T:class
+        void LoadData<T>(string fileName, List<T> dataList, PopulateObject<T> populateObject)
         {
             StreamReader teamReader = new StreamReader(fileName);
             string line;
@@ -112,5 +120,60 @@ namespace JodyApp.Service.DataFolder
             }
         }
 
+        public List<Team> GetAllTeams()
+        {
+            return Teams;
+        }
+
+        Team GetTeamByName(string name)
+        {
+            Team result = null;
+
+            Teams.ForEach(team =>
+            {
+                if (team.Name.Equals(name)) result = team;
+            });
+
+            return result;
+        }
+
+        Division GetDivisionByName(string name)
+        {
+            Division result = null;
+
+            Divisions.ForEach(div =>
+            {
+                if (div.Name.Equals(name)) result = div;
+            });
+
+            return result;
+        }
+
+
+        public RecordTable GetStandings()
+        {
+            return Table;
+        }
+
+        public void Save(Team teamToSave)
+        {
+            Team oldTeam = null;
+
+            Teams.ForEach(team =>
+            {
+                if (team.Id.Equals(teamToSave.Id))
+                {
+                    oldTeam = team;
+                }
+            });
+
+            if (oldTeam == null)
+            {
+                throw new ApplicationException("Can't find team: " + teamToSave);
+            } else
+            {
+                oldTeam = teamToSave;
+            }
+        }
     }
 }

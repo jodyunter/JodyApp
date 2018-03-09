@@ -7,22 +7,25 @@ using JodyApp.Domain;
 using JodyApp.Domain.Table;
 using JodyApp.Service.DataFolder;
 using JodyApp.Service.DTO;
+using JodyApp.Database;
 
 namespace JodyApp.Service
 {
     public class TeamService
     {
+        JodyAppContext db = new JodyAppContext();
         DataService dataService = DataService.Instance;
         DivisionService divisionService = new DivisionService();
 
         public List<TeamDTO> GetAllTeams()
         {
-            List<Team> teamList = dataService.GetAllTeams();
+            var teamList = from t in db.Teams orderby t.Name select t;
+            
             List<TeamDTO> teamDTOList = new List<TeamDTO>();
-            teamList.ForEach(team =>
+            foreach (var team in teamList) 
             {
                 teamDTOList.Add(TeamDTO.ToDTO(team));
-            });
+            }
 
             return teamDTOList;
         }
@@ -37,7 +40,7 @@ namespace JodyApp.Service
             return null;
         }
 
-        public void Save(TeamDTO teamDTO
+        public void Save(TeamDTO teamDTO)
         {
             Team team = TeamDTO.ToDomain(teamDTO, divisionService);
 

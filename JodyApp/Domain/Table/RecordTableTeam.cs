@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using JodyApp.Domain;
 
 namespace JodyApp.Domain.Table
-{
+{    
     public class RecordTableTeam:Team, IEquatable<RecordTableTeam>, IComparable<RecordTableTeam>
-    {
+    {            
         public RecordTableTeam() { }
 
         public RecordTableTeam(Team team)
@@ -16,7 +16,7 @@ namespace JodyApp.Domain.Table
             this.Name = team.Name;
             this.Skill = team.Skill;
             this.Stats = new TeamStatitistics();
-            this.Division = team.Division;
+            this.Division = team.Division;            
         }
         public TeamStatitistics Stats { get; set; }
 
