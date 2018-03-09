@@ -5,18 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using JodyApp.Domain;
+using JodyApp.Domain.Table;
 
 namespace JodyApp.Service.DataFolder
 {
     public class DataService
     {
         private static DataService instance;
-
-        string TeamFile = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service\\DataFolder\\TeamData.txt";
-        string DivisionFile = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service\\DataFolder\\DivisionData.txt";
+        static string BASE_DIR = "C:\\Users\\jody_unterschutz\\source\\repos\\JodyApp\\JodyApp.Service\\DataFolder\\";
+        //string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service\\DataFolder\\";        
+        string TeamFile = BASE_DIR + "TeamData.txt";
+        string DivisionFile = BASE_DIR + "DivisionData.txt";
 
         List<Team> Teams { get; set; }
         List<Division> Divisions { get; set; }
+        RecordTable Table { get; set; }
 
         public static DataService Instance
         {
@@ -37,6 +40,14 @@ namespace JodyApp.Service.DataFolder
 
             LoadData(TeamFile, Teams, PopulateTeam);
             LoadData(DivisionFile, Divisions, PopulateDivision);
+
+            Table = new RecordTable();
+
+            Teams.ForEach(team =>
+            {
+                Table.Standings.Add(team.Name, new RecordTableTeam(team));
+            });
+            
         }
 
 
@@ -44,10 +55,13 @@ namespace JodyApp.Service.DataFolder
 
         Team PopulateTeam(string[] input)
         {
+            int NAME = 0;
+            int SKILL = 1;
+
             Team team = new Team
             {
-                Name = input[0],
-                Skill = int.Parse(input[1])
+                Name = input[NAME],
+                Skill = int.Parse(input[SKILL])
             };
 
             return team;
@@ -55,23 +69,31 @@ namespace JodyApp.Service.DataFolder
 
         Division PopulateDivision(string[] input)
         {
+            int NAME = 0;
+            int LEVEL = 1;
+            int ORDER = 2;
+            int PARENT = 3;
+            int START_OF_TEAM_LIST = 4;
+
             Division division = new Division
             {
-                Name = input[0],
+                Name = input[NAME],
+                Level = int.Parse(input[LEVEL]),
+                Order = int.Parse(input[ORDER]),
                 Teams = new List<Team>(),
             };
 
             //get parent
-            if (input[1].Length != 0)
+            if (input[PARENT].Length != 0)
             {
                 //get division by name
                 //divisions must be in order of hierarchy for this to work
-                Division parent = GetDivisionByName(input[1]);
+                Division parent = GetDivisionByName(input[PARENT]);
 
                 division.Parent = parent;
             }
 
-            for (int i = 2; i < input.Length; i++)
+            for (int i = START_OF_TEAM_LIST; i < input.Length; i++)
             {
                 //find team, add to division add division to team
                 Team team = GetTeamByName(input[i]);
@@ -125,5 +147,10 @@ namespace JodyApp.Service.DataFolder
             return result;
         }
 
+
+        public RecordTable GetStandings()
+        {
+            return Table;
+        }
     }
 }

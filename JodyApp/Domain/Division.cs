@@ -11,5 +11,7 @@ namespace JodyApp.Domain
         public string Name { get; set; }
         public List<Team> Teams { get; set; }
         public Division Parent { get; set; }
+        public int Level { get; set; }
+        public int Order { get; set; }
     }
 }

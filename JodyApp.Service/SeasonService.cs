@@ -10,7 +10,7 @@ namespace JodyApp.Service
 {
     public class SeasonService
     {
-        //todo replace RecordTable with Season
+        //todo replace RecordTable with Season, and move functionality into RecordTable
         public void ProcessGame(Game game, RecordTable table)
         {
             ProcessGame(game,

@@ -52,6 +52,7 @@
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\Table\RecordTable.cs" />
     <Compile Include="Domain\Table\RecordTableTeam.cs" />
+    <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatitistics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

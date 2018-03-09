@@ -20,19 +20,7 @@ namespace JodyApp.Service
 
         public RecordTable GetStandings()
         {
-            return GetStandings(GetAllTeams());
-        }
-
-        public RecordTable GetStandings(List<Team> teams)
-        {
-            RecordTable table = new RecordTable();
-
-            teams.ForEach(team =>
-            {
-                table.Standings.Add(team.Name, new RecordTableTeam(team));
-            });
-
-            return table;
+            return dataService.GetStandings();
         }
 
     }
