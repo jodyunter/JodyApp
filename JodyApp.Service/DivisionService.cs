@@ -5,14 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Service.DTO;
+using JodyApp.Database;
 
 namespace JodyApp.Service
 {
     public class DivisionService
     {
+        JodyAppContext db = new JodyAppContext();
+
         public Division GetByName(String Name)
         {
-            return null;
+            var query = from d in db.Divisions where d.Name.Equals(Name) select d;
+            
+            Division division = null;
+            foreach (var d in query)
+            {
+                division = d;
+            }
+
+            return division;
         }
 
         public Division GetById(int id)

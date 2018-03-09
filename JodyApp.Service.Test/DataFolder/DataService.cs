@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 using System.IO;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
+using System.Data.Entity;
 
 namespace JodyApp.Service.DataFolder
 {
     public class DataService
     {
+        private JodyApp.Database.JodyAppContext db = new Database.JodyAppContext();
         private static DataService instance;        
-        static string BASE_DIR = "C:\\Users\\jody_unterschutz\\source\\repos\\JodyApp\\JodyApp.Service\\DataFolder\\";
-        //string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service\\DataFolder\\";        
+        static string BASE_DIR = "C:\\Users\\jody_unterschutz\\source\\repos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";
+        //string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";        
         string TeamFile = BASE_DIR + "TeamData.txt";
         string DivisionFile = BASE_DIR + "DivisionData.txt";
-
-        List<Team> Teams { get; set; }
-        List<Division> Divisions { get; set; }
-        RecordTable Table { get; set; }
+        TeamService teamService = new TeamService();
+        DivisionService divisionService = new DivisionService();
 
         public static DataService Instance
         {
@@ -35,18 +35,9 @@ namespace JodyApp.Service.DataFolder
 
         public DataService()
         {
-            Teams = new List<Team>();
-            Divisions = new List<Division>();
 
-            LoadData(TeamFile, Teams, PopulateTeam);
-            LoadData(DivisionFile, Divisions, PopulateDivision);
-
-            Table = new RecordTable();
-
-            Teams.ForEach(team =>
-            {
-                Table.Standings.Add(team.Name, new RecordTableTeam(team));
-            });
+            LoadData(TeamFile, db.Teams, PopulateTeam);
+            LoadData(DivisionFile, db.Divisions, PopulateDivision);
             
         }
 
@@ -88,7 +79,7 @@ namespace JodyApp.Service.DataFolder
             {
                 //get division by name
                 //divisions must be in order of hierarchy for this to work
-                Division parent = GetDivisionByName(input[PARENT]);
+                Division parent = divisionService.GetByName(input[PARENT]);
 
                 division.Parent = parent;
             }
@@ -96,7 +87,7 @@ namespace JodyApp.Service.DataFolder
             for (int i = START_OF_TEAM_LIST; i < input.Length; i++)
             {
                 //find team, add to division add division to team
-                Team team = GetTeamByName(input[i]);
+                Team team = teamService.GetTeamByName(input[i]);
                 division.Teams.Add(team);
                 team.Division = division;
             }
@@ -105,7 +96,7 @@ namespace JodyApp.Service.DataFolder
 
         }
 
-        void LoadData<T>(string fileName, List<T> dataList, PopulateObject<T> populateObject)
+        void LoadData<T>(string fileName, DbSet<T> dataList, PopulateObject<T> populateObject) where T:class
         {
             StreamReader teamReader = new StreamReader(fileName);
             string line;
@@ -120,60 +111,5 @@ namespace JodyApp.Service.DataFolder
             }
         }
 
-        public List<Team> GetAllTeams()
-        {
-            return Teams;
-        }
-
-        Team GetTeamByName(string name)
-        {
-            Team result = null;
-
-            Teams.ForEach(team =>
-            {
-                if (team.Name.Equals(name)) result = team;
-            });
-
-            return result;
-        }
-
-        Division GetDivisionByName(string name)
-        {
-            Division result = null;
-
-            Divisions.ForEach(div =>
-            {
-                if (div.Name.Equals(name)) result = div;
-            });
-
-            return result;
-        }
-
-
-        public RecordTable GetStandings()
-        {
-            return Table;
-        }
-
-        public void Save(Team teamToSave)
-        {
-            Team oldTeam = null;
-
-            Teams.ForEach(team =>
-            {
-                if (team.Id.Equals(teamToSave.Id))
-                {
-                    oldTeam = team;
-                }
-            });
-
-            if (oldTeam == null)
-            {
-                throw new ApplicationException("Can't find team: " + teamToSave);
-            } else
-            {
-                oldTeam = teamToSave;
-            }
-        }
     }
 }

@@ -12,6 +12,7 @@ namespace JodyApp.Domain.Season
     {
         public Season Season { get; set; }
 
+        public SeasonTeam() { }
         public SeasonTeam(Team team, SeasonDivision division)
             :base(team)
         {

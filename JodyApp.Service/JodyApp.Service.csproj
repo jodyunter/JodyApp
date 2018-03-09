@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataFolder\DataService.cs" />
     <Compile Include="DivisionService.cs" />
     <Compile Include="DTO\DivisionDTO.cs" />
     <Compile Include="DTO\TeamDTO.cs" />
@@ -60,12 +59,6 @@
       <Project>{b3e35e97-ef50-4357-83de-38d24b553128}</Project>
       <Name>JodyApp.Data</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DataFolder\DivisionData.txt" />
-    <Content Include="DataFolder\TeamData.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

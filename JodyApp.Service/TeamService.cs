@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
-using JodyApp.Service.DataFolder;
 using JodyApp.Service.DTO;
 using JodyApp.Database;
 
@@ -13,40 +12,25 @@ namespace JodyApp.Service
 {
     public class TeamService
     {
-        JodyAppContext db = new JodyAppContext();
-        DataService dataService = DataService.Instance;
+        JodyAppContext db = new JodyAppContext();        
         DivisionService divisionService = new DivisionService();
 
-        public List<TeamDTO> GetAllTeams()
+        public List<Team> GetAllTeams()
         {
-            var teamList = from t in db.Teams orderby t.Name select t;
-            
-            List<TeamDTO> teamDTOList = new List<TeamDTO>();
-            foreach (var team in teamList) 
-            {
-                teamDTOList.Add(TeamDTO.ToDTO(team));
-            }
 
-            return teamDTOList;
+            return db.Teams.ToList<Team>();
         }
 
-        public RecordTable GetStandings()
+        public Team GetTeamByName(String name)
         {
-            return dataService.GetStandings();
+            var query = from t in db.Teams where t.Name.Equals(name) select t;
+
+            return query.ToList<Team>().First();
+                        
+
         }
 
-        public TeamDTO GetTeamByName(String name)
-        {
-            return null;
-        }
 
-        public void Save(TeamDTO teamDTO)
-        {
-            Team team = TeamDTO.ToDomain(teamDTO, divisionService);
-
-            dataService.Save(team);
-
-        }
 
     }
 }

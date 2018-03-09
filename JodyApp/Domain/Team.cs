@@ -8,9 +8,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace JodyApp.Domain
 {    
     public class Team : DomainObject
-    {       
-        public String Name;
-        public int Skill;
+    {               
+        public String Name;        
+        public int Skill;        
         public Division Division;
     }
 }

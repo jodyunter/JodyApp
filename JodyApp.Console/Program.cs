@@ -8,6 +8,8 @@ using JodyApp.Console.Display;
 
 using JodyApp.Domain.Table;
 using JodyApp.Domain;
+using JodyApp.Service.DataFolder;
+
 
 namespace JodyApp.Console
 {
@@ -15,13 +17,21 @@ namespace JodyApp.Console
     {
         static void Main(string[] args)
         {
+            DataService dataService = DataService.Instance;
             TeamService teamService = new TeamService();
             SeasonService seasonService = new SeasonService();
 
             Random random = new Random();
             System.Console.WriteLine("TEST ME OUT");
 
-            RecordTable table = teamService.GetStandings();
+            List<Team> teams = new List<Team>();
+            teams = teamService.GetAllTeams();
+            RecordTable table = new RecordTable();
+            teams.ForEach(team =>
+            {
+                table.Standings.Add(team.Name, new RecordTableTeam(team));
+            });
+
             table.TableName = "Standings";
 
             RecordTableTeam[] teamList = table.Standings.Values.ToArray<RecordTableTeam>();
