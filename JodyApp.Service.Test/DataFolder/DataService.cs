@@ -6,38 +6,52 @@ using System.Threading.Tasks;
 using System.IO;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
+using JodyApp.Database;
 using System.Data.Entity;
 
 namespace JodyApp.Service.DataFolder
 {
-    public class DataService
-    {
-        private JodyApp.Database.JodyAppContext db = new Database.JodyAppContext();
+    public class DataService:BaseService
+    {        
         private static DataService instance;        
         static string BASE_DIR = "C:\\Users\\jody_unterschutz\\source\\repos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";
         //string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";        
         string TeamFile = BASE_DIR + "TeamData.txt";
         string DivisionFile = BASE_DIR + "DivisionData.txt";
-        TeamService teamService = new TeamService();
-        DivisionService divisionService = new DivisionService();
+        TeamService teamService = null;
+        DivisionService divisionService = null;
 
-        public static DataService Instance
+        public static DataService Instance(JodyAppContext context)
         {
-            get
+            if (instance == null)
             {
-                if (instance == null)
-                {
-                    instance = new DataService();
-                }
-                return instance;
+                instance = new DataService(context);
             }
+            return instance;
+            
         }
 
-        public DataService()
+        public void DeleteAllData()
         {
+            string[] tables = { "Seasons" ,"Teams", "TeamStatistics", "Divisions"};
+            var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
+            foreach (string table in tables)
+            {
+                objCtx.ExecuteStoreCommand("DELETE [" + table + "]");
+            }
+
+        }
+
+        public DataService(JodyAppContext context):base(context)
+        {
+            teamService = new TeamService(context);
+            divisionService = new DivisionService(context);
+            DeleteAllData();
 
             LoadData(TeamFile, db.Teams, PopulateTeam);
             LoadData(DivisionFile, db.Divisions, PopulateDivision);
+
+            db.SaveChanges();
             
         }
 
@@ -109,6 +123,8 @@ namespace JodyApp.Service.DataFolder
 
                 dataList.Add(populateObject(split));                
             }
+
+            db.SaveChanges();
         }
 
     }

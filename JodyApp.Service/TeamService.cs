@@ -10,11 +10,14 @@ using JodyApp.Database;
 
 namespace JodyApp.Service
 {
-    public class TeamService
-    {
-        JodyAppContext db = new JodyAppContext();        
-        DivisionService divisionService = new DivisionService();
+    public class TeamService:BaseService
+    {        
+        DivisionService divisionService = null;
 
+        public TeamService(JodyAppContext context):base(context)
+        {            
+            this.divisionService = new DivisionService(context);
+        }
         public List<Team> GetAllTeams()
         {
 

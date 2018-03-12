@@ -9,10 +9,12 @@ using JodyApp.Database;
 
 namespace JodyApp.Service
 {
-    public class DivisionService
-    {
-        JodyAppContext db = new JodyAppContext();
+    public class DivisionService:BaseService
+    {        
 
+        public DivisionService(JodyAppContext context):base(context)
+        {            
+        }
         public Division GetByName(String Name)
         {
             var query = from d in db.Divisions where d.Name.Equals(Name) select d;

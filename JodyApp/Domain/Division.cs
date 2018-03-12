@@ -10,8 +10,8 @@ namespace JodyApp.Domain
     public class Division:DomainObject
     {
         public string Name { get; set; }
-        public List<Team> Teams { get; set; }
-        public Division Parent { get; set; }
+        virtual public List<Team> Teams { get; set; }
+        virtual public Division Parent { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
     }

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseService.cs" />
     <Compile Include="DivisionService.cs" />
     <Compile Include="DTO\DivisionDTO.cs" />
     <Compile Include="DTO\TeamDTO.cs" />

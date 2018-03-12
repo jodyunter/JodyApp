@@ -11,7 +11,7 @@ namespace JodyApp.Data.Test.Domain
         [TestMethod]
         public void ShouldGetPoints()
         {
-            TeamStatitistics stats = new TeamStatitistics();
+            TeamStatistics stats = new TeamStatistics();
 
             stats.Wins = 15;
             AreEqual(30, stats.Points);
@@ -21,7 +21,7 @@ namespace JodyApp.Data.Test.Domain
         [TestMethod]
         public void ShouldGetGoalDifference()
         {
-            TeamStatitistics stats = new TeamStatitistics();
+            TeamStatistics stats = new TeamStatistics();
 
             stats.GoalsFor = 55;
             stats.GoalsAgainst = 255;
@@ -31,7 +31,7 @@ namespace JodyApp.Data.Test.Domain
         [TestMethod]
         public void ShouldGetGamesPlayed()
         {
-            TeamStatitistics stats = new TeamStatitistics();
+            TeamStatistics stats = new TeamStatistics();
 
             stats.Wins = 3;
             stats.Loses = 4;

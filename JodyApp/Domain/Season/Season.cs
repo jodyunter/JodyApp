@@ -17,6 +17,6 @@ namespace JodyApp.Domain.Season
         public RecordTable Standings { get; set; }
 
         [InverseProperty("Season")]
-        public List<SeasonTeam> TeamData { get; set; }
+        virtual public List<SeasonTeam> TeamData { get; set; }
     }
 }

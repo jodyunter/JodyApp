@@ -13,24 +13,7 @@ namespace JodyApp.Data.Test.Domain
     [TestClass]
     public class TeamTests
     {
-        [TestMethod]
-        public void ShouldInsertTeam()
-        {
-            var db = new JodyAppContext();
-
-            Team team = new Team
-            {
-                Name = "My Team",
-                Skill = 12,
-                Division = null
-
-            };
-
-            db.Teams.Add(team);
-            db.SaveChanges();
-
-
-        }
+ 
 
     }
 }

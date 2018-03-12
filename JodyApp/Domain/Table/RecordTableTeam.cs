@@ -15,10 +15,10 @@ namespace JodyApp.Domain.Table
         {
             this.Name = team.Name;
             this.Skill = team.Skill;
-            this.Stats = new TeamStatitistics();
+            this.Stats = new TeamStatistics();
             this.Division = team.Division;            
         }
-        public TeamStatitistics Stats { get; set; }
+        virtual public TeamStatistics Stats { get; set; }
 
         public int CompareTo(RecordTableTeam other)
         {
@@ -30,16 +30,16 @@ namespace JodyApp.Domain.Table
                     {
                         if (this.Stats.GoalDifference.Equals(other.Stats.GoalDifference))
                         {
-                            return this.CompareStatTo(TeamStatitistics.Stats.GoalsFor, other);
+                            return this.CompareStatTo(TeamStatistics.Stats.GoalsFor, other);
                         }
 
-                        return this.CompareStatTo(TeamStatitistics.Stats.GoalDifference, other);
+                        return this.CompareStatTo(TeamStatistics.Stats.GoalDifference, other);
                     }
-                    return this.CompareStatTo(TeamStatitistics.Stats.Wins, other);
+                    return this.CompareStatTo(TeamStatistics.Stats.Wins, other);
                 }
-                return this.CompareStatTo(TeamStatitistics.Stats.GamesPlayed, other);
+                return this.CompareStatTo(TeamStatistics.Stats.GamesPlayed, other);
             }
-            return this.CompareStatTo(TeamStatitistics.Stats.Points, other);
+            return this.CompareStatTo(TeamStatistics.Stats.Points, other);
         }
 
         public bool Equals(RecordTableTeam other)
@@ -47,18 +47,18 @@ namespace JodyApp.Domain.Table
             return this.Name.Equals(other.Name);
         }
 
-        public int CompareStatTo(TeamStatitistics.Stats stat, RecordTableTeam other)
+        public int CompareStatTo(TeamStatistics.Stats stat, RecordTableTeam other)
         {
             switch(stat) {
-                case TeamStatitistics.Stats.Points:
+                case TeamStatistics.Stats.Points:
                     return this.Stats.Points.CompareTo(other.Stats.Points);
-                case TeamStatitistics.Stats.GamesPlayed:
+                case TeamStatistics.Stats.GamesPlayed:
                     return other.Stats.GamesPlayed.CompareTo(this.Stats.GamesPlayed);
-                case TeamStatitistics.Stats.Wins:
+                case TeamStatistics.Stats.Wins:
                     return this.Stats.Wins.CompareTo(other.Stats.Wins);
-                case TeamStatitistics.Stats.GoalDifference:
+                case TeamStatistics.Stats.GoalDifference:
                     return this.Stats.GoalDifference.CompareTo(other.Stats.GoalDifference);
-                case TeamStatitistics.Stats.GoalsFor:
+                case TeamStatistics.Stats.GoalsFor:
                     return this.Stats.GoalsFor.CompareTo(other.Stats.GoalsFor);
                 default:
                     throw new NotImplementedException("This stat you are using isn't implemented.");

@@ -14,14 +14,14 @@ namespace JodyApp.Data.Test.Domain.Table
         {
             Name = "Team 1",
             Skill = 5,
-            Stats = new TeamStatitistics()
+            Stats = new TeamStatistics()
         };
 
         RecordTableTeam AwayTeam = new RecordTableTeam
         {
             Name = "Team 2",
             Skill = 5,
-            Stats = new TeamStatitistics()
+            Stats = new TeamStatistics()
         };
 
         Game Game;
@@ -47,7 +47,7 @@ namespace JodyApp.Data.Test.Domain.Table
         [TestMethod]
         public void ShouldProcessTeamWin()
         {
-            TeamStatitistics stats = new TeamStatitistics();
+            TeamStatistics stats = new TeamStatistics();
 
             table.ProcessTeamStats(stats, 5, 4);
             AreEqual(1, stats.Wins);
@@ -60,7 +60,7 @@ namespace JodyApp.Data.Test.Domain.Table
         [TestMethod]
         public void ShouldProcessTeamLoss()
         {
-            TeamStatitistics stats = new TeamStatitistics();
+            TeamStatistics stats = new TeamStatistics();
 
             table.ProcessTeamStats(stats, 5, 6);
             AreEqual(0, stats.Wins);
@@ -72,7 +72,7 @@ namespace JodyApp.Data.Test.Domain.Table
         [TestMethod]
         public void ShouldProcessTeamTie()
         {
-            TeamStatitistics stats = new TeamStatitistics();
+            TeamStatistics stats = new TeamStatistics();
 
             table.ProcessTeamStats(stats, 15, 15);
             AreEqual(0, stats.Wins);

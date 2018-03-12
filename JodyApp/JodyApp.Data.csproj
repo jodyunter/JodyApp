@@ -59,18 +59,22 @@
     <Compile Include="Domain\Table\RecordTableTeam.cs" />
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
-    <Compile Include="Domain\TeamStatitistics.cs" />
-    <Compile Include="Migrations\201803092052155_First.cs" />
-    <Compile Include="Migrations\201803092052155_First.Designer.cs">
-      <DependentUpon>201803092052155_First.cs</DependentUpon>
+    <Compile Include="Domain\TeamStatistics.cs" />
+    <Compile Include="Migrations\201803121840378_Initital.cs" />
+    <Compile Include="Migrations\201803121840378_Initital.Designer.cs">
+      <DependentUpon>201803121840378_Initital.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803092143277_Second.cs" />
-    <Compile Include="Migrations\201803092143277_Second.Designer.cs">
-      <DependentUpon>201803092143277_Second.cs</DependentUpon>
+    <Compile Include="Migrations\201803121844172_Team-Property-Fix.cs" />
+    <Compile Include="Migrations\201803121844172_Team-Property-Fix.Designer.cs">
+      <DependentUpon>201803121844172_Team-Property-Fix.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803092153588_Third.cs" />
-    <Compile Include="Migrations\201803092153588_Third.Designer.cs">
-      <DependentUpon>201803092153588_Third.cs</DependentUpon>
+    <Compile Include="Migrations\201803121859120_TeamStatistics-Name-Fix.cs" />
+    <Compile Include="Migrations\201803121859120_TeamStatistics-Name-Fix.Designer.cs">
+      <DependentUpon>201803121859120_TeamStatistics-Name-Fix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803121909572_tryingvirtual.cs" />
+    <Compile Include="Migrations\201803121909572_tryingvirtual.Designer.cs">
+      <DependentUpon>201803121909572_tryingvirtual.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,14 +84,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803092052155_First.resx">
-      <DependentUpon>201803092052155_First.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803121840378_Initital.resx">
+      <DependentUpon>201803121840378_Initital.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803092143277_Second.resx">
-      <DependentUpon>201803092143277_Second.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803121844172_Team-Property-Fix.resx">
+      <DependentUpon>201803121844172_Team-Property-Fix.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803092153588_Third.resx">
-      <DependentUpon>201803092153588_Third.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803121859120_TeamStatistics-Name-Fix.resx">
+      <DependentUpon>201803121859120_TeamStatistics-Name-Fix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803121909572_tryingvirtual.resx">
+      <DependentUpon>201803121909572_tryingvirtual.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,6 +9,6 @@ namespace JodyApp.Domain.Season
 { 
     public class SeasonDivision:Division
     {        
-        public Season Season { get; set; }
+        virtual public Season Season { get; set; }
     }
 }

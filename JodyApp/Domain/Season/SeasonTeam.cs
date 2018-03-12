@@ -10,7 +10,7 @@ namespace JodyApp.Domain.Season
 {    
     public class SeasonTeam:RecordTableTeam
     {
-        public Season Season { get; set; }
+        virtual public Season Season { get; set; }
 
         public SeasonTeam() { }
         public SeasonTeam(Team team, SeasonDivision division)

@@ -23,14 +23,14 @@ namespace JodyApp.Data.Test.Domain.Table
             {
                 Name = "HomeTeamName",
                 Skill = 5,
-                Stats = new TeamStatitistics()
+                Stats = new TeamStatistics()
             };
 
             awayTeam = new RecordTableTeam
             {
                 Name = "AwayTeamName",
                 Skill = 5,
-                Stats = new TeamStatitistics()
+                Stats = new TeamStatistics()
             };
         }
 

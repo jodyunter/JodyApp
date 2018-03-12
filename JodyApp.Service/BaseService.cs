@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using JodyApp.Domain;
-using JodyApp.Domain.Table;
 using JodyApp.Database;
 
 namespace JodyApp.Service
 {
-    public class SeasonService:BaseService
+    public class BaseService
     {
-        public SeasonService(JodyAppContext context):base(context)
+        public JodyAppContext db { get; }
+
+        public BaseService(JodyAppContext dbContext)
         {
+            this.db = dbContext;
 
         }
-            
     }
 }

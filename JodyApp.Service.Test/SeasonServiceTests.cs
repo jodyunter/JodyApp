@@ -14,7 +14,7 @@ namespace JodyApp.Service.Test
     [TestClass]
     public class SeasonServiceTests
     {
-        SeasonService service = new SeasonService();
+        SeasonService service = new SeasonService(null);
 
         
     }

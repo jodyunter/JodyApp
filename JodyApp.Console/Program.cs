@@ -8,6 +8,7 @@ using JodyApp.Console.Display;
 
 using JodyApp.Domain.Table;
 using JodyApp.Domain;
+using JodyApp.Database;
 using JodyApp.Service.DataFolder;
 
 
@@ -17,9 +18,10 @@ namespace JodyApp.Console
     {
         static void Main(string[] args)
         {
-            DataService dataService = DataService.Instance;
-            TeamService teamService = new TeamService();
-            SeasonService seasonService = new SeasonService();
+            JodyAppContext db = new JodyAppContext();
+            DataService dataService = DataService.Instance(db);
+            TeamService teamService = new TeamService(db);
+            SeasonService seasonService = new SeasonService(db);
 
             Random random = new Random();
             System.Console.WriteLine("TEST ME OUT");

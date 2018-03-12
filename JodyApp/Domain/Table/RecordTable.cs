@@ -42,7 +42,7 @@ namespace JodyApp.Domain.Table
                 this.Standings[game.HomeTeam.Name].Stats,
                 this.Standings[game.AwayTeam.Name].Stats);
         }
-        public void ProcessGame(Game game, TeamStatitistics HomeStats, TeamStatitistics AwayStats)
+        public void ProcessGame(Game game, TeamStatistics HomeStats, TeamStatistics AwayStats)
         {
             int homeScore = game.HomeScore;
             int awayScore = game.AwayScore;
@@ -51,7 +51,7 @@ namespace JodyApp.Domain.Table
             ProcessTeamStats(AwayStats, awayScore, homeScore);
         }
 
-        public void ProcessTeamStats(TeamStatitistics TeamStats, int GoalsFor, int GoalsAgainst)
+        public void ProcessTeamStats(TeamStatistics TeamStats, int GoalsFor, int GoalsAgainst)
         {
             if (GoalsFor > GoalsAgainst)
             {

@@ -9,8 +9,8 @@ namespace JodyApp.Domain
 {    
     public class Team : DomainObject
     {               
-        public String Name;        
-        public int Skill;        
-        public Division Division;
+        public String Name { get; set; }
+        public int Skill { get; set; }
+        virtual public Division Division { get; set; }
     }
 }

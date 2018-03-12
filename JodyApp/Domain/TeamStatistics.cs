@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain
 {    
-    public class TeamStatitistics:DomainObject
+    public class TeamStatistics:DomainObject
     {
         public enum Stats { Rank, Name, Wins, Loses, Ties, GoalsFor, GoalsAgainst, Points, GoalDifference, GamesPlayed }
 
