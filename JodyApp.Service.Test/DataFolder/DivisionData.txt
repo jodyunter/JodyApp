@@ -1,2 +1,8 @@
 ﻿Name	Parent	Level	Order	TabbedTeamList
-League		0	0	Montreal	Toronto	Ottawa
+League		0	0
+East	League	1	1
+West	League	1	2
+Pacific	West	2	1	Los Angelas	Seattle	Vancouver	Calgary
+Central	West	2	2	Edmonton	Winnipeg	Minnesota	Chicago
+North East	East	2	3	Toronto	Ottawa	Montreal	Quebec City
+Atlantic	East	2	4	Boston	New York	Philadelphia	Detroit

@@ -10,7 +10,7 @@ using JodyApp.Domain.Table;
 using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Service.DataFolder;
-
+using JodyApp.Domain.Season;
 
 namespace JodyApp.Console
 {
@@ -73,6 +73,7 @@ namespace JodyApp.Console
             //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_DIVISION));
 
 
+            Season season = seasonService.CreateNewSeason("My Season", 1);
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();
 
