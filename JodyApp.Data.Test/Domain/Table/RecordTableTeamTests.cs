@@ -64,8 +64,8 @@ namespace JodyApp.Data.Test.Domain.Table
             awayTeam.Stats.GoalsFor = 50;
             awayTeam.Stats.GoalsAgainst = 50;
             
-            IsTrue(homeTeam.CompareTo(awayTeam) > 0);
-            IsTrue(awayTeam.CompareTo(homeTeam) < 0);
+            IsTrue(homeTeam.CompareTo(awayTeam) < 0);
+            IsTrue(awayTeam.CompareTo(homeTeam) > 0);
         }
 
         [TestMethod]
@@ -82,8 +82,8 @@ namespace JodyApp.Data.Test.Domain.Table
             awayTeam.Stats.GoalsFor = 50;
             awayTeam.Stats.GoalsAgainst = 50;
 
-            IsTrue(homeTeam.CompareTo(awayTeam) > 0);
-            IsTrue(awayTeam.CompareTo(homeTeam) < 0);
+            IsTrue(homeTeam.CompareTo(awayTeam) < 0);
+            IsTrue(awayTeam.CompareTo(homeTeam) > 0);
         }
 
         [TestMethod]
@@ -100,8 +100,8 @@ namespace JodyApp.Data.Test.Domain.Table
             awayTeam.Stats.GoalsFor = 50;
             awayTeam.Stats.GoalsAgainst = 50;
 
-            IsTrue(homeTeam.CompareTo(awayTeam) < 0);
-            IsTrue(awayTeam.CompareTo(homeTeam) > 0);
+            IsTrue(homeTeam.CompareTo(awayTeam) > 0);
+            IsTrue(awayTeam.CompareTo(homeTeam) < 0);
         }
 
         [TestMethod]
@@ -118,8 +118,8 @@ namespace JodyApp.Data.Test.Domain.Table
             awayTeam.Stats.GoalsFor = 50;
             awayTeam.Stats.GoalsAgainst = 55;
 
-            IsTrue(homeTeam.CompareTo(awayTeam) > 0);
-            IsTrue(awayTeam.CompareTo(homeTeam) < 0);
+            IsTrue(homeTeam.CompareTo(awayTeam) < 0);
+            IsTrue(awayTeam.CompareTo(homeTeam) > 0);
         }
 
         [TestMethod]
@@ -136,8 +136,8 @@ namespace JodyApp.Data.Test.Domain.Table
             awayTeam.Stats.GoalsFor = 45;
             awayTeam.Stats.GoalsAgainst = 40;
 
-            IsTrue(homeTeam.CompareTo(awayTeam) > 0);
-            IsTrue(awayTeam.CompareTo(homeTeam) < 0);
+            IsTrue(homeTeam.CompareTo(awayTeam) < 0);
+            IsTrue(awayTeam.CompareTo(homeTeam) > 0);
         }
     }
 }
