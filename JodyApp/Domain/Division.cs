@@ -7,12 +7,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JodyApp.Domain
 {    
-    public class Division:DomainObject
+    public class Division: DomainObject,IEquatable<Division>, IComparable<Division>
     {
         public string Name { get; set; }
         virtual public List<Team> Teams { get; set; }
         virtual public Division Parent { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
+
+        public int CompareTo(Division other)
+        {
+            if (Level.Equals(other.Level))
+            {
+                return Order.CompareTo(other.Order);
+            } else
+            {
+                return Level.CompareTo(other.Level);
+            }
+        }
+
+        public bool Equals(Division other)
+        {
+            return this.Name.Equals(other.Name);
+        }
     }
 }

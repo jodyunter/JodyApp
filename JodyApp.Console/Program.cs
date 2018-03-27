@@ -23,6 +23,7 @@ namespace JodyApp.Console
             DataService dataService = DataService.Instance(db);
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
+            int ROUNDS_TO_PLAY = 10;
 
             Random random = new Random();
             System.Console.WriteLine("TEST ME OUT");
@@ -39,35 +40,39 @@ namespace JodyApp.Console
 
             RecordTableTeam[] teamList = table.Standings.Values.ToArray<RecordTableTeam>();
 
-            for (int i = 0; i < teamList.Length - 1; i++)
-            {
-                RecordTableTeam homeTeam = teamList[i];
-
-                for (int j = i + 1; j < teamList.Length; j++)
+            for (int k = 0; k < ROUNDS_TO_PLAY; k++) {
+                for (int i = 0; i < teamList.Length - 1; i++)
                 {
-                    RecordTableTeam awayTeam = teamList[j];
+                    RecordTableTeam homeTeam = teamList[i];
 
-                    Game game = new Game
+                    for (int j = i + 1; j < teamList.Length; j++)
                     {
-                        HomeTeam = homeTeam,
-                        AwayTeam = awayTeam
+                        RecordTableTeam awayTeam = teamList[j];
 
-                    };
+                        Game game = new Game
+                        {
+                            HomeTeam = homeTeam,
+                            AwayTeam = awayTeam
 
-                    game.Play(random);                    
-                    //todo need to simplify this
-                    table.ProcessGame(game);
+                        };
+
+                        game.Play(random);
+                        //todo need to simplify this
+                        table.ProcessGame(game);
+                    }
+
+
                 }
-
-
             }
 
             //Array.Sort(teamList, StandingsSorter.SortByDivisionLevel_0);
             
             
             System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_LEAGUE));
+            //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORTY_BY_CONFERENCE));
+            //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_DIVISION));
 
-            
+
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();
 

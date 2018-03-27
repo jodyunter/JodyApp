@@ -36,15 +36,6 @@ namespace JodyApp.Domain.Table
         {
             List<RecordTableTeam> teams = Standings.Values.ToList<RecordTableTeam>();
 
-            teams.Sort(StandingsSorter.SortByDivisionLevel);
-            
-            int rank = 1;
-
-            teams.ForEach(team =>
-            {
-                team.Stats.Rank = rank;
-                rank++;
-            });
 
             return teams;
         }

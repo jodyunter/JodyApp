@@ -9,52 +9,64 @@ namespace JodyApp.Domain.Table
     public class StandingsSorter
     {
         public static int SORT_BY_LEAGUE = 0;
-        public static int SORT_BY_DIVISION = 1;
+        public static int SORT_BY_DIVISION = 2;
+        public static int SORTY_BY_CONFERENCE = 1;
 
         private int DivisionLevel { get; set; }     
 
         public StandingsSorter() { }
-
-
         
-        public Dictionary<Division, Division> SortDivisions(RecordTable table)
-        {
-            return null;
-        }
-        public int SortByDivisionLevel(RecordTableTeam a, RecordTableTeam b, int divisionLevel)
-        {
-            DivisionLevel = divisionLevel;
-
-            return SortByDivisionLevel(a, b);
-        }
-
-        public int SortByDivisionLevel(RecordTableTeam a, RecordTableTeam b)
+        
+        //we have two things to consider        
+       
+        public static SortedDictionary<Division, List<RecordTableTeam>> SortByDivisionLevel(RecordTable table, int divisionLevel)
         {
 
-            Division a0 = a.Division;
-            Division b0 = b.Division;
+            List<RecordTableTeam> list = table.Standings.Values.ToList<RecordTableTeam>();
 
-            if (a0 == null || b0 == null) {
-                throw new ApplicationException("Can't compare divisions when they don't have a division!");
+            SortedDictionary<Division, List<RecordTableTeam>> sortedStandings = new SortedDictionary<Division, List<RecordTableTeam>>();
+
+            list.ForEach(team =>
+            {
+                SortIntoDivisions(team, divisionLevel, sortedStandings);
+            });
+
+            foreach(KeyValuePair<Division, List<RecordTableTeam>> entry in sortedStandings)
+            {
+                //need to apply any sorting rules here
+                entry.Value.Sort();
+                int rank = 1;
+                entry.Value.ForEach(team =>
+                {
+                    team.Stats.Rank = rank;
+                    rank++;
+                });                
             }
 
-            while (a0.Level != DivisionLevel)
+            return sortedStandings;
+        }
+
+        private static void SortIntoDivisions(RecordTableTeam team, int divisionLevel, SortedDictionary<Division, List<RecordTableTeam>> teamList)
+        {
+            Division a0 = team.Division;
+
+            while (a0.Level != divisionLevel)
             {
                 a0 = a0.Parent;
             }
 
-            while (b0.Level != DivisionLevel)
+            AddToDictionary(a0, team, teamList);
+        }
+
+        private static void AddToDictionary(Division d, RecordTableTeam team, SortedDictionary<Division, List<RecordTableTeam>> teamList)
+        {
+            
+            if (!teamList.ContainsKey(d))
             {
-                b0 = b0.Parent;
+                teamList.Add(d, new List<RecordTableTeam>());                
             }
 
-            if (a0.Order == b0.Order)
-            {
-                return a.CompareTo(b);
-            } else
-            {
-                return a0.Order.CompareTo(b0.Order);
-            }
+            teamList[d].Add(team);
             
         }
     }

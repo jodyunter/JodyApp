@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JodyApp.Domain;
 using JodyApp.Domain.Table;
 
 namespace JodyApp.Console.Display
@@ -14,16 +15,27 @@ namespace JodyApp.Console.Display
 
         public static string PrintRecordTable(RecordTable table, int sortByValue)
         {
-            string result = table.TableName;
-            result += "\n";
+            SortedDictionary<Division, List<RecordTableTeam>> standings = StandingsSorter.SortByDivisionLevel(table, sortByValue);
+
+            string result = "";
             
-            result += GetRecordTableRowHeader();            
-            
-            table.GetSortedListByLeague().ForEach(team =>
+            foreach (KeyValuePair<Division, List<RecordTableTeam>> entity in standings)
             {
+
+                result += entity.Key.Name;
                 result += "\n";
-                result += GetRecordTableRow(team);                
-            });
+
+                result += GetRecordTableRowHeader();
+
+                entity.Value.ForEach(team =>
+                {
+                    result += "\n";
+                    result += GetRecordTableRow(team);
+                });
+
+                result += "\n";
+
+            }
 
             return result;
             
