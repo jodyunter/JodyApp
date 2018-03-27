@@ -11,25 +11,6 @@ namespace JodyApp.Service.Test.DTO
     [TestClass]
     public class TeamDTOTests
     {
-        [TestMethod]
-        public void ShouldFullyPopulateTeamDTO()
-        {
-            Fail("Not Implemented yet");
-        }
-        [TestMethod]
-        public void ShouldFullyPopulateTeamDomain()
-        {
-            Fail("Not Implemented yet");
-        }
-        [TestMethod]
-        public void ShouldPopulateTeamDomainNullDivision()
-        {
-            Fail("Not Implemented yet");
-        }
-        [TestMethod]
-        public void ShouldPopulateTeamDTONullDivision()
-        {
-            Fail("Not Implemented yet");
-        }
+
     }
 }

@@ -16,6 +16,7 @@ namespace JodyApp.Console
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
             JodyAppContext db = new JodyAppContext();
@@ -61,8 +62,10 @@ namespace JodyApp.Console
 
             }
 
+            //Array.Sort(teamList, StandingsSorter.SortByDivisionLevel_0);
             
-            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table));
+            
+            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_LEAGUE));
 
             
             System.Console.WriteLine("Press ENTER to end program.");

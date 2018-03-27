@@ -30,16 +30,16 @@ namespace JodyApp.Domain.Table
                     {
                         if (this.Stats.GoalDifference.Equals(other.Stats.GoalDifference))
                         {
-                            return this.CompareStatTo(TeamStatistics.Stats.GoalsFor, other);
+                            return -1 * this.CompareStatTo(TeamStatistics.Stats.GoalsFor, other);
                         }
 
-                        return this.CompareStatTo(TeamStatistics.Stats.GoalDifference, other);
+                        return -1 * this.CompareStatTo(TeamStatistics.Stats.GoalDifference, other);
                     }
-                    return this.CompareStatTo(TeamStatistics.Stats.Wins, other);
+                    return -1 * this.CompareStatTo(TeamStatistics.Stats.Wins, other);
                 }
-                return this.CompareStatTo(TeamStatistics.Stats.GamesPlayed, other);
+                return -1 * this.CompareStatTo(TeamStatistics.Stats.GamesPlayed, other);
             }
-            return this.CompareStatTo(TeamStatistics.Stats.Points, other);
+            return -1 * this.CompareStatTo(TeamStatistics.Stats.Points, other);
         }
 
         public bool Equals(RecordTableTeam other)

@@ -18,12 +18,26 @@ namespace JodyApp.Domain.Table
             Standings = new Dictionary<string, RecordTableTeam>();
         }
   
-        public List<RecordTableTeam> GetSortedList()
+        public List<RecordTableTeam> GetSortedListByConference()
+        {
+            return null;
+        }
+
+        public List<RecordTableTeam> GetSortedListByDivision()
+        {
+            return null;
+        }
+
+        public List<RecordTableTeam> GetSortListByDivisionLevel(int level)
+        {
+            return null;
+        }
+        public List<RecordTableTeam> GetSortedListByLeague()
         {
             List<RecordTableTeam> teams = Standings.Values.ToList<RecordTableTeam>();
-            teams.Sort();
-            teams.Reverse();
 
+            teams.Sort(StandingsSorter.SortByDivisionLevel);
+            
             int rank = 1;
 
             teams.ForEach(team =>

@@ -56,9 +56,10 @@ namespace JodyApp.Service.DataFolder
         }
 
 
-        delegate T PopulateObject<T>(string[] input);
+        delegate T PopulateObject<T>(string[] input, List<T> dataList) where T:class;
+        
 
-        Team PopulateTeam(string[] input)
+        Team PopulateTeam(string[] input, List<Team> list)
         {
             int NAME = 0;
             int SKILL = 1;
@@ -72,7 +73,7 @@ namespace JodyApp.Service.DataFolder
             return team;
         }
 
-        Division PopulateDivision(string[] input)
+        Division PopulateDivision(string[] input, List<Division> list)
         {
             int NAME = 0;
             int LEVEL = 2;
@@ -87,13 +88,25 @@ namespace JodyApp.Service.DataFolder
                 Order = int.Parse(input[ORDER]),
                 Teams = new List<Team>(),
             };
-
+            
             //get parent
             if (input[PARENT].Length != 0)
             {
                 //get division by name
-                //divisions must be in order of hierarchy for this to work
+                //divisions must be in order of hierarchy for this to work     
                 Division parent = divisionService.GetByName(input[PARENT]);
+
+                var query = from d in db.Divisions where d.Name.Equals(input[PARENT]) select d;
+
+                foreach (Division d in list)
+                {
+                    if (d.Name.EndsWith(input[PARENT]))
+                    {
+                        parent = d;
+                    }
+                }
+
+
 
                 division.Parent = parent;
             }
@@ -112,17 +125,25 @@ namespace JodyApp.Service.DataFolder
 
         void LoadData<T>(string fileName, DbSet<T> dataList, PopulateObject<T> populateObject) where T:class
         {
-            StreamReader teamReader = new StreamReader(fileName);
+            StreamReader reader = new StreamReader(fileName);
             string line;
 
-            line = teamReader.ReadLine(); //read header line!
+            List<T> list = new List<T>();
 
-            while ((line = teamReader.ReadLine()) != null)
+            line = reader.ReadLine(); //read header line!
+
+            while ((line = reader.ReadLine()) != null)
             {
                 string[] split = line.Split('\t');
 
-                dataList.Add(populateObject(split));                
+
+                T obj = populateObject(split, list);
+
+                list.Add(obj);
+             
             }
+
+            dataList.AddRange(list);
 
             db.SaveChanges();
         }
