@@ -25,5 +25,23 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
 
         }
+
+        [TestMethod]
+        public void ShouldScheduleJustHomeTeamsDirectMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void ShouldScheduleJustHomeTeamsInDirectMethodNull()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void ShouldScheduleJustHomeTeamsInDirectMethod0Length()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
