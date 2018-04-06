@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JodyApp.Domain;
 
 namespace JodyApp.Domain.Schedule
 {
-    public class ScheduleRule
+    public class ScheduleRule:DomainObject
     {
         //rules with opponents implied
         public static int BY_DIVISION = 0; //get teams in specific division         

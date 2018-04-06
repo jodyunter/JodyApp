@@ -8,6 +8,7 @@ using JodyApp.Domain;
 using JodyApp.Domain.Table;
 using JodyApp.Database;
 using System.Data.Entity;
+using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Service.DataFolder
 {
@@ -18,6 +19,7 @@ namespace JodyApp.Service.DataFolder
         static string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";        
         string TeamFile = BASE_DIR + "TeamData.txt";
         string DivisionFile = BASE_DIR + "DivisionData.txt";
+        string ScheduleFile = BASE_DIR + "ScheduleRule.txt";
         TeamService teamService = null;
         DivisionService divisionService = null;
 
@@ -33,7 +35,7 @@ namespace JodyApp.Service.DataFolder
 
         public void DeleteAllData()
         {
-            string[] tables = { "Seasons" ,"Teams", "TeamStatistics", "Divisions"};
+            string[] tables = { "ScheduleRule", "Seasons" ,"Teams", "TeamStatistics", "Divisions"};
             var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
             foreach (string table in tables)
             {
@@ -45,11 +47,12 @@ namespace JodyApp.Service.DataFolder
         public DataService(JodyAppContext context):base(context)
         {
             teamService = new TeamService(context);
-            divisionService = new DivisionService(context);
+            divisionService = new DivisionService(context);            
             DeleteAllData();
 
             LoadData(TeamFile, db.Teams, PopulateTeam);
             LoadData(DivisionFile, db.Divisions, PopulateDivision);
+            LoadData(ScheduleFile, db.ScheduleRules, PopulateScheduleRule);
 
             db.SaveChanges();
             
@@ -121,6 +124,31 @@ namespace JodyApp.Service.DataFolder
 
             return division;
 
+        }
+
+        ScheduleRule PopulateScheduleRule(string[] input, List<ScheduleRule> rules)
+        {
+            ScheduleRule rule = new ScheduleRule();
+            const string DIVISION_TYPE = "Division";
+            const string TEAM_TYPE = "Team";
+            const string NONE_TYPE = "None";
+
+            int HOMETYPE = 0;
+            int HOMENAME = 1;
+            int AWAYTYPE = 2;
+            int AWAYNAME = 3;
+
+            switch(input[HOMETYPE])
+            {
+                case DIVISION_TYPE:
+                    string divisionName = input[HOMENAME];
+                    
+                    break;
+                case TEAM_TYPE:
+                    break;
+            }
+
+            return rule;
         }
 
         void LoadData<T>(string fileName, DbSet<T> dataList, PopulateObject<T> populateObject) where T:class

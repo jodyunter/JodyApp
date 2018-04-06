@@ -1,0 +1,2 @@
+﻿HomeType	HomeName	AwayType	AwayName	HomeAway
+Division	East	Division	West	Y

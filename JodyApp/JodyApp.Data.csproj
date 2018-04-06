@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201803272044361_Initial.Designer.cs">
       <DependentUpon>201803272044361_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804061531145_ScheduleRules.cs" />
+    <Compile Include="Migrations\201804061531145_ScheduleRules.Designer.cs">
+      <DependentUpon>201804061531145_ScheduleRules.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +82,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803272044361_Initial.resx">
       <DependentUpon>201803272044361_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804061531145_ScheduleRules.resx">
+      <DependentUpon>201804061531145_ScheduleRules.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

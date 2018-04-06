@@ -38,26 +38,6 @@ namespace JodyApp.Service
             throw new NotImplementedException();
         }
         
-        public void UpdateDivisionNameAndParent(DivisionDTO divisionDTO)
-        {
-
-        }
-
-        public void UpdateDivisionTeamList(DivisionDTO divisionDTO)
-        {
-
-        }
-
-        public List<DivisionDTO> GetDivisionList()
-        {
-            return null;
-        }
-
-        public Division GetDivisionWithTeamList()
-        {
-            return null;
-        }
-
    
     }
 }

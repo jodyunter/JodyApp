@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using JodyApp.Domain;
 using JodyApp.Domain.Season;
+using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Database
 {
@@ -15,6 +16,7 @@ namespace JodyApp.Database
         public DbSet<SeasonDivision> SeasonDivisions { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<TeamStatistics> TeamStatistics { get; set; }
+        public DbSet<ScheduleRule> ScheduleRules { get; set; }
 
 
     }
