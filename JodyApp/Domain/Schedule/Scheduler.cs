@@ -22,10 +22,7 @@ namespace JodyApp.Domain.Schedule
             {
                 for (int j = 0; j < AwayTeams.Length; j++)
                 {
-                    if (!HomeTeams[i].Equals(AwayTeams[j]))
-                    {
-                        games.Add(SetupGame(HomeTeams[i], AwayTeams[j]));
-                    }
+                    AddGames(games, HomeTeams[i], AwayTeams[j], playHomeAndAway);                    
                 }
             }
 
@@ -40,14 +37,21 @@ namespace JodyApp.Domain.Schedule
             {
                 for (int j = i + 1; j < HomeTeams.Length; j++)
                 {
-                    games.Add(SetupGame(HomeTeams[i], HomeTeams[j]));
-                        
+                    AddGames(games, HomeTeams[i], HomeTeams[j], playHomeAndAway);
                 }
             }
 
             return games;
         }
 
+        public static void AddGames(List<ScheduleGame> games, Team a, Team b, bool homeAndAway)
+        {
+            if (!a.Equals(b))
+            {
+                games.Add(SetupGame(a, b));
+                if (homeAndAway) games.Add(SetupGame(b, a));
+            }
+        }
         public static ScheduleGame SetupGame(Team home, Team away)
         {
             return new ScheduleGame

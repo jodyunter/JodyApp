@@ -8,45 +8,47 @@ namespace JodyApp.Domain.Schedule
 {
     public class ScheduleValidator
     {
-        public static Dictionary<string, ScheduleCounts> GetData(List<ScheduleGame> games)
-        {
-            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
-
+        public static void ProcessGames(Dictionary<string, ScheduleCounts> data, List<ScheduleGame> games)
+        {           
             games.ForEach(game =>
             {
                 ProcessGame(data, game);
-            });
-
-            return data;
+            });            
         }
 
+        public static void AddTeam(Dictionary<string, ScheduleCounts> TeamData, Team team, Team opponent)
+        {
+            string teamName = team.Name;
+            string opponentName = opponent.Name;
+
+            if (!TeamData.ContainsKey(teamName))
+            {
+                TeamData.Add(teamName, new ScheduleCounts(teamName));
+            }
+
+
+            if (!TeamData[teamName].HomeGamesVsTeams.ContainsKey(opponentName))
+            {
+                TeamData[teamName].HomeGamesVsTeams.Add(opponentName, 0);
+            }
+
+            if (!TeamData[teamName].AwayGamesVsTeams.ContainsKey(opponentName))
+            {
+                TeamData[teamName].AwayGamesVsTeams.Add(opponentName, 0);
+            }
+        }
         public static void ProcessGame(Dictionary<string, ScheduleCounts> TeamData, ScheduleGame game)
         {
             string homeName = game.Home.Name;
             string awayName = game.Away.Name;
 
-            if (!TeamData.ContainsKey(homeName))
-            {
-                TeamData.Add(homeName, new ScheduleCounts(homeName));
-            }
-
-            if (!TeamData.ContainsKey(game.Away.Name))
-            {
-                TeamData.Add(awayName, new ScheduleCounts(awayName));
-            }
+            //TODO: Make this more fficient maybe by setting up the dictionary ahead of time?
+            AddTeam(TeamData, game.Home, game.Away);
+            AddTeam(TeamData, game.Away, game.Home);
 
             TeamData[homeName].HomeGames++;
             TeamData[awayName].AwayGames++;
             
-            if (!TeamData[homeName].HomeGamesVsTeams.ContainsKey(awayName))
-            {
-                TeamData[homeName].HomeGamesVsTeams.Add(awayName, 0);
-            }
-
-            if (!TeamData[awayName].HomeGamesVsTeams.ContainsKey(homeName))
-            {
-                TeamData[awayName].HomeGamesVsTeams.Add(homeName, 0);
-            }
 
             TeamData[homeName].HomeGamesVsTeams[awayName]++;
             TeamData[awayName].AwayGamesVsTeams[homeName]++;
