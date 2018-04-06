@@ -16,10 +16,11 @@ namespace JodyApp.Service.DataFolder
     {        
         private static DataService instance;        
         //static string BASE_DIR = "C:\\Users\\jody_unterschutz\\source\\repos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";
-        static string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";        
-        string TeamFile = BASE_DIR + "TeamData.txt";
-        string DivisionFile = BASE_DIR + "DivisionData.txt";
-        string ScheduleFile = BASE_DIR + "ScheduleRule.txt";
+        static string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";
+        static string DEFAULT_FOLDER = "";
+        string TeamFile = "TeamData.txt";
+        string DivisionFile = "DivisionData.txt";
+        string ScheduleFile = "ScheduleRule.txt";
         TeamService teamService = null;
         DivisionService divisionService = null;
 
@@ -33,9 +34,27 @@ namespace JodyApp.Service.DataFolder
             
         }
 
+
+        public static DataService Instance(JodyAppContext context, string dataFolder)
+        {
+            if (instance == null)
+            {
+                instance = new DataService(context, dataFolder);
+            }
+            return instance;
+
+        }
+
+        public void SetFileData(string baseFolder, string folder)
+        {
+            TeamFile = baseFolder + folder + TeamFile;
+            DivisionFile = baseFolder + folder + DivisionFile;
+            ScheduleFile = baseFolder + folder + ScheduleFile;
+        }
+
         public void DeleteAllData()
         {
-            string[] tables = { "ScheduleRule", "Seasons" ,"Teams", "TeamStatistics", "Divisions"};
+            string[] tables = { "ScheduleRules", "Seasons" ,"Teams", "TeamStatistics", "Divisions"};
             var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
             foreach (string table in tables)
             {
@@ -44,15 +63,31 @@ namespace JodyApp.Service.DataFolder
 
         }
 
+        public DataService(JodyAppContext context, string testDataFolder) : base(context)
+        {
+            teamService = new TeamService(context);
+            divisionService = new DivisionService(context);
+            DeleteAllData();
+            SetFileData(BASE_DIR, testDataFolder);
+
+            LoadData(TeamFile, db.Teams, PopulateTeam);
+            LoadData(DivisionFile, db.Divisions, PopulateDivision);
+            //LoadData(ScheduleFile, db.ScheduleRules, PopulateScheduleRule);
+
+            db.SaveChanges();
+
+        }
+
         public DataService(JodyAppContext context):base(context)
         {
             teamService = new TeamService(context);
             divisionService = new DivisionService(context);            
             DeleteAllData();
+            SetFileData(BASE_DIR, DEFAULT_FOLDER);
 
             LoadData(TeamFile, db.Teams, PopulateTeam);
             LoadData(DivisionFile, db.Divisions, PopulateDivision);
-            LoadData(ScheduleFile, db.ScheduleRules, PopulateScheduleRule);
+            //LoadData(ScheduleFile, db.ScheduleRules, PopulateScheduleRule);
 
             db.SaveChanges();
             

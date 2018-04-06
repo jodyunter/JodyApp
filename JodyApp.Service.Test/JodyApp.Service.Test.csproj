@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataFolder\DataService.cs" />
+    <Compile Include="DivisionServiceTests.cs" />
     <Compile Include="DTO\TeamDTOTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeasonServiceTests.cs" />
@@ -76,6 +77,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DataFolder\DivisionData.txt" />
+    <Content Include="DataFolder\DivisionTestData\DivisionData.txt" />
+    <Content Include="DataFolder\DivisionTestData\TeamData.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFolder\ScheduleRules.txt" />
     <Content Include="DataFolder\TeamData.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,0 +1,18 @@
+﻿Name	Skill
+Toronto	5
+Montreal	5
+Ottawa	5
+Vancouver	5
+Seattle	5
+Los Angelas	5
+Detroit	5
+Chicago	5
+Winnipeg	5
+Calgary	5
+Edmonton	5
+Minnesota	5
+New York	5
+Boston	5
+Philadelphia	5
+Quebec City	5
+Colorado	5

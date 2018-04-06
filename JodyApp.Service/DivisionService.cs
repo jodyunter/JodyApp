@@ -15,6 +15,28 @@ namespace JodyApp.Service
         public DivisionService(JodyAppContext context):base(context)
         {            
         }
+
+        //this could cause trouble with seasons
+        public List<Division> GetDivisionsByParent(Division parent)
+        {
+            var divs = db.Divisions.Where(div => div.Parent.Name == parent.Name);
+            
+            return divs.ToList<Division>();
+        }
+
+        public List<Team> GetAllTeamsInDivision(Division division)
+        {
+
+            List<Team> teams = new List<Team>();
+            teams.AddRange(division.Teams);
+
+            GetDivisionsByParent(division).ForEach(div =>
+            {
+                teams.AddRange(GetAllTeamsInDivision(div));                                
+            });
+
+            return teams;
+        }
         public Division GetByName(String Name)
         {
             var query = from d in db.Divisions where d.Name.Equals(Name) select d;
