@@ -51,6 +51,7 @@ namespace JodyApp.Service
                 db.SeasonTeams.Add(team);
             }
 
+            //need to change season rules too
             db.Seasons.Add(season);
             db.SeasonDivisions.AddRange(seasonDivisions.Values);
             db.SaveChanges();
