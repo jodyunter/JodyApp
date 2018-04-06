@@ -51,6 +51,10 @@
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
+    <Compile Include="Domain\Schedule\Scheduler.cs" />
+    <Compile Include="Domain\Schedule\ScheduleRule.cs" />
+    <Compile Include="Domain\Schedule\ScheduleGame.cs" />
+    <Compile Include="Domain\Schedule\ScheduleValidator.cs" />
     <Compile Include="Domain\Season\Season.cs" />
     <Compile Include="Domain\Season\SeasonDivision.cs" />
     <Compile Include="Domain\Season\SeasonGame.cs" />

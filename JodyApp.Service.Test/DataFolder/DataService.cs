@@ -14,8 +14,8 @@ namespace JodyApp.Service.DataFolder
     public class DataService:BaseService
     {        
         private static DataService instance;        
-        static string BASE_DIR = "C:\\Users\\jody_unterschutz\\source\\repos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";
-        //string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";        
+        //static string BASE_DIR = "C:\\Users\\jody_unterschutz\\source\\repos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";
+        static string BASE_DIR = "D:\\Visual Studio Projects\\gitrepos\\JodyApp\\JodyApp.Service.Test\\DataFolder\\";        
         string TeamFile = BASE_DIR + "TeamData.txt";
         string DivisionFile = BASE_DIR + "DivisionData.txt";
         TeamService teamService = null;

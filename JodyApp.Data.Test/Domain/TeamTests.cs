@@ -13,7 +13,14 @@ namespace JodyApp.Data.Test.Domain
     [TestClass]
     public class TeamTests
     {
- 
+        public static Team CreateBasicTeam(String name, int skill)
+        {
+            return new Team
+            {
+                Name = name,
+                Skill = skill
+            };
+        }
 
     }
 }

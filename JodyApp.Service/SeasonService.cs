@@ -13,15 +13,12 @@ namespace JodyApp.Service
     public class SeasonService:BaseService
     {
         TeamService teamService;
-        DivisionService divisionService;
-
-        JodyAppContext db;
+        DivisionService divisionService;        
 
         public SeasonService(JodyAppContext context):base(context)
         {
             teamService = new TeamService(context);
-            divisionService = new DivisionService(context);
-            this.db = context;
+            divisionService = new DivisionService(context);            
         }
 
         public Season CreateNewSeason(string name, int year)
