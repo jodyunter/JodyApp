@@ -29,5 +29,6 @@ namespace JodyApp.Domain
             return isInDivision;
 
         }
+
     }
 }

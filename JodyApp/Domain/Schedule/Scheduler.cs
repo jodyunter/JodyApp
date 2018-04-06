@@ -46,7 +46,7 @@ namespace JodyApp.Domain.Schedule
 
         public static void AddGames(List<ScheduleGame> games, Team a, Team b, bool homeAndAway)
         {
-            if (!a.Equals(b))
+            if (!a.Name.Equals(b.Name))
             {
                 games.Add(SetupGame(a, b));
                 if (homeAndAway) games.Add(SetupGame(b, a));

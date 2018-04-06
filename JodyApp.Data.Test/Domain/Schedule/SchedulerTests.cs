@@ -126,13 +126,96 @@ namespace JodyApp.Data.Test.Domain.Schedule
         [TestMethod]
         public void ShouldScheduleWithVisitorsJustHome()
         {
-            throw new NotImplementedException();
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+            string[] awayTeams = { "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12" };
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = Scheduler.ScheduleGames(
+                TeamTests.CreateBasicTeams(homeTeams).ToArray(),
+                TeamTests.CreateBasicTeams(awayTeams).ToArray(),
+                false);
+
+            ScheduleValidator.ProcessGames(data, scheduleGames);
+
+            AreEqual(36, scheduleGames.Count);
+
+            for (int i = 0; i < homeTeams.Length; i++)
+            {
+                string name = "Team " + (i + 1);
+
+                AreEqual(6, data[name].HomeGames + data[name].AwayGames);
+                AreEqual(0, data[name].AwayGames);
+                AreEqual(6, data[name].HomeGames);
+
+                name = "Team " + (i + 7);
+
+                AreEqual(6, data[name].HomeGames + data[name].AwayGames);
+                AreEqual(6, data[name].AwayGames);
+                AreEqual(0, data[name].HomeGames);
+
+            }
         }
 
         [TestMethod]
         public void ShouldScheduileWithVisitorsHomeAndAway()
         {
-            throw new NotImplementedException();
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+            string[] awayTeams = { "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12" };
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = Scheduler.ScheduleGames(
+                TeamTests.CreateBasicTeams(homeTeams).ToArray(),
+                TeamTests.CreateBasicTeams(awayTeams).ToArray(),
+                true);
+
+            ScheduleValidator.ProcessGames(data, scheduleGames);
+
+            AreEqual(72, scheduleGames.Count);
+
+            for (int i = 0; i < homeTeams.Length; i++)
+            {
+                string name = "Team " + (i + 1);
+
+                AreEqual(12, data[name].HomeGames + data[name].AwayGames);
+                AreEqual(6, data[name].AwayGames);
+                AreEqual(6, data[name].HomeGames);
+
+                name = "Team " + (i + 7);
+
+                AreEqual(12, data[name].HomeGames + data[name].AwayGames);
+                AreEqual(6, data[name].AwayGames);
+                AreEqual(6, data[name].HomeGames);
+
+            }
+        }
+
+        [TestMethod]
+        public void ShouldScheduileWithSameHomeAndVisitorsNoHomeAndAway()
+        {
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = Scheduler.ScheduleGames(
+                TeamTests.CreateBasicTeams(homeTeams).ToArray(),
+                TeamTests.CreateBasicTeams(homeTeams).ToArray(),
+                false);
+
+            ScheduleValidator.ProcessGames(data, scheduleGames);
+
+            AreEqual(30, scheduleGames.Count);
+
+            for (int i = 0; i < homeTeams.Length; i++)
+            {
+                string name = "Team " + (i + 1);
+
+                AreEqual(10, data[name].HomeGames + data[name].AwayGames);
+                AreEqual(5, data[name].AwayGames);
+                AreEqual(5, data[name].HomeGames);
+
+            }
         }
     }
 }
