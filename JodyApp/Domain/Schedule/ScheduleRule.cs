@@ -20,12 +20,23 @@ namespace JodyApp.Domain.Schedule
 
         public int AwayType { get; set; }                
         public Team AwayTeam { get; set; }
-        public Division AwayDivisio { get; set; }
+        public Division AwayDivision { get; set; }
 
         public Boolean PlayHomeAway { get; set; } //if home and away teams are the same we need special rules
 
         //when creating a new season, we need to translate these into the season rules.
         //since this would be done only at the beginning, we can use it to find the parent teams for the current season
-        
+
+        public ScheduleRule() { }
+        public ScheduleRule(int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway)
+        {
+            HomeType = homeType;
+            HomeTeam = homeTeam;
+            HomeDivision = homeDivision;
+            AwayType = awayType;
+            AwayTeam = awayTeam;
+            AwayDivision = awayDivision;
+            PlayHomeAway = playHomeAway;
+        }
     }
 }
