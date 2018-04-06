@@ -15,6 +15,16 @@ namespace JodyApp.Domain
         public int Level { get; set; }
         public int Order { get; set; }
 
+        public Division() { }
+        public Division(string name, int level, int order, Division parent)
+        {
+            this.Name = name;
+            this.Level = level;
+            this.Order = order;
+            this.Parent = parent;
+            Teams = new List<Team>();
+                 
+        }
         public int CompareTo(Division other)
         {
             if (Level.Equals(other.Level))

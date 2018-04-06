@@ -13,6 +13,14 @@ namespace JodyApp.Domain
         public int Skill { get; set; }
         virtual public Division Division { get; set; }
 
+        public Team() { }
+        public Team(string name, int skill, Division div)
+        {
+            this.Name = name;
+            this.Skill = skill;
+            this.Division = Division;
+            if (Division != null) Division.Teams.Add(this);
+        }
         public Boolean IsTeamInDivision(String divisionName)
         {
             Division p = Division;

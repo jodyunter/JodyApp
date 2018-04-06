@@ -28,7 +28,7 @@ namespace JodyApp.Service
         {
 
             List<Team> teams = new List<Team>();
-            teams.AddRange(division.Teams);
+            if (division.Teams != null) teams.AddRange(division.Teams);
 
             GetDivisionsByParent(division).ForEach(div =>
             {

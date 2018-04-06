@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using JodyApp.Service.DataFolder;
+using JodyApp.Service.Test.DataFolder.DivisionTestData;
 using JodyApp.Domain;
 
 namespace JodyApp.Service.Test
@@ -13,26 +13,31 @@ namespace JodyApp.Service.Test
     [TestClass]
     public class DivisionServiceTests
     {
-        string testDataFolder = "DivisionTestData\\";
-        DataService data = new DataService(new Database.JodyAppContext(), "DivisionTestData\\");
 
         //these tests depend on specific data
         [TestMethod]
         public void ShouldGetDivisionsByParent()
-        {            
-            DivisionService service = new DivisionService(data.db);
+        {
+            Database.JodyAppContext db = new Database.JodyAppContext();
+            DivisionTestDataDriver.DeleteAllData(db);
+            DivisionTestDataDriver.InsertData(db);
+            DivisionService service = new DivisionService(db);
 
             List<Division> divisions = service.GetDivisionsByParent(service.GetByName("League"));
 
             AreEqual(2, divisions.Count);
-            AreEqual("East", divisions[0].Name);
-            AreEqual("West", divisions[1].Name);
+            AreEqual("East", divisions[1].Name);
+            AreEqual("West", divisions[0].Name);
         }
 
         [TestMethod]
         public void ShouldGetTeamsInDivision()
         {
-            DivisionService service = new DivisionService(data.db);
+            Database.JodyAppContext db = new Database.JodyAppContext();
+            DivisionTestDataDriver.DeleteAllData(db);
+            DivisionTestDataDriver.InsertData(db);
+            DivisionService service = new DivisionService(db);
+
             List<Team> teams = service.GetAllTeamsInDivision(service.GetByName("League"));
 
             AreEqual(17, teams.Count);

@@ -54,7 +54,7 @@ namespace JodyApp.Service.DataFolder
 
         public void DeleteAllData()
         {
-            string[] tables = { "ScheduleRules", "Seasons" ,"Teams", "TeamStatistics", "Divisions"};
+            string[] tables = { "ScheduleRules", "Seasons", "Teams", "TeamStatistics", "Divisions" };
             var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
             foreach (string table in tables)
             {
@@ -177,9 +177,11 @@ namespace JodyApp.Service.DataFolder
             {
                 case DIVISION_TYPE:
                     string divisionName = input[HOMENAME];
-                    
+                    rule.HomeDivision = divisionService.GetByName(divisionName);
                     break;
                 case TEAM_TYPE:
+                    string teamName = input[HOMENAME];
+                    rule.HomeTeam = teamService.GetTeamByName(teamName);
                     break;
             }
 

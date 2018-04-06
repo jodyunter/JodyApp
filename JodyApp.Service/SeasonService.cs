@@ -61,6 +61,7 @@ namespace JodyApp.Service
                     db.Teams.Find(rule.AwayTeam),
                     seasonDivisions[db.Divisions.Find(rule.AwayDivision).Name],
                     rule.PlayHomeAway);
+                db.ScheduleRules.Add(seasonRule);
             }
 
             //need to change season rules too
