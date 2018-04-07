@@ -55,7 +55,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataFolder\DataService.cs" />
+    <Compile Include="DataFolder\BaseTestDataDriver.cs" />
     <Compile Include="DataFolder\DivisionTestData\DivisionTestDataDriver.cs" />
     <Compile Include="DivisionServiceTests.cs" />
     <Compile Include="DTO\TeamDTOTests.cs" />
@@ -75,17 +75,6 @@
       <Project>{b3e35e97-ef50-4357-83de-38d24b553128}</Project>
       <Name>JodyApp.Data</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DataFolder\DivisionData.txt" />
-    <Content Include="DataFolder\DivisionTestData\DivisionData.txt" />
-    <Content Include="DataFolder\DivisionTestData\TeamData.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataFolder\ScheduleRules.txt" />
-    <Content Include="DataFolder\TeamData.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

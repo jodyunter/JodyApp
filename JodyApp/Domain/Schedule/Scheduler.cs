@@ -8,6 +8,7 @@ namespace JodyApp.Domain.Schedule
 {
     public class Scheduler
     {
+
         //need arrays to do this correctly, may need to sort prior to this method
         public static List<ScheduleGame> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway)
         {
@@ -64,6 +65,8 @@ namespace JodyApp.Domain.Schedule
             };
 
         }
+
+
         
     }
 }

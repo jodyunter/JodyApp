@@ -18,5 +18,7 @@ namespace JodyApp.Domain.Season
 
         [InverseProperty("Season")]
         virtual public List<SeasonTeam> TeamData { get; set; }
+
+        virtual public List<SeasonScheduleRule> ScheduleRules { get; set; }
     }
 }

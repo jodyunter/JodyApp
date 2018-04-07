@@ -15,12 +15,12 @@ namespace JodyApp.Domain.Schedule
         public static int NONE = -1; //use this to ignore the away team
         
         public int HomeType { get; set; } //By Division, By Team        
-        public Team HomeTeam { get; set; }
-        public Division HomeDivision { get; set; }
+        virtual public Team HomeTeam { get; set; }
+        virtual public Division HomeDivision { get; set; }
 
         public int AwayType { get; set; }                
-        public Team AwayTeam { get; set; }
-        public Division AwayDivision { get; set; }
+        virtual public Team AwayTeam { get; set; }
+        virtual public Division AwayDivision { get; set; }
 
         public Boolean PlayHomeAway { get; set; } //if home and away teams are the same we need special rules
 

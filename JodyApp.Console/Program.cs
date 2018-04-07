@@ -9,8 +9,9 @@ using JodyApp.Console.Display;
 using JodyApp.Domain.Table;
 using JodyApp.Domain;
 using JodyApp.Database;
-using JodyApp.Service.DataFolder;
+using JodyApp.Service.Test.DataFolder;
 using JodyApp.Domain.Season;
+using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Console
 {
@@ -20,7 +21,8 @@ namespace JodyApp.Console
         static void Main(string[] args)
         {
             JodyAppContext db = new JodyAppContext();
-            DataService dataService = DataService.Instance(db);
+            BaseTestDataDriver.DeleteAllData(db);
+            BaseTestDataDriver.InsertData(db);
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             int ROUNDS_TO_PLAY = 10;
@@ -74,6 +76,24 @@ namespace JodyApp.Console
 
 
             Season season = seasonService.CreateNewSeason("My Season", 1);
+
+
+            RecordTable seasonTable = season.Standings;
+            seasonTable = new RecordTable();
+
+            season.TeamData.ForEach(team =>
+            {
+                seasonTable.Standings.Add(team.Name, team);
+            });
+
+            List<ScheduleGame> scheduleGames = new List<ScheduleGame>();
+
+            season.ScheduleRules.ForEach(rule =>
+            {
+                
+            });
+            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(seasonTable, StandingsSorter.SORT_BY_LEAGUE));
+
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();
 

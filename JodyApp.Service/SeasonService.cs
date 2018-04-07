@@ -29,8 +29,9 @@ namespace JodyApp.Service
             season.Name = name;
             season.Year = year;
 
-            Dictionary<string, SeasonDivision> seasonDivisions = new Dictionary<string, SeasonDivision>();            
-            
+            Dictionary<string, SeasonDivision> seasonDivisions = new Dictionary<string, SeasonDivision>();
+            Dictionary<string, SeasonTeam> seasonTeams = new Dictionary<string, SeasonTeam>();
+
             foreach (Division d in db.Divisions)
             {
                 //in the event the parent is added in the recursive steps, we don't want to do it agian
@@ -49,22 +50,40 @@ namespace JodyApp.Service
             {
                 SeasonTeam team = new SeasonTeam(t, seasonDivisions[t.Division.Name]);                
                 db.SeasonTeams.Add(team);
+                seasonTeams.Add(team.Name, team);
             }
 
             foreach(ScheduleRule rule in db.ScheduleRules)
             {
-                SeasonScheduleRule seasonRule = new SeasonScheduleRule(season,
-                    rule.HomeType,
-                    db.Teams.Find(rule.HomeTeam),
-                    seasonDivisions[db.Divisions.Find(rule.HomeDivision).Name],
-                    rule.AwayType,
-                    db.Teams.Find(rule.AwayTeam),
-                    seasonDivisions[db.Divisions.Find(rule.AwayDivision).Name],
-                    rule.PlayHomeAway);
-                db.ScheduleRules.Add(seasonRule);
+                SeasonDivision homeDiv = null;
+                SeasonDivision awayDiv = null;
+                SeasonTeam homeTeam = null;
+                SeasonTeam awayTeam = null;
+
+                if (rule.HomeDivision != null) { homeDiv = seasonDivisions[db.Divisions.Find(rule.HomeDivision.Id).Name]; }
+                if (rule.AwayDivision != null) { awayDiv = seasonDivisions[db.Divisions.Find(rule.AwayDivision.Id).Name]; }
+                if (rule.AwayTeam != null) { awayTeam = seasonTeams[db.Teams.Find(rule.AwayTeam.Id).Name]; }
+                if (rule.HomeTeam != null) { homeTeam = seasonTeams[db.Teams.Find(rule.HomeTeam.Id).Name]; }
+
+                SeasonScheduleRule seasonRule = new SeasonScheduleRule(
+                                                    season,
+                                                    rule.HomeType,
+                                                    homeTeam,
+                                                    homeDiv,
+                                                    rule.AwayType,
+                                                    awayTeam,
+                                                    awayDiv,
+                                                    rule.PlayHomeAway
+                                                    );
+                db.SeasonScheduleRules.Add(seasonRule);
+
+                season.ScheduleRules.Add(seasonRule);
             }
 
+
             //need to change season rules too
+            season.TeamData = seasonTeams.Values.ToList<SeasonTeam>();
+
             db.Seasons.Add(season);
             db.SeasonDivisions.AddRange(seasonDivisions.Values);            
             db.SaveChanges();
@@ -92,6 +111,8 @@ namespace JodyApp.Service
 
             return division;
         }
+
+        
             
     }
 }
