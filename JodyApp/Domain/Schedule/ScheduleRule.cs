@@ -10,9 +10,9 @@ namespace JodyApp.Domain.Schedule
     public class ScheduleRule:DomainObject
     {
         //rules with opponents implied
-        public static int BY_DIVISION = 0; //get teams in specific division         
-        public static int BY_TEAM = 1; //get specific team
-        public static int NONE = -1; //use this to ignore the away team
+        public const int BY_DIVISION = 0; //get teams in specific division         
+        public const int BY_TEAM = 1; //get specific team
+        public const int NONE = -1; //use this to ignore the away team
         
         public int HomeType { get; set; } //By Division, By Team        
         virtual public Team HomeTeam { get; set; }

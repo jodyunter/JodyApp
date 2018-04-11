@@ -12,8 +12,8 @@ namespace JodyApp.Data.Test.Domain.Schedule
         {
             return new ScheduleGame
             {
-                Home = home,
-                Away = away,
+                HomeTeam = home,
+                AwayTeam = away,
                 Complete = false,
                 HomeScore = 0,
                 AwayScore = 0

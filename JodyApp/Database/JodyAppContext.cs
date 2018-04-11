@@ -7,8 +7,8 @@ namespace JodyApp.Database
 {
     public class JodyAppContext:DbContext
     {        
-        //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=jody;Integrated Security=True") { }
-        public JodyAppContext() : base("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True") { }
+        public JodyAppContext() : base("Data Source=localhost;Initial Catalog=jody;Integrated Security=True") { }
+        //public JodyAppContext() : base("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True") { }
 
         //Base configuration items
         public DbSet<Team> Teams { get; set; }        

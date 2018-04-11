@@ -57,10 +57,12 @@
   <ItemGroup>
     <Compile Include="DataFolder\BaseTestDataDriver.cs" />
     <Compile Include="DataFolder\DivisionTestData\DivisionTestDataDriver.cs" />
+    <Compile Include="DataFolder\ScheduleTestData\ScheduleTestDataDriver.cs" />
     <Compile Include="DivisionServiceTests.cs" />
     <Compile Include="DTO\TeamDTOTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeasonServiceTests.cs" />
+    <Compile Include="ScheduleServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -76,6 +78,7 @@
       <Name>JodyApp.Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

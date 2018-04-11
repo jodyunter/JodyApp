@@ -18,8 +18,8 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             ScheduleGame scheduleGame = Scheduler.SetupGame(HomeTeam, AwayTeam);
 
-            AreEqual(HomeTeam, scheduleGame.Home);
-            AreEqual(AwayTeam, scheduleGame.Away);
+            AreEqual(HomeTeam, scheduleGame.HomeTeam);
+            AreEqual(AwayTeam, scheduleGame.AwayTeam);
             AreEqual(0, scheduleGame.HomeScore);
             AreEqual(0, scheduleGame.AwayScore);
             IsFalse(scheduleGame.Complete);

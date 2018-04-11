@@ -14,15 +14,21 @@ namespace JodyApp.Service.Test
     public class DivisionServiceTests
     {
 
+        Database.JodyAppContext db = new Database.JodyAppContext();
+        DivisionService service;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            db = new Database.JodyAppContext();
+            service = new DivisionService(db);
+            DivisionTestDataDriver.DeleteAllData(db);
+            DivisionTestDataDriver.InsertData(db);
+        }
         //these tests depend on specific data
         [TestMethod]
         public void ShouldGetDivisionsByParent()
-        {
-            Database.JodyAppContext db = new Database.JodyAppContext();
-            DivisionTestDataDriver.DeleteAllData(db);
-            DivisionTestDataDriver.InsertData(db);
-            DivisionService service = new DivisionService(db);
-
+        {                        
             List<Division> divisions = service.GetDivisionsByParent(service.GetByName("League"));
 
             AreEqual(2, divisions.Count);
@@ -32,12 +38,7 @@ namespace JodyApp.Service.Test
 
         [TestMethod]
         public void ShouldGetTeamsInDivision()
-        {
-            Database.JodyAppContext db = new Database.JodyAppContext();
-            DivisionTestDataDriver.DeleteAllData(db);
-            DivisionTestDataDriver.InsertData(db);
-            DivisionService service = new DivisionService(db);
-
+        {            
             List<Team> teams = service.GetAllTeamsInDivision(service.GetByName("League"));
 
             AreEqual(17, teams.Count);

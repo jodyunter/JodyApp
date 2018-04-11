@@ -39,12 +39,12 @@ namespace JodyApp.Domain.Schedule
         }
         public static void ProcessGame(Dictionary<string, ScheduleCounts> TeamData, ScheduleGame game)
         {
-            string homeName = game.Home.Name;
-            string awayName = game.Away.Name;
+            string homeName = game.HomeTeam.Name;
+            string awayName = game.AwayTeam.Name;
 
             //TODO: Make this more fficient maybe by setting up the dictionary ahead of time?
-            AddTeam(TeamData, game.Home, game.Away);
-            AddTeam(TeamData, game.Away, game.Home);
+            AddTeam(TeamData, game.HomeTeam, game.AwayTeam);
+            AddTeam(TeamData, game.AwayTeam, game.HomeTeam);
 
             TeamData[homeName].HomeGames++;
             TeamData[awayName].AwayGames++;

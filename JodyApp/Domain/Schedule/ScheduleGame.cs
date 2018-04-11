@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Schedule
 {
-    public class ScheduleGame
+    public class ScheduleGame:Game
     {
-        public Team Home { get; set; }
-        public Team Away { get; set; }
-        public int HomeScore { get; set; }
-        public int AwayScore { get; set; }
-        public bool Complete { get; set; }
-        
+        public int Day { get; set; }
     }
 }

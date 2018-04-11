@@ -57,8 +57,8 @@ namespace JodyApp.Domain.Schedule
         {
             return new ScheduleGame
             {
-                Home = home,
-                Away = away,
+                HomeTeam = home,
+                AwayTeam = away,
                 HomeScore = 0,
                 AwayScore = 0,
                 Complete = false
