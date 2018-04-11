@@ -20,5 +20,14 @@ namespace JodyApp.Domain.Season
         virtual public List<SeasonTeam> TeamData { get; set; }
 
         virtual public List<SeasonScheduleRule> ScheduleRules { get; set; }
+
+        public void SetupStandings()
+        {
+            Standings = new RecordTable();
+            TeamData.ForEach(team =>
+           {
+               Standings.Add(team.Name, team);
+           });
+        }
     }
 }

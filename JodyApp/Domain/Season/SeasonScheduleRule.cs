@@ -18,7 +18,7 @@ namespace JodyApp.Domain.Season
             Season = season;
         }
 
-        public SeasonScheduleRule(Season season, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway) : base(homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway)
+        public SeasonScheduleRule(Season season, String name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds) : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds)
         {
             Season = season;
         }

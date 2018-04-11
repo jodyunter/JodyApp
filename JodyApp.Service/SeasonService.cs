@@ -67,13 +67,15 @@ namespace JodyApp.Service
 
                 SeasonScheduleRule seasonRule = new SeasonScheduleRule(
                                                     season,
+                                                    rule.Name,
                                                     rule.HomeType,
                                                     homeTeam,
                                                     homeDiv,
                                                     rule.AwayType,
                                                     awayTeam,
                                                     awayDiv,
-                                                    rule.PlayHomeAway
+                                                    rule.PlayHomeAway,
+                                                    rule.Rounds
                                                     );
                 db.SeasonScheduleRules.Add(seasonRule);
 

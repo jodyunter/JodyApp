@@ -13,6 +13,11 @@ namespace JodyApp.Domain.Table
 
         public Dictionary<string, RecordTableTeam> Standings { get; set; }
 
+        public void Add(String TeamName, RecordTableTeam team)
+        {
+            this.Standings.Add(TeamName, team);
+        }
+
         public RecordTable()
         {
             Standings = new Dictionary<string, RecordTableTeam>();

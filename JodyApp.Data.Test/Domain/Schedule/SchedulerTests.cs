@@ -9,7 +9,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
 {
     [TestClass]
     public class SchedulerTests
-    {
+    {       
         [TestMethod]
         public void ShouldSetupGame()
         {
@@ -216,6 +216,11 @@ namespace JodyApp.Data.Test.Domain.Schedule
                 AreEqual(5, data[name].HomeGames);
 
             }
+        }
+        [TestMethod]
+        public void ShouldTestMultipleRounds()
+        {
+            throw new NotImplementedException();
         }
     }
 }

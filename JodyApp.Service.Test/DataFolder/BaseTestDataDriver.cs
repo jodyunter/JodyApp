@@ -70,7 +70,7 @@ namespace JodyApp.Service.Test.DataFolder
         {
             var rules = new Dictionary<string, ScheduleRule>();
 
-            ScheduleRule rule1 = new ScheduleRule(ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false);
+            ScheduleRule rule1 = new ScheduleRule("Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10);
 
             rules.Add("Rule 1", rule1);
             db.ScheduleRules.AddRange(rules.Values);

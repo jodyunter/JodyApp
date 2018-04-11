@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain;
+using JodyApp.Domain.Season;
 
 namespace JodyApp.Service
 {
@@ -20,7 +21,29 @@ namespace JodyApp.Service
             teamService = new TeamService(db);
         }
 
-        List<ScheduleGame> CreateGamesFromRule(ScheduleRule rule)
+        public List<ScheduleGame> CreateGamesFromRules(List<SeasonScheduleRule> rules)
+        {
+            var games = new List<ScheduleGame>();
+            rules.ForEach(rule =>
+            {
+                games.AddRange(CreateGamesFromRule(rule));
+            });
+
+            return games;
+        }
+
+
+        public List<ScheduleGame> CreateGamesFromRules(List<ScheduleRule> rules)
+        {
+            var games = new List<ScheduleGame>();
+            rules.ForEach(rule =>
+            {
+                games.AddRange(CreateGamesFromRule(rule));
+            });
+             
+            return games;
+        }
+        public List<ScheduleGame> CreateGamesFromRule(ScheduleRule rule)
         {
             var games = new List<ScheduleGame>();
 
@@ -30,7 +53,7 @@ namespace JodyApp.Service
             AddTeamsToListFromRule(homeTeams, rule.HomeType, rule.HomeTeam, rule.HomeDivision);
             AddTeamsToListFromRule(awayTeams, rule.AwayType, rule.AwayTeam, rule.AwayDivision);
 
-            games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway));
+            games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds));
 
             return games;
         }

@@ -25,52 +25,15 @@ namespace JodyApp.Console
             BaseTestDataDriver.InsertData(db);
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
+            ScheduleService scheduleService = new ScheduleService(db);
+
             int ROUNDS_TO_PLAY = 10;
 
             Random random = new Random();
-            System.Console.WriteLine("TEST ME OUT");
-
-            List<Team> teams = new List<Team>();
-            teams = teamService.GetAllTeams();
-            RecordTable table = new RecordTable();
-            teams.ForEach(team =>
-            {
-                table.Standings.Add(team.Name, new RecordTableTeam(team));
-            });
-
-            table.TableName = "Standings";
-
-            RecordTableTeam[] teamList = table.Standings.Values.ToArray<RecordTableTeam>();
-
-            for (int k = 0; k < ROUNDS_TO_PLAY; k++) {
-                for (int i = 0; i < teamList.Length - 1; i++)
-                {
-                    RecordTableTeam homeTeam = teamList[i];
-
-                    for (int j = i + 1; j < teamList.Length; j++)
-                    {
-                        RecordTableTeam awayTeam = teamList[j];
-
-                        Game game = new Game
-                        {
-                            HomeTeam = homeTeam,
-                            AwayTeam = awayTeam
-
-                        };
-
-                        game.Play(random);
-                        //todo need to simplify this
-                        table.ProcessGame(game);
-                    }
-
-
-                }
-            }
 
             //Array.Sort(teamList, StandingsSorter.SortByDivisionLevel_0);
             
-            
-            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_LEAGUE));
+                        
             //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORTY_BY_CONFERENCE));
             //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_DIVISION));
 
@@ -78,21 +41,16 @@ namespace JodyApp.Console
             Season season = seasonService.CreateNewSeason("My Season", 1);
 
 
-            RecordTable seasonTable = season.Standings;
-            seasonTable = new RecordTable();
+            season.SetupStandings();
 
-            season.TeamData.ForEach(team =>
-            {
-                seasonTable.Standings.Add(team.Name, team);
-            });
+            List<ScheduleGame> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
 
-            List<ScheduleGame> scheduleGames = new List<ScheduleGame>();
-
-            season.ScheduleRules.ForEach(rule =>
-            {
-                
-            });
-            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(seasonTable, StandingsSorter.SORT_BY_LEAGUE));
+            scheduleGames.ForEach(game =>
+           {
+               game.Play(random);
+               season.Standings.ProcessGame(game);
+           });
+            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(season.Standings, StandingsSorter.SORT_BY_LEAGUE));
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();

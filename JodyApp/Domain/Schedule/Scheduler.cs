@@ -9,6 +9,17 @@ namespace JodyApp.Domain.Schedule
     public class Scheduler
     {
 
+        public static List<ScheduleGame> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int rounds)
+        {
+            var games = new List<ScheduleGame>();
+
+            for (int i = 0; i < rounds; i++)
+            {
+                games.AddRange(ScheduleGames(HomeTeams, AwayTeams, playHomeAndAway));
+            }
+
+            return games;
+        }
         //need arrays to do this correctly, may need to sort prior to this method
         public static List<ScheduleGame> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway)
         {

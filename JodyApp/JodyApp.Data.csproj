@@ -77,6 +77,14 @@
     <Compile Include="Migrations\201804062256186_ScheduleRule.Designer.cs">
       <DependentUpon>201804062256186_ScheduleRule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804112032413_ScheduleRuleName.cs" />
+    <Compile Include="Migrations\201804112032413_ScheduleRuleName.Designer.cs">
+      <DependentUpon>201804112032413_ScheduleRuleName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804112122242_ScheduleRuleRounds.cs" />
+    <Compile Include="Migrations\201804112122242_ScheduleRuleRounds.Designer.cs">
+      <DependentUpon>201804112122242_ScheduleRuleRounds.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -93,6 +101,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804062256186_ScheduleRule.resx">
       <DependentUpon>201804062256186_ScheduleRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804112032413_ScheduleRuleName.resx">
+      <DependentUpon>201804112032413_ScheduleRuleName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804112122242_ScheduleRuleRounds.resx">
+      <DependentUpon>201804112122242_ScheduleRuleRounds.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

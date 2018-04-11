@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JodyApp.Service.Test.DataFolder.ScheduleTestData;
+using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Domain;
 using JodyApp.Domain.Schedule;
+using System.Linq;
 
 namespace JodyApp.Service.Test
 {
@@ -27,20 +29,33 @@ namespace JodyApp.Service.Test
         }
 
         [TestMethod]
+        public void ShouldCreateGamesFromRuleNoAwayTeam()
+        {
+            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 2").FirstOrDefault();
+
+            var games = service.CreateGamesFromRule(rule);
+
+            AreEqual(2, games.Count);
+        }
+        [TestMethod]
         public void ShouldCreateGamesFromRuleHomeTeamVsDivision()
         {
-            ScheduleRule rule = new ScheduleRule
-            {
-                
-            };
+            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 1").FirstOrDefault();
 
-            throw new NotImplementedException();
+            var games = service.CreateGamesFromRule(rule);
+
+            AreEqual(2, games.Count);
+                        
         }
 
         [TestMethod]
         public void ShouldCreateGamesFromRuleHomeTeamVsAwayTeam()
         {
-            throw new NotImplementedException();
+            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 3").FirstOrDefault();
+
+            var games = service.CreateGamesFromRule(rule);
+
+            AreEqual(1, games.Count);
         }
 
         [TestMethod]

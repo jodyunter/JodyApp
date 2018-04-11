@@ -42,6 +42,8 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
             var divs = new Dictionary<string, Division>();
 
             CreateAndAddDivision("League", 0, 1, null, divs);
+            CreateAndAddDivision("Div 1", 1, 1, divs["League"], divs);
+            CreateAndAddDivision("Div 2", 1, 2, divs["League"], divs);
 
             db.Divisions.AddRange(divs.Values);
             db.SaveChanges();
@@ -54,10 +56,11 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
         {
             var teams = new Dictionary<string, Team>();
 
-            CreateAndAddTeam("Team 1", 5, divs["League"], teams);
-            CreateAndAddTeam("Team 2", 5, divs["League"], teams);
-            CreateAndAddTeam("Team 3", 5, divs["League"], teams);
-            CreateAndAddTeam("Team 4", 5, divs["League"], teams);
+            CreateAndAddTeam("Team 1", 5, divs["Div 1"], teams);
+            CreateAndAddTeam("Team 2", 5, divs["Div 1"], teams);
+            CreateAndAddTeam("Team 3", 5, divs["Div 1"], teams);
+            CreateAndAddTeam("Team 4", 5, divs["Div 2"], teams);
+            CreateAndAddTeam("Team 5", 5, divs["Div 2"], teams);
 
 
             db.Teams.AddRange(teams.Values);
@@ -70,9 +73,15 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
         {
             var rules = new Dictionary<string, ScheduleRule>();
 
-            ScheduleRule rule1 = new ScheduleRule(ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false);            
+            ScheduleRule rule1 = new ScheduleRule("Rule 1", ScheduleRule.BY_TEAM, teams["Team 1"], null, ScheduleRule.BY_DIVISION, null, divs["Div 2"], false, 1);            
+            ScheduleRule rule2 = new ScheduleRule("Rule 2", ScheduleRule.BY_DIVISION, null, divs["Div 2"], ScheduleRule.NONE, null, null, true, 1);
+            ScheduleRule rule3 = new ScheduleRule("Rule 3", ScheduleRule.BY_TEAM, teams["Team 4"], null, ScheduleRule.BY_TEAM, teams["Team 2"], null, false, 1);
+            //ScheduleRule rule6 = new ScheduleRule("Rule 6", ScheduleRule.BY_DIVISION, null, divs["Div 1"], ScheduleRule.BY_DIVISION, null, divs["Div 2"], false);            
 
             rules.Add("Rule 1", rule1);
+            rules.Add("Rule 2", rule2);
+            rules.Add("Rule 3", rule3);
+            //rules.Add("Rule 6", rule6);
             db.ScheduleRules.AddRange(rules.Values);
             db.SaveChanges();
             return rules;
