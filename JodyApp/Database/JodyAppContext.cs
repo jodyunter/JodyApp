@@ -14,7 +14,7 @@ namespace JodyApp.Database
         //Base configuration items, use a seperate concreat class so that we can query it easier
         public DbSet<BaseTeam> Teams { get; set; }        
         public DbSet<BaseDivision> Divisions { get; set; }
-        public DbSet<ScheduleRule> ScheduleRules { get; set; }
+        public DbSet<BaseScheduleRule> ScheduleRules { get; set; }
 
         //Season Configuration Items
         public DbSet<SeasonTeam> SeasonTeams { get; set; }

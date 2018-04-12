@@ -50,6 +50,7 @@
     <Compile Include="Database\JodyAppContext.cs" />
     <Compile Include="Domain\Config\BaseDivision.cs" />
     <Compile Include="Domain\Config\BaseTeam.cs" />
+    <Compile Include="Domain\Config\BaseScheduleRule.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
@@ -67,29 +68,9 @@
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatistics.cs" />
-    <Compile Include="Migrations\201803272044361_Initial.cs" />
-    <Compile Include="Migrations\201803272044361_Initial.Designer.cs">
-      <DependentUpon>201803272044361_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804061531145_ScheduleRules.cs" />
-    <Compile Include="Migrations\201804061531145_ScheduleRules.Designer.cs">
-      <DependentUpon>201804061531145_ScheduleRules.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804062256186_ScheduleRule.cs" />
-    <Compile Include="Migrations\201804062256186_ScheduleRule.Designer.cs">
-      <DependentUpon>201804062256186_ScheduleRule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804112032413_ScheduleRuleName.cs" />
-    <Compile Include="Migrations\201804112032413_ScheduleRuleName.Designer.cs">
-      <DependentUpon>201804112032413_ScheduleRuleName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804112122242_ScheduleRuleRounds.cs" />
-    <Compile Include="Migrations\201804112122242_ScheduleRuleRounds.Designer.cs">
-      <DependentUpon>201804112122242_ScheduleRuleRounds.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804121422070_ConfigStart.cs" />
-    <Compile Include="Migrations\201804121422070_ConfigStart.Designer.cs">
-      <DependentUpon>201804121422070_ConfigStart.cs</DependentUpon>
+    <Compile Include="Migrations\201804121526417_first.cs" />
+    <Compile Include="Migrations\201804121526417_first.Designer.cs">
+      <DependentUpon>201804121526417_first.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,23 +80,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803272044361_Initial.resx">
-      <DependentUpon>201803272044361_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804061531145_ScheduleRules.resx">
-      <DependentUpon>201804061531145_ScheduleRules.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804062256186_ScheduleRule.resx">
-      <DependentUpon>201804062256186_ScheduleRule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804112032413_ScheduleRuleName.resx">
-      <DependentUpon>201804112032413_ScheduleRuleName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804112122242_ScheduleRuleRounds.resx">
-      <DependentUpon>201804112122242_ScheduleRuleRounds.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804121422070_ConfigStart.resx">
-      <DependentUpon>201804121422070_ConfigStart.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804121526417_first.resx">
+      <DependentUpon>201804121526417_first.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

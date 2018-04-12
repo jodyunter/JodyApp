@@ -15,7 +15,7 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
 
         public ScheduleTestDataDriver(JodyAppContext db) : base(db) { }
 
-        public new void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
         {            
 
             CreateAndAddDivision("League", 0, 1, null, divs);
@@ -24,7 +24,7 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
             
         }
 
-        public new void PrivateCreateTeams(Dictionary<string, BaseTeam> teams, Dictionary<string, BaseDivision> divs)
+        public override void PrivateCreateTeams(Dictionary<string, BaseTeam> teams, Dictionary<string, BaseDivision> divs)
         {            
 
             CreateAndAddTeam("Team 1", 5, divs["Div 1"], teams);
@@ -34,7 +34,7 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
             CreateAndAddTeam("Team 5", 5, divs["Div 2"], teams);
         }
 
-        public new void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, ScheduleRule> rules)
+        public override void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
         {
 
 
@@ -43,6 +43,7 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
             CreateAndAddRule("Rule 3", ScheduleRule.BY_TEAM, teams["Team 4"], null, ScheduleRule.BY_TEAM, teams["Team 2"], null, false, 1, rules);            
 
         }
+
     }
 }
 

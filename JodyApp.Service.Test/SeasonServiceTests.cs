@@ -30,6 +30,7 @@ namespace JodyApp.Service.Test
             db = new JodyAppContext();
             service = new SeasonService(db);
             scheduleService = new ScheduleService(db);
+            driver = new SeasontestDataDriver(db);
             driver.DeleteAllData();
             driver.InsertData();
         }
@@ -61,6 +62,8 @@ namespace JodyApp.Service.Test
 
             AreEqual(4, db.Teams.Count());
             AreEqual(8, db.SeasonTeams.Count());
+
+            db.SaveChanges();
         }
     }
 }

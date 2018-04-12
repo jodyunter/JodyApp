@@ -3,7 +3,7 @@ namespace JodyApp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class first : DbMigration
     {
         public override void Up()
         {
@@ -69,20 +69,60 @@ namespace JodyApp.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
+            CreateTable(
+                "dbo.ScheduleRules",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        HomeType = c.Int(nullable: false),
+                        AwayType = c.Int(nullable: false),
+                        PlayHomeAway = c.Boolean(nullable: false),
+                        Rounds = c.Int(nullable: false),
+                        Name = c.String(),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                        Season_Id = c.Int(),
+                        AwayDivision_Id = c.Int(),
+                        AwayTeam_Id = c.Int(),
+                        HomeDivision_Id = c.Int(),
+                        HomeTeam_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Seasons", t => t.Season_Id)
+                .ForeignKey("dbo.Divisions", t => t.AwayDivision_Id)
+                .ForeignKey("dbo.Teams", t => t.AwayTeam_Id)
+                .ForeignKey("dbo.Divisions", t => t.HomeDivision_Id)
+                .ForeignKey("dbo.Teams", t => t.HomeTeam_Id)
+                .Index(t => t.Season_Id)
+                .Index(t => t.AwayDivision_Id)
+                .Index(t => t.AwayTeam_Id)
+                .Index(t => t.HomeDivision_Id)
+                .Index(t => t.HomeTeam_Id);
+            
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.ScheduleRules", "HomeTeam_Id", "dbo.Teams");
+            DropForeignKey("dbo.ScheduleRules", "HomeDivision_Id", "dbo.Divisions");
+            DropForeignKey("dbo.ScheduleRules", "AwayTeam_Id", "dbo.Teams");
+            DropForeignKey("dbo.ScheduleRules", "AwayDivision_Id", "dbo.Divisions");
             DropForeignKey("dbo.Divisions", "Season_Id", "dbo.Seasons");
             DropForeignKey("dbo.Teams", "Season_Id", "dbo.Seasons");
+            DropForeignKey("dbo.ScheduleRules", "Season_Id", "dbo.Seasons");
             DropForeignKey("dbo.Teams", "Stats_Id", "dbo.TeamStatistics");
             DropForeignKey("dbo.Teams", "Division_Id", "dbo.Divisions");
             DropForeignKey("dbo.Divisions", "Parent_Id", "dbo.Divisions");
+            DropIndex("dbo.ScheduleRules", new[] { "HomeTeam_Id" });
+            DropIndex("dbo.ScheduleRules", new[] { "HomeDivision_Id" });
+            DropIndex("dbo.ScheduleRules", new[] { "AwayTeam_Id" });
+            DropIndex("dbo.ScheduleRules", new[] { "AwayDivision_Id" });
+            DropIndex("dbo.ScheduleRules", new[] { "Season_Id" });
             DropIndex("dbo.Teams", new[] { "Season_Id" });
             DropIndex("dbo.Teams", new[] { "Stats_Id" });
             DropIndex("dbo.Teams", new[] { "Division_Id" });
             DropIndex("dbo.Divisions", new[] { "Season_Id" });
             DropIndex("dbo.Divisions", new[] { "Parent_Id" });
+            DropTable("dbo.ScheduleRules");
             DropTable("dbo.Seasons");
             DropTable("dbo.TeamStatistics");
             DropTable("dbo.Teams");

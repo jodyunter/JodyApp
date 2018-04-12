@@ -15,7 +15,7 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
         public DivisionTestDataDriver(JodyAppContext db) : base(db) { }                    
 
 
-        public new void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
         {            
             CreateAndAddDivision("League", 0, 1, null, divs);
             CreateAndAddDivision("West", 1, 2, divs["League"], divs);

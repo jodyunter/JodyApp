@@ -7,13 +7,13 @@ namespace JodyApp.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ScheduleRules : IMigrationMetadata
+    public sealed partial class first : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ScheduleRules));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(first));
         
         string IMigrationMetadata.Id
         {
-            get { return "201804061531145_ScheduleRules"; }
+            get { return "201804121526417_first"; }
         }
         
         string IMigrationMetadata.Source

@@ -7,7 +7,7 @@ using JodyApp.Domain;
 
 namespace JodyApp.Domain.Schedule
 {
-    public class ScheduleRule:DomainObject
+    public abstract class ScheduleRule:DomainObject
     {
         //rules with opponents implied
         public const int BY_DIVISION = 0; //get teams in specific division         

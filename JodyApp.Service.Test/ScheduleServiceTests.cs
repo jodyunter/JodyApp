@@ -60,23 +60,6 @@ namespace JodyApp.Service.Test
             AreEqual(1, games.Count);
         }
 
-        [TestMethod]
-        public void ShouldCreateGamesFromRuleNoGamesJustHomeTeam()
-        {
-            //should throw a configuration error
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void ShouldCreateGamesFromRuleAwayTeamVsDivision()
-        {
-            throw new NotImplementedException();
-        }
-        [TestMethod]
-        public void ShouldCreateGamesFromRuleNoGamesJustAwayTeam()
-        {
-            //should throw a rule configuration error
-            throw new NotImplementedException();
-        }
+ 
     }
 }
