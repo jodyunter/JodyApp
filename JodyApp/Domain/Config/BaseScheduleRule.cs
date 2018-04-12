@@ -11,8 +11,13 @@ namespace JodyApp.Domain.Config
     public class BaseScheduleRule : ScheduleRule
     {        
         public BaseScheduleRule() { }
-        public BaseScheduleRule(string name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds) : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds)
+        public BaseScheduleRule(ScheduleRule rule):base(rule)
+        {
+
+        }
+        public BaseScheduleRule(string name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds, int divisionLevel) : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds, divisionLevel)
         {
         }
+        
     }
 }

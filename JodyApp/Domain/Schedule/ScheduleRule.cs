@@ -11,6 +11,7 @@ namespace JodyApp.Domain.Schedule
     public abstract class ScheduleRule:DomainObject
     {
         //rules with opponents implied
+        public const int BY_DIVISION_LEVEL = 2;  //use this to first sort all teams by division level, then they all play games against each other
         public const int BY_DIVISION = 0; //get teams in specific division         
         public const int BY_TEAM = 1; //get specific team
         public const int NONE = -1; //use this to ignore the away team
@@ -27,12 +28,22 @@ namespace JodyApp.Domain.Schedule
 
         public int Rounds { get; set; }
 
+        //used in conjunction with BY_DIVISION_LEVEL
+        public int DivisionLevel { get; set; }
+
         public String Name { get; set; }
         //when creating a new season, we need to translate these into the season rules.
         //since this would be done only at the beginning, we can use it to find the parent teams for the current season
 
         public ScheduleRule() { }
-        public ScheduleRule(String name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds)
+
+        public ScheduleRule(ScheduleRule rule) : this(rule.Name, rule.HomeType, rule.HomeTeam, rule.HomeDivision,
+     rule.AwayType, rule.AwayTeam, rule.AwayDivision,
+     rule.PlayHomeAway, rule.Rounds, rule.DivisionLevel)
+        {
+
+        }
+        public ScheduleRule(String name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds, int divisionLevel)
         {
             Name = name;
             HomeType = homeType;
@@ -44,5 +55,13 @@ namespace JodyApp.Domain.Schedule
             PlayHomeAway = playHomeAway;
             Rounds = rounds;
         }
+
+        public static ScheduleRule CreateByDivisionVsSelf(String name, Division division, bool playHomeAway, int rounds) { return null; }
+        public static ScheduleRule CreateByDivisionVsDivision(String name, Division homeDivision, Division awayDivision, bool playHomeAway, int rounds) { return null; }
+        public static ScheduleRule CreateByTeamVsTeam(String name, Team homeTeam, Team awayTeam, bool playHomeAway, int rounds) { return null; }
+        public static ScheduleRule CreateByTeamVsDivision(string name, Team team, Division division, bool playHomeAway, int rounds) { return null; }
+        public static ScheduleRule CreateByDivisionVsTeam(string name, Division division, Team team, bool playHomeAway, int rounds) { return null; }
+        public static ScheduleRule CreateByDivisionLevel(string name, int divisionLevel, bool playHomeAway, int rounds) { return null;  }
+
     }
 }

@@ -62,6 +62,7 @@ namespace JodyApp.Service
             return games;
         }
 
+        //change the teamList to a list of lists.  Then create a set of games for each list.
         public void AddTeamsToListFromRule(List<Team> teamList, int ruleType, Team team, Division division)
         {
             switch (ruleType)
@@ -73,6 +74,9 @@ namespace JodyApp.Service
                     teamList.AddRange(divisionService.GetAllTeamsInDivision(division));
                     break;
                 case ScheduleRule.NONE:
+                    break;
+                case ScheduleRule.BY_DIVISION_LEVEL:
+                    //needs special consideration, it means to sort teams by division level first then add teams
                     break;
             }
         }

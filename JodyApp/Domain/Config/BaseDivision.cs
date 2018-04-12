@@ -9,7 +9,7 @@ namespace JodyApp.Domain.Config
     public class BaseDivision:Division
     {
         public BaseDivision() { }
-        public BaseDivision(string name, int level, int order, Division parent) : base(name, level, order, parent) { }
+        public BaseDivision(string name, string shortName, int level, int order, Division parent) : base(name, shortName, level, order, parent) { }
 
         
     }

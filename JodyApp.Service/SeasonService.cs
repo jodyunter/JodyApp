@@ -71,11 +71,11 @@ namespace JodyApp.Service
                                                     awayTeam,
                                                     awayDiv,
                                                     rule.PlayHomeAway,
-                                                    rule.Rounds
+                                                    rule.Rounds,
+                                                    rule.DivisionLevel
                                                     );
                 db.SeasonScheduleRules.Add(seasonRule);
-
-                season.ScheduleRules.Add(seasonRule);
+                
             }
 
 
@@ -91,10 +91,7 @@ namespace JodyApp.Service
 
         private SeasonDivision CreateSeasonDivision(Season season, Division d, Dictionary<string, SeasonDivision> seasonDivisions)
         {
-            SeasonDivision division = new SeasonDivision(season);
-            division.Name = d.Name;
-            division.Level = d.Level;
-            division.Order = d.Order;
+            SeasonDivision division = new SeasonDivision(d, season); 
             if (d.Parent != null)
             {
                 //if the parent isn't there add it

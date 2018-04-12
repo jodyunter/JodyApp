@@ -9,7 +9,7 @@ using JodyApp.Console.Display;
 using JodyApp.Domain.Table;
 using JodyApp.Domain;
 using JodyApp.Database;
-using JodyApp.Service.Test.DataFolder;
+using JodyApp.Service.Test.DataFolder.Jody;
 using JodyApp.Domain.Season;
 using JodyApp.Domain.Schedule;
 
@@ -21,14 +21,13 @@ namespace JodyApp.Console
         static void Main(string[] args)
         {
             JodyAppContext db = new JodyAppContext();
-            BaseTestDataDriver driver = new BaseTestDataDriver(db);
+            JodyTestDataDriver driver = new JodyTestDataDriver(db);
             driver.DeleteAllData();
             driver.InsertData();
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
-
-            int ROUNDS_TO_PLAY = 10;
+            
 
             Random random = new Random();
 
@@ -50,7 +49,7 @@ namespace JodyApp.Console
                game.Play(random);
                season.Standings.ProcessGame(game);
            });
-            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(season.Standings, StandingsSorter.SORT_BY_LEAGUE));
+            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(season.Standings, StandingsSorter.SORTY_BY_CONFERENCE));
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();

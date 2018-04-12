@@ -17,14 +17,14 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
 
         public override void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
         {            
-            CreateAndAddDivision("League", 0, 1, null, divs);
-            CreateAndAddDivision("West", 1, 2, divs["League"], divs);
-            CreateAndAddDivision("East", 1, 2, divs["League"], divs);
-            CreateAndAddDivision("Pacific", 2, 1, divs["West"], divs);
-            CreateAndAddDivision("Central", 2, 2, divs["West"], divs);
-            CreateAndAddDivision("North West", 2, 3, divs["West"], divs);
-            CreateAndAddDivision("North East", 2, 4, divs["East"], divs);
-            CreateAndAddDivision("Atlantic", 2, 4, divs["East"], divs);
+            CreateAndAddDivision("League", null, 0, 1, null, divs);
+            CreateAndAddDivision("West", null, 1, 2, divs["League"], divs);
+            CreateAndAddDivision("East", null, 1, 2, divs["League"], divs);
+            CreateAndAddDivision("Pacific", null, 2, 1, divs["West"], divs);
+            CreateAndAddDivision("Central", null, 2, 2, divs["West"], divs);
+            CreateAndAddDivision("North West", null, 2, 3, divs["West"], divs);
+            CreateAndAddDivision("North East", null, 2, 4, divs["East"], divs);
+            CreateAndAddDivision("Atlantic",null, 2, 4, divs["East"], divs);
 
             
         }

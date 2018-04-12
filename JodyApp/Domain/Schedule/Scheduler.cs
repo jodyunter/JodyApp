@@ -72,6 +72,7 @@ namespace JodyApp.Domain.Schedule
                 AwayTeam = away,
                 HomeScore = 0,
                 AwayScore = 0,
+                CanTie = true,
                 Complete = false
             };
 

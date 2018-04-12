@@ -17,12 +17,12 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
         {
-            CreateAndAddDivision("League", 0, 1, null, divs);
+            CreateAndAddDivision("League",null, 0, 1, null, divs);
         }
 
         public override void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
         {
-            CreateAndAddRule("Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, rules);
+            CreateAndAddRule("Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, BaseTeam> teams, Dictionary<string, BaseDivision> divs)

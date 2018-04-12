@@ -12,8 +12,11 @@ namespace JodyApp.Domain.Season
     {        
         virtual public Season Season { get; set; }
 
-        public SeasonScheduleRule() { }
-        public SeasonScheduleRule(Season season, String name, int homeType, SeasonTeam homeTeam, SeasonDivision homeDivision, int awayType, SeasonTeam awayTeam, SeasonDivision awayDivision, bool playHomeAway, int rounds) : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds)
+        public SeasonScheduleRule(Season season, ScheduleRule rule) : base(rule)
+        {
+            Season = season;
+        }
+        public SeasonScheduleRule(Season season, String name, int homeType, SeasonTeam homeTeam, SeasonDivision homeDivision, int awayType, SeasonTeam awayTeam, SeasonDivision awayDivision, bool playHomeAway, int rounds, int divisionLevel) : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds, divisionLevel)
         {
             Season = season;
         }

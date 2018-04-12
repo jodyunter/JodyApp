@@ -65,6 +65,7 @@
     <Compile Include="Domain\Table\RecordTableTeamTests.cs" />
     <Compile Include="Domain\Table\RecordTableTests.cs" />
     <Compile Include="Domain\TeamStatisticsTests.cs" />
+    <Compile Include="Domain\DivisionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

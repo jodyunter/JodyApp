@@ -20,8 +20,7 @@ namespace JodyApp.Service.Test
     {
         JodyAppContext db;
         SeasonService service;
-        ScheduleService scheduleService;
-        TeamService teamService;
+        ScheduleService scheduleService;        
         SeasontestDataDriver driver;
 
         [TestInitialize]

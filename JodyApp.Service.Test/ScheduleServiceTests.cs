@@ -37,7 +37,7 @@ namespace JodyApp.Service.Test
 
             var games = service.CreateGamesFromRule(rule);
 
-            AreEqual(2, games.Count);
+            AreEqual(6, games.Count);
         }
         [TestMethod]
         public void ShouldCreateGamesFromRuleHomeTeamVsDivision()
@@ -46,7 +46,7 @@ namespace JodyApp.Service.Test
 
             var games = service.CreateGamesFromRule(rule);
 
-            AreEqual(2, games.Count);
+            AreEqual(3, games.Count);
                         
         }
 
@@ -58,6 +58,16 @@ namespace JodyApp.Service.Test
             var games = service.CreateGamesFromRule(rule);
 
             AreEqual(1, games.Count);
+        }
+
+        [TestMethod]
+        public void ShouldCreateGamesFromRuleHomeAndAwayDivs()
+        {
+            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 4").FirstOrDefault();
+
+            var games = service.CreateGamesFromRule(rule);
+
+            AreEqual(18, games.Count);
         }
 
  

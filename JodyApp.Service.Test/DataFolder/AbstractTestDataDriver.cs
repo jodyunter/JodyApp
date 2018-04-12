@@ -33,28 +33,37 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
-        public void CreateAndAddDivision(string name, int level, int order, Division parent, Dictionary<string, BaseDivision> map)
+        public Division CreateAndAddDivision(string name, string shortName, int level, int order, Division parent, Dictionary<string, BaseDivision> map)
         {
-            BaseDivision div = new BaseDivision(name, level, order, parent);
+            BaseDivision div = new BaseDivision(name, shortName, level, order, parent);
             map.Add(div.Name, div);
+            return div;
         }
 
-        public void CreateAndAddTeam(string name, int skill, Division division, Dictionary<string, BaseTeam> map)
+        public Team CreateAndAddTeam(string name, int skill, Division division, Dictionary<string, BaseTeam> map)
         {
             BaseTeam team = new BaseTeam(name, skill, division);
             map.Add(team.Name, team);
             division.Teams.Add(team);
+            return team;
         }        
 
+        public ScheduleRule CreateAndAddRule(ScheduleRule newRule, Dictionary<string, BaseScheduleRule> map)
+        {
+            BaseScheduleRule rule = new BaseScheduleRule(newRule);
+            map.Add(rule.Name, rule);
+            return rule;
+        }
 
-        public void CreateAndAddRule(string name, 
+        public ScheduleRule CreateAndAddRule(string name, 
                                 int homeType, Team homeTeam, Division homeDivision,
                                 int awayType, Team awayTeam, Division awayDivision,
-                                bool homeAndAway, int rounds,
+                                bool homeAndAway, int rounds, int divisionLevel,
                                     Dictionary<string, BaseScheduleRule> map)
         {
-            BaseScheduleRule rule = new BaseScheduleRule(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds);
-            map.Add(rule.Name, rule);            
+            BaseScheduleRule rule = new BaseScheduleRule(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel);
+            map.Add(rule.Name, rule);
+            return rule;
         }
 
 

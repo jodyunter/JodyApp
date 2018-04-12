@@ -73,7 +73,7 @@ namespace JodyApp.Console.Display
                 team.Stats.GoalsFor,
                 team.Stats.GoalsAgainst,
                 team.Stats.GoalDifference,
-                team.Division == null ? "null" : team.Division.Name);
+                team.Division == null ? "null" : team.Division.ShortName);
 
 
             return result;
