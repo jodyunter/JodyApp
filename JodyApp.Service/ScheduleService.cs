@@ -54,15 +54,21 @@ namespace JodyApp.Service
             var homeTeams = new List<Team>();
             var awayTeams = new List<Team>();
 
-            AddTeamsToListFromRule(homeTeams, rule.HomeType, rule.HomeTeam, rule.HomeDivision);
-            AddTeamsToListFromRule(awayTeams, rule.AwayType, rule.AwayTeam, rule.AwayDivision);
+            if (rule.HomeType == ScheduleRule.BY_DIVISION_LEVEL)
+            {
+                
+            }
+            else
+            {
+                AddTeamsToListFromRule(homeTeams, rule.HomeType, rule.HomeTeam, rule.HomeDivision);
+                AddTeamsToListFromRule(awayTeams, rule.AwayType, rule.AwayTeam, rule.AwayDivision);
 
-            games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds));
+                games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds));
 
+            }
             return games;
         }
-
-        //change the teamList to a list of lists.  Then create a set of games for each list.
+        
         public void AddTeamsToListFromRule(List<Team> teamList, int ruleType, Team team, Division division)
         {
             switch (ruleType)
@@ -74,9 +80,6 @@ namespace JodyApp.Service
                     teamList.AddRange(divisionService.GetAllTeamsInDivision(division));
                     break;
                 case ScheduleRule.NONE:
-                    break;
-                case ScheduleRule.BY_DIVISION_LEVEL:
-                    //needs special consideration, it means to sort teams by division level first then add teams
                     break;
             }
         }
