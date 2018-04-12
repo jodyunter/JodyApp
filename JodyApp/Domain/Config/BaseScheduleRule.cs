@@ -8,10 +8,11 @@ using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Domain.Config
 {    
-    public class BaseScheduleRule:ScheduleRule
-    {
+    public class BaseScheduleRule : ScheduleRule
+    {        
         public BaseScheduleRule() { }
-        public BaseScheduleRule(String name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds)
-            : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds) { }
+        public BaseScheduleRule(string name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds) : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds)
+        {
+        }
     }
 }

@@ -217,10 +217,6 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             }
         }
-        [TestMethod]
-        public void ShouldTestMultipleRounds()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

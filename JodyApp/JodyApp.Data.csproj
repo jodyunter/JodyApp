@@ -49,8 +49,8 @@
   <ItemGroup>
     <Compile Include="Database\JodyAppContext.cs" />
     <Compile Include="Domain\Config\BaseDivision.cs" />
-    <Compile Include="Domain\Config\BaseTeam.cs" />
     <Compile Include="Domain\Config\BaseScheduleRule.cs" />
+    <Compile Include="Domain\Config\BaseTeam.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
@@ -68,9 +68,9 @@
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatistics.cs" />
-    <Compile Include="Migrations\201804121526417_first.cs" />
-    <Compile Include="Migrations\201804121526417_first.Designer.cs">
-      <DependentUpon>201804121526417_first.cs</DependentUpon>
+    <Compile Include="Migrations\201804121917182_First.cs" />
+    <Compile Include="Migrations\201804121917182_First.Designer.cs">
+      <DependentUpon>201804121917182_First.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,8 +80,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804121526417_first.resx">
-      <DependentUpon>201804121526417_first.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804121917182_First.resx">
+      <DependentUpon>201804121917182_First.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

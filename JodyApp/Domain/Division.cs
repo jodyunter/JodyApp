@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Domain
 {    
@@ -12,6 +13,7 @@ namespace JodyApp.Domain
         public string Name { get; set; }
         virtual public List<Team> Teams { get; set; }
         virtual public Division Parent { get; set; }
+        virtual public List<ScheduleRule> Rules { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
 

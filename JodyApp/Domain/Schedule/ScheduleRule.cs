@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,12 @@ namespace JodyApp.Domain.Schedule
         public const int BY_TEAM = 1; //get specific team
         public const int NONE = -1; //use this to ignore the away team
         
-        public int HomeType { get; set; } //By Division, By Team        
-        virtual public Team HomeTeam { get; set; }
+        public int HomeType { get; set; } //By Division, By Team              
+        virtual public Team HomeTeam { get; set; }        
         virtual public Division HomeDivision { get; set; }
 
-        public int AwayType { get; set; }                
-        virtual public Team AwayTeam { get; set; }
+        public int AwayType { get; set; }                     
+        virtual public Team AwayTeam { get; set; }        
         virtual public Division AwayDivision { get; set; }
 
         public Boolean PlayHomeAway { get; set; } //if home and away teams are the same we need special rules

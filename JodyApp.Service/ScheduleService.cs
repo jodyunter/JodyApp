@@ -15,6 +15,10 @@ namespace JodyApp.Service
         DivisionService divisionService;
         TeamService teamService;
 
+        public List<ScheduleRule> GetConfigRules()
+        {
+            return db.ScheduleRules.ToList<ScheduleRule>();
+        }
         public ScheduleService(JodyAppContext db) : base(db)
         {
             divisionService = new DivisionService(db);

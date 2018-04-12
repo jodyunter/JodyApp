@@ -14,12 +14,14 @@ namespace JodyApp.Service
     public class SeasonService:BaseService
     {
         TeamService teamService;
-        DivisionService divisionService;        
+        DivisionService divisionService;
+        ScheduleService scheduleService;
 
         public SeasonService(JodyAppContext context):base(context)
         {
             teamService = new TeamService(context);
-            divisionService = new DivisionService(context);            
+            divisionService = new DivisionService(context);
+            scheduleService = new ScheduleService(context);
         }
 
         public Season CreateNewSeason(string name, int year)
@@ -37,15 +39,9 @@ namespace JodyApp.Service
                 //in the event the parent is added in the recursive steps, we don't want to do it agian
                 if (!seasonDivisions.ContainsKey(d.Name))
                 {
-                    seasonDivisions.Add(d.Name, CreateSeasonDivision(d, seasonDivisions));
+                    seasonDivisions.Add(d.Name, CreateSeasonDivision(season, d, seasonDivisions));
                 }
             }
-
-            foreach(KeyValuePair<string, SeasonDivision> entity in seasonDivisions)
-            {                
-                Console.WriteLine(entity.Key);
-            }
-
             foreach(Team t in db.Teams)
             {
                 SeasonTeam team = new SeasonTeam(t, seasonDivisions[t.Division.Name]);                
@@ -53,7 +49,7 @@ namespace JodyApp.Service
                 seasonTeams.Add(team.Name, team);
             }
 
-            foreach(ScheduleRule rule in db.ScheduleRules)
+            foreach(ScheduleRule rule in scheduleService.GetConfigRules())
             {
                 SeasonDivision homeDiv = null;
                 SeasonDivision awayDiv = null;
@@ -93,9 +89,9 @@ namespace JodyApp.Service
             
         }
 
-        private SeasonDivision CreateSeasonDivision(Division d, Dictionary<string, SeasonDivision> seasonDivisions)
+        private SeasonDivision CreateSeasonDivision(Season season, Division d, Dictionary<string, SeasonDivision> seasonDivisions)
         {
-            SeasonDivision division = new SeasonDivision();
+            SeasonDivision division = new SeasonDivision(season);
             division.Name = d.Name;
             division.Level = d.Level;
             division.Order = d.Order;
@@ -104,7 +100,7 @@ namespace JodyApp.Service
                 //if the parent isn't there add it
                 if (!seasonDivisions.ContainsKey(d.Parent.Name))
                 {
-                    SeasonDivision parent = CreateSeasonDivision(d.Parent, seasonDivisions);
+                    SeasonDivision parent = CreateSeasonDivision(season, d.Parent, seasonDivisions);
                     seasonDivisions.Add(parent.Name, parent);
                 }
 
