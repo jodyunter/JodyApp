@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Domain.Config
-{
-    [Table("ScheduleRules")]
+{    
     public class BaseScheduleRule:ScheduleRule
     {
         public BaseScheduleRule() { }
