@@ -21,8 +21,9 @@ namespace JodyApp.Console
         static void Main(string[] args)
         {
             JodyAppContext db = new JodyAppContext();
-            BaseTestDataDriver.DeleteAllData(db);
-            BaseTestDataDriver.InsertData(db);
+            BaseTestDataDriver driver = new BaseTestDataDriver(db);
+            driver.DeleteAllData();
+            driver.InsertData();
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
@@ -39,8 +40,7 @@ namespace JodyApp.Console
 
 
             Season season = seasonService.CreateNewSeason("My Season", 1);
-
-
+            
             season.SetupStandings();
 
             List<ScheduleGame> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);

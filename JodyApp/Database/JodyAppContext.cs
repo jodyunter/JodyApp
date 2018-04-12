@@ -2,6 +2,7 @@
 using JodyApp.Domain;
 using JodyApp.Domain.Season;
 using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Database
 {
@@ -10,9 +11,9 @@ namespace JodyApp.Database
         public JodyAppContext() : base("Data Source=localhost;Initial Catalog=jody;Integrated Security=True") { }
         //public JodyAppContext() : base("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True") { }
 
-        //Base configuration items
-        public DbSet<Team> Teams { get; set; }        
-        public DbSet<Division> Divisions { get; set; }
+        //Base configuration items, use a seperate concreat class so that we can query it easier
+        public DbSet<BaseTeam> Teams { get; set; }        
+        public DbSet<BaseDivision> Divisions { get; set; }
         public DbSet<ScheduleRule> ScheduleRules { get; set; }
 
         //Season Configuration Items

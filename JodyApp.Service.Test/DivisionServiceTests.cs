@@ -16,14 +16,16 @@ namespace JodyApp.Service.Test
 
         Database.JodyAppContext db = new Database.JodyAppContext();
         DivisionService service;
+        DivisionTestDataDriver driver;
 
         [TestInitialize]
         public void Setup()
         {
             db = new Database.JodyAppContext();
             service = new DivisionService(db);
-            DivisionTestDataDriver.DeleteAllData(db);
-            DivisionTestDataDriver.InsertData(db);
+            driver = new DivisionTestDataDriver(db);
+            driver.DeleteAllData();
+            driver.InsertData();
         }
         //these tests depend on specific data
         [TestMethod]

@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JodyApp.Domain;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Database;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Data.Test.Domain
 {
@@ -27,7 +28,7 @@ namespace JodyApp.Data.Test.Domain
         }
         public static Team CreateBasicTeam(String name, int skill)
         {
-            return new Team
+            return new BaseTeam
             {
                 Name = name,
                 Skill = skill

@@ -15,6 +15,7 @@ namespace JodyApp.Service.Test
         ScheduleService service;
         DivisionService divisionService;
         TeamService teamService;
+        ScheduleTestDataDriver driver;
 
         [TestInitialize]
         public void Setup()
@@ -24,8 +25,9 @@ namespace JodyApp.Service.Test
             teamService = new TeamService(db);
             divisionService = new DivisionService(db);
 
-            ScheduleTestDataDriver.DeleteAllData(db);
-            ScheduleTestDataDriver.InsertData(db);
+            driver = new ScheduleTestDataDriver(db);
+            driver.DeleteAllData();
+            driver.InsertData();
         }
 
         [TestMethod]

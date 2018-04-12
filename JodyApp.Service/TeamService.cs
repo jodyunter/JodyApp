@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
-using JodyApp.Service.DTO;
 using JodyApp.Database;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Service
 {
@@ -31,6 +31,13 @@ namespace JodyApp.Service
             return query.ToList<Team>().First();
                         
 
+        }
+
+        public List<Team> GetBaseTeams()
+        {
+            var query = from t in db.Teams select t;
+
+            return query.ToList<Team>();
         }
 
 

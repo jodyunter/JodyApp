@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\JodyAppContext.cs" />
+    <Compile Include="Domain\Config\BaseDivision.cs" />
+    <Compile Include="Domain\Config\BaseTeam.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
@@ -85,6 +87,10 @@
     <Compile Include="Migrations\201804112122242_ScheduleRuleRounds.Designer.cs">
       <DependentUpon>201804112122242_ScheduleRuleRounds.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804121422070_ConfigStart.cs" />
+    <Compile Include="Migrations\201804121422070_ConfigStart.Designer.cs">
+      <DependentUpon>201804121422070_ConfigStart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -107,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804112122242_ScheduleRuleRounds.resx">
       <DependentUpon>201804112122242_ScheduleRuleRounds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804121422070_ConfigStart.resx">
+      <DependentUpon>201804121422070_ConfigStart.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

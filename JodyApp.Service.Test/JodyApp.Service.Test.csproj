@@ -55,11 +55,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataFolder\AbstractTestDataDriver.cs" />
     <Compile Include="DataFolder\BaseTestDataDriver.cs" />
     <Compile Include="DataFolder\DivisionTestData\DivisionTestDataDriver.cs" />
     <Compile Include="DataFolder\ScheduleTestData\ScheduleTestDataDriver.cs" />
+    <Compile Include="DataFolder\SeasonTestData\SeasontestDataDriver.cs" />
     <Compile Include="DivisionServiceTests.cs" />
-    <Compile Include="DTO\TeamDTOTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeasonServiceTests.cs" />
     <Compile Include="ScheduleServiceTests.cs" />

@@ -4,42 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
+using JodyApp.Domain.Config;
 using JodyApp.Database;
 
 namespace JodyApp.Service.Test.DataFolder.DivisionTestData
 {
-    public class DivisionTestDataDriver
+    public class DivisionTestDataDriver:BaseTestDataDriver
     {
-        public static void DeleteAllData(JodyAppContext db)
-        {
-            string[] tables = { "ScheduleRules", "Seasons", "Teams", "TeamStatistics", "Divisions" };
-            var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
-            foreach (string table in tables)
-            {
-                objCtx.ExecuteStoreCommand("DELETE [" + table + "]");
-            }
 
-        }
+        public DivisionTestDataDriver(JodyAppContext db) : base(db) { }                    
 
-        public static void CreateAndAddDivision(string name, int level, int order, Division parent, Dictionary<string, Division> map)
-        {
-            Division div = new Division(name, level, order, parent);
-            map.Add(div.Name, div);
-        }
 
-        public static void CreateAndAddTeam(string name, int skill, Division division, Dictionary<string, Team> map)
-        {
-            Team team = new Team(name, skill, division);
-            map.Add(team.Name, team);
-            division.Teams.Add(team);
-        }
-        
-                    
-
-        public static Dictionary<string, Division> CreateDivisions(JodyAppContext db)
-        {
-            var divs = new Dictionary<string, Division>();
-
+        public new void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
+        {            
             CreateAndAddDivision("League", 0, 1, null, divs);
             CreateAndAddDivision("West", 1, 2, divs["League"], divs);
             CreateAndAddDivision("East", 1, 2, divs["League"], divs);
@@ -49,17 +26,11 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
             CreateAndAddDivision("North East", 2, 4, divs["East"], divs);
             CreateAndAddDivision("Atlantic", 2, 4, divs["East"], divs);
 
-            db.Divisions.AddRange(divs.Values);
-            db.SaveChanges();
-
-            return divs;
             
         }
 
-        public static Dictionary<string, Team> CreateTeams(JodyAppContext db, Dictionary<string, Division> divs)
-        {
-            var teams = new Dictionary<string, Team>();
-
+        public override void PrivateCreateTeams(Dictionary<string, BaseTeam> teams, Dictionary<string, BaseDivision> divs)
+        {            
             CreateAndAddTeam("Los Angelas", 5, divs["Pacific"], teams);
             CreateAndAddTeam("Seattle", 5, divs["Pacific"], teams);
             CreateAndAddTeam("Vancouver", 5, divs["Pacific"], teams);
@@ -78,19 +49,6 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
             CreateAndAddTeam("Philadelphia", 5, divs["Atlantic"], teams);
             CreateAndAddTeam("Detroit", 5, divs["Atlantic"], teams);
 
-            db.Teams.AddRange(teams.Values);
-            db.SaveChanges();
-
-            return teams;
-        }
-
-        public static void InsertData(Database.JodyAppContext db)
-        {
-            //create divisions
-            Dictionary<string, Division> divs = CreateDivisions(db);
-            db.SaveChanges();
-            Dictionary<string, Team> teams = CreateTeams(db, divs);
-            db.SaveChanges();
         }
     }
 }
