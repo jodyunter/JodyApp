@@ -80,6 +80,10 @@
     <Compile Include="Migrations\201804122038482_createrulesfordivisionlevel.Designer.cs">
       <DependentUpon>201804122038482_createrulesfordivisionlevel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804131653506_AddGamesTables.cs" />
+    <Compile Include="Migrations\201804131653506_AddGamesTables.Designer.cs">
+      <DependentUpon>201804131653506_AddGamesTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -96,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804122038482_createrulesfordivisionlevel.resx">
       <DependentUpon>201804122038482_createrulesfordivisionlevel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804131653506_AddGamesTables.resx">
+      <DependentUpon>201804131653506_AddGamesTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

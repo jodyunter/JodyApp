@@ -21,6 +21,14 @@ namespace JodyApp.Domain.Season
 
         virtual public List<SeasonScheduleRule> ScheduleRules { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            var season = obj as Season;
+            return season != null &&
+                   Name == season.Name &&
+                   Year == season.Year;
+        }
+
         public void SetupStandings()
         {
             Standings = new RecordTable();
@@ -29,5 +37,7 @@ namespace JodyApp.Domain.Season
                Standings.Add(team.Name, team);
            });
         }
+
+
     }
 }

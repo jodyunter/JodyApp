@@ -70,6 +70,26 @@ namespace JodyApp.Service.Test
             AreEqual(18, games.Count);
         }
 
- 
+        [TestMethod]
+        public void ShouldCreateGamesFromRuleByDivisionLevel0()
+        {
+            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 5").FirstOrDefault();
+
+            var games = service.CreateGamesFromRule(rule);
+
+            AreEqual(60, games.Count);
+        }
+
+        [TestMethod]
+        public void ShouldCreateGamesFromRuleByDivisionLevel1()
+        {
+            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 6").FirstOrDefault();
+
+            var games = service.CreateGamesFromRule(rule);
+
+            AreEqual(60, games.Count);
+        }
+
+        //need special test for season schedule rule
     }
 }

@@ -12,7 +12,7 @@ namespace JodyApp.Service
 {
     public class ScheduleService : BaseService
     {
-        DivisionService divisionService;
+        DivisionService divisionService;        
         TeamService teamService;
 
         public List<ScheduleRule> GetConfigRules()
@@ -56,7 +56,25 @@ namespace JodyApp.Service
 
             if (rule.HomeType == ScheduleRule.BY_DIVISION_LEVEL)
             {
-                
+                List<Division> divisions;
+
+                if (rule is SeasonScheduleRule)
+                {
+                    divisions = divisionService.GetDivisionsByLevel(rule.DivisionLevel, ((SeasonScheduleRule)rule).Season);
+                }
+                else
+                {
+                    divisions = divisionService.GetDivisionsByLevel(rule.DivisionLevel);
+                }
+
+                divisions.ForEach(d =>
+                {
+                    homeTeams = new List<Team>();                    
+
+                    homeTeams.AddRange(divisionService.GetAllTeamsInDivision(d));
+
+                    games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), null, rule.PlayHomeAway, rule.Rounds));
+                });
             }
             else
             {

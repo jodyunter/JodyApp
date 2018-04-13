@@ -6,9 +6,6 @@ namespace JodyApp.Data.Test.Domain.Schedule
     [TestClass]
     public class ScheduleRuleTests
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
+     
     }
 }

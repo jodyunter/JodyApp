@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Domain.Schedule
 {
@@ -54,14 +55,8 @@ namespace JodyApp.Domain.Schedule
             AwayDivision = awayDivision;
             PlayHomeAway = playHomeAway;
             Rounds = rounds;
+            DivisionLevel = divisionLevel;
         }
-
-        public static ScheduleRule CreateByDivisionVsSelf(String name, Division division, bool playHomeAway, int rounds) { return null; }
-        public static ScheduleRule CreateByDivisionVsDivision(String name, Division homeDivision, Division awayDivision, bool playHomeAway, int rounds) { return null; }
-        public static ScheduleRule CreateByTeamVsTeam(String name, Team homeTeam, Team awayTeam, bool playHomeAway, int rounds) { return null; }
-        public static ScheduleRule CreateByTeamVsDivision(string name, Team team, Division division, bool playHomeAway, int rounds) { return null; }
-        public static ScheduleRule CreateByDivisionVsTeam(string name, Division division, Team team, bool playHomeAway, int rounds) { return null; }
-        public static ScheduleRule CreateByDivisionLevel(string name, int divisionLevel, bool playHomeAway, int rounds) { return null;  }
 
     }
 }

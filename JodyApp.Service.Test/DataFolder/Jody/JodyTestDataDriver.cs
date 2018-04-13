@@ -30,9 +30,17 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
         public override void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
         {
-            CreateAndAddRule("Rule 1", ScheduleRule.BY_DIVISION, null, League, ScheduleRule.NONE, null, null, true, 2, 0, rules);
-            CreateAndAddRule("Rule 2", ScheduleRule.BY_DIVISION, null, WestDivision, ScheduleRule.NONE, null, null, true, 5, 0, rules);
-            CreateAndAddRule("Rule 3", ScheduleRule.BY_DIVISION, null, EastDivision, ScheduleRule.NONE, null, null, true, 5, 0, rules);
+            ScheduleRule rule1, rule2, rule3, rule4;
+
+            rule1 = BaseScheduleRule.CreateByDivisionVsSelf("Rule 1", League, true, 2);
+            rule2 = BaseScheduleRule.CreateByDivisionVsSelf("Rule 2", WestDivision, true, 5);
+            rule3 = BaseScheduleRule.CreateByDivisionVsSelf("Rule 3", EastDivision, true, 5);
+            rule4 = BaseScheduleRule.CreateByDivisionLevel("Rule 4", 1, true, 5);
+
+            CreateAndAddRule(rule1, rules);
+            CreateAndAddRule(rule2, rules);
+            CreateAndAddRule(rule3, rules);
+            CreateAndAddRule(rule4, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, BaseTeam> teams, Dictionary<string, BaseDivision> divs)

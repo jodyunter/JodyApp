@@ -36,13 +36,14 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
         }
 
         public override void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
-        {
+        {            
+            CreateAndAddRule(BaseScheduleRule.CreateByTeamVsDivision("Rule 1", teams["Team 1"], divs["Div 2"], false, 1), rules);                        
+            CreateAndAddRule(BaseScheduleRule.CreateByDivisionVsSelf("Rule 2", divs["Div 2"], true, 1), rules);
+            CreateAndAddRule(BaseScheduleRule.CreateByTeamVsTeam("Rule 3", teams["Team 4"], teams["Team 2"], false, 1), rules);            
+            CreateAndAddRule(BaseScheduleRule.CreateByDivisionVsDivision("Rule 4", divs["Div 1"], divs["Div 2"], true, 1), rules);
+            CreateAndAddRule(BaseScheduleRule.CreateByDivisionLevel("Rule 5", 0, true, 2), rules);
+            CreateAndAddRule(BaseScheduleRule.CreateByDivisionLevel("Rule 6", 1, true, 2), rules);
 
-
-            CreateAndAddRule("Rule 1", ScheduleRule.BY_TEAM, teams["Team 1"], null, ScheduleRule.BY_DIVISION, null, divs["Div 2"], false, 1, 0, rules);            
-            CreateAndAddRule("Rule 2", ScheduleRule.BY_DIVISION, null, divs["Div 2"], ScheduleRule.NONE, null, null, true, 1, 0,rules);
-            CreateAndAddRule("Rule 3", ScheduleRule.BY_TEAM, teams["Team 4"], null, ScheduleRule.BY_TEAM, teams["Team 2"], null, false, 1, 0, rules);
-            CreateAndAddRule("Rule 4", ScheduleRule.BY_DIVISION, null, divs["Div 1"], ScheduleRule.BY_DIVISION, null, divs["Div 2"], true, 1, 0, rules);
 
         }
 

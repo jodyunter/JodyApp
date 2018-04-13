@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain
 {
-    public class Game
+    public class Game:DomainObject
     {
         static int BASE_GAME_SCORE = 6;
 

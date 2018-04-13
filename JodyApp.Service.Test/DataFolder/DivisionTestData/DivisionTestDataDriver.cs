@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Database;
+using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Service.Test.DataFolder.DivisionTestData
 {
@@ -27,6 +28,11 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
             CreateAndAddDivision("Atlantic",null, 2, 4, divs["East"], divs);
 
             
+        }
+
+        public override void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
+        {
+            CreateAndAddRule("Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 2, 0, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, BaseTeam> teams, Dictionary<string, BaseDivision> divs)
