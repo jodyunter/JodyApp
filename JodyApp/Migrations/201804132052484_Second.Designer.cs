@@ -7,13 +7,13 @@ namespace JodyApp.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class DivShortName : IMigrationMetadata
+    public sealed partial class Second : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DivShortName));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Second));
         
         string IMigrationMetadata.Id
         {
-            get { return "201804122003377_DivShortName"; }
+            get { return "201804132052484_Second"; }
         }
         
         string IMigrationMetadata.Source

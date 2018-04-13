@@ -80,5 +80,26 @@ namespace JodyApp.Domain.Table
             TeamStats.GoalsAgainst += GoalsAgainst;
         }
 
+        public Dictionary<RecordTableDivision,List<RecordTableTeam>> SortIntoDivisions()
+        {
+            var result = new Dictionary<RecordTableDivision, List<RecordTableTeam>>();
+
+            foreach(KeyValuePair<string, RecordTableTeam> entry in Standings)
+            {
+                RecordTableTeam team = entry.Value;
+
+                RecordTableDivision division = (RecordTableDivision)team.Division;
+
+                while (division != null)
+                {
+                    if (!result.ContainsKey(division)) result.Add(division, new List<RecordTableTeam>());
+                    result[division].Add(team);
+                    division = (RecordTableDivision)division.Parent;
+                }
+            }
+
+            return result;
+        }
+
     }
 }

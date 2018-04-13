@@ -12,24 +12,25 @@ namespace JodyApp.Data.Test.Domain.Table
     [TestClass]
     public class SortingRulesTests
     {
-        Dictionary<string, Division> divisions = new Dictionary<string, Division>();
+        Dictionary<string, RecordTableDivision> divisions = new Dictionary<string, RecordTableDivision>();
         Dictionary<string, RecordTableTeam> teams = new Dictionary<string, RecordTableTeam>();
         RecordTable table = new RecordTable();
+
         [TestInitialize]
         public void Setup()
         {
-            var league = new Division("League", "League", 0, 0, null);
+            var league = new RecordTableDivision("League", "League", 0, 0, null, new List<SortingRule>());
 
             divisions.Add("League", league);
 
             for (int i = 0; i < 2; i++)
             {
-                divisions.Add("Conference " + i, new Division("Conference " + i, null, 1, i + 1, league));
+                divisions.Add("Conference " + i, new RecordTableDivision("Conference " + i, null, 1, i + 1, league, new List<SortingRule>()));
             }
 
             for (int i = 0; i < 6; i++)
             {
-                divisions.Add("Division " + i, new Division("Division " + i, null, 2, i + 1, divisions["Conference " + (i % 2)]));
+                divisions.Add("Division " + i, new RecordTableDivision("Division " + i, null, 2, i + 1, divisions["Conference " + (i % 2)], new List<SortingRule>()));
             }
 
             for (int i = 0; i < 30; i++)
@@ -52,13 +53,104 @@ namespace JodyApp.Data.Test.Domain.Table
         }
 
         [TestMethod]
-        public void ShouldSortNormally()
+        public void ShouldSortLevel0NoRule()
         {
-            table.Standings.
+            var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["League"]);
+
+            AreEqual("Team 6", teamList[0].Name);
+            AreEqual("Team 22", teamList[12].Name);
         }
 
         [TestMethod]
+        public void ShouldSortLevel2NoRule()
+        {
+            var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["Division 2"]);
 
+            AreEqual("Team 26", teamList[0].Name);
+            AreEqual("Team 14", teamList[4].Name);
+        }
+
+        [TestMethod]
+        public void ShouldSortLevel1NoRule()
+        {
+            var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["Conference 1"]);
+
+            AreEqual("Team 3", teamList[0].Name);
+            AreEqual("Team 19", teamList[4].Name);
+        }
+
+        [TestMethod]
+        public void ShouldSortSimpleRule()
+        {
+            var league = divisions["League"];
+
+            var basicRule = new SortingRule()
+            {
+                Name = "Division 5 Special",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 5"],
+                PositionsToUse = "0,2,4"
+            };
+
+            league.SortingRules.Add(basicRule);
+
+            var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["League"]);
+
+            AreEqual("Team 17", teamList[0].Name);
+            AreEqual("Team 5", teamList[1].Name);
+            AreEqual("Team 11", teamList[2].Name);
+        }
+
+        [TestMethod]
+        public void ShouldSortTwoDivisionRulesSingleGroup()
+        {
+            var league = divisions["League"];
+
+            var rule1 = new SortingRule()
+            {
+                Name = "Division 5 Special",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 5"],
+                PositionsToUse = "0,2,4"
+            };
+
+            var rule2 = new SortingRule()
+            {
+                Name = "Division 2 Special",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 2"],
+                PositionsToUse = "4"
+            };
+
+            league.SortingRules.Add(rule1);
+            league.SortingRules.Add(rule2);
+
+            var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["League"]);
+
+            
+            AreEqual("Team 17", teamList[0].Name);
+            AreEqual("Team 5", teamList[1].Name);
+            AreEqual("Team 14", teamList[2].Name);
+            AreEqual("Team 11", teamList[3].Name);
+        }
+
+        [TestMethod]
+        public void ShouldSortByAllDivisionLeaders()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void ShouldSortByConferenceLeadersConferenceRuleOnly()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void ShouldSortByLeagueConferenceLeadersConferenceUsesDivisionRules()
+        {
+            throw new NotImplementedException();
+        }
 
         static string SHOULDSORTNORMALLY_EXPECTED =
     @"League

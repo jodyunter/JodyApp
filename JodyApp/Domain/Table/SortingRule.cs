@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace JodyApp.Domain.Table
 {
     public class SortingRule:DomainObject
-    {
-        public RecordTableDivision DivisionToSort { get; set; }
+    {        
+        public String Name { get; set; }
         public int GroupNumber { get; set; }                
         public RecordTableDivision DivisionToGetTeamsFrom { get; set; }
         public string PositionsToUse { get; set; }

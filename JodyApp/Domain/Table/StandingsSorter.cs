@@ -70,39 +70,52 @@ namespace JodyApp.Domain.Table
             
         }
 
-        public static List<RecordTableTeam> SortByRule(Division divisionToSort, List<SortingRule> rules, List<RecordTableTeam> teamsInDivisionNoEdit)
+        public static List<RecordTableTeam> SortByRules(Dictionary<RecordTableDivision,List<RecordTableTeam>> teamsByDivision, RecordTableDivision division)
         {
-            //this assumes the groups are ordered 0,1,2,3 etc in order starting at 0 and incrementing by 1
-            Dictionary<int, List<RecordTableTeam>> groups = new Dictionary<int, List<RecordTableTeam>>();
-            List<RecordTableTeam> teamList = new List<RecordTableTeam>();
-            teamList.AddRange(teamsInDivisionNoEdit);
+            var editableTeams = new List<RecordTableTeam>();
+            editableTeams.AddRange(teamsByDivision[division]);
 
-            rules.ForEach(rule =>
+            var ruleGroupings = new SortedDictionary<int, List<RecordTableTeam>>();
+
+            if (division.SortingRules == null || division.SortingRules.Count == 0)
             {
-                if (!groups.ContainsKey(rule.GroupNumber))
+                editableTeams.Sort();
+                return editableTeams;
+            }
+            else
+            {
+                division.SortingRules.ForEach(rule =>
                 {
-                    groups.Add(rule.GroupNumber, new List<RecordTableTeam>());
+                    //ensure the division we are getting teams from is sorted
+                    var sortedTeams = SortByRules(teamsByDivision, rule.DivisionToGetTeamsFrom);
+
+                    rule.PositionsToUse.Split(',').Select(int.Parse).ToList<int>().ForEach(i =>
+                    {
+                        var team = sortedTeams[i];
+                        if (!ruleGroupings.ContainsKey(rule.GroupNumber)) ruleGroupings.Add(rule.GroupNumber, new List<RecordTableTeam>());
+                        ruleGroupings[rule.GroupNumber].Add(team);
+                        editableTeams.Remove(team);
+                    });
+                    
+                });
+
+                var result = new List<RecordTableTeam>();
+
+                for (int i = 0; i < ruleGroupings.Count; i++)
+                {
+                    ruleGroupings[i].Sort();
+                    result.AddRange(ruleGroupings[i]);
                 }
 
-                teamsInDivisionNoEdit.ForEach(team => {
-                    List<RecordTableTeam> teamsInDivision = new List<RecordTableTeam>();
+                editableTeams.Sort();
 
-                    if (team.Division.Name.Equals(rule.DivisionToGetTeamsFrom.Name))
-                    {
-                        teamsInDivision.Add(team);    
-                    }
-                });
-            });
-            
-            List<RecordTableTeam> result = new List<RecordTableTeam>();
+                result.AddRange(editableTeams);
 
-            for (int i = 0; i < groups.Count; i++)
-            {
-                groups[i].Sort();
-                result.AddRange(groups[i]);
+                return result;
+                
             }
-
-            return result;
+            
         }
     }
+    
 }

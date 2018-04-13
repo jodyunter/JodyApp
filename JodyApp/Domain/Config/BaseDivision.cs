@@ -10,7 +10,7 @@ namespace JodyApp.Domain.Config
     public class BaseDivision:RecordTableDivision
     {
         public BaseDivision() { }
-        public BaseDivision(string name, string shortName, int level, int order, Division parent) : base(name, shortName, level, order, parent) { }
+        public BaseDivision(string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : base(name, shortName, level, order, parent, sortingRules) { }
 
         
     }

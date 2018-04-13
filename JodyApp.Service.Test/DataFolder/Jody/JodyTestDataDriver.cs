@@ -21,11 +21,11 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
         public override void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
         {
-            League = CreateAndAddDivision("League", null,0, 1, null, divs);
-            WestConference = CreateAndAddDivision("Western Confterence", "Western", 1, 1, League, divs);
-            EastConference = CreateAndAddDivision("Eastern Conference", "Eastern", 1, 2, League, divs);
-            WestDivision = CreateAndAddDivision("West", "West", 2, 1, WestConference, divs);
-            EastDivision = CreateAndAddDivision("East", "East", 2, 2, EastConference, divs);
+            League = CreateAndAddDivision("League", null,0, 1, null, null, divs);
+            WestConference = CreateAndAddDivision("Western Confterence", "Western", 1, 1, League, null, divs);
+            EastConference = CreateAndAddDivision("Eastern Conference", "Eastern", 1, 2, League, null, divs);
+            WestDivision = CreateAndAddDivision("West", "West", 2, 1, WestConference, null, divs);
+            EastDivision = CreateAndAddDivision("East", "East", 2, 2, EastConference, null, divs);
         }
 
         public override void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)

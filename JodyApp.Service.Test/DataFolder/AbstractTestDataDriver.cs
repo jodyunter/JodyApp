@@ -2,6 +2,7 @@
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Table;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +33,9 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
-        public Division CreateAndAddDivision(string name, string shortName, int level, int order, Division parent, Dictionary<string, BaseDivision> map)
+        public Division CreateAndAddDivision(string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules, Dictionary<string, BaseDivision> map)
         {
-            BaseDivision div = new BaseDivision(name, shortName, level, order, parent);
+            BaseDivision div = new BaseDivision(name, shortName, level, order, parent, sortingRules);
             map.Add(div.Name, div);
             return div;
         }

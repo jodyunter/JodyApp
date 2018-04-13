@@ -74,25 +74,13 @@
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatistics.cs" />
-    <Compile Include="Migrations\201804121917182_First.cs" />
-    <Compile Include="Migrations\201804121917182_First.Designer.cs">
-      <DependentUpon>201804121917182_First.cs</DependentUpon>
+    <Compile Include="Migrations\201804132025531_First.cs" />
+    <Compile Include="Migrations\201804132025531_First.Designer.cs">
+      <DependentUpon>201804132025531_First.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201804122003377_DivShortName.cs" />
-    <Compile Include="Migrations\201804122003377_DivShortName.Designer.cs">
-      <DependentUpon>201804122003377_DivShortName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804122038482_createrulesfordivisionlevel.cs" />
-    <Compile Include="Migrations\201804122038482_createrulesfordivisionlevel.Designer.cs">
-      <DependentUpon>201804122038482_createrulesfordivisionlevel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804131653506_AddGamesTables.cs" />
-    <Compile Include="Migrations\201804131653506_AddGamesTables.Designer.cs">
-      <DependentUpon>201804131653506_AddGamesTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804131908338_RecordTableDivision.cs" />
-    <Compile Include="Migrations\201804131908338_RecordTableDivision.Designer.cs">
-      <DependentUpon>201804131908338_RecordTableDivision.cs</DependentUpon>
+    <Compile Include="Migrations\201804132052484_Second.cs" />
+    <Compile Include="Migrations\201804132052484_Second.Designer.cs">
+      <DependentUpon>201804132052484_Second.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,20 +90,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804121917182_First.resx">
-      <DependentUpon>201804121917182_First.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804132025531_First.resx">
+      <DependentUpon>201804132025531_First.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804122003377_DivShortName.resx">
-      <DependentUpon>201804122003377_DivShortName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804122038482_createrulesfordivisionlevel.resx">
-      <DependentUpon>201804122038482_createrulesfordivisionlevel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804131653506_AddGamesTables.resx">
-      <DependentUpon>201804131653506_AddGamesTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804131908338_RecordTableDivision.resx">
-      <DependentUpon>201804131908338_RecordTableDivision.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804132052484_Second.resx">
+      <DependentUpon>201804132052484_Second.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

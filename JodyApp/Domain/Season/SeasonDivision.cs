@@ -20,6 +20,7 @@ namespace JodyApp.Domain.Season
             this.ShortName = division.ShortName;
             this.Level = division.Level;
             this.Order = division.Order;
+            //sorting rules must be handled seperately
             //parent must be handled seperately
         }
     }

@@ -18,9 +18,9 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
         public override void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
         {            
 
-            CreateAndAddDivision("League", null, 0, 1, null, divs);
-            CreateAndAddDivision("Div 1", null, 1, 1, divs["League"], divs);
-            CreateAndAddDivision("Div 2", null, 1, 2, divs["League"], divs);
+            CreateAndAddDivision("League", null, 0, 1, null, null, divs);
+            CreateAndAddDivision("Div 1", null, 1, 1, divs["League"], null, divs);
+            CreateAndAddDivision("Div 2", null, 1, 2, divs["League"], null, divs);
             
         }
 
