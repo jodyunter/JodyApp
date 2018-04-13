@@ -87,7 +87,7 @@ namespace JodyApp.Service.Test
 
             var games = service.CreateGamesFromRule(rule);
 
-            AreEqual(60, games.Count);
+            AreEqual(24, games.Count);
         }
 
         //need special test for season schedule rule

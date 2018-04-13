@@ -8,6 +8,7 @@ using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Domain
 {    
+    [Table("Divisions")]
     public class Division: DomainObject,IEquatable<Division>, IComparable<Division>
     {
         private string _shortName;
@@ -44,7 +45,7 @@ namespace JodyApp.Domain
 
         public bool Equals(Division other)
         {
-            return this.Name.Equals(other.Name);
+            return base.Equals(other);
         }
     }
 }

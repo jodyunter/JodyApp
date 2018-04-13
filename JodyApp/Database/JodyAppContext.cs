@@ -12,6 +12,7 @@ namespace JodyApp.Database
         //public JodyAppContext() : base("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True") { }
 
         //Base configuration items, use a seperate concreat class so that we can query it easier
+        public DbSet<League> Leagues { get; set; }
         public DbSet<BaseTeam> Teams { get; set; }        
         public DbSet<BaseDivision> Divisions { get; set; }
         public DbSet<BaseScheduleRule> ScheduleRules { get; set; }

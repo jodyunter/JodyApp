@@ -11,12 +11,13 @@ namespace JodyApp.Domain.Table
     {            
         public RecordTableTeam() { }
 
-        public RecordTableTeam(Team team)
+        public RecordTableTeam(Team team) : this(team.Name, team.Skill, new TeamStatistics(), team.Division) { }
+        public RecordTableTeam(string name, int skill, TeamStatistics stats, Division division)
         {
-            this.Name = team.Name;
-            this.Skill = team.Skill;
-            this.Stats = new TeamStatistics();
-            this.Division = team.Division;            
+            this.Name = name;
+            this.Skill = skill;
+            this.Stats = stats;
+            this.Division = division;
         }
         virtual public TeamStatistics Stats { get; set; }
 

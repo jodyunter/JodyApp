@@ -60,6 +60,7 @@
     <Compile Include="Domain\Schedule\ScheduleValidatorTests.cs" />
     <Compile Include="Domain\Schedule\ScheduleGameTests.cs" />
     <Compile Include="Domain\Schedule\ScheduleRuleTests.cs" />
+    <Compile Include="Domain\Table\SortingRulesTests.cs" />
     <Compile Include="Domain\TeamTests.cs" />
     <Compile Include="Domain\GameTests.cs" />
     <Compile Include="Domain\Table\RecordTableTeamTests.cs" />

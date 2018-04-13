@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Service;
-using JodyApp.Console.Display;
-
 using JodyApp.Domain.Table;
 using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Service.Test.DataFolder.Jody;
 using JodyApp.Domain.Season;
 using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Table.Display;
 
 namespace JodyApp.Console
 {

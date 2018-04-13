@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
 
-namespace JodyApp.Console.Display
+namespace JodyApp.Domain.Table.Display
 {
     public class RecordTableDisplay
     {

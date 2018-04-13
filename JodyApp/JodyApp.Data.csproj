@@ -39,6 +39,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +56,7 @@
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
+    <Compile Include="Domain\League.cs" />
     <Compile Include="Domain\Schedule\Scheduler.cs" />
     <Compile Include="Domain\Schedule\ScheduleRule.cs" />
     <Compile Include="Domain\Schedule\ScheduleGame.cs" />
@@ -63,8 +66,11 @@
     <Compile Include="Domain\Season\SeasonGame.cs" />
     <Compile Include="Domain\Season\SeasonScheduleRule.cs" />
     <Compile Include="Domain\Season\SeasonTeam.cs" />
+    <Compile Include="Domain\Table\Display\RecordTableDisplay.cs" />
     <Compile Include="Domain\Table\RecordTable.cs" />
+    <Compile Include="Domain\Table\RecordTableDivision.cs" />
     <Compile Include="Domain\Table\RecordTableTeam.cs" />
+    <Compile Include="Domain\Table\SortingRule.cs" />
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatistics.cs" />
@@ -83,6 +89,10 @@
     <Compile Include="Migrations\201804131653506_AddGamesTables.cs" />
     <Compile Include="Migrations\201804131653506_AddGamesTables.Designer.cs">
       <DependentUpon>201804131653506_AddGamesTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804131908338_RecordTableDivision.cs" />
+    <Compile Include="Migrations\201804131908338_RecordTableDivision.Designer.cs">
+      <DependentUpon>201804131908338_RecordTableDivision.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804131653506_AddGamesTables.resx">
       <DependentUpon>201804131653506_AddGamesTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804131908338_RecordTableDivision.resx">
+      <DependentUpon>201804131908338_RecordTableDivision.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -69,5 +69,40 @@ namespace JodyApp.Domain.Table
             teamList[d].Add(team);
             
         }
+
+        public static List<RecordTableTeam> SortByRule(Division divisionToSort, List<SortingRule> rules, List<RecordTableTeam> teamsInDivisionNoEdit)
+        {
+            //this assumes the groups are ordered 0,1,2,3 etc in order starting at 0 and incrementing by 1
+            Dictionary<int, List<RecordTableTeam>> groups = new Dictionary<int, List<RecordTableTeam>>();
+            List<RecordTableTeam> teamList = new List<RecordTableTeam>();
+            teamList.AddRange(teamsInDivisionNoEdit);
+
+            rules.ForEach(rule =>
+            {
+                if (!groups.ContainsKey(rule.GroupNumber))
+                {
+                    groups.Add(rule.GroupNumber, new List<RecordTableTeam>());
+                }
+
+                teamsInDivisionNoEdit.ForEach(team => {
+                    List<RecordTableTeam> teamsInDivision = new List<RecordTableTeam>();
+
+                    if (team.Division.Name.Equals(rule.DivisionToGetTeamsFrom.Name))
+                    {
+                        teamsInDivision.Add(team);    
+                    }
+                });
+            });
+            
+            List<RecordTableTeam> result = new List<RecordTableTeam>();
+
+            for (int i = 0; i < groups.Count; i++)
+            {
+                groups[i].Sort();
+                result.AddRange(groups[i]);
+            }
+
+            return result;
+        }
     }
 }
