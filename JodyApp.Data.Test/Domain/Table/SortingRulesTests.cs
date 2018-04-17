@@ -135,21 +135,108 @@ namespace JodyApp.Data.Test.Domain.Table
         }
 
         [TestMethod]
-        public void ShouldSortByAllDivisionLeaders()
+        public void ShouldSortByAllDivisionLeadersThenSeconds()
         {
-            throw new NotImplementedException();
+            var league = divisions["League"];
+
+            for (int i = 0; i < 6; i++)
+            {
+                var rule1 = new SortingRule()
+                {
+                    Name = "Rule " + i,
+                    GroupNumber = 0,
+                    DivisionToGetTeamsFrom = divisions["Division " + i],
+                    PositionsToUse = "0"
+                };
+
+                var rule2 = new SortingRule()
+                {
+                    Name = "Rule " + (i + 6),
+                    GroupNumber = 1,
+                    DivisionToGetTeamsFrom = divisions["Division " + i],
+                    PositionsToUse = "1"
+                };
+
+                league.SortingRules.Add(rule1);
+                league.SortingRules.Add(rule2);
+
+                
+            }
+
+            var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["League"]);
+
+            AreEqual("Team 6", teamList[0].Name);
+            AreEqual("Team 26", teamList[1].Name);
+            AreEqual("Team 3", teamList[2].Name);
+            AreEqual("Team 7", teamList[3].Name);
+            AreEqual("Team 16", teamList[4].Name);
+            AreEqual("Team 17", teamList[5].Name);
+            AreEqual("Team 21", teamList[6].Name);
+            AreEqual("Team 19", teamList[7].Name);
+            AreEqual("Team 20", teamList[8].Name);
+            AreEqual("Team 0", teamList[9].Name);
+            AreEqual("Team 22", teamList[10].Name);
+            AreEqual("Team 29", teamList[11].Name);
+
         }
 
         [TestMethod]
-        public void ShouldSortByConferenceLeadersConferenceRuleOnly()
+        public void ShouldSortByDivisionLeadersForConference()
         {
-            throw new NotImplementedException();
-        }
+            var conf1 = divisions["Conference 0"];
+            var conf2 = divisions["Conference 1"];
 
-        [TestMethod]
-        public void ShouldSortByLeagueConferenceLeadersConferenceUsesDivisionRules()
-        {
-            throw new NotImplementedException();
+            conf1.SortingRules.Add(new SortingRule()
+            {
+                Name = "Conf Div 4",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 4"],
+                PositionsToUse = "0"
+            });
+            conf1.SortingRules.Add(new SortingRule()
+            {
+                Name = "Conf Div 2",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 2"],
+                PositionsToUse = "0"
+            });
+            conf1.SortingRules.Add(new SortingRule()
+            {
+                Name = "Conf Div 0",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 0"],
+                PositionsToUse = "0"
+            });
+
+            conf2.SortingRules.Add(new SortingRule()
+            {
+                Name = "Conf Div 3",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 3"],
+                PositionsToUse = "0"
+            });
+            conf2.SortingRules.Add(new SortingRule()
+            {
+                Name = "Conf Div 1",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 1"],
+                PositionsToUse = "0"
+            });
+            conf2.SortingRules.Add(new SortingRule()
+            {
+                Name = "Conf Div 5",
+                GroupNumber = 0,
+                DivisionToGetTeamsFrom = divisions["Division 5"],
+                PositionsToUse = "0"
+            });
+
+            var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["Conference 1"]);
+
+            AreEqual("Team 3", teamList[0].Name);
+            AreEqual("Team 7", teamList[1].Name);
+            AreEqual("Team 17", teamList[2].Name);
+            AreEqual("Team 21", teamList[3].Name);
+            
         }
 
         static string SHOULDSORTNORMALLY_EXPECTED =
