@@ -25,7 +25,7 @@ namespace JodyApp.Database
         public DbSet<SeasonGame> SeasonGames { get; set; }
         public DbSet<Season> Seasons { get; set; }
 
-        public DbSet<TeamStatistics> TeamStatistics { get; set; }
+        public DbSet<TeamStatistics> TeamStatistics { get; set; }        
 
     }
 }

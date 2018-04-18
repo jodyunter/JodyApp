@@ -7,6 +7,7 @@ using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Domain.Season;
 using System.Data.Entity;
+using JodyApp.Domain.Table;
 
 namespace JodyApp.Service
 {
@@ -100,6 +101,69 @@ namespace JodyApp.Service
         public List<Division> GetDivisionsByLevel(SeasonDivision division)
         {
             return GetDivisionsByLevel(division.Level, division.Season);
+        }
+
+        //this will return the list of teams, but more importantly will setup the division rankings
+        public List<RecordTableTeam> SortByDivision(RecordTableDivision division)
+        {            
+            //decision to make.  Do we organize a higher teir based on lower tier rank without explicitly saying so?
+            var ruleGroupings = new SortedDictionary<int, List<RecordTableTeam>>();
+
+            //get a list of all teams in division, all must be sorted somehow
+            var editableTeamList = this.GetAllTeamsInDivision(division);
+
+            //go through each rule and sort the divisions required by the rule
+            division.SortingRules.ForEach(rule => {
+                this.SortByDivision(rule.DivisionToGetTeamsFrom);
+
+                //add an empty list if there isn't one for that rule group
+                if (!ruleGroupings.ContainsKey(rule.GroupNumber)) ruleGroupings.Add(rule.GroupNumber, new List<RecordTableTeam>());
+                
+                
+                rule.PositionsToUse.Split(',').Select(int.Parse).ToList<int>().ForEach(position => 
+                {
+                    //add the team at the given rank to the grouping
+                    RecordTableTeam teamToAdd = (RecordTableTeam)rule.DivisionToGetTeamsFrom.Rankings.Single(d => d.Rank == (position + 1)).Team;
+                    ruleGroupings[rule.GroupNumber].Add(teamToAdd);
+                    editableTeamList.Remove(teamToAdd);
+                });
+                
+            });
+
+            //now we have grouped all special groups and have a list of leftovers.
+            int rank = 1;
+
+            //dictionary of String, DivisionRank
+            var rankingDictionary = division.Rankings.ToDictionary(r => r.Team.Name, r => r);
+            var resultList = new List<RecordTableTeam>();
+
+            for (int i = 0; i < ruleGroupings.Count; i++)
+            {
+                ruleGroupings[i].Sort();
+                ruleGroupings[i].ForEach(team => {
+                    if (!rankingDictionary.ContainsKey(team.Name))
+                    {
+                        var newDivRank = new DivisionRank() { Division = division, Team = team, Rank = rank };
+                        rank++;
+                        division.Rankings.Add(newDivRank);
+                        rankingDictionary.Add(team.Name, newDivRank);
+                        resultList.Add(team);
+                    }
+                });
+            }
+
+            editableTeamList.ForEach(unGroupedTeam => {
+                if (!rankingDictionary.ContainsKey(unGroupedTeam.Name))
+                {
+                    var newDivRank = new DivisionRank() { Division = division, Team = unGroupedTeam, Rank = rank };
+                    rank++;
+                    division.Rankings.Add(newDivRank);
+                    rankingDictionary.Add(unGroupedTeam.Name, newDivRank);
+                    resultList.Add((RecordTableTeam)unGroupedTeam);
+                }
+            });
+            
+            return resultList;
         }
 
     }

@@ -18,7 +18,7 @@ namespace JodyApp.Domain.Table
          
 
         public List<SortingRule> SortingRules { get; set; }
-        
-        
+        public List<DivisionRank> Rankings { get; set; }
+
     }
 }

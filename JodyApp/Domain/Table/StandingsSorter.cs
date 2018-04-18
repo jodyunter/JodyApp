@@ -70,6 +70,7 @@ namespace JodyApp.Domain.Table
             
         }
 
+        //todo we need to remove this method because we need service calls to properly sort the divisions
         public static List<RecordTableTeam> SortByRules(Dictionary<RecordTableDivision,List<RecordTableTeam>> teamsByDivision, RecordTableDivision division)
         {
             var editableTeams = new List<RecordTableTeam>();

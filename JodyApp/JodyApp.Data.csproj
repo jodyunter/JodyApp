@@ -54,6 +54,7 @@
     <Compile Include="Domain\Config\BaseScheduleRule.cs" />
     <Compile Include="Domain\Config\BaseTeam.cs" />
     <Compile Include="Domain\Division.cs" />
+    <Compile Include="Domain\DivisionRank.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />
@@ -82,6 +83,10 @@
     <Compile Include="Migrations\201804132052484_Second.Designer.cs">
       <DependentUpon>201804132052484_Second.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804181848342_DivisionRankingObject.cs" />
+    <Compile Include="Migrations\201804181848342_DivisionRankingObject.Designer.cs">
+      <DependentUpon>201804181848342_DivisionRankingObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -95,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804132052484_Second.resx">
       <DependentUpon>201804132052484_Second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804181848342_DivisionRankingObject.resx">
+      <DependentUpon>201804181848342_DivisionRankingObject.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
