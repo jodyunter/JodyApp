@@ -107,13 +107,12 @@ namespace JodyApp.Domain.Table
                     ruleGroupings[i].Sort();
                     result.AddRange(ruleGroupings[i]);
                 }
-
                 editableTeams.Sort();
-                //map of <TeamName, Ranking>                
-                int rank = 0;
-                editableTeams.ForEach(team => { division.SetRank(rank, team); });
-
                 result.AddRange(editableTeams);
+                
+                //map of <TeamName, Ranking>                
+                int rank = 0;          
+                for (int i = 0; i < result.Count; i++) { division.SetRank(rank, result[i]); rank++; }                
 
                 return result;
                 

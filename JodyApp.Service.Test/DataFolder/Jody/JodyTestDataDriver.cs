@@ -28,7 +28,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             EastDivision = CreateAndAddDivision("East", "East", 2, 2, EastConference, null, divs);
         }
 
-        public override void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
         {
             ScheduleRule rule1, rule2, rule3, rule4;
 

@@ -5,21 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JodyApp.Domain
+namespace JodyApp.Domain.Table
 {
-    public class DivisionRank: DomainObject, IComparable<RecordTableTeam>
+    public class RecordTableDivisionRank: DomainObject, IComparable<RecordTableDivisionRank>
     {
         public RecordTableDivision Division { get; set; }
         public Team Team { get; set; }
         public int Rank { get; set; }
 
-        int IComparable<RecordTableTeam>.CompareTo(RecordTableTeam other)
+        public int CompareTo(RecordTableDivisionRank other)
         {
+
             if (Division.Level.Equals(other.Division.Level))
             {
                 if (Division.Order.Equals(other.Division.Order))
                 {
-                    return Rank.CompareTo(Rank);
+                    return Rank.CompareTo(other.Rank);
                 }
                 else
                 {
@@ -30,6 +31,7 @@ namespace JodyApp.Domain
             {
                 return Division.Level.CompareTo(other.Division.Level);
             }
+
         }
     }
 }

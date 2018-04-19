@@ -35,7 +35,7 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
             CreateAndAddTeam("Team 6", 5, divs["Div 2"], teams);
         }
 
-        public override void PrivateCreateRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
         {            
             CreateAndAddRule(BaseScheduleRule.CreateByTeamVsDivision("Rule 1", teams["Team 1"], divs["Div 2"], false, 1), rules);                        
             CreateAndAddRule(BaseScheduleRule.CreateByDivisionVsSelf("Rule 2", divs["Div 2"], true, 1), rules);

@@ -54,7 +54,7 @@
     <Compile Include="Domain\Config\BaseScheduleRule.cs" />
     <Compile Include="Domain\Config\BaseTeam.cs" />
     <Compile Include="Domain\Division.cs" />
-    <Compile Include="Domain\DivisionRank.cs" />
+    <Compile Include="Domain\Table\RecordTableDivisionRank.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />

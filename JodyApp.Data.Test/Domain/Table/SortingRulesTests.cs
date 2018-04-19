@@ -99,6 +99,12 @@ namespace JodyApp.Data.Test.Domain.Table
             AreEqual("Team 17", teamList[0].Name);
             AreEqual("Team 5", teamList[1].Name);
             AreEqual("Team 11", teamList[2].Name);
+
+            var rankings = divisions["League"].Rankings;
+            rankings.Sort();
+            AreEqual(0, divisions["League"].Rankings[0].Rank);
+            AreEqual("Team 5", divisions["League"].Rankings[1].Team.Name);
+            AreEqual(29, divisions["League"].Rankings[29].Rank);
         }
 
         [TestMethod]
@@ -165,7 +171,7 @@ namespace JodyApp.Data.Test.Domain.Table
 
             var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["League"]);
 
-            AreEqual("Team 6", teamList[0].Name);
+            AreEqual("Team 6", teamList[0].Name);            
             AreEqual("Team 26", teamList[1].Name);
             AreEqual("Team 3", teamList[2].Name);
             AreEqual("Team 7", teamList[3].Name);
