@@ -107,7 +107,13 @@ namespace JodyApp.Service
             return division;
         }
 
-        
+        public void SortAllDivisions(Season season)
+        {
+            List<SeasonDivision> divisions = divisionService.GetDivisionsBySeason(season);
+
+            divisions.ForEach(div => { divisionService.SortByDivision(div); });
+
+        }
             
     }
 }

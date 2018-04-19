@@ -103,6 +103,11 @@ namespace JodyApp.Service
             return GetDivisionsByLevel(division.Level, division.Season);
         }
 
+        public List<SeasonDivision> GetDivisionsBySeason(Season season)
+        {
+            return db.SeasonDivisions.Include("Season").Where(d => d.Season.Id == season.Id).ToList<SeasonDivision>();
+        }
+
         //this will return the list of teams, but more importantly will setup the division rankings
         public List<RecordTableTeam> SortByDivision(SeasonDivision division)
         {

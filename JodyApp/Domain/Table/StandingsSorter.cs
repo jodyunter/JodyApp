@@ -73,6 +73,7 @@ namespace JodyApp.Domain.Table
         //todo we need to remove this method because we need service calls to properly sort the divisions
         public static List<RecordTableTeam> SortByRules(Dictionary<RecordTableDivision,List<RecordTableTeam>> teamsByDivision, RecordTableDivision division)
         {
+            var result = new List<RecordTableTeam>();
             var editableTeams = new List<RecordTableTeam>();
             editableTeams.AddRange(teamsByDivision[division]);
 
@@ -81,7 +82,7 @@ namespace JodyApp.Domain.Table
             if (division.SortingRules == null || division.SortingRules.Count == 0)
             {
                 editableTeams.Sort();
-                return editableTeams;
+                result.AddRange(editableTeams);
             }
             else
             {
@@ -92,7 +93,7 @@ namespace JodyApp.Domain.Table
 
                     rule.PositionsToUse.Split(',').Select(int.Parse).ToList<int>().ForEach(i =>
                     {
-                        var team = sortedTeams[i];
+                        var team = sortedTeams[i-1];
                         if (!ruleGroupings.ContainsKey(rule.GroupNumber)) ruleGroupings.Add(rule.GroupNumber, new List<RecordTableTeam>());
                         ruleGroupings[rule.GroupNumber].Add(team);
                         editableTeams.Remove(team);
@@ -100,7 +101,6 @@ namespace JodyApp.Domain.Table
                     
                 });
 
-                var result = new List<RecordTableTeam>();
 
                 for (int i = 0; i < ruleGroupings.Count; i++)
                 {
@@ -110,14 +110,23 @@ namespace JodyApp.Domain.Table
                 editableTeams.Sort();
                 result.AddRange(editableTeams);
                 
-                //map of <TeamName, Ranking>                
-                int rank = 0;          
-                for (int i = 0; i < result.Count; i++) { division.SetRank(rank, result[i]); rank++; }                
-
-                return result;
                 
             }
             
+            int rank = 1;
+            for (int i = 0; i < result.Count; i++) { division.SetRank(rank, result[i]); result[i].Stats.Rank = rank; rank++; }
+
+            return result;
+        }
+
+        public static List<RecordTableTeam> SortByRanking(RecordTableDivision division)
+        {
+            if (division.Rankings == null) throw new ApplicationException("Must have rankings done prior to calling this method");
+
+            division.Rankings.Sort();
+            List<RecordTableTeam> teams = division.Rankings.Select(i => (RecordTableTeam)i.Team).ToList<RecordTableTeam>();
+
+            return teams;
         }
     }
     

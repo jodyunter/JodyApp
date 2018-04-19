@@ -89,7 +89,7 @@ namespace JodyApp.Data.Test.Domain.Table
                 Name = "Division 5 Special",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 5"],
-                PositionsToUse = "0,2,4"
+                PositionsToUse = "1,3,5"
             };
 
             league.SortingRules.Add(basicRule);
@@ -102,9 +102,9 @@ namespace JodyApp.Data.Test.Domain.Table
 
             var rankings = divisions["League"].Rankings;
             rankings.Sort();
-            AreEqual(0, divisions["League"].Rankings[0].Rank);
+            AreEqual(1, divisions["League"].Rankings[0].Rank);
             AreEqual("Team 5", divisions["League"].Rankings[1].Team.Name);
-            AreEqual(29, divisions["League"].Rankings[29].Rank);
+            AreEqual(30, divisions["League"].Rankings[29].Rank);
         }
 
         [TestMethod]
@@ -117,7 +117,7 @@ namespace JodyApp.Data.Test.Domain.Table
                 Name = "Division 5 Special",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 5"],
-                PositionsToUse = "0,2,4"
+                PositionsToUse = "1,3,5"
             };
 
             var rule2 = new SortingRule()
@@ -125,7 +125,7 @@ namespace JodyApp.Data.Test.Domain.Table
                 Name = "Division 2 Special",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 2"],
-                PositionsToUse = "4"
+                PositionsToUse = "5"
             };
 
             league.SortingRules.Add(rule1);
@@ -152,7 +152,7 @@ namespace JodyApp.Data.Test.Domain.Table
                     Name = "Rule " + i,
                     GroupNumber = 0,
                     DivisionToGetTeamsFrom = divisions["Division " + i],
-                    PositionsToUse = "0"
+                    PositionsToUse = "1"
                 };
 
                 var rule2 = new SortingRule()
@@ -160,7 +160,7 @@ namespace JodyApp.Data.Test.Domain.Table
                     Name = "Rule " + (i + 6),
                     GroupNumber = 1,
                     DivisionToGetTeamsFrom = divisions["Division " + i],
-                    PositionsToUse = "1"
+                    PositionsToUse = "2"
                 };
 
                 league.SortingRules.Add(rule1);
@@ -197,21 +197,21 @@ namespace JodyApp.Data.Test.Domain.Table
                 Name = "Conf Div 4",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 4"],
-                PositionsToUse = "0"
+                PositionsToUse = "1"
             });
             conf1.SortingRules.Add(new SortingRule()
             {
                 Name = "Conf Div 2",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 2"],
-                PositionsToUse = "0"
+                PositionsToUse = "1"
             });
             conf1.SortingRules.Add(new SortingRule()
             {
                 Name = "Conf Div 0",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 0"],
-                PositionsToUse = "0"
+                PositionsToUse = "1"
             });
 
             conf2.SortingRules.Add(new SortingRule()
@@ -219,21 +219,21 @@ namespace JodyApp.Data.Test.Domain.Table
                 Name = "Conf Div 3",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 3"],
-                PositionsToUse = "0"
+                PositionsToUse = "1"
             });
             conf2.SortingRules.Add(new SortingRule()
             {
                 Name = "Conf Div 1",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 1"],
-                PositionsToUse = "0"
+                PositionsToUse = "1"
             });
             conf2.SortingRules.Add(new SortingRule()
             {
                 Name = "Conf Div 5",
                 GroupNumber = 0,
                 DivisionToGetTeamsFrom = divisions["Division 5"],
-                PositionsToUse = "0"
+                PositionsToUse = "1"
             });
 
             var teamList = StandingsSorter.SortByRules(table.SortIntoDivisions(), divisions["Conference 1"]);
