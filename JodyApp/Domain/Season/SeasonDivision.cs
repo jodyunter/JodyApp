@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using JodyApp.Domain.Table;
 
 namespace JodyApp.Domain.Season
 { 
-    public class SeasonDivision:Division
+    public class SeasonDivision:RecordTableDivision
     {        
         virtual public Season Season { get; set; }
 

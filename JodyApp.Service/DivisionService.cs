@@ -67,10 +67,10 @@ namespace JodyApp.Service
 
         public List<Division> GetDivisionsByParent(SeasonDivision parent)
         {            
-            var divs = db.SeasonDivisions.Where(div => div.Parent.Name == parent.Name);
+            var divs = db.SeasonDivisions.Where(div => div.Parent.Id == parent.Id && parent.Season.Id == div.Season.Id);
 
             return divs.ToList<Division>();
-        }
+        }       
 
         public List<Team> GetAllTeamsInDivision(SeasonDivision division)
         {            
@@ -79,7 +79,7 @@ namespace JodyApp.Service
 
             GetDivisionsByParent(division).ForEach(div =>
             {
-                teams.AddRange(GetAllTeamsInDivision(div));
+                teams.AddRange(GetAllTeamsInDivision((SeasonDivision)div));
             });
 
             return teams;
@@ -104,7 +104,7 @@ namespace JodyApp.Service
         }
 
         //this will return the list of teams, but more importantly will setup the division rankings
-        public List<RecordTableTeam> SortByDivision(RecordTableDivision division)
+        public List<RecordTableTeam> SortByDivision(SeasonDivision division)
         {
             //decision to make.  Do we organize a higher teir based on lower tier rank without explicitly saying so?
             RecordTable table = new RecordTable();

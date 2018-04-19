@@ -8,6 +8,8 @@ using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Service.Test.DataFolder.DivisionTestData;
 using JodyApp.Domain;
 using JodyApp.Domain.Season;
+using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Table.Display;
 
 namespace JodyApp.Service.Test
 {
@@ -19,6 +21,7 @@ namespace JodyApp.Service.Test
         DivisionService service;
         DivisionTestDataDriver driver;
         SeasonService seasonService;
+        ScheduleService scheduleService;
         Season season;
 
         [TestInitialize]
@@ -31,6 +34,7 @@ namespace JodyApp.Service.Test
             driver.InsertData();
             seasonService = new SeasonService(db);
             season = seasonService.CreateNewSeason("Season Test", 15);
+            scheduleService = new ScheduleService(db);
         }
         //these tests depend on specific data
         [TestMethod]
@@ -241,5 +245,31 @@ namespace JodyApp.Service.Test
             AreEqual("Atlantic", divs[4].Name);
         }
 
+        [TestMethod]
+        public void ShouldSortByDivision()
+        {
+            //create sesaon
+            Season season = seasonService.CreateNewSeason("Season Testing", 2);
+            season.SetupStandings();
+            Random random = new Random(15);
+            List<ScheduleGame> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
+
+            scheduleGames.ForEach(game =>
+            {
+                game.Play(random);
+                season.Standings.ProcessGame(game);
+            });
+
+            db.SaveChanges();
+
+            SeasonDivision seasonDivision = (SeasonDivision)service.GetByName("West", season);
+
+            var rank = service.SortByDivision(seasonDivision);
+
+            string result = RecordTableDisplay.GetRecordTableRowHeader();
+            rank.ForEach(record => { result += "\n" + RecordTableDisplay.GetRecordTableRow(record); });
+            AreEqual("YES", result);
+
+        }
     }
 }

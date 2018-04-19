@@ -1,13 +1,15 @@
 ﻿using JodyApp.Domain.Table;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Table
 {
-    public class RecordTableDivisionRank: DomainObject, IComparable<RecordTableDivisionRank>
+    [Table("DivisionRanks")]
+    public class RecordTableDivisionRank: DivisionRanks, IComparable<RecordTableDivisionRank>
     {
         public RecordTableDivision Division { get; set; }
         public Team Team { get; set; }
