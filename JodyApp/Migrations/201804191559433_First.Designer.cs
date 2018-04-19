@@ -13,7 +13,7 @@ namespace JodyApp.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201804132025531_First"; }
+            get { return "201804191559433_First"; }
         }
         
         string IMigrationMetadata.Source

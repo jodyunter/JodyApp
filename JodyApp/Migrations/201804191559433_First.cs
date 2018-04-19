@@ -104,10 +104,26 @@ namespace JodyApp.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.DivisionRanks",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Rank = c.Int(nullable: false),
+                        Division_Id = c.Int(),
+                        Team_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Divisions", t => t.Division_Id)
+                .ForeignKey("dbo.Teams", t => t.Team_Id)
+                .Index(t => t.Division_Id)
+                .Index(t => t.Team_Id);
+            
+            CreateTable(
                 "dbo.SortingRules",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
                         GroupNumber = c.Int(nullable: false),
                         PositionsToUse = c.String(),
                         DivisionToGetTeamsFrom_Id = c.Int(),
@@ -157,6 +173,8 @@ namespace JodyApp.Migrations
             DropForeignKey("dbo.Games", "HomeTeam_Id", "dbo.Teams");
             DropForeignKey("dbo.Games", "AwayTeam_Id", "dbo.Teams");
             DropForeignKey("dbo.SortingRules", "DivisionToGetTeamsFrom_Id", "dbo.Divisions");
+            DropForeignKey("dbo.DivisionRanks", "Team_Id", "dbo.Teams");
+            DropForeignKey("dbo.DivisionRanks", "Division_Id", "dbo.Divisions");
             DropForeignKey("dbo.Divisions", "Season_Id", "dbo.Seasons");
             DropForeignKey("dbo.ScheduleRules", "Division_Id", "dbo.Divisions");
             DropForeignKey("dbo.ScheduleRules", "HomeTeam_Id", "dbo.Teams");
@@ -172,6 +190,8 @@ namespace JodyApp.Migrations
             DropIndex("dbo.Games", new[] { "HomeTeam_Id" });
             DropIndex("dbo.Games", new[] { "AwayTeam_Id" });
             DropIndex("dbo.SortingRules", new[] { "DivisionToGetTeamsFrom_Id" });
+            DropIndex("dbo.DivisionRanks", new[] { "Team_Id" });
+            DropIndex("dbo.DivisionRanks", new[] { "Division_Id" });
             DropIndex("dbo.Teams", new[] { "Season_Id" });
             DropIndex("dbo.Teams", new[] { "Stats_Id" });
             DropIndex("dbo.Teams", new[] { "Division_Id" });
@@ -186,6 +206,7 @@ namespace JodyApp.Migrations
             DropTable("dbo.Games");
             DropTable("dbo.Leagues");
             DropTable("dbo.SortingRules");
+            DropTable("dbo.DivisionRanks");
             DropTable("dbo.Seasons");
             DropTable("dbo.TeamStatistics");
             DropTable("dbo.Teams");

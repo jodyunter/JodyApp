@@ -13,9 +13,9 @@ namespace JodyApp.Domain.Table
 
         public Dictionary<string, RecordTableTeam> Standings { get; set; }
 
-        public void Add(String TeamName, RecordTableTeam team)
+        public void Add(RecordTableTeam team)
         {
-            this.Standings.Add(TeamName, team);
+            this.Standings.Add(team.Name, team);
         }
 
         public RecordTable()

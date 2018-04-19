@@ -34,7 +34,7 @@ namespace JodyApp.Domain.Season
             Standings = new RecordTable();
             TeamData.ForEach(team =>
            {
-               Standings.Add(team.Name, team);
+               Standings.Add(team);
            });
         }
 

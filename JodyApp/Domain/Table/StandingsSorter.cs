@@ -109,6 +109,9 @@ namespace JodyApp.Domain.Table
                 }
 
                 editableTeams.Sort();
+                //map of <TeamName, Ranking>                
+                int rank = 0;
+                editableTeams.ForEach(team => { division.SetRank(rank, team); });
 
                 result.AddRange(editableTeams);
 

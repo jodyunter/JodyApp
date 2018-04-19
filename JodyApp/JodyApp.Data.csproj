@@ -75,17 +75,9 @@
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatistics.cs" />
-    <Compile Include="Migrations\201804132025531_First.cs" />
-    <Compile Include="Migrations\201804132025531_First.Designer.cs">
-      <DependentUpon>201804132025531_First.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804132052484_Second.cs" />
-    <Compile Include="Migrations\201804132052484_Second.Designer.cs">
-      <DependentUpon>201804132052484_Second.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804181848342_DivisionRankingObject.cs" />
-    <Compile Include="Migrations\201804181848342_DivisionRankingObject.Designer.cs">
-      <DependentUpon>201804181848342_DivisionRankingObject.cs</DependentUpon>
+    <Compile Include="Migrations\201804191559433_First.cs" />
+    <Compile Include="Migrations\201804191559433_First.Designer.cs">
+      <DependentUpon>201804191559433_First.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,14 +87,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804132025531_First.resx">
-      <DependentUpon>201804132025531_First.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804132052484_Second.resx">
-      <DependentUpon>201804132052484_Second.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804181848342_DivisionRankingObject.resx">
-      <DependentUpon>201804181848342_DivisionRankingObject.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804191559433_First.resx">
+      <DependentUpon>201804191559433_First.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -20,5 +20,18 @@ namespace JodyApp.Domain.Table
         public List<SortingRule> SortingRules { get; set; }
         public List<DivisionRank> Rankings { get; set; }
 
+        public void SetRank(int rank, RecordTableTeam team)
+        {
+            if (Rankings == null) Rankings = new List<DivisionRank>();
+
+            if (Rankings.Any(r => r.Team.Name.Equals(team.Name)))
+            {
+                Rankings.Find(r => r.Team.Name.Equals(team.Name)).Rank = rank;
+            }
+            else
+            {
+                Rankings.Add(new DivisionRank() { Division = this, Team = team, Rank = rank });
+            }
+        }
     }
 }

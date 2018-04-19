@@ -35,7 +35,7 @@ namespace JodyApp.Data.Test.Domain.Table
 
             for (int i = 0; i < 30; i++)
             {
-                Division d = divisions["Division " + (i % 6)];
+                RecordTableDivision d = divisions["Division " + (i % 6)];
                 teams.Add("Team " + i, new RecordTableTeam("Team " + i, 5, new TeamStatistics(), d));
                 d.Teams.Add(teams["Team " + i]);
             }
