@@ -12,8 +12,7 @@ namespace JodyApp.Service.Test.Integration
 {
     [TestClass]
     public class SeasonDivisionIntegrationTests
-    {
-        String LeagueName = "My League";
+    {     
         Database.JodyAppContext db = new Database.JodyAppContext();
         DivisionTestDataDriver driver;
         SeasonService service;
@@ -27,9 +26,10 @@ namespace JodyApp.Service.Test.Integration
             driver = new DivisionTestDataDriver(db);
             driver.DeleteAllData();
             driver.InsertData();
+
+            league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
             service = new SeasonService(db);
-            season = service.CreateNewSeason("New Season", 15);
-            league = db.Leagues.Where(l => l.Name == LeagueName).First();
+            season = service.CreateNewSeason(league, "New Season", 15);
         }
 
         [TestMethod]

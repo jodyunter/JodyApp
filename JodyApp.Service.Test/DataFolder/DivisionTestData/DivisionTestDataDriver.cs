@@ -11,23 +11,32 @@ using JodyApp.Domain.Schedule;
 namespace JodyApp.Service.Test.DataFolder.DivisionTestData
 {
     public class DivisionTestDataDriver:BaseTestDataDriver
-    {
+    {        
 
-        public DivisionTestDataDriver(JodyAppContext db) : base(db) { }                    
+        public DivisionTestDataDriver(JodyAppContext db) : base(db) { }
 
 
-        public override void PrivateCreateDivisions(League league, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
         {            
-            CreateAndAddDivision(league, "League", null, 0, 1, null, null, divs);
-            CreateAndAddDivision(league, "West", null, 1, 2, divs["League"], null, divs);
-            CreateAndAddDivision(league, "East", null, 1, 2, divs["League"], null, divs);
-            CreateAndAddDivision(league, "Pacific", null, 2, 1, divs["West"], null, divs);
-            CreateAndAddDivision(league, "Central", null, 2, 2, divs["West"], null, divs);
-            CreateAndAddDivision(league, "North West", null, 2, 3, divs["West"], null, divs);
-            CreateAndAddDivision(league, "North East", null, 2, 4, divs["East"], null, divs);
-            CreateAndAddDivision(league, "Atlantic", null, 2, 4, divs["East"], null, divs);
 
-            
+            CreateAndAddLeague(this.LeagueName, leagues);
+            CreateAndAddLeague("Extra", leagues);
+        }
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs)
+        {            
+            CreateAndAddDivision(leagues[LeagueName], "League", null, 0, 1, null, null, divs);
+            CreateAndAddDivision(leagues[LeagueName], "West", null, 1, 2, divs["League"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], "East", null, 1, 2, divs["League"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], "Pacific", null, 2, 1, divs["West"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], "Central", null, 2, 2, divs["West"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], "North West", null, 2, 3, divs["West"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], "North East", null, 2, 4, divs["East"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], "Atlantic", null, 2, 4, divs["East"], null, divs);
+
+            CreateAndAddDivision(leagues["Extra"], "Extra Top", null, 0, 1, null, null, divs);
+            CreateAndAddDivision(leagues["Extra"], "Extra Child", null, 1, 2,divs["Extra Top"], null, divs);
+
+
         }
 
         public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)
@@ -54,6 +63,9 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
             CreateAndAddTeam("New York", 5, divs["Atlantic"], teams);
             CreateAndAddTeam("Philadelphia", 5, divs["Atlantic"], teams);
             CreateAndAddTeam("Detroit", 5, divs["Atlantic"], teams);
+
+            CreateAndAddTeam("Pittsburgh", 5, divs["Extra Child"], teams);
+            CreateAndAddTeam("Minneapolis", 5, divs["Extra Child"], teams);
 
         }
     }

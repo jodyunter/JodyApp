@@ -12,19 +12,21 @@ namespace JodyApp.Service.Test.DataFolder
 {
     public class BaseTestDataDriver : AbstractTestDataDriver
     {
+        public String LeagueName = "Base League Name";
+
         public BaseTestDataDriver(JodyAppContext db) : base(db) { }
 
-        public override League PrivateCreateLeague()
+        public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
         {
-            League l = new League() { Name = "My League" };
-
-            return l;
+            League l = new League() { Name = LeagueName };
+            leagues.Add(l.Name, l);
+            
         
         }
 
-        public override void PrivateCreateDivisions(League league, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs)
         {
-            CreateAndAddDivision(league, "League",null, 0, 1, null, null, divs);
+            CreateAndAddDivision(leagues[LeagueName], "League",null, 0, 1, null, null, divs);
         }
 
         public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)

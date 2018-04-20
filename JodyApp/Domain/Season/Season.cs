@@ -21,6 +21,8 @@ namespace JodyApp.Domain.Season
 
         virtual public List<SeasonScheduleRule> ScheduleRules { get; set; }
 
+        public League League { get; set; }
+
         public override bool Equals(object obj)
         {
             var season = obj as Season;

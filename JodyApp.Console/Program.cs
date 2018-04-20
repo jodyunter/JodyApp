@@ -37,7 +37,7 @@ namespace JodyApp.Console
             //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_DIVISION));
 
 
-            Season season = seasonService.CreateNewSeason("My Season", 1);
+            Season season = seasonService.CreateNewSeason(db.Leagues.Where(l => l.Name == "My League").First(), "My Season", 1);
             
             season.SetupStandings();
 

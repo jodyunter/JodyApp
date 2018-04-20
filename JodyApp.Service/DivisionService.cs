@@ -8,6 +8,7 @@ using JodyApp.Database;
 using JodyApp.Domain.Season;
 using System.Data.Entity;
 using JodyApp.Domain.Table;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Service
 {
@@ -43,6 +44,14 @@ namespace JodyApp.Service
             
         }
 
+
+        public List<Division> GetByLeague(League league)
+        {
+            return db.Divisions.Where(d => d.League.Id == league.Id).ToList<Division>();
+        }
+
+        
+     
     }
 }
 

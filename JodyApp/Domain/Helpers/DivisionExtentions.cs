@@ -36,6 +36,11 @@ namespace JodyApp.Domain
 
             return teams;
         }
+        
+        virtual public List<Division> GetByLeague(JodyAppContext db)
+        {
+            return db.Divisions.Where(d => d.League.Id == this.League.Id).ToList<Division>();
+        }
     }
 
 }

@@ -24,17 +24,18 @@ namespace JodyApp.Service
             scheduleService = new ScheduleService(context);
         }
 
-        public Season CreateNewSeason(string name, int year)
+        public Season CreateNewSeason(League league, string name, int year)
         {
             Season season = new Season();
 
+            season.League = league;
             season.Name = name;
             season.Year = year;
 
             Dictionary<string, SeasonDivision> seasonDivisions = new Dictionary<string, SeasonDivision>();
             Dictionary<string, SeasonTeam> seasonTeams = new Dictionary<string, SeasonTeam>();
 
-            foreach (Division d in db.Divisions)
+            foreach (Division d in divisionService.GetByLeague(league))
             {
                 //in the event the parent is added in the recursive steps, we don't want to do it agian
                 if (!seasonDivisions.ContainsKey(d.Name))

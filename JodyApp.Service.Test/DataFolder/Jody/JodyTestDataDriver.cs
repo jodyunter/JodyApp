@@ -12,6 +12,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 {
     public class JodyTestDataDriver : AbstractTestDataDriver
     {
+        String LeagueName = "Jody League";
         public JodyTestDataDriver(JodyAppContext db) : base(db) { }
 
         Division League, WestConference, EastConference;
@@ -19,13 +20,13 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         Team Toronto, Montreal, Ottawa;
         Team Vancouver, Edmonton, Calgary;
 
-        public override void PrivateCreateDivisions(League league, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs)
         {
-            League = CreateAndAddDivision(league, "League", null,0, 1, null, null, divs);
-            WestConference = CreateAndAddDivision(league, "Western Confterence", "Western", 1, 1, League, null, divs);
-            EastConference = CreateAndAddDivision(league, "Eastern Conference", "Eastern", 1, 2, League, null, divs);
-            WestDivision = CreateAndAddDivision(league, "West", "West", 2, 1, WestConference, null, divs);
-            EastDivision = CreateAndAddDivision(league, "East", "East", 2, 2, EastConference, null, divs);
+            League = CreateAndAddDivision(leagues[LeagueName], "League", null, 0, 1, null, null, divs);
+            WestConference = CreateAndAddDivision(leagues[LeagueName], "Western Confterence", "Western", 1, 1, League, null, divs);
+            EastConference = CreateAndAddDivision(leagues[LeagueName], "Eastern Conference", "Eastern", 1, 2, League, null, divs);
+            WestDivision = CreateAndAddDivision(leagues[LeagueName], "West", "West", 2, 1, WestConference, null, divs);
+            EastDivision = CreateAndAddDivision(leagues[LeagueName], "East", "East", 2, 2, EastConference, null, divs);
         }
 
         //todo add league everywhere
@@ -51,12 +52,14 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             Ottawa = CreateAndAddTeam("Ottawa", 5, EastDivision, teams);
             Vancouver = CreateAndAddTeam("Vancouver", 5, WestDivision, teams);
             Edmonton = CreateAndAddTeam("Edmonton", 5, WestDivision, teams);
-            Calgary = CreateAndAddTeam("Calgary", 5, WestDivision, teams);            
+            Calgary = CreateAndAddTeam("Calgary", 5, WestDivision, teams);
         }
 
-        public override League PrivateCreateLeague()
+        public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
         {
-            return new League() { Name = "My League" };
+            League league;
+
+            league = CreateAndAddLeague(LeagueName, leagues);
         }
     }
 }

@@ -38,5 +38,10 @@ namespace JodyApp.Domain.Season
             return teams;
         }
 
+        public override List<Division> GetByLeague(JodyAppContext db)
+        {
+            return db.SeasonDivisions.Where(d => d.League.Id == this.League.Id && d.Season.Id == this.Season.Id).ToList<Division>();
+        }
+
     }
 }

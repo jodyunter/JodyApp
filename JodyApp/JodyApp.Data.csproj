@@ -92,6 +92,10 @@
     <Compile Include="Migrations\201804201613380_Leagues.Designer.cs">
       <DependentUpon>201804201613380_Leagues.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804201759196_SeasonLeague.cs" />
+    <Compile Include="Migrations\201804201759196_SeasonLeague.Designer.cs">
+      <DependentUpon>201804201759196_SeasonLeague.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -108,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804201613380_Leagues.resx">
       <DependentUpon>201804201613380_Leagues.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804201759196_SeasonLeague.resx">
+      <DependentUpon>201804201759196_SeasonLeague.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

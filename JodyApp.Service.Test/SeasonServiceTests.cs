@@ -17,11 +17,12 @@ namespace JodyApp.Service.Test
 
     [TestClass]
     public class SeasonServiceTests
-    {
+    {     
         JodyAppContext db;
         SeasonService service;
         ScheduleService scheduleService;        
         SeasontestDataDriver driver;
+        League league;
 
         [TestInitialize]
         public void Setup()
@@ -32,13 +33,14 @@ namespace JodyApp.Service.Test
             driver = new SeasontestDataDriver(db);
             driver.DeleteAllData();
             driver.InsertData();
+            league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
         }
 
         [TestMethod]
         public void ShouldCreateSecondSeason()
         {
 
-            Season season = service.CreateNewSeason("My Season", 1);
+            Season season = service.CreateNewSeason(league, "My Season", 1);
             Random random = new Random(55555);
 
             season.SetupStandings();
@@ -53,7 +55,7 @@ namespace JodyApp.Service.Test
 
             db.SaveChanges();
 
-            Season season2 = service.CreateNewSeason("Season 2", 2);
+            Season season2 = service.CreateNewSeason(league, "Season 2", 2);
 
             season2.SetupStandings();
 
@@ -64,5 +66,6 @@ namespace JodyApp.Service.Test
 
             db.SaveChanges();
         }
+
     }
 }

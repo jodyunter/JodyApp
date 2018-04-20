@@ -16,8 +16,7 @@ namespace JodyApp.Service.Test
 {
     [TestClass]
     public class DivisionServiceTests
-    {
-        String LeagueName = "My League";
+    {        
         Database.JodyAppContext db = new Database.JodyAppContext();
         DivisionService service;
         DivisionTestDataDriver driver;
@@ -34,10 +33,11 @@ namespace JodyApp.Service.Test
             driver = new DivisionTestDataDriver(db);
             driver.DeleteAllData();
             driver.InsertData();
-            seasonService = new SeasonService(db);
-            season = seasonService.CreateNewSeason("Season Test", 15);
             scheduleService = new ScheduleService(db);
-            league = db.Leagues.Where(l => l.Name == LeagueName).First();
+            league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
+            seasonService = new SeasonService(db);
+            season = seasonService.CreateNewSeason(league, "Season Test", 15);
+
         }
         //these tests depend on specific data
         [TestMethod]
@@ -66,7 +66,7 @@ namespace JodyApp.Service.Test
         public void ShouldSortByDivision()
         {
 
-            Season season = seasonService.CreateNewSeason("Season Testing", 2);            
+            Season season = seasonService.CreateNewSeason(league, "Season Testing", 2);            
             Random random = new Random(15);
 
             season.SetupStandings();
@@ -94,10 +94,22 @@ namespace JodyApp.Service.Test
             );
 
             db.SaveChanges();
-            AreEqual(SHOULDSORTBYDIVISION_EXPECTED, result);            
+            AreEqual(SHOULDSORTBYDIVISION_EXPECTED, result);              
 
-    
+        }
 
+        [TestMethod]
+        public void ShouldGetConfigDivisionsByLeague()
+        {
+            var divisions = new ConfigDivision() { League = league }.GetByLeague(db);
+
+            divisions.ForEach(div =>
+            {
+                IsTrue(div is ConfigDivision);
+                IsFalse(div is SeasonDivision);
+                AreNotEqual("Extra Child", div.Name);
+                AreNotEqual("Extra Top", div.Name);
+            });
         }
 
         private static string SHOULDSORTBYDIVISION_EXPECTED =

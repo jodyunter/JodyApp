@@ -8,7 +8,7 @@ using JodyApp.Database;
 namespace JodyApp.Service.Test.DataFolder.SeasonTestData
 {
     public class SeasontestDataDriver:BaseTestDataDriver
-    {
+    {       
         public SeasontestDataDriver(JodyAppContext db) : base(db) { }
     }
 }

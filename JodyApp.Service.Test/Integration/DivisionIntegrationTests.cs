@@ -11,8 +11,7 @@ namespace JodyApp.Service.Test.Integration
 {
     [TestClass]
     public class DivisionIntegrationTests
-    {
-        String LeagueName = "My League";
+    {        
         Database.JodyAppContext db = new Database.JodyAppContext();
         DivisionTestDataDriver driver;
         League league;
@@ -24,7 +23,7 @@ namespace JodyApp.Service.Test.Integration
             driver = new DivisionTestDataDriver(db);            
             driver.DeleteAllData();
             driver.InsertData();
-            league = db.Leagues.Where(l => l.Name == LeagueName).First();
+            league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
         }
 
         /*Required Tests
