@@ -110,6 +110,16 @@ namespace JodyApp.Service.Test
                 AreNotEqual("Extra Child", div.Name);
                 AreNotEqual("Extra Top", div.Name);
             });
+
+            divisions = new ConfigDivision() { League = db.Leagues.Where(l => l.Name == "Extra").First() }.GetByLeague(db);
+
+            divisions.ForEach(div =>
+            {
+                IsTrue(div is ConfigDivision);
+                IsFalse(div is SeasonDivision);
+                IsTrue(div.Name.Equals("Extra Child") || div.Name.Equals("Extra Top"));
+            });
+
         }
 
         private static string SHOULDSORTBYDIVISION_EXPECTED =

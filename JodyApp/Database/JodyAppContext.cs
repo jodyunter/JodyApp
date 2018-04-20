@@ -3,6 +3,7 @@ using JodyApp.Domain;
 using JodyApp.Domain.Season;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Config;
+using JodyApp.Domain.Table;
 
 namespace JodyApp.Database
 {
@@ -17,7 +18,7 @@ namespace JodyApp.Database
         public DbSet<ConfigDivision> Divisions { get; set; }
         public DbSet<ConfigScheduleRule> ScheduleRules { get; set; }
         public DbSet<ScheduleGame> ScheduleGames { get; set; }
-
+        public DbSet<SortingRule> SortingRules { get; set; }
         //Season Configuration Items
         public DbSet<SeasonTeam> SeasonTeams { get; set; }
         public DbSet<SeasonDivision> SeasonDivisions { get; set; }

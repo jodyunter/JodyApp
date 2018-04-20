@@ -7,6 +7,7 @@ using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Table;
 
 namespace JodyApp.Service.Test.DataFolder
 {
@@ -42,8 +43,11 @@ namespace JodyApp.Service.Test.DataFolder
             CreateAndAddTeam("Minnesota", 5, divs["League"], teams);
         }
 
-
-
+        public override void PrivateCreateSortingRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, SortingRule> rules)
+        {
+            //no special sorting rules by default
+            return;
+        }
     }
 }
 

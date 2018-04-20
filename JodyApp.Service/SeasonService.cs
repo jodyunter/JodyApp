@@ -35,6 +35,7 @@ namespace JodyApp.Service
             Dictionary<string, SeasonDivision> seasonDivisions = new Dictionary<string, SeasonDivision>();
             Dictionary<string, SeasonTeam> seasonTeams = new Dictionary<string, SeasonTeam>();
 
+            //loop once to create teams and new season divisions
             foreach (Division d in divisionService.GetByLeague(league))
             {
                 //in the event the parent is added in the recursive steps, we don't want to do it agian
@@ -42,12 +43,26 @@ namespace JodyApp.Service
                 {
                     seasonDivisions.Add(d.Name, CreateSeasonDivision(season, d, seasonDivisions));
                 }
+
+                d.Teams.ForEach(t => { 
+                    SeasonTeam team = new SeasonTeam(t, seasonDivisions[t.Division.Name]);
+                    db.SeasonTeams.Add(team);
+                    seasonTeams.Add(team.Name, team);
+                });                
             }
-            foreach(Team t in db.Teams)
+
+            //lop to process the sorting rules, this requires the divisions be created first
+            foreach (Division d in divisionService.GetByLeague(league))
             {
-                SeasonTeam team = new SeasonTeam(t, seasonDivisions[t.Division.Name]);                
-                db.SeasonTeams.Add(team);
-                seasonTeams.Add(team.Name, team);
+                SeasonDivision seasonDiv = seasonDivisions[d.Name];
+                seasonDiv.SortingRules = new List<SortingRule>();
+
+                d.SortingRules.ForEach(rule =>
+                {
+                    SortingRule newRule = new SortingRule(seasonDivisions[rule.Division.Name], seasonDivisions[rule.DivisionToGetTeamsFrom.Name], rule);
+                    db.SortingRules.Add(newRule);
+                });
+                
             }
 
             foreach(ScheduleRule rule in scheduleService.GetConfigRules())
@@ -89,7 +104,6 @@ namespace JodyApp.Service
             return season;
             
         }
-
         private SeasonDivision CreateSeasonDivision(Season season, Division d, Dictionary<string, SeasonDivision> seasonDivisions)
         {
             SeasonDivision division = new SeasonDivision(d, season); 
@@ -103,20 +117,6 @@ namespace JodyApp.Service
                 }
 
                 division.Parent = seasonDivisions[d.Parent.Name];
-            }
-
-            if (d.SortingRules != null && d.SortingRules.Count > 0)
-            {
-                d.SortingRules.ForEach(rule =>
-                {
-                    Division dToGetTeamsFrom = null;
-                    if (rule.DivisionToGetTeamsFrom != null)
-                    {
-                        dToGetTeamsFrom = new SeasonDivision() { Name = rule.DivisionToGetTeamsFrom.Name, Season = season }.GetByName(db);
-                    }
-                    SortingRule newRule = new SortingRule(dToGetTeamsFrom, rule);
-                    division.SortingRules.Add(newRule);
-                });
             }
 
             return division;

@@ -13,33 +13,6 @@ namespace JodyApp.Domain.Table.Display
 
         public static String RecordTableTeamFormat = "{0,-5}{1,-15}{2,5}{3,5}{4,5}{5,5}{6,5}{7,5}{8,5}{9,5}{10,15}";
 
-        public static string PrintRecordTable(RecordTable table, int sortByValue)
-        {
-            SortedDictionary<Division, List<RecordTableTeam>> standings = StandingsSorter.SortByDivisionLevel(table, sortByValue);
-
-            string result = "";
-            
-            foreach (KeyValuePair<Division, List<RecordTableTeam>> entity in standings)
-            {
-
-                result += entity.Key.Name;
-                result += "\n";
-
-                result += GetRecordTableRowHeader();
-
-                entity.Value.ForEach(team =>
-                {
-                    result += "\n";
-                    result += GetRecordTableRow(team);
-                });
-
-                result += "\n";
-
-            }
-
-            return result;
-            
-        }
         public static string GetRecordTableRowHeader()
         {
             string result = String.Format(

@@ -24,10 +24,11 @@ namespace JodyApp.Service.Test.DataFolder
         abstract public void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs);
         abstract public void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules);
         abstract public void PrivateCreateLeagues(Dictionary<string, League> leagues);
+        public abstract void PrivateCreateSortingRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, SortingRule> rules);
 
         public void DeleteAllData()
         {
-            string[] tables = {"DivisionRanks", "ScheduleRules", "Teams", "TeamStatistics", "Divisions", "Seasons", "Leagues"};
+            string[] tables = {"SortingRules", "DivisionRanks", "ScheduleRules", "Teams", "TeamStatistics", "Divisions", "Seasons", "Leagues"};
             var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
             foreach (string table in tables)
             {
@@ -65,6 +66,23 @@ namespace JodyApp.Service.Test.DataFolder
                                     Dictionary<string, ConfigScheduleRule> map)
         {
             ConfigScheduleRule rule = new ConfigScheduleRule(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel);
+            map.Add(rule.Name, rule);
+            return rule;
+        }
+
+        public SortingRule CreateAndAddSortingRule(Division division, String name, int groupNumber, Division divToGetTeamsFrom, string positionsToUse, int divisionLevel, int ruleType, Dictionary<string, SortingRule> map)
+        {
+            SortingRule rule = new SortingRule()
+            {
+                Division = division,
+                Name = name,
+                GroupNumber = groupNumber,
+                DivisionToGetTeamsFrom = divToGetTeamsFrom,
+                PositionsToUse = positionsToUse,
+                DivisionLevel = divisionLevel,
+                Type = ruleType
+            };
+
             map.Add(rule.Name, rule);
             return rule;
         }
@@ -129,6 +147,19 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
+        public Dictionary<string, SortingRule> CreateSortingRules(Dictionary<string, ConfigDivision> divs)
+        {
+            var rules = new Dictionary<string, SortingRule>();
+
+            PrivateCreateSortingRules(divs, rules);
+
+            db.SortingRules.AddRange(rules.Values);
+            db.SaveChanges();
+
+            return rules;
+        }
+        
+
         public void InsertData()
         {
             Dictionary<string, League> leagues = CreateLeagues();
@@ -136,6 +167,7 @@ namespace JodyApp.Service.Test.DataFolder
             Dictionary<string, ConfigDivision> divs = CreateDivisions(leagues);
             Dictionary<string, ConfigTeam> teams = CreateTeams(divs);
             Dictionary<string, ConfigScheduleRule> scheduleRules = CreateRules(divs, teams);
+            Dictionary<string, SortingRule> sortingRules = CreateSortingRules(divs);
         }
     }
 }

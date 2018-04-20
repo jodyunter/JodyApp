@@ -7,6 +7,7 @@ using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Table;
 
 namespace JodyApp.Service.Test.DataFolder.Jody
 {
@@ -15,18 +16,21 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         String LeagueName = "Jody League";
         public JodyTestDataDriver(JodyAppContext db) : base(db) { }
 
-        Division League, WestConference, EastConference;
-        Division WestDivision, EastDivision;
+        Division League, WestConference, EastConference, CentralConference;
+        Division WestDivision, EastDivision, CentralDivision;
         Team Toronto, Montreal, Ottawa;
         Team Vancouver, Edmonton, Calgary;
+        Team Winnipeg, Minnesota, Chicago;
 
         public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs)
         {
             League = CreateAndAddDivision(leagues[LeagueName], "League", null, 0, 1, null, null, divs);
             WestConference = CreateAndAddDivision(leagues[LeagueName], "Western Confterence", "Western", 1, 1, League, null, divs);
             EastConference = CreateAndAddDivision(leagues[LeagueName], "Eastern Conference", "Eastern", 1, 2, League, null, divs);
+            CentralConference = CreateAndAddDivision(leagues[LeagueName], "Central Conference", "Central", 1, 3, League, null, divs);
             WestDivision = CreateAndAddDivision(leagues[LeagueName], "West", "West", 2, 1, WestConference, null, divs);
             EastDivision = CreateAndAddDivision(leagues[LeagueName], "East", "East", 2, 2, EastConference, null, divs);
+            CentralDivision = CreateAndAddDivision(leagues[LeagueName], "Central", "Central", 2, 3, CentralConference, null, divs);
         }
 
         //todo add league everywhere
@@ -37,6 +41,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             rule1 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 1", League, true, 2);
             rule2 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 2", WestDivision, true, 5);
             rule3 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 3", EastDivision, true, 5);
+            rule4 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 4", CentralDivision, true, 5);
             rule4 = ConfigScheduleRule.CreateByDivisionLevel("Rule 4", 1, true, 5);
 
             CreateAndAddRule(rule1, rules);
@@ -53,8 +58,17 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             Vancouver = CreateAndAddTeam("Vancouver", 5, WestDivision, teams);
             Edmonton = CreateAndAddTeam("Edmonton", 5, WestDivision, teams);
             Calgary = CreateAndAddTeam("Calgary", 5, WestDivision, teams);
+            Winnipeg = CreateAndAddTeam("Winnipeg", 5, CentralDivision, teams);
+            Minnesota = CreateAndAddTeam("Minnesota", 5, CentralDivision, teams);
+            Chicago = CreateAndAddTeam("Chicago", 5, CentralDivision, teams);
         }
 
+        public override void PrivateCreateSortingRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, SortingRule> rules)
+        {
+            CreateAndAddSortingRule(League, "Sorting Rule 1", 0, WestConference, "1", -1, -1, rules);
+            CreateAndAddSortingRule(League, "Sorting Rule 2", 0, EastConference, "1", -1, -1, rules);
+            CreateAndAddSortingRule(League, "Sorting Rule 3", 0, CentralConference, "1", -1, -1, rules);
+        }
         public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
         {
             League league;

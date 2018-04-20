@@ -37,7 +37,7 @@ namespace JodyApp.Console
             //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_DIVISION));
 
 
-            Season season = seasonService.CreateNewSeason(db.Leagues.Where(l => l.Name == "My League").First(), "My Season", 1);
+            Season season = seasonService.CreateNewSeason(db.Leagues.Where(l => l.Name == "Jody League").First(), "My Season", 1);
             
             season.SetupStandings();
 
@@ -48,7 +48,12 @@ namespace JodyApp.Console
                game.Play(random);
                season.Standings.ProcessGame(game);
            });
-            System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(season.Standings, StandingsSorter.SORTY_BY_CONFERENCE));
+
+            System.Console.WriteLine(RecordTableDisplay.GetRecordTableRowHeader());
+            StandingsSorter.SortByRules(season.Standings.SortIntoDivisions(), (RecordTableDivision)new SeasonDivision() { Name = "League", Season = season, League = season.League }.GetByName(db)).ForEach(t =>
+            {
+                System.Console.WriteLine(RecordTableDisplay.GetRecordTableRow(t));
+            });
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();

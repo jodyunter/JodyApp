@@ -19,9 +19,9 @@ namespace JodyApp.Domain.Season
 
         public override Division GetByName(JodyAppContext db)
         {
-            var division = db.SeasonDivisions.Include("Season").Where(d => d.Name.Equals(Name) && d.Season.Id == Season.Id && this.League.Id == d.League.Id);
+            return db.SeasonDivisions.Include("Season").Where(d => d.Name.Equals(Name) && d.Season.Id == Season.Id && this.League.Id == d.League.Id).First();
 
-            return division.First();
+            
         }
 
 

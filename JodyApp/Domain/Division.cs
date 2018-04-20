@@ -19,6 +19,7 @@ namespace JodyApp.Domain
         virtual public List<Team> Teams { get; set; }
         virtual public Division Parent { get; set; }
         virtual public List<ScheduleRule> Rules { get; set; }
+        [InverseProperty("Division")]
         virtual public List<SortingRule> SortingRules { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
