@@ -19,7 +19,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         Team Toronto, Montreal, Ottawa;
         Team Vancouver, Edmonton, Calgary;
 
-        public override void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, ConfigDivision> divs)
         {
             League = CreateAndAddDivision("League", null,0, 1, null, null, divs);
             WestConference = CreateAndAddDivision("Western Confterence", "Western", 1, 1, League, null, divs);
@@ -28,14 +28,14 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             EastDivision = CreateAndAddDivision("East", "East", 2, 2, EastConference, null, divs);
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)
         {
             ScheduleRule rule1, rule2, rule3, rule4;
 
-            rule1 = BaseScheduleRule.CreateByDivisionVsSelf("Rule 1", League, true, 2);
-            rule2 = BaseScheduleRule.CreateByDivisionVsSelf("Rule 2", WestDivision, true, 5);
-            rule3 = BaseScheduleRule.CreateByDivisionVsSelf("Rule 3", EastDivision, true, 5);
-            rule4 = BaseScheduleRule.CreateByDivisionLevel("Rule 4", 1, true, 5);
+            rule1 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 1", League, true, 2);
+            rule2 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 2", WestDivision, true, 5);
+            rule3 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 3", EastDivision, true, 5);
+            rule4 = ConfigScheduleRule.CreateByDivisionLevel("Rule 4", 1, true, 5);
 
             CreateAndAddRule(rule1, rules);
             CreateAndAddRule(rule2, rules);
@@ -43,7 +43,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             CreateAndAddRule(rule4, rules);
         }
 
-        public override void PrivateCreateTeams(Dictionary<string, BaseTeam> teams, Dictionary<string, BaseDivision> divs)
+        public override void PrivateCreateTeams(Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigDivision> divs)
         {
             Toronto = CreateAndAddTeam("Toronto", 5, EastDivision, teams);
             Montreal = CreateAndAddTeam("Montreal", 5, EastDivision, teams);

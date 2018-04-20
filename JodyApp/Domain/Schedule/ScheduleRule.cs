@@ -9,7 +9,7 @@ using JodyApp.Domain.Config;
 
 namespace JodyApp.Domain.Schedule
 {
-    public abstract class ScheduleRule:DomainObject
+    public abstract partial class ScheduleRule:DomainObject
     {
         //rules with opponents implied
         public const int BY_DIVISION_LEVEL = 2;  //use this to first sort all teams by division level, then they all play games against each other

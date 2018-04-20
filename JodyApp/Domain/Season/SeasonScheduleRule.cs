@@ -8,10 +8,11 @@ using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Domain.Season
 {    
-    public class SeasonScheduleRule : ScheduleRule
+    public partial class SeasonScheduleRule : ScheduleRule
     {        
         virtual public Season Season { get; set; }
 
+        public SeasonScheduleRule() { }
         public SeasonScheduleRule(Season season, ScheduleRule rule) : base(rule)
         {
             Season = season;

@@ -28,7 +28,7 @@ namespace JodyApp.Data.Test.Domain
         }
         public static Team CreateBasicTeam(String name, int skill)
         {
-            return new BaseTeam
+            return new ConfigTeam
             {
                 Name = name,
                 Skill = skill

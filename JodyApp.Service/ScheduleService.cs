@@ -58,20 +58,13 @@ namespace JodyApp.Service
             {
                 List<Division> divisions;
 
-                if (rule is SeasonScheduleRule)
-                {
-                    divisions = divisionService.GetDivisionsByLevel(rule.DivisionLevel, ((SeasonScheduleRule)rule).Season);
-                }
-                else
-                {
-                    divisions = divisionService.GetDivisionsByLevel(rule.DivisionLevel);
-                }
+                divisions = rule.GetDivisionsByLevel(db);
 
                 divisions.ForEach(d =>
                 {
                     homeTeams = new List<Team>();                    
 
-                    homeTeams.AddRange(divisionService.GetAllTeamsInDivision(d));
+                    homeTeams.AddRange(d.GetAllTeamsInDivision(db));
 
                     games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), null, rule.PlayHomeAway, rule.Rounds));
                 });
@@ -95,7 +88,7 @@ namespace JodyApp.Service
                     teamList.Add(team);
                     break;
                 case ScheduleRule.BY_DIVISION:
-                    teamList.AddRange(divisionService.GetAllTeamsInDivision(division));
+                    teamList.AddRange(division.GetAllTeamsInDivision(db));
                     break;
                 case ScheduleRule.NONE:
                     break;

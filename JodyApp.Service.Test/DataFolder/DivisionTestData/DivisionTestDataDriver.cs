@@ -16,7 +16,7 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
         public DivisionTestDataDriver(JodyAppContext db) : base(db) { }                    
 
 
-        public override void PrivateCreateDivisions(Dictionary<string, BaseDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, ConfigDivision> divs)
         {            
             CreateAndAddDivision("League", null, 0, 1, null, null, divs);
             CreateAndAddDivision("West", null, 1, 2, divs["League"], null, divs);
@@ -30,12 +30,12 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
             
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, BaseDivision> divs, Dictionary<string, BaseTeam> teams, Dictionary<string, BaseScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)
         {
             CreateAndAddRule("Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 2, 0, rules);
         }
 
-        public override void PrivateCreateTeams(Dictionary<string, BaseTeam> teams, Dictionary<string, BaseDivision> divs)
+        public override void PrivateCreateTeams(Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigDivision> divs)
         {            
             CreateAndAddTeam("Los Angelas", 5, divs["Pacific"], teams);
             CreateAndAddTeam("Seattle", 5, divs["Pacific"], teams);

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class BaseTeam: Team
+    public class ConfigTeam: Team
     {
-        public BaseTeam() { }
-        public BaseTeam(string name, int skill, Division div) : base(name, skill, div) { }
+        public ConfigTeam() { }
+        public ConfigTeam(string name, int skill, Division div) : base(name, skill, div) { }
     }
 }

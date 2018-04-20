@@ -8,7 +8,7 @@ using JodyApp.Domain.Table;
 
 namespace JodyApp.Domain.Season
 { 
-    public class SeasonDivision:RecordTableDivision
+    public partial class SeasonDivision:RecordTableDivision
     {        
         virtual public Season Season { get; set; }
 
@@ -24,5 +24,6 @@ namespace JodyApp.Domain.Season
             //sorting rules must be handled seperately
             //parent must be handled seperately
         }
+        
     }
 }

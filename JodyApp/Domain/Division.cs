@@ -9,7 +9,7 @@ using JodyApp.Domain.Schedule;
 namespace JodyApp.Domain
 {    
     [Table("Divisions")]
-    public class Division: DomainObject,IEquatable<Division>, IComparable<Division>
+    public abstract partial class Division: DomainObject,IEquatable<Division>, IComparable<Division>
     {
         private string _shortName;
 

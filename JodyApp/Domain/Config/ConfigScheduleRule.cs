@@ -8,20 +8,20 @@ using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Domain.Config
 {    
-    public class BaseScheduleRule : ScheduleRule
+    public class ConfigScheduleRule : ScheduleRule
     {        
-        public BaseScheduleRule() { }
-        public BaseScheduleRule(ScheduleRule rule):base(rule)
+        public ConfigScheduleRule() { }
+        public ConfigScheduleRule(ScheduleRule rule):base(rule)
         {
 
         }
-        public BaseScheduleRule(string name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds, int divisionLevel) : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds, divisionLevel)
+        public ConfigScheduleRule(string name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds, int divisionLevel) : base(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds, divisionLevel)
         {
         }
 
         public static ScheduleRule CreateByDivisionVsSelf(String name, Division division, bool playHomeAway, int rounds)
         {
-            return new BaseScheduleRule()
+            return new ConfigScheduleRule()
             {
                 Name = name,
                 HomeType = ScheduleRule.BY_DIVISION,
@@ -34,7 +34,7 @@ namespace JodyApp.Domain.Config
         }
         public static ScheduleRule CreateByDivisionVsDivision(String name, Division homeDivision, Division awayDivision, bool playHomeAway, int rounds)
         {
-            return new BaseScheduleRule()
+            return new ConfigScheduleRule()
             {
                 Name = name,
                 HomeType = ScheduleRule.BY_DIVISION,
@@ -48,7 +48,7 @@ namespace JodyApp.Domain.Config
         }
         public static ScheduleRule CreateByTeamVsTeam(String name, Team homeTeam, Team awayTeam, bool playHomeAway, int rounds)
         {
-            return new BaseScheduleRule()
+            return new ConfigScheduleRule()
             {
                 Name = name,
                 HomeType = ScheduleRule.BY_TEAM,
@@ -61,7 +61,7 @@ namespace JodyApp.Domain.Config
         }
         public static ScheduleRule CreateByTeamVsDivision(string name, Team team, Division division, bool playHomeAway, int rounds)
         {
-            return new BaseScheduleRule()
+            return new ConfigScheduleRule()
             {
                 Name = name,
                 HomeType = ScheduleRule.BY_TEAM,
@@ -74,7 +74,7 @@ namespace JodyApp.Domain.Config
         }
         public static ScheduleRule CreateByDivisionVsTeam(string name, Division division, Team team, bool playHomeAway, int rounds)
         {
-            return new BaseScheduleRule()
+            return new ConfigScheduleRule()
             {
                 Name = name,
                 HomeType = ScheduleRule.BY_DIVISION,
@@ -87,7 +87,7 @@ namespace JodyApp.Domain.Config
         }
         public static ScheduleRule CreateByDivisionLevel(string name, int divisionLevel, bool playHomeAway, int rounds)
         {
-            return new BaseScheduleRule()
+            return new ConfigScheduleRule()
             {
                 Name = name,
                 HomeType = ScheduleRule.BY_DIVISION_LEVEL,

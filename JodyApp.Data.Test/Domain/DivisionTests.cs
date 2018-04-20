@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Domain;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Data.Test.Domain
 {
@@ -11,14 +12,14 @@ namespace JodyApp.Data.Test.Domain
         [TestMethod]
         public void ShouldGetShortNameWhenNull()
         {
-            Division d = new Division("Name", null, 0, 0, null);
+            Division d = new ConfigDivision("Name", null, 0, 0, null,null);
 
             AreEqual(d.Name, d.ShortName);
         }
         [TestMethod]
         public void ShouldGetShortNameWhenNotNull()
         {
-            Division d = new Division("Name", "SHORT", 0, 0, null);
+            Division d = new ConfigDivision("Name", "SHORT", 0, 0, null, null);
 
             AreNotEqual(d.Name, d.ShortName);
             AreEqual("SHORT", d.ShortName);

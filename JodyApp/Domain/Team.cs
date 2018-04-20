@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JodyApp.Domain
 {    
+    [Table("Teams")]
     public abstract class Team : DomainObject
     {               
         public String Name { get; set; }

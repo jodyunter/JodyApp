@@ -50,11 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\JodyAppContext.cs" />
-    <Compile Include="Domain\Config\BaseDivision.cs" />
-    <Compile Include="Domain\Config\BaseScheduleRule.cs" />
-    <Compile Include="Domain\Config\BaseTeam.cs" />
+    <Compile Include="Domain\Config\ConfigDivision.cs" />
+    <Compile Include="Domain\Config\ConfigScheduleRule.cs" />
+    <Compile Include="Domain\Config\ConfigTeam.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DivisionRanks.cs" />
+    <Compile Include="Domain\Helpers\DivisionExtentions.cs" />
+    <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />
+    <Compile Include="Domain\Season\Helpers\SeasonDivisionExtensions.cs" />
+    <Compile Include="Domain\Season\Helpers\SeasonScheduleRuleExtensions.cs" />
     <Compile Include="Domain\Table\RecordTableDivisionRank.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
