@@ -43,14 +43,17 @@ namespace JodyApp.Service
                 {
                     seasonDivisions.Add(d.Name, CreateSeasonDivision(season, d, seasonDivisions));
                 }
-
-                d.Teams.ForEach(t => { 
-                    SeasonTeam team = new SeasonTeam(t, seasonDivisions[t.Division.Name]);
-                    db.SeasonTeams.Add(team);
-                    seasonTeams.Add(team.Name, team);
-                });                
+              
             }
-            
+
+            foreach (Division d in divisionService.GetByLeague(league))
+            {
+                d.Teams.ForEach(dt => {
+                    SeasonTeam seasonTeam = new SeasonTeam(dt, seasonDivisions[d.Name]);
+                    db.SeasonTeams.Add(seasonTeam);
+                    seasonTeams.Add(seasonTeam.Name, seasonTeam);
+                });
+            }
 
             //lop to process the sorting rules, this requires the divisions be created first
             foreach (Division d in divisionService.GetByLeague(league))

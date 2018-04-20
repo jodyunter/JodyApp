@@ -11,7 +11,7 @@ namespace JodyApp.Domain.Season
     {
         public List<SeasonTeam> Teams { get; set; }
 
-        public List<SeasonDivision> GetDivisionsByParent(JodyAppContext db)
+        public new List<SeasonDivision> GetDivisionsByParent(JodyAppContext db)
         {            
             var divs = db.SeasonDivisions.Where(div => div.Parent.Id == this.Id && this.Season.Id == div.Season.Id && this.League.Id == div.League.Id);
 
@@ -19,14 +19,14 @@ namespace JodyApp.Domain.Season
 
         }
 
-        public SeasonDivision GetByName(JodyAppContext db)
+        public new SeasonDivision GetByName(JodyAppContext db)
         {
             return db.SeasonDivisions.Include("Season").Where(d => d.Name.Equals(Name) && d.Season.Id == Season.Id && this.League.Id == d.League.Id).First();
 
             
         }
 
-        public List<SeasonTeam> GetAllTeamsInDivision(JodyAppContext db)
+        public new List<SeasonTeam> GetAllTeamsInDivision(JodyAppContext db)
         {
 
             List<SeasonTeam> teams = new List<SeasonTeam>();
@@ -34,7 +34,7 @@ namespace JodyApp.Domain.Season
 
             this.GetDivisionsByParent(db).ForEach(div =>
             {
-                teams.AddRange(((SeasonDivision)div).GetAllTeamsInDivision(db));
+                teams.AddRange(div.GetAllTeamsInDivision(db));
             });
 
             return teams;
@@ -43,7 +43,7 @@ namespace JodyApp.Domain.Season
         }
 
 
-    public List<SeasonDivision> GetByLeague(JodyAppContext db)
+    public new List<SeasonDivision> GetByLeague(JodyAppContext db)
         {
             return db.SeasonDivisions.Where(d => d.League.Id == this.League.Id && d.Season.Id == this.Season.Id).ToList<SeasonDivision>();
         }
