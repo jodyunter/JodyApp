@@ -16,12 +16,10 @@ namespace JodyApp.Domain.Table
             if (sortingRules == null) sortingRules = new List<SortingRule>();
             SortingRules = sortingRules;
         }
-         
-
-        public List<SortingRule> SortingRules { get; set; }
+                 
         public List<RecordTableDivisionRank> Rankings { get; set; }
 
-        public void SetRank(int rank, RecordTableTeam team)
+        public override void SetRank(int rank, RecordTableTeam team)
         {
             if (Rankings == null) Rankings = new List<RecordTableDivisionRank>();
 

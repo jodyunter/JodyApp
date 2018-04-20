@@ -76,7 +76,7 @@ namespace JodyApp.Service
                                                     );
                 db.SeasonScheduleRules.Add(seasonRule);
                 
-            }
+            }            
 
 
             //need to change season rules too
@@ -104,8 +104,23 @@ namespace JodyApp.Service
                 division.Parent = seasonDivisions[d.Parent.Name];
             }
 
+            if (d.SortingRules != null && d.SortingRules.Count > 0)
+            {
+                d.SortingRules.ForEach(rule =>
+                {
+                    Division dToGetTeamsFrom = null;
+                    if (rule.DivisionToGetTeamsFrom != null)
+                    {
+                        dToGetTeamsFrom = new SeasonDivision() { Name = rule.DivisionToGetTeamsFrom.Name, Season = season }.GetByName(db);
+                    }
+                    SortingRule newRule = new SortingRule(dToGetTeamsFrom, rule);
+                    division.SortingRules.Add(newRule);
+                });
+            }
+
             return division;
         }
+        
 
         public void SortAllDivisions(Season season)
         {

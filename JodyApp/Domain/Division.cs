@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Table;
 
 namespace JodyApp.Domain
 {    
@@ -17,7 +18,8 @@ namespace JodyApp.Domain
         public String ShortName { get { if (_shortName == null) return Name; else return _shortName; } set { _shortName = value; }}
         virtual public List<Team> Teams { get; set; }
         virtual public Division Parent { get; set; }
-        virtual public List<ScheduleRule> Rules { get; set; }        
+        virtual public List<ScheduleRule> Rules { get; set; }
+        virtual public List<SortingRule> SortingRules { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
 
@@ -47,5 +49,7 @@ namespace JodyApp.Domain
         {
             return base.Equals(other);
         }
+
+        public abstract void SetRank(int rank, RecordTableTeam recordTableTeam);
     }
 }

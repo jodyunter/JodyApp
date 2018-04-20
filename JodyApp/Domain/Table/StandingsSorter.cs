@@ -89,7 +89,7 @@ namespace JodyApp.Domain.Table
                 division.SortingRules.ForEach(rule =>
                 {
                     //ensure the division we are getting teams from is sorted
-                    var sortedTeams = SortByRules(teamsByDivision, rule.DivisionToGetTeamsFrom);
+                    var sortedTeams = SortByRules(teamsByDivision, (RecordTableDivision)rule.DivisionToGetTeamsFrom);
 
                     rule.PositionsToUse.Split(',').Select(int.Parse).ToList<int>().ForEach(i =>
                     {
