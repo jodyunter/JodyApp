@@ -10,7 +10,7 @@ namespace JodyApp.Domain.Config
     public class ConfigDivision:RecordTableDivision
     {
         public ConfigDivision() { }
-        public ConfigDivision(string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : base(name, shortName, level, order, parent, sortingRules) { }
+        public ConfigDivision(League league, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : base(league, name, shortName, level, order, parent, sortingRules) { }
 
         
     }

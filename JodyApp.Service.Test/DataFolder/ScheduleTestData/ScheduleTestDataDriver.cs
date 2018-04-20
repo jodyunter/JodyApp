@@ -15,12 +15,12 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
 
         public ScheduleTestDataDriver(JodyAppContext db) : base(db) { }
 
-        public override void PrivateCreateDivisions(Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateDivisions(League league, Dictionary<string, ConfigDivision> divs)
         {            
 
-            CreateAndAddDivision("League", null, 0, 1, null, null, divs);
-            CreateAndAddDivision("Div 1", null, 1, 1, divs["League"], null, divs);
-            CreateAndAddDivision("Div 2", null, 1, 2, divs["League"], null, divs);
+            CreateAndAddDivision(league, "League", null, 0, 1, null, null, divs);
+            CreateAndAddDivision(league, "Div 1", null, 1, 1, divs["League"], null, divs);
+            CreateAndAddDivision(league, "Div 2", null, 1, 2, divs["League"], null, divs);
             
         }
 

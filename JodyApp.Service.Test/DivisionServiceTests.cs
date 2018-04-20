@@ -17,13 +17,14 @@ namespace JodyApp.Service.Test
     [TestClass]
     public class DivisionServiceTests
     {
-
+        String LeagueName = "My League";
         Database.JodyAppContext db = new Database.JodyAppContext();
         DivisionService service;
         DivisionTestDataDriver driver;
         SeasonService seasonService;
         ScheduleService scheduleService;
         Season season;
+        League league;
 
         [TestInitialize]
         public void Setup()
@@ -36,13 +37,14 @@ namespace JodyApp.Service.Test
             seasonService = new SeasonService(db);
             season = seasonService.CreateNewSeason("Season Test", 15);
             scheduleService = new ScheduleService(db);
+            league = db.Leagues.Where(l => l.Name == LeagueName).First();
         }
         //these tests depend on specific data
         [TestMethod]
         public void ShouldGetDivisionsByParent()
         {            
-            Division league = new ConfigDivision() { Name = "League" }.GetByName(db);
-            List<Division> divisions = league.GetDivisionsByParent(db);            
+            Division leagueDiv = new ConfigDivision() { Name = "League", League = league }.GetByName(db);
+            List<Division> divisions = leagueDiv.GetDivisionsByParent(db);            
 
             AreEqual(2, divisions.Count);
             AreEqual("East", divisions[1].Name);
@@ -52,8 +54,8 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetSeasonDivisionsByParent()
         {
-            Division league = new ConfigDivision() { Name = "League" }.GetByName(db);
-            List<Division> divisions = league.GetDivisionsByParent(db);
+            Division leagueDiv = new ConfigDivision() { Name = "League", League = league }.GetByName(db);
+            List<Division> divisions = leagueDiv.GetDivisionsByParent(db);
 
             AreEqual(2, divisions.Count);
             AreEqual("East", divisions[1].Name);
@@ -80,7 +82,7 @@ namespace JodyApp.Service.Test
             db.SaveChanges();
             
             
-            SeasonDivision seasonDivision = (SeasonDivision)(new SeasonDivision() { Name = "West", Season = season }.GetByName(db));
+            SeasonDivision seasonDivision = (SeasonDivision)(new SeasonDivision() { Name = "West", Season = season, League = league }.GetByName(db));
 
             var rank = service.SortByDivision(seasonDivision);
 

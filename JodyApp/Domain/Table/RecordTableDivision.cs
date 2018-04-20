@@ -11,7 +11,7 @@ namespace JodyApp.Domain.Table
     public class RecordTableDivision:Division
     {
         public RecordTableDivision() { }
-        public RecordTableDivision(string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : base(name, shortName, level, order, parent)
+        public RecordTableDivision(League league, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : base(league, name, shortName, level, order, parent)
         {
             if (sortingRules == null) sortingRules = new List<SortingRule>();
             SortingRules = sortingRules;

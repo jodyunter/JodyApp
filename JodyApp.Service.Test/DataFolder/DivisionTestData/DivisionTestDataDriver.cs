@@ -16,16 +16,16 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
         public DivisionTestDataDriver(JodyAppContext db) : base(db) { }                    
 
 
-        public override void PrivateCreateDivisions(Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateDivisions(League league, Dictionary<string, ConfigDivision> divs)
         {            
-            CreateAndAddDivision("League", null, 0, 1, null, null, divs);
-            CreateAndAddDivision("West", null, 1, 2, divs["League"], null, divs);
-            CreateAndAddDivision("East", null, 1, 2, divs["League"], null, divs);
-            CreateAndAddDivision("Pacific", null, 2, 1, divs["West"], null, divs);
-            CreateAndAddDivision("Central", null, 2, 2, divs["West"], null, divs);
-            CreateAndAddDivision("North West", null, 2, 3, divs["West"], null, divs);
-            CreateAndAddDivision("North East", null, 2, 4, divs["East"], null, divs);
-            CreateAndAddDivision("Atlantic",null, 2, 4, divs["East"], null, divs);
+            CreateAndAddDivision(league, "League", null, 0, 1, null, null, divs);
+            CreateAndAddDivision(league, "West", null, 1, 2, divs["League"], null, divs);
+            CreateAndAddDivision(league, "East", null, 1, 2, divs["League"], null, divs);
+            CreateAndAddDivision(league, "Pacific", null, 2, 1, divs["West"], null, divs);
+            CreateAndAddDivision(league, "Central", null, 2, 2, divs["West"], null, divs);
+            CreateAndAddDivision(league, "North West", null, 2, 3, divs["West"], null, divs);
+            CreateAndAddDivision(league, "North East", null, 2, 4, divs["East"], null, divs);
+            CreateAndAddDivision(league, "Atlantic", null, 2, 4, divs["East"], null, divs);
 
             
         }

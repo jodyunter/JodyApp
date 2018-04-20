@@ -8,14 +8,14 @@ using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table;
 
 namespace JodyApp.Domain
-{    
+{
     [Table("Divisions")]
-    public abstract partial class Division: DomainObject,IEquatable<Division>, IComparable<Division>
+    public abstract partial class Division : DomainObject, IEquatable<Division>, IComparable<Division>
     {
         private string _shortName;
 
         public string Name { get; set; }
-        public String ShortName { get { if (_shortName == null) return Name; else return _shortName; } set { _shortName = value; }}
+        public String ShortName { get { if (_shortName == null) return Name; else return _shortName; } set { _shortName = value; } }
         virtual public List<Team> Teams { get; set; }
         virtual public Division Parent { get; set; }
         virtual public List<ScheduleRule> Rules { get; set; }
@@ -23,14 +23,16 @@ namespace JodyApp.Domain
         public int Level { get; set; }
         public int Order { get; set; }
 
+        public League League { get; set; }
         public Division() { }
-        public Division(string name, string shortName, int level, int order, Division parent)
+        public Division(League league, string name, string shortName, int level, int order, Division parent)
         {
             this.Name = name;
             this.ShortName = shortName;
             this.Level = level;
             this.Order = order;
             this.Parent = parent;
+            this.League = league;
             Teams = new List<Team>();
                  
         }

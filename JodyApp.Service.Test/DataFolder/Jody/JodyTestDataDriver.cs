@@ -19,15 +19,16 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         Team Toronto, Montreal, Ottawa;
         Team Vancouver, Edmonton, Calgary;
 
-        public override void PrivateCreateDivisions(Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateDivisions(League league, Dictionary<string, ConfigDivision> divs)
         {
-            League = CreateAndAddDivision("League", null,0, 1, null, null, divs);
-            WestConference = CreateAndAddDivision("Western Confterence", "Western", 1, 1, League, null, divs);
-            EastConference = CreateAndAddDivision("Eastern Conference", "Eastern", 1, 2, League, null, divs);
-            WestDivision = CreateAndAddDivision("West", "West", 2, 1, WestConference, null, divs);
-            EastDivision = CreateAndAddDivision("East", "East", 2, 2, EastConference, null, divs);
+            League = CreateAndAddDivision(league, "League", null,0, 1, null, null, divs);
+            WestConference = CreateAndAddDivision(league, "Western Confterence", "Western", 1, 1, League, null, divs);
+            EastConference = CreateAndAddDivision(league, "Eastern Conference", "Eastern", 1, 2, League, null, divs);
+            WestDivision = CreateAndAddDivision(league, "West", "West", 2, 1, WestConference, null, divs);
+            EastDivision = CreateAndAddDivision(league, "East", "East", 2, 2, EastConference, null, divs);
         }
 
+        //todo add league everywhere
         public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)
         {
             ScheduleRule rule1, rule2, rule3, rule4;
@@ -53,7 +54,10 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             Calgary = CreateAndAddTeam("Calgary", 5, WestDivision, teams);            
         }
 
-
+        public override League PrivateCreateLeague()
+        {
+            return new League() { Name = "My League" };
+        }
     }
 }
 

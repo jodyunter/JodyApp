@@ -88,6 +88,10 @@
     <Compile Include="Migrations\201804201527090_Second.Designer.cs">
       <DependentUpon>201804201527090_Second.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804201613380_Leagues.cs" />
+    <Compile Include="Migrations\201804201613380_Leagues.Designer.cs">
+      <DependentUpon>201804201613380_Leagues.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804201527090_Second.resx">
       <DependentUpon>201804201527090_Second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804201613380_Leagues.resx">
+      <DependentUpon>201804201613380_Leagues.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

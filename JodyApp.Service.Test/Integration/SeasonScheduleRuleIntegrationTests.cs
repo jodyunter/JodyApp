@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JodyApp.Domain;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Season;
 using JodyApp.Service.Test.DataFolder.ScheduleTestData;
@@ -11,10 +12,12 @@ namespace JodyApp.Service.Test.Integration
     [TestClass]
     public class SeasonScheduleRuleIntegrationTests
     {
+        String LeagueName = "My League";
         Database.JodyAppContext db = new Database.JodyAppContext();
         ScheduleTestDataDriver driver;
         SeasonService seasonService;
         Season season;
+        League league;
 
         [TestInitialize]
         public void Setup()
@@ -25,6 +28,7 @@ namespace JodyApp.Service.Test.Integration
             driver.InsertData();
             seasonService = new SeasonService(db);
             season = seasonService.CreateNewSeason("MY season", 22);
+            league = db.Leagues.Where(l => l.Name == LeagueName).First();
         }
 
         [TestMethod]

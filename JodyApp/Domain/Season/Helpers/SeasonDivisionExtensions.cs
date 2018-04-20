@@ -11,7 +11,7 @@ namespace JodyApp.Domain.Season
     {
         public override List<Division> GetDivisionsByParent(JodyAppContext db)
         {            
-            var divs = db.SeasonDivisions.Where(div => div.Parent.Id == this.Id && this.Season.Id == div.Season.Id);
+            var divs = db.SeasonDivisions.Where(div => div.Parent.Id == this.Id && this.Season.Id == div.Season.Id && this.League.Id == div.League.Id);
 
             return divs.ToList<Division>();
 
@@ -19,7 +19,7 @@ namespace JodyApp.Domain.Season
 
         public override Division GetByName(JodyAppContext db)
         {
-            var division = db.SeasonDivisions.Include("Season").Where(d => d.Name.Equals(Name) && d.Season.Id == Season.Id);
+            var division = db.SeasonDivisions.Include("Season").Where(d => d.Name.Equals(Name) && d.Season.Id == Season.Id && this.League.Id == d.League.Id);
 
             return division.First();
         }

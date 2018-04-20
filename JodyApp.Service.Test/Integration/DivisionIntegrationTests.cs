@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Service.Test.DataFolder.DivisionTestData;
@@ -11,18 +12,19 @@ namespace JodyApp.Service.Test.Integration
     [TestClass]
     public class DivisionIntegrationTests
     {
+        String LeagueName = "My League";
         Database.JodyAppContext db = new Database.JodyAppContext();
         DivisionTestDataDriver driver;
-
-
+        League league;
 
         [TestInitialize]
         public void Setup()
         {
             db = new Database.JodyAppContext();
-            driver = new DivisionTestDataDriver(db);
+            driver = new DivisionTestDataDriver(db);            
             driver.DeleteAllData();
             driver.InsertData();
+            league = db.Leagues.Where(l => l.Name == LeagueName).First();
         }
 
         /*Required Tests
@@ -33,7 +35,7 @@ namespace JodyApp.Service.Test.Integration
         [TestMethod]
         public void ShouldGetByName()
         {
-            Division d = new ConfigDivision() { Name = "West" }.GetByName(db);
+            Division d = new ConfigDivision() { Name = "West", League = league}.GetByName(db);
 
             IsNotNull(d.Id);
             AreEqual(d.Name, "West");
@@ -43,7 +45,7 @@ namespace JodyApp.Service.Test.Integration
         [TestMethod]
         public void ShouldGetByParentTwoLevelsUp()
         {
-            List<Division> d = new ConfigDivision() { Name = "League" }.GetByName(db).GetDivisionsByParent(db);
+            List<Division> d = new ConfigDivision() { Name = "League", League = league }.GetByName(db).GetDivisionsByParent(db);
 
             AreEqual(2, d.Count);
         }
@@ -51,7 +53,7 @@ namespace JodyApp.Service.Test.Integration
         [TestMethod]
         public void ShouldGetByparentOneLevelUp()
         {
-            List<Division> d = new ConfigDivision() { Name = "West" }.GetByName(db).GetDivisionsByParent(db);
+            List<Division> d = new ConfigDivision() { Name = "West", League = league }.GetByName(db).GetDivisionsByParent(db);
 
             AreEqual(3, d.Count);
         }
@@ -59,23 +61,23 @@ namespace JodyApp.Service.Test.Integration
         [TestMethod]
         public void ShouldGetTeamsInDivision()
         {
-            List<Team> teams = new ConfigDivision() { Name = "League" }.GetByName(db).GetAllTeamsInDivision(db);
+            List<Team> teams = new ConfigDivision() { Name = "League", League = league }.GetByName(db).GetAllTeamsInDivision(db);
 
             AreEqual(17, teams.Count);
 
-            teams = new ConfigDivision() { Name = "East" }.GetByName(db).GetAllTeamsInDivision(db);
+            teams = new ConfigDivision() { Name = "East", League = league }.GetByName(db).GetAllTeamsInDivision(db);
 
             AreEqual(8, teams.Count);
 
-            teams = new ConfigDivision() { Name = "West" }.GetByName(db).GetAllTeamsInDivision(db);
+            teams = new ConfigDivision() { Name = "West", League = league }.GetByName(db).GetAllTeamsInDivision(db);
 
             AreEqual(9, teams.Count);
 
-            teams = new ConfigDivision() { Name = "Atlantic" }.GetByName(db).GetAllTeamsInDivision(db);
+            teams = new ConfigDivision() { Name = "Atlantic", League = league }.GetByName(db).GetAllTeamsInDivision(db);
 
             AreEqual(4, teams.Count);
 
-            teams = new ConfigDivision() { Name = "Central" }.GetByName(db).GetAllTeamsInDivision(db);
+            teams = new ConfigDivision() { Name = "Central", League = league }.GetByName(db).GetAllTeamsInDivision(db);
 
             AreEqual(3, teams.Count);
         }

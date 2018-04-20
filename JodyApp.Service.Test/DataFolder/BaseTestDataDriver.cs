@@ -14,10 +14,17 @@ namespace JodyApp.Service.Test.DataFolder
     {
         public BaseTestDataDriver(JodyAppContext db) : base(db) { }
 
-
-        public override void PrivateCreateDivisions(Dictionary<string, ConfigDivision> divs)
+        public override League PrivateCreateLeague()
         {
-            CreateAndAddDivision("League",null, 0, 1, null, null, divs);
+            League l = new League() { Name = "My League" };
+
+            return l;
+        
+        }
+
+        public override void PrivateCreateDivisions(League league, Dictionary<string, ConfigDivision> divs)
+        {
+            CreateAndAddDivision(league, "League",null, 0, 1, null, null, divs);
         }
 
         public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)
@@ -32,6 +39,7 @@ namespace JodyApp.Service.Test.DataFolder
             CreateAndAddTeam("Vancouver", 5, divs["League"], teams);
             CreateAndAddTeam("Minnesota", 5, divs["League"], teams);
         }
+
 
 
     }
