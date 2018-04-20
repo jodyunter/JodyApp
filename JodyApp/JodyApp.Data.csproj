@@ -54,7 +54,7 @@
     <Compile Include="Domain\Config\ConfigScheduleRule.cs" />
     <Compile Include="Domain\Config\ConfigTeam.cs" />
     <Compile Include="Domain\Division.cs" />
-    <Compile Include="Domain\DivisionRanks.cs" />
+    <Compile Include="Domain\DivisionRank.cs" />
     <Compile Include="Domain\Helpers\DivisionExtentions.cs" />
     <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />
     <Compile Include="Domain\Season\Helpers\SeasonDivisionExtensions.cs" />

@@ -8,32 +8,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Table
 {
-    [Table("DivisionRanks")]
-    public class RecordTableDivisionRank: DivisionRanks, IComparable<RecordTableDivisionRank>
+    public class RecordTableDivisionRank: DivisionRank
     {
-        public RecordTableDivision Division { get; set; }
-        public Team Team { get; set; }
-        public int Rank { get; set; }
-
-        public int CompareTo(RecordTableDivisionRank other)
-        {
-
-            if (Division.Level.Equals(other.Division.Level))
-            {
-                if (Division.Order.Equals(other.Division.Order))
-                {
-                    return Rank.CompareTo(other.Rank);
-                }
-                else
-                {
-                    return Division.Order.CompareTo(other.Division.Order);
-                }
-            }
-            else
-            {
-                return Division.Level.CompareTo(other.Division.Level);
-            }
-
-        }
     }
 }

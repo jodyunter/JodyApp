@@ -36,9 +36,7 @@ namespace JodyApp.Service
 
             var sortedTeams = table.SortIntoDivisions();
 
-            var sortedList = StandingsSorter.SortByRules(sortedTeams, division);
-
-            //now we need to add the rankings to it.
+            var sortedList = StandingsSorter.SortByRules(sortedTeams, division);            
 
             return sortedList;
             

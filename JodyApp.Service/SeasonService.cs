@@ -50,6 +50,7 @@ namespace JodyApp.Service
                     seasonTeams.Add(team.Name, team);
                 });                
             }
+            
 
             //lop to process the sorting rules, this requires the divisions be created first
             foreach (Division d in divisionService.GetByLeague(league))
@@ -61,7 +62,7 @@ namespace JodyApp.Service
                 {
                     SortingRule newRule = new SortingRule(seasonDivisions[rule.Division.Name], seasonDivisions[rule.DivisionToGetTeamsFrom.Name], rule);
                     db.SortingRules.Add(newRule);
-                });
+                });                
                 
             }
 
@@ -101,6 +102,16 @@ namespace JodyApp.Service
             db.Seasons.Add(season);
             db.SeasonDivisions.AddRange(seasonDivisions.Values);            
             db.SaveChanges();
+
+            seasonDivisions.Values.ToList().ForEach(seasonDiv =>
+            {
+                seasonDiv.GetAllTeamsInDivision(db).ForEach(team => { seasonDiv.SetRank(0, (RecordTableTeam)team); });
+
+                db.DivisionRanks.AddRange(seasonDiv.Rankings);
+            });
+
+            db.SaveChanges();
+
             return season;
             
         }
@@ -130,6 +141,17 @@ namespace JodyApp.Service
             divisions.ForEach(div => { divisionService.SortByDivision(div); });
 
         }
-            
+     
+        public List<SeasonTeam> GetSeasonTeamsInDivisionByRank(SeasonDivision division)
+        {
+
+            var teams = division.GetAllTeamsInDivision(db).ToDictionary(t => t.Name, t => t);
+
+            division.Rankings.Sort();
+            int rank = 1;
+            division.Rankings.ForEach(r => { teams[r.Team.Name].Stats.Rank = rank; rank++; });
+
+            return teams.Values.ToList();
+        }
     }
 }

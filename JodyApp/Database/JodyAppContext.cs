@@ -19,6 +19,7 @@ namespace JodyApp.Database
         public DbSet<ConfigScheduleRule> ScheduleRules { get; set; }
         public DbSet<ScheduleGame> ScheduleGames { get; set; }
         public DbSet<SortingRule> SortingRules { get; set; }
+        public DbSet<DivisionRank> DivisionRanks { get; set; }
         //Season Configuration Items
         public DbSet<SeasonTeam> SeasonTeams { get; set; }
         public DbSet<SeasonDivision> SeasonDivisions { get; set; }

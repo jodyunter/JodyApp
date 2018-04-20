@@ -49,7 +49,7 @@ namespace JodyApp.Service.Test.Integration
 
         {
             SeasonDivision sd = (SeasonDivision)new SeasonDivision() { Name = "League", Season = season, League = league }.GetByName(db);
-            List<Division> d = sd.GetDivisionsByParent(db);
+            List<SeasonDivision> d = sd.GetDivisionsByParent(db);
 
             AreEqual(2, d.Count);
         }
@@ -58,7 +58,7 @@ namespace JodyApp.Service.Test.Integration
         public void ShouldGetByparentOneLevelUp()
         {
             SeasonDivision sd = (SeasonDivision)new SeasonDivision() { Name = "West", Season = season, League = league }.GetByName(db);
-            List<Division> d = sd.GetDivisionsByParent(db);
+            List<SeasonDivision> d = sd.GetDivisionsByParent(db);
 
             AreEqual(3, d.Count);
         }
@@ -67,7 +67,7 @@ namespace JodyApp.Service.Test.Integration
         [TestMethod]
         public void ShouldGetSeasonTeamsInSeasonDivision()
         {
-            List<Team> teams = new SeasonDivision() { Name = "League", Season = season, League = league }.GetByName(db).GetAllTeamsInDivision(db);
+            List<SeasonTeam> teams = new SeasonDivision() { Name = "League", Season = season, League = league }.GetByName(db).GetAllTeamsInDivision(db);
 
             AreEqual(17, teams.Count);
 

@@ -16,7 +16,7 @@ namespace JodyApp.Console
 {
     class Program
     {
-        
+
         static void Main(string[] args)
         {
             JodyAppContext db = new JodyAppContext();
@@ -26,19 +26,19 @@ namespace JodyApp.Console
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
-            
+
 
             Random random = new Random();
 
             //Array.Sort(teamList, StandingsSorter.SortByDivisionLevel_0);
-            
-                        
+
+
             //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORTY_BY_CONFERENCE));
             //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_DIVISION));
 
+            League league = db.Leagues.Where(l => l.Name == "Jody League").First();
+            Season season = seasonService.CreateNewSeason(league, "My Season", 1);
 
-            Season season = seasonService.CreateNewSeason(db.Leagues.Where(l => l.Name == "Jody League").First(), "My Season", 1);
-            
             season.SetupStandings();
 
             List<ScheduleGame> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
@@ -49,14 +49,22 @@ namespace JodyApp.Console
                season.Standings.ProcessGame(game);
            });
 
-            System.Console.WriteLine(RecordTableDisplay.GetRecordTableRowHeader());
-            StandingsSorter.SortByRules(season.Standings.SortIntoDivisions(), (RecordTableDivision)new SeasonDivision() { Name = "League", Season = season, League = season.League }.GetByName(db)).ForEach(t =>
-            {
-                System.Console.WriteLine(RecordTableDisplay.GetRecordTableRow(t));
-            });
+            seasonService.SortAllDivisions(season);
+            db.SaveChanges();
+
+            var div = db.SeasonDivisions.Where(d => d.Season.Id == season.Id && d.Name == "League").First();
+
+
+
+            var teams = seasonService.GetSeasonTeamsInDivisionByRank(div);
+            teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
+
+            System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<RecordTableTeam>()));
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();
+
+            
 
         }
     }

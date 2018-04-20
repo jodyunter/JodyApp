@@ -9,25 +9,27 @@ namespace JodyApp.Domain.Season
 {
     public partial class SeasonDivision
     {
-        public override List<Division> GetDivisionsByParent(JodyAppContext db)
+        public List<SeasonTeam> Teams { get; set; }
+
+        public List<SeasonDivision> GetDivisionsByParent(JodyAppContext db)
         {            
             var divs = db.SeasonDivisions.Where(div => div.Parent.Id == this.Id && this.Season.Id == div.Season.Id && this.League.Id == div.League.Id);
 
-            return divs.ToList<Division>();
+            return divs.ToList<SeasonDivision>();
 
         }
 
-        public override Division GetByName(JodyAppContext db)
+        public SeasonDivision GetByName(JodyAppContext db)
         {
             return db.SeasonDivisions.Include("Season").Where(d => d.Name.Equals(Name) && d.Season.Id == Season.Id && this.League.Id == d.League.Id).First();
 
             
         }
 
-
-        public override List<Team> GetAllTeamsInDivision(JodyAppContext db)
+        public List<SeasonTeam> GetAllTeamsInDivision(JodyAppContext db)
         {
-            List<Team> teams = new List<Team>();
+
+            List<SeasonTeam> teams = new List<SeasonTeam>();
             if (this.Teams != null) teams.AddRange(this.Teams);
 
             this.GetDivisionsByParent(db).ForEach(div =>
@@ -36,11 +38,14 @@ namespace JodyApp.Domain.Season
             });
 
             return teams;
+
+
         }
 
-        public override List<Division> GetByLeague(JodyAppContext db)
+
+    public List<SeasonDivision> GetByLeague(JodyAppContext db)
         {
-            return db.SeasonDivisions.Where(d => d.League.Id == this.League.Id && d.Season.Id == this.Season.Id).ToList<Division>();
+            return db.SeasonDivisions.Where(d => d.League.Id == this.League.Id && d.Season.Id == this.Season.Id).ToList<SeasonDivision>();
         }
 
     }

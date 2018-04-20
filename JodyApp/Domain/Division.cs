@@ -21,6 +21,7 @@ namespace JodyApp.Domain
         virtual public List<ScheduleRule> Rules { get; set; }
         [InverseProperty("Division")]
         virtual public List<SortingRule> SortingRules { get; set; }
+        public List<DivisionRank> Rankings { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
 
