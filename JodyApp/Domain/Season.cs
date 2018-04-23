@@ -24,6 +24,10 @@ namespace JodyApp.Domain
 
         public League League { get; set; }
 
+        public bool Started { get; set; }
+        public bool Complete { get; set; }
+        public int StartingDay { get; set; }
+
         public override bool Equals(object obj)
         {
             var season = obj as Season;

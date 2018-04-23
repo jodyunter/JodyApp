@@ -57,6 +57,8 @@
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />
+    <Compile Include="Domain\Playoff.cs" />
+    <Compile Include="Domain\PlayoffSeries.cs" />
     <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />
     <Compile Include="Domain\Schedule\Scheduler.cs" />
     <Compile Include="Domain\Schedule\ScheduleRule.cs" />
@@ -76,6 +78,10 @@
     <Compile Include="Migrations\201804232017062_leaguetoschedulerule.Designer.cs">
       <DependentUpon>201804232017062_leaguetoschedulerule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804232110406_SeasonStatus.cs" />
+    <Compile Include="Migrations\201804232110406_SeasonStatus.Designer.cs">
+      <DependentUpon>201804232110406_SeasonStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -89,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804232017062_leaguetoschedulerule.resx">
       <DependentUpon>201804232017062_leaguetoschedulerule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804232110406_SeasonStatus.resx">
+      <DependentUpon>201804232110406_SeasonStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
