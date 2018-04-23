@@ -10,10 +10,15 @@ namespace JodyApp.Domain
     public partial class Team
     {
 
-        public static Team GetByName(string name, Season season, JodyAppContext db)
+        public static Team GetByName(JodyAppContext db, string name, Season season)
         {
-            return db.Teams.Where(t => t.Name == name && t.Season == season).First();
-            
+            return db.Teams.Where(t => t.Name == name && t.Season == season).First();           
+        }
+
+        public static List<Team> GetTeams(JodyAppContext db, Season season)
+        {
+            if (season == null) return db.Teams.Where(t => t.Season == null).ToList<Team>();
+            else return db.Teams.Where(t => t.Season.Id == season.Id).ToList<Team>();
         }
     }
 }

@@ -70,7 +70,7 @@ namespace JodyApp.Service
                 
             }
 
-            foreach(ScheduleRule rule in scheduleService.GetRules(league))
+            foreach(ScheduleRule rule in scheduleService.GetLeagueRules(league))
             {
                 Division homeDiv = null;
                 Division awayDiv = null;

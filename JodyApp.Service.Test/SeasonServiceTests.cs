@@ -22,6 +22,7 @@ namespace JodyApp.Service.Test
         SeasonService service;
         ScheduleService scheduleService;        
         SeasontestDataDriver driver;
+        TeamService teamService;
         League league;
 
         [TestInitialize]
@@ -31,6 +32,7 @@ namespace JodyApp.Service.Test
             service = new SeasonService(db);
             scheduleService = new ScheduleService(db);
             driver = new SeasontestDataDriver(db);
+            teamService = new TeamService(db);
             driver.DeleteAllData();
             driver.InsertData();
             league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
@@ -62,8 +64,10 @@ namespace JodyApp.Service.Test
             db.SaveChanges();
 
             //need to get counts based on other things.
-            AreEqual(4, db.Teams.Count());
-            AreEqual(8, db.Teams.Count());
+            AreEqual(4, teamService.GetTeamsBySeason(season).Count);
+            AreEqual(4, teamService.GetTeamsBySeason(season2).Count);
+            AreEqual(12, db.Teams.Count());
+            AreEqual(4, teamService.GetBaseTeams().Count);
 
             db.SaveChanges();
         }

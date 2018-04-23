@@ -14,9 +14,14 @@ namespace JodyApp.Service
         DivisionService divisionService;        
         TeamService teamService;
 
-        public List<ScheduleRule> GetRules(League league)
+
+        public List<ScheduleRule> GetLeagueRules(League league)
         {
-            return ScheduleRule.GetRules(db, league);
+            return ScheduleRule.GetRules(db, league, null);
+        }
+        public List<ScheduleRule> GetRules(League league, Season season)
+        {
+            return ScheduleRule.GetRules(db, league, season);
         }
         public ScheduleService(JodyAppContext db) : base(db)
         {

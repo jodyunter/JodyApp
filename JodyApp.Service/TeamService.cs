@@ -17,27 +17,24 @@ namespace JodyApp.Service
         {            
             this.divisionService = new DivisionService(context);
         }
-        public List<Team> GetAllTeams()
+        public List<Team> GetBaseTeams()
         {
 
-            return db.Teams.ToList<Team>();
+            return Team.GetTeams(db, null);
         }
 
         public Team GetTeamByName(String name)
         {
-            var query = from t in db.Teams where t.Name.Equals(name) select t;
-
-            return query.ToList<Team>().First();
+            return Team.GetByName(db, name, null);
                         
 
         }
 
-        public List<Team> GetBaseTeams()
+        public List<Team> GetTeamsBySeason(Season season)
         {
-            var query = from t in db.Teams select t;
-
-            return query.ToList<Team>();
+            return Team.GetTeams(db, season);
         }
+
 
 
 
