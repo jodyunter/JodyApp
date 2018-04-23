@@ -50,6 +50,7 @@ namespace JodyApp.Service
             {
                 d.Teams.ForEach(dt => {
                     SeasonTeam seasonTeam = new SeasonTeam(dt, seasonDivisions[d.Name]);
+                    seasonDivisions[d.Name].Teams.Add(seasonTeam);
                     db.SeasonTeams.Add(seasonTeam);
                     seasonTeams.Add(seasonTeam.Name, seasonTeam);
                 });

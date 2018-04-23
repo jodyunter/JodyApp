@@ -13,6 +13,8 @@ namespace JodyApp.Domain.Season
         virtual public Season Season { get; set; }
 
         public SeasonDivision() { }
+
+        //todo:  Maybe we should use the base constructors when ready
         public SeasonDivision(Division division, Season season)
         {
 
@@ -22,6 +24,8 @@ namespace JodyApp.Domain.Season
             this.Level = division.Level;
             this.Order = division.Order;
             this.League = division.League;
+            this.Teams = new List<Team>();
+            this.Rankings = new List<DivisionRank>();
             //sorting rules must be handled seperately
             //parent must be handled seperately
         }

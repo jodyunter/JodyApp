@@ -36,6 +36,7 @@ namespace JodyApp.Domain
             this.Parent = parent;
             this.League = league;
             Teams = new List<Team>();
+            Rankings = new List<DivisionRank>();
                  
         }
         public int CompareTo(Division other)

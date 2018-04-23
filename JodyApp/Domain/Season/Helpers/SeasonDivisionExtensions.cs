@@ -9,7 +9,7 @@ namespace JodyApp.Domain.Season
 {
     public partial class SeasonDivision
     {
-        public List<SeasonTeam> Teams { get; set; }
+        //public new List<SeasonTeam> Teams { get; set; }
 
         public new List<SeasonDivision> GetDivisionsByParent(JodyAppContext db)
         {            
@@ -30,12 +30,20 @@ namespace JodyApp.Domain.Season
         {
 
             List<SeasonTeam> teams = new List<SeasonTeam>();
-            if (this.Teams != null) teams.AddRange(this.Teams);
+
+            if (this.Teams != null)
+            {
+                this.Teams.ForEach( team =>
+                {
+                    teams.Add((SeasonTeam)team);
+                });
+            }
 
             this.GetDivisionsByParent(db).ForEach(div =>
             {
                 teams.AddRange(div.GetAllTeamsInDivision(db));
             });
+
 
             return teams;
 

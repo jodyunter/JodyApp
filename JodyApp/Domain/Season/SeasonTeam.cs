@@ -14,9 +14,9 @@ namespace JodyApp.Domain.Season
 
         public SeasonTeam() { }
         public SeasonTeam(Team team, SeasonDivision division)
-            :base(team)
+            :base(team, division)
         {
-            this.Division = division;
+            //this.Division = division;
         }
         
     }

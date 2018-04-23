@@ -12,6 +12,7 @@ namespace JodyApp.Domain.Table
         public RecordTableTeam() { }
 
         public RecordTableTeam(Team team) : this(team.Name, team.Skill, new TeamStatistics(), team.Division) { }
+        public RecordTableTeam(Team team, Division division) : this(team.Name, team.Skill, new TeamStatistics(), division) { }
         public RecordTableTeam(string name, int skill, TeamStatistics stats, Division division)
         {
             this.Name = name;
