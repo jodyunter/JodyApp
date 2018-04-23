@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Database;
-using JodyApp.Domain.Season;
+
 using System.Data.Entity;
 using JodyApp.Domain.Table;
-using JodyApp.Domain.Config;
 
 namespace JodyApp.Service
 {
@@ -16,22 +15,34 @@ namespace JodyApp.Service
     {        
 
         public DivisionService(JodyAppContext context):base(context)
-        {            
+        {                        
+        }
+
+        public List<Team> GetAllTeamsInDivision(Division division)
+        {           
+
+            return Division.GetAllTeamsInDivision(db, division);
         }
 
 
-        public List<SeasonDivision> GetDivisionsBySeason(Season season)
+        public List<Division> GetDivisionsByParent(Division parent)
         {
-            return db.SeasonDivisions.Include("Season").Where(d => d.Season.Id == season.Id).ToList<SeasonDivision>();
+            return Division.GetDivisionsByParent(db, parent);
+        }
+        public List<Division> GetDivisionsBySeason(Season season)
+        {
+            return Division.GetDivisionsBySeason(db, season);
         }
 
         //this will return the list of teams, but more importantly will setup the division rankings
-        public List<RecordTableTeam> SortByDivision(SeasonDivision division)
+        public List<Team> SortByDivision(Division division)
         {
             //decision to make.  Do we organize a higher teir based on lower tier rank without explicitly saying so?
             RecordTable table = new RecordTable();
-            division.GetAllTeamsInDivision(db).ForEach(team => {
-                table.Add((RecordTableTeam)team);                    
+            var teams = new List<Team>();
+
+            Division.GetAllTeamsInDivision(db, division).ForEach(team => {
+                table.Add(team);                    
             });
 
             var sortedTeams = table.SortIntoDivisions();
@@ -42,13 +53,20 @@ namespace JodyApp.Service
             
         }
 
-
-        public List<Division> GetByLeague(League league)
-        {
-            return db.Divisions.Where(d => d.League.Id == league.Id).ToList<Division>();
+        public Division GetByName(String name, League league, Season season)
+        {            
+            return Division.GetByName(db, name, league, season);
         }
 
-        
+        public List<Division> GetByLeague(League league)
+        {            
+            return Division.GetByLeague(db, league);
+        }
+
+        public List<Division> GetDivisionsByLevel(int level, Season season)
+        {
+            return Division.GetDivisionsByLevel(db, level, season);
+        }
      
     }
 }

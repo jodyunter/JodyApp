@@ -11,22 +11,22 @@ using JodyApp.Domain;
 namespace JodyApp.Data.Test.Domain.Table
 {
     [TestClass]
-    public class RecordTableTeamTests
+    public class TeamTests
     {
-        RecordTableTeam homeTeam;
-        RecordTableTeam awayTeam;
+        Team homeTeam;
+        Team awayTeam;
 
         [TestInitialize]
         public void Setup()
         {
-            homeTeam = new RecordTableTeam
+            homeTeam = new Team
             {
                 Name = "HomeTeamName",
                 Skill = 5,
                 Stats = new TeamStatistics()
             };
 
-            awayTeam = new RecordTableTeam
+            awayTeam = new Team
             {
                 Name = "AwayTeamName",
                 Skill = 5,

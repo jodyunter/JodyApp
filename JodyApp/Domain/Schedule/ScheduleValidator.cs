@@ -8,7 +8,7 @@ namespace JodyApp.Domain.Schedule
 {
     public class ScheduleValidator
     {
-        public static void ProcessGames(Dictionary<string, ScheduleCounts> data, List<ScheduleGame> games)
+        public static void ProcessGames(Dictionary<string, ScheduleCounts> data, List<Game> games)
         {           
             games.ForEach(game =>
             {
@@ -37,7 +37,7 @@ namespace JodyApp.Domain.Schedule
                 TeamData[teamName].AwayGamesVsTeams.Add(opponentName, 0);
             }
         }
-        public static void ProcessGame(Dictionary<string, ScheduleCounts> TeamData, ScheduleGame game)
+        public static void ProcessGame(Dictionary<string, ScheduleCounts> TeamData, Game game)
         {
             string homeName = game.HomeTeam.Name;
             string awayName = game.AwayTeam.Name;

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
-using JodyApp.Domain.Config;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
 
@@ -22,7 +21,7 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
             CreateAndAddLeague(this.LeagueName, leagues);
             CreateAndAddLeague("Extra", leagues);
         }
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Division> divs)
         {            
             CreateAndAddDivision(leagues[LeagueName], "League", null, 0, 1, null, null, divs);
             CreateAndAddDivision(leagues[LeagueName], "West", null, 1, 2, divs["League"], null, divs);
@@ -39,12 +38,12 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
 
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {
-            CreateAndAddRule("Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 2, 0, rules);
+            CreateAndAddRule(leagues[LeagueName], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 2, 0, rules);
         }
 
-        public override void PrivateCreateTeams(Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)
         {            
             CreateAndAddTeam("Los Angelas", 5, divs["Pacific"], teams);
             CreateAndAddTeam("Seattle", 5, divs["Pacific"], teams);

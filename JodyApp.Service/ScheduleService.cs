@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
-using JodyApp.Domain;
-using JodyApp.Domain.Season;
+using JodyApp.Domain; 
 
 namespace JodyApp.Service
 {
@@ -15,9 +14,9 @@ namespace JodyApp.Service
         DivisionService divisionService;        
         TeamService teamService;
 
-        public List<ScheduleRule> GetConfigRules()
+        public List<ScheduleRule> GetRules(League league)
         {
-            return db.ScheduleRules.ToList<ScheduleRule>();
+            return ScheduleRule.GetRules(db, league);
         }
         public ScheduleService(JodyAppContext db) : base(db)
         {
@@ -25,9 +24,14 @@ namespace JodyApp.Service
             teamService = new TeamService(db);
         }
 
-        public List<ScheduleGame> CreateGamesFromRules(List<SeasonScheduleRule> rules)
+        public List<Division> GetDivisionsByLevel(ScheduleRule rule)
         {
-            var games = new List<ScheduleGame>();
+            return divisionService.GetDivisionsByLevel(rule.DivisionLevel, rule.Season);
+        }
+
+        public List<Game> CreateGamesFromRules(List<ScheduleRule> rules)
+        {
+            var games = new List<Game>();
             rules.ForEach(rule =>
             {
                 games.AddRange(CreateGamesFromRule(rule));
@@ -36,20 +40,9 @@ namespace JodyApp.Service
             return games;
         }
 
-
-        public List<ScheduleGame> CreateGamesFromRules(List<ScheduleRule> rules)
+        public List<Game> CreateGamesFromRule(ScheduleRule rule)
         {
-            var games = new List<ScheduleGame>();
-            rules.ForEach(rule =>
-            {
-                games.AddRange(CreateGamesFromRule(rule));
-            });
-             
-            return games;
-        }
-        public List<ScheduleGame> CreateGamesFromRule(ScheduleRule rule)
-        {
-            var games = new List<ScheduleGame>();
+            var games = new List<Game>();
 
             var homeTeams = new List<Team>();
             var awayTeams = new List<Team>();
@@ -58,13 +51,13 @@ namespace JodyApp.Service
             {
                 List<Division> divisions;
 
-                divisions = rule.GetDivisionsByLevel(db);
+                divisions = this.GetDivisionsByLevel(rule);
 
                 divisions.ForEach(d =>
                 {
                     homeTeams = new List<Team>();                    
 
-                    homeTeams.AddRange(d.GetAllTeamsInDivision(db));
+                    homeTeams.AddRange(divisionService.GetAllTeamsInDivision(d));
 
                     games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), null, rule.PlayHomeAway, rule.Rounds));
                 });
@@ -88,7 +81,7 @@ namespace JodyApp.Service
                     teamList.Add(team);
                     break;
                 case ScheduleRule.BY_DIVISION:
-                    teamList.AddRange(division.GetAllTeamsInDivision(db));
+                    teamList.AddRange(divisionService.GetAllTeamsInDivision(division));
                     break;
                 case ScheduleRule.NONE:
                     break;

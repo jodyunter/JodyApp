@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain
 {
-    public abstract class DomainObject: IEquatable<DomainObject>
+    public abstract class DomainObject : IEquatable<DomainObject>
     {
         [Key]
         public int? Id { get; set; } //can be null if new object

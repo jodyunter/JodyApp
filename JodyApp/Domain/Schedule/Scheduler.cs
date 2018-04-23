@@ -9,9 +9,9 @@ namespace JodyApp.Domain.Schedule
     public class Scheduler
     {
 
-        public static List<ScheduleGame> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int rounds)
+        public static List<Game> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int rounds)
         {
-            var games = new List<ScheduleGame>();
+            var games = new List<Game>();
 
             for (int i = 0; i < rounds; i++)
             {
@@ -21,9 +21,9 @@ namespace JodyApp.Domain.Schedule
             return games;
         }
         //need arrays to do this correctly, may need to sort prior to this method
-        public static List<ScheduleGame> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway)
+        public static List<Game> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway)
         {
-            var games = new List<ScheduleGame>();
+            var games = new List<Game>();
 
             if (AwayTeams == null || AwayTeams.Length == 0)
             {
@@ -41,9 +41,9 @@ namespace JodyApp.Domain.Schedule
             return games;
         }
 
-        public static List<ScheduleGame> ScheduleGames(Team[] HomeTeams, bool playHomeAndAway)
+        public static List<Game> ScheduleGames(Team[] HomeTeams, bool playHomeAndAway)
         {
-            var games = new List<ScheduleGame>();
+            var games = new List<Game>();
 
             for (int i = 0; i < HomeTeams.Length - 1; i++)
             {
@@ -56,7 +56,7 @@ namespace JodyApp.Domain.Schedule
             return games;
         }
 
-        public static void AddGames(List<ScheduleGame> games, Team a, Team b, bool homeAndAway)
+        public static void AddGames(List<Game> games, Team a, Team b, bool homeAndAway)
         {
             if (!a.Name.Equals(b.Name))
             {
@@ -64,9 +64,9 @@ namespace JodyApp.Domain.Schedule
                 if (homeAndAway) games.Add(SetupGame(b, a));
             }
         }
-        public static ScheduleGame SetupGame(Team home, Team away)
+        public static Game SetupGame(Team home, Team away)
         {
-            return new ScheduleGame
+            return new Game
             {
                 HomeTeam = home,
                 AwayTeam = away,

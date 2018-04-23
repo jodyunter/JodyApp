@@ -50,39 +50,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\JodyAppContext.cs" />
-    <Compile Include="Domain\Config\ConfigDivision.cs" />
-    <Compile Include="Domain\Config\ConfigScheduleRule.cs" />
-    <Compile Include="Domain\Config\ConfigTeam.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DivisionRank.cs" />
     <Compile Include="Domain\Helpers\DivisionExtentions.cs" />
-    <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />
-    <Compile Include="Domain\Season\Helpers\SeasonDivisionExtensions.cs" />
-    <Compile Include="Domain\Season\Helpers\SeasonScheduleRuleExtensions.cs" />
-    <Compile Include="Domain\Table\RecordTableDivisionRank.cs" />
+    <Compile Include="Domain\Helpers\TeamExtensions.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />
+    <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />
     <Compile Include="Domain\Schedule\Scheduler.cs" />
     <Compile Include="Domain\Schedule\ScheduleRule.cs" />
-    <Compile Include="Domain\Schedule\ScheduleGame.cs" />
     <Compile Include="Domain\Schedule\ScheduleValidator.cs" />
-    <Compile Include="Domain\Season\Season.cs" />
-    <Compile Include="Domain\Season\SeasonDivision.cs" />
-    <Compile Include="Domain\Season\SeasonGame.cs" />
-    <Compile Include="Domain\Season\SeasonScheduleRule.cs" />
-    <Compile Include="Domain\Season\SeasonTeam.cs" />
+    <Compile Include="Domain\Season.cs" />
     <Compile Include="Domain\Table\Display\RecordTableDisplay.cs" />
     <Compile Include="Domain\Table\RecordTable.cs" />
-    <Compile Include="Domain\Table\RecordTableDivision.cs" />
-    <Compile Include="Domain\Table\RecordTableTeam.cs" />
     <Compile Include="Domain\Table\SortingRule.cs" />
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatistics.cs" />
-    <Compile Include="Migrations\201804201941353_first.cs" />
-    <Compile Include="Migrations\201804201941353_first.Designer.cs">
-      <DependentUpon>201804201941353_first.cs</DependentUpon>
+    <Compile Include="Migrations\201804231830388_First.cs" />
+    <Compile Include="Migrations\201804231830388_First.Designer.cs">
+      <DependentUpon>201804231830388_First.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804232017062_leaguetoschedulerule.cs" />
+    <Compile Include="Migrations\201804232017062_leaguetoschedulerule.Designer.cs">
+      <DependentUpon>201804232017062_leaguetoschedulerule.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,9 +84,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804201941353_first.resx">
-      <DependentUpon>201804201941353_first.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804231830388_First.resx">
+      <DependentUpon>201804231830388_First.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804232017062_leaguetoschedulerule.resx">
+      <DependentUpon>201804232017062_leaguetoschedulerule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,7 +4,6 @@ using JodyApp.Domain;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Data.Test.Common;
 using System.Collections.Generic;
-using JodyApp.Domain.Config;
 
 namespace JodyApp.Data.Test.Domain
 {
@@ -16,8 +15,8 @@ namespace JodyApp.Data.Test.Domain
         {
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = false,
                 CanTie = true
@@ -34,8 +33,8 @@ namespace JodyApp.Data.Test.Domain
         {
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = true,
                 CanTie = true,
@@ -54,8 +53,8 @@ namespace JodyApp.Data.Test.Domain
         {
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = false,
                 CanTie = true,
@@ -75,8 +74,8 @@ namespace JodyApp.Data.Test.Domain
         {
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = false,
                 CanTie = true
@@ -98,8 +97,8 @@ namespace JodyApp.Data.Test.Domain
         {
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = true,
                 CanTie = true,
@@ -120,8 +119,8 @@ namespace JodyApp.Data.Test.Domain
         {
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = true,
                 CanTie = true,
@@ -143,8 +142,8 @@ namespace JodyApp.Data.Test.Domain
             FakeRandom random = new FakeRandom(new List<int> { 6, 5 });
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = false,
                 CanTie = true,
@@ -166,8 +165,8 @@ namespace JodyApp.Data.Test.Domain
             FakeRandom random = new FakeRandom(new List<int> { 5, 6 });
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = false,
                 CanTie = true,
@@ -188,8 +187,8 @@ namespace JodyApp.Data.Test.Domain
             FakeRandom random = new FakeRandom(new List<int> { 6, 6 });
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 0,
                 Complete = false,
                 CanTie = true,
@@ -212,8 +211,8 @@ namespace JodyApp.Data.Test.Domain
             FakeRandom random = new FakeRandom(new List<int> { 6, 6,12,12,15,15 });
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = false,
                 CanTie = true,
@@ -234,8 +233,8 @@ namespace JodyApp.Data.Test.Domain
             FakeRandom random = new FakeRandom(new List<int> { 6, 6, 12, 15, 15, 13 });
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = false,
                 CanTie = true,
@@ -256,8 +255,8 @@ namespace JodyApp.Data.Test.Domain
             FakeRandom random = new FakeRandom(new List<int> { 6, 6, 15, 15, 15, 15, 21, 21, 6,1 });
             Game game = new Game
             {
-                HomeTeam = new ConfigTeam { Name = "Team 1", Skill = 5 },
-                AwayTeam = new ConfigTeam { Name = "Team 2", Skill = 5 },
+                HomeTeam = new Team { Name = "Team 1", Skill = 5 },
+                AwayTeam = new Team { Name = "Team 2", Skill = 5 },
                 MaxOverTimePeriods = 2,
                 Complete = false,
                 CanTie = false,

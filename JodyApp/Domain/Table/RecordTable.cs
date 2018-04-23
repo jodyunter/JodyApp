@@ -11,35 +11,35 @@ namespace JodyApp.Domain.Table
     {
         public String TableName = "";
 
-        public Dictionary<string, RecordTableTeam> Standings { get; set; }
+        public Dictionary<string, Team> Standings { get; set; }
 
-        public void Add(RecordTableTeam team)
+        public void Add(Team team)
         {
             this.Standings.Add(team.Name, team);
         }
 
         public RecordTable()
         {
-            Standings = new Dictionary<string, RecordTableTeam>();
+            Standings = new Dictionary<string, Team>();
         }
   
-        public List<RecordTableTeam> GetSortedListByConference()
+        public List<Team> GetSortedListByConference()
         {
             return null;
         }
 
-        public List<RecordTableTeam> GetSortedListByDivision()
+        public List<Team> GetSortedListByDivision()
         {
             return null;
         }
 
-        public List<RecordTableTeam> GetSortListByDivisionLevel(int level)
+        public List<Team> GetSortListByDivisionLevel(int level)
         {
             return null;
         }
-        public List<RecordTableTeam> GetSortedListByLeague()
+        public List<Team> GetSortedListByLeague()
         {
-            List<RecordTableTeam> teams = Standings.Values.ToList<RecordTableTeam>();
+            List<Team> teams = Standings.Values.ToList<Team>();
 
 
             return teams;
@@ -80,21 +80,21 @@ namespace JodyApp.Domain.Table
             TeamStats.GoalsAgainst += GoalsAgainst;
         }
 
-        public Dictionary<RecordTableDivision,List<RecordTableTeam>> SortIntoDivisions()
+        public Dictionary<Division,List<Team>> SortIntoDivisions()
         {
-            var result = new Dictionary<RecordTableDivision, List<RecordTableTeam>>();
+            var result = new Dictionary<Division, List<Team>>();
 
-            foreach(KeyValuePair<string, RecordTableTeam> entry in Standings)
+            foreach(KeyValuePair<string, Team> entry in Standings)
             {
-                RecordTableTeam team = entry.Value;
+                Team team = entry.Value;
 
-                RecordTableDivision division = (RecordTableDivision)team.Division;
+                Division division = (Division)team.Division;
 
                 while (division != null)
                 {
-                    if (!result.ContainsKey(division)) result.Add(division, new List<RecordTableTeam>());
+                    if (!result.ContainsKey(division)) result.Add(division, new List<Team>());
                     result[division].Add(team);
-                    division = (RecordTableDivision)division.Parent;
+                    division = (Division)division.Parent;
                 }
             }
 

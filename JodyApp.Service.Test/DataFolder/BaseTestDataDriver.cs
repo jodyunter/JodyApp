@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
-using JodyApp.Domain.Config;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table;
@@ -25,17 +24,17 @@ namespace JodyApp.Service.Test.DataFolder
         
         }
 
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Division> divs)
         {
             CreateAndAddDivision(leagues[LeagueName], "League",null, 0, 1, null, null, divs);
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {
-            CreateAndAddRule("Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, rules);
+            CreateAndAddRule(leagues[LeagueName], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, rules);
         }
 
-        public override void PrivateCreateTeams(Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)
         {
             CreateAndAddTeam("Los Angelas", 5, divs["League"], teams);
             CreateAndAddTeam("Seattle", 5, divs["League"], teams);
@@ -43,7 +42,7 @@ namespace JodyApp.Service.Test.DataFolder
             CreateAndAddTeam("Minnesota", 5, divs["League"], teams);
         }
 
-        public override void PrivateCreateSortingRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, SortingRule> rules)
+        public override void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules)
         {
             //no special sorting rules by default
             return;

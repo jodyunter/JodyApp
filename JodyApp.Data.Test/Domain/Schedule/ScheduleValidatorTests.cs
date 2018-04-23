@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Domain.Schedule;
 using System.Collections.Generic;
+using JodyApp.Domain;
 
 namespace JodyApp.Data.Test.Domain.Schedule
 {
@@ -15,7 +16,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
             string home = "Team 1";
             string away = "Team 2";
 
-            ScheduleGame game = ScheduleGameTests.CreateBasicScheduleGame(TeamTests.CreateBasicTeam(home, 5), TeamTests.CreateBasicTeam(away, 5));
+            Game game = ScheduleGameTests.CreateBasicScheduleGame(TeamTests.CreateBasicTeam(home, 5), TeamTests.CreateBasicTeam(away, 5));
 
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
             ScheduleValidator.ProcessGame(data,game);
@@ -34,7 +35,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
         [TestMethod]
         public void ShouldProcessGames()
         {
-            List<ScheduleGame> games1 = Scheduler.ScheduleGames(TeamTests.CreateBasicTeams(new string[] { "Team 1", "Team 2", "Team 3", "Team 4" }).ToArray(), false);
+            List<Game> games1 = Scheduler.ScheduleGames(TeamTests.CreateBasicTeams(new string[] { "Team 1", "Team 2", "Team 3", "Team 4" }).ToArray(), false);
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
             ScheduleValidator.ProcessGames(data, games1);
             ScheduleValidator.ProcessGames(data, games1);

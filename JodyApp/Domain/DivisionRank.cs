@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace JodyApp.Domain
 {
     [Table("DivisionRanks")]
-    public abstract class DivisionRank:DomainObject, IComparable<DivisionRank>
+    public class DivisionRank:DomainObject, IComparable<DivisionRank>
     {
         public Division Division { get; set; }
         public Team Team { get; set; }

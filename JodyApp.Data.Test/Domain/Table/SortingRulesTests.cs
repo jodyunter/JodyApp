@@ -12,31 +12,31 @@ namespace JodyApp.Data.Test.Domain.Table
     [TestClass]
     public class SortingRulesTests
     {
-        Dictionary<string, RecordTableDivision> divisions = new Dictionary<string, RecordTableDivision>();
-        Dictionary<string, RecordTableTeam> teams = new Dictionary<string, RecordTableTeam>();
+        Dictionary<string, Division> divisions = new Dictionary<string, Division>();
+        Dictionary<string, Team> teams = new Dictionary<string, Team>();
         RecordTable table = new RecordTable();
 
         [TestInitialize]
         public void Setup()
         {
-            var league = new RecordTableDivision(null, "League", "League", 0, 0, null, new List<SortingRule>());
+            var league = new Division(null, "League", "League", 0, 0, null, new List<SortingRule>());
 
             divisions.Add("League", league);
 
             for (int i = 0; i < 2; i++)
             {
-                divisions.Add("Conference " + i, new RecordTableDivision(null, "Conference " + i, null, 1, i + 1, league, new List<SortingRule>()));
+                divisions.Add("Conference " + i, new Division(null, "Conference " + i, null, 1, i + 1, league, new List<SortingRule>()));
             }
 
             for (int i = 0; i < 6; i++)
             {
-                divisions.Add("Division " + i, new RecordTableDivision(null, "Division " + i, null, 2, i + 1, divisions["Conference " + (i % 2)], new List<SortingRule>()));
+                divisions.Add("Division " + i, new Division(null, "Division " + i, null, 2, i + 1, divisions["Conference " + (i % 2)], new List<SortingRule>()));
             }
 
             for (int i = 0; i < 30; i++)
             {
-                RecordTableDivision d = divisions["Division " + (i % 6)];
-                teams.Add("Team " + i, new RecordTableTeam("Team " + i, 5, new TeamStatistics(), d));                
+                Division d = divisions["Division " + (i % 6)];
+                teams.Add("Team " + i, new Team("Team " + i, 5, new TeamStatistics(), d));                
                 d.Teams.Add(teams["Team " + i]);
             }
 

@@ -8,9 +8,9 @@ namespace JodyApp.Data.Test.Domain.Schedule
     [TestClass]
     public class ScheduleGameTests
     {
-        public static ScheduleGame CreateBasicScheduleGame(Team home, Team away)
+        public static Game CreateBasicScheduleGame(Team home, Team away)
         {
-            return new ScheduleGame
+            return new Game
             {
                 HomeTeam = home,
                 AwayTeam = away,

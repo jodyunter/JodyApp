@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
 using JodyApp.Database;
-using JodyApp.Domain.Config;
 
 namespace JodyApp.Service
 {

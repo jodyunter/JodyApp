@@ -10,7 +10,7 @@ using JodyApp.Domain.Table;
 namespace JodyApp.Domain
 {
     [Table("Divisions")]
-    public abstract partial class Division : DomainObject, IEquatable<Division>, IComparable<Division>
+    public partial class Division : DomainObject, IEquatable<Division>, IComparable<Division>
     {
         private string _shortName;
 
@@ -24,6 +24,7 @@ namespace JodyApp.Domain
         public List<DivisionRank> Rankings { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
+        virtual public Season Season { get; set; }
 
         public League League { get; set; }
         public Division() { }
@@ -39,6 +40,26 @@ namespace JodyApp.Domain
             Rankings = new List<DivisionRank>();
                  
         }
+        public Division(League league, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : this(league, name, shortName, level, order, parent)
+        {
+            if (sortingRules == null) sortingRules = new List<SortingRule>();
+            SortingRules = sortingRules;
+        }
+        public Division(Division division, Season season)
+        {
+
+            this.Season = season;
+            this.Name = division.Name;
+            this.ShortName = division.ShortName;
+            this.Level = division.Level;
+            this.Order = division.Order;
+            this.League = division.League;
+            this.Teams = new List<Team>();
+            this.Rankings = new List<DivisionRank>();
+            //sorting rules must be handled seperately
+            //parent must be handled seperately
+        }
+
         public int CompareTo(Division other)
         {
             if (Level.Equals(other.Level))
@@ -55,6 +76,37 @@ namespace JodyApp.Domain
             return base.Equals(other);
         }
 
-        public abstract void SetRank(int rank, RecordTableTeam recordTableTeam);
+        public void SetRank(int rank, Team team)
+        {
+            if (Rankings == null) Rankings = new List<DivisionRank>();
+
+            if (Rankings.Any(r => r.Team.Name.Equals(team.Name)))
+            {
+                Rankings.Find(r => r.Team.Name.Equals(team.Name)).Rank = rank;
+            }
+            else
+            {
+                Rankings.Add(new DivisionRank() { Division = this, Team = team, Rank = rank });
+            }
+        }
+
+        public Division CreateDivisionForSeason(Season season)
+        {
+            Division newDivision = new Division()
+            {
+                Season = season,
+                Name = this.Name,
+                ShortName = this.ShortName,
+                Level = this.Level,
+                Order = this.Order,
+                League = this.League,
+                Teams = new List<Team>(),
+                Rankings = new List<DivisionRank>()
+                //sorting rules must be handled seperately
+                //parent must be handled seperately
+            };
+
+            return newDivision;
+        }
     }
 }

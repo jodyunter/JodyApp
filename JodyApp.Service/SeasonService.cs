@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
 using JodyApp.Database;
-using JodyApp.Domain.Season;
+
 using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Service
@@ -32,34 +32,34 @@ namespace JodyApp.Service
             season.Name = name;
             season.Year = year;
 
-            Dictionary<string, SeasonDivision> seasonDivisions = new Dictionary<string, SeasonDivision>();
-            Dictionary<string, SeasonTeam> seasonTeams = new Dictionary<string, SeasonTeam>();
+            Dictionary<string, Division> seasonDivisions = new Dictionary<string, Division>();
+            Dictionary<string, Team> seasonTeams = new Dictionary<string, Team>();
+            Dictionary<string, ScheduleRule> seasonScheduleRules = new Dictionary<string, ScheduleRule>();
 
-            //loop once to create teams and new season divisions
-            foreach (Division d in divisionService.GetByLeague(league))
+            //loop once to create teams and new season divisions, order means we will not add a parent we haven't created yet
+            divisionService.GetByLeague(league).OrderBy(d => d.Level).ToList<Division>().ForEach(division => 
             {
-                //in the event the parent is added in the recursive steps, we don't want to do it agian
-                if (!seasonDivisions.ContainsKey(d.Name))
-                {
-                    seasonDivisions.Add(d.Name, CreateSeasonDivision(season, d, seasonDivisions));
-                }
-              
-            }
+                Division seasonDiv = division.CreateDivisionForSeason(season);
+                if (division.Parent != null) seasonDiv.Parent = seasonDivisions[division.Parent.Name];
+                seasonDivisions.Add(seasonDiv.Name, seasonDiv);
 
+            });
+
+            //now add new season related teams.
             foreach (Division d in divisionService.GetByLeague(league))
             {
                 d.Teams.ForEach(dt => {
-                    SeasonTeam seasonTeam = new SeasonTeam(dt, seasonDivisions[d.Name]);
+                    Team seasonTeam = new Team(dt, seasonDivisions[d.Name]);
                     seasonDivisions[d.Name].Teams.Add(seasonTeam);
-                    db.SeasonTeams.Add(seasonTeam);
+                    db.Teams.Add(seasonTeam);
                     seasonTeams.Add(seasonTeam.Name, seasonTeam);
                 });
             }
 
-            //lop to process the sorting rules, this requires the divisions be created first
+            //loop to process the sorting rules, this requires the divisions be created first
             foreach (Division d in divisionService.GetByLeague(league))
             {
-                SeasonDivision seasonDiv = seasonDivisions[d.Name];
+                Division seasonDiv = seasonDivisions[d.Name];
                 seasonDiv.SortingRules = new List<SortingRule>();
 
                 d.SortingRules.ForEach(rule =>
@@ -70,19 +70,20 @@ namespace JodyApp.Service
                 
             }
 
-            foreach(ScheduleRule rule in scheduleService.GetConfigRules())
+            foreach(ScheduleRule rule in scheduleService.GetRules(league))
             {
-                SeasonDivision homeDiv = null;
-                SeasonDivision awayDiv = null;
-                SeasonTeam homeTeam = null;
-                SeasonTeam awayTeam = null;
+                Division homeDiv = null;
+                Division awayDiv = null;
+                Team homeTeam = null;
+                Team awayTeam = null;
 
-                if (rule.HomeDivision != null) { homeDiv = seasonDivisions[db.Divisions.Find(rule.HomeDivision.Id).Name]; }
-                if (rule.AwayDivision != null) { awayDiv = seasonDivisions[db.Divisions.Find(rule.AwayDivision.Id).Name]; }
-                if (rule.AwayTeam != null) { awayTeam = seasonTeams[db.Teams.Find(rule.AwayTeam.Id).Name]; }
-                if (rule.HomeTeam != null) { homeTeam = seasonTeams[db.Teams.Find(rule.HomeTeam.Id).Name]; }
+                if (rule.HomeDivision != null) { homeDiv = seasonDivisions[rule.HomeDivision.Name]; }
+                if (rule.AwayDivision != null) { awayDiv = seasonDivisions[rule.AwayDivision.Name]; }
+                if (rule.AwayTeam != null) { awayTeam = seasonTeams[rule.AwayTeam.Name]; }
+                if (rule.HomeTeam != null) { homeTeam = seasonTeams[rule.HomeTeam.Name]; }
 
-                SeasonScheduleRule seasonRule = new SeasonScheduleRule(
+                ScheduleRule seasonRule = new ScheduleRule(
+                                                    league,
                                                     season,
                                                     rule.Name,
                                                     rule.HomeType,
@@ -95,21 +96,22 @@ namespace JodyApp.Service
                                                     rule.Rounds,
                                                     rule.DivisionLevel
                                                     );
-                db.SeasonScheduleRules.Add(seasonRule);
+                db.ScheduleRules.Add(seasonRule);
+                seasonScheduleRules.Add(seasonRule.Name, seasonRule);
                 
             }            
 
 
             //need to change season rules too
-            season.TeamData = seasonTeams.Values.ToList<SeasonTeam>();
+            season.TeamData = seasonTeams.Values.ToList<Team>();
 
             db.Seasons.Add(season);
-            db.SeasonDivisions.AddRange(seasonDivisions.Values);            
+            db.Divisions.AddRange(seasonDivisions.Values);            
             db.SaveChanges();
 
             seasonDivisions.Values.ToList().ForEach(seasonDiv =>
             {
-                seasonDiv.GetAllTeamsInDivision(db).ForEach(team => { seasonDiv.SetRank(0, (RecordTableTeam)team); });
+                divisionService.GetAllTeamsInDivision(seasonDiv).ForEach(team => { seasonDiv.SetRank(0, team); });
 
                 db.DivisionRanks.AddRange(seasonDiv.Rankings);
             });
@@ -119,37 +121,19 @@ namespace JodyApp.Service
             return season;
             
         }
-        private SeasonDivision CreateSeasonDivision(Season season, Division d, Dictionary<string, SeasonDivision> seasonDivisions)
-        {
-            SeasonDivision division = new SeasonDivision(d, season); 
-            if (d.Parent != null)
-            {
-                //if the parent isn't there add it
-                if (!seasonDivisions.ContainsKey(d.Parent.Name))
-                {
-                    SeasonDivision parent = CreateSeasonDivision(season, d.Parent, seasonDivisions);
-                    seasonDivisions.Add(parent.Name, parent);
-                }
-
-                division.Parent = seasonDivisions[d.Parent.Name];
-            }
-
-            return division;
-        }
-        
 
         public void SortAllDivisions(Season season)
         {
-            List<SeasonDivision> divisions = divisionService.GetDivisionsBySeason(season);
+            List<Division> divisions = divisionService.GetDivisionsBySeason(season);
 
             divisions.ForEach(div => { divisionService.SortByDivision(div); });
 
         }
      
-        public List<SeasonTeam> GetSeasonTeamsInDivisionByRank(SeasonDivision division)
+        public List<Team> GetTeamsInDivisionByRank(Division division)
         {
 
-            var teams = division.GetAllTeamsInDivision(db).ToDictionary(t => t.Name, t => t);
+            var teams = divisionService.GetAllTeamsInDivision(division).ToDictionary(t => t.Name, t => t);
 
             division.Rankings.Sort();
             int rank = 1;

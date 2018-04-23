@@ -9,7 +9,7 @@ using JodyApp.Domain;
 using JodyApp.Domain.Table;
 using JodyApp.Database;
 using JodyApp.Service.Test.DataFolder.SeasonTestData;
-using JodyApp.Domain.Season;
+
 using JodyApp.Domain.Schedule;
 
 namespace JodyApp.Service.Test
@@ -45,7 +45,7 @@ namespace JodyApp.Service.Test
 
             season.SetupStandings();
 
-            List<ScheduleGame> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
+            List<Game> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
 
             scheduleGames.ForEach(game =>
             {
@@ -61,8 +61,9 @@ namespace JodyApp.Service.Test
 
             db.SaveChanges();
 
+            //need to get counts based on other things.
             AreEqual(4, db.Teams.Count());
-            AreEqual(8, db.SeasonTeams.Count());
+            AreEqual(8, db.Teams.Count());
 
             db.SaveChanges();
         }

@@ -9,39 +9,59 @@ using JodyApp.Domain;
 namespace JodyApp.Domain
 {
 
-    public abstract partial class Division
+    public partial class Division
     {
-        virtual public List<Division> GetDivisionsByParent(JodyAppContext db)
+        public static List<Division> GetDivisionsByParent(JodyAppContext db, Division parent)
+        {
+            if (parent == null) return new List<Division>();
+
+            return db.Divisions.Where(div => div.Parent.Id == parent.Id).ToList<Division>();            
+        }
+
+        public static Division GetByName(JodyAppContext db, string name, League league, Season season)
         {            
-            return db.Divisions.Where(div => div.Parent.Id == this.Id && div.League.Id == this.League.Id).ToList<Division>();            
-        }
-
-        virtual public Division GetByName(JodyAppContext db)
-        {
-
-            return db.Divisions.Where(d => (d.Name == this.Name) && (d.League.Id == this.League.Id)).First();
             
+            if (season == null) return db.Divisions.Where(d => (d.Name == name) && (d.League.Id == league.Id) && (d.Season == null)).First();
+            else return db.Divisions.Where(d => (d.Name == name) && (d.League.Id == league.Id) && (d.Season.Id == season.Id)).First();
+
         }
 
-        virtual public List<Team> GetAllTeamsInDivision(JodyAppContext db)
+
+        public static List<Team> GetAllTeamsInDivision(JodyAppContext db, Division division)
         {
 
-            List<Team> teams = new List<Team>();
-            if (this.Teams != null) teams.AddRange(this.Teams);
+            var teams = new List<Team>();
 
-            this.GetDivisionsByParent(db).ForEach(div =>
+            if (division.Teams != null) teams.AddRange(division.Teams);
+
+            Division.GetDivisionsByParent(db, division).ForEach(div =>
             {
-                teams.AddRange(div.GetAllTeamsInDivision(db));
+                teams.AddRange(Division.GetAllTeamsInDivision(db, div));
             });
 
             return teams;
         }
         
-        virtual public List<Division> GetByLeague(JodyAppContext db)
+        public static List<Division> GetByLeague(JodyAppContext db, League league)
         {
-            return db.Divisions.Where(d => d.League.Id == this.League.Id).ToList<Division>();
+            return db.Divisions.Where(d => d.League.Id == league.Id && d.Season == null).ToList<Division>();
+        }
+
+        public static List<Division> GetDivisionsBySeason(JodyAppContext db, Season season)
+        {
+            return db.Divisions.Include("Season").Where(d => d.Season.Id == season.Id).ToList<Division>();
+        }
+
+        public static List<Division> GetDivisionsByLevel(JodyAppContext db, int level, Season season)
+        {
+
+            if (season == null) return db.Divisions.Where(d => d.Level == level && (d.Season.Id == null)).ToList<Division>();
+            else return db.Divisions.Where(d => d.Level == level && (d.Season.Id == season.Id)).ToList<Division>();
+
+
         }
     }
+
 
 }
 

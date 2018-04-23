@@ -16,7 +16,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
             Team HomeTeam = TeamTests.CreateBasicTeam("Team 1", 5);
             Team AwayTeam = TeamTests.CreateBasicTeam("Team 2", 5);
 
-            ScheduleGame scheduleGame = Scheduler.SetupGame(HomeTeam, AwayTeam);
+            Game scheduleGame = Scheduler.SetupGame(HomeTeam, AwayTeam);
 
             AreEqual(HomeTeam, scheduleGame.HomeTeam);
             AreEqual(AwayTeam, scheduleGame.AwayTeam);

@@ -10,14 +10,14 @@ namespace JodyApp.Data.Test.Domain.Table
     public class RecordTableTests
     {
         RecordTable table = new RecordTable();
-        RecordTableTeam HomeTeam = new RecordTableTeam
+        Team HomeTeam = new Team
         {
             Name = "Team 1",
             Skill = 5,
             Stats = new TeamStatistics()
         };
 
-        RecordTableTeam AwayTeam = new RecordTableTeam
+        Team AwayTeam = new Team
         {
             Name = "Team 2",
             Skill = 5,

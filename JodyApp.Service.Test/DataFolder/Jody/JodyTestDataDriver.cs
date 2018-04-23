@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
-using JodyApp.Domain.Config;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table;
@@ -22,7 +21,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         Team Vancouver, Edmonton, Calgary;
         Team Winnipeg, Minnesota, Chicago;
 
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Division> divs)
         {
             League = CreateAndAddDivision(leagues[LeagueName], "League", null, 0, 1, null, null, divs);
             WestConference = CreateAndAddDivision(leagues[LeagueName], "Western Confterence", "Western", 1, 1, League, null, divs);
@@ -34,15 +33,15 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         }
 
         //todo add league everywhere
-        public override void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {
             ScheduleRule rule1, rule2, rule3, rule4;
 
-            rule1 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 1", League, true, 2);
-            rule2 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 2", WestDivision, true, 5);
-            rule3 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 3", EastDivision, true, 5);
-            rule4 = ConfigScheduleRule.CreateByDivisionVsSelf("Rule 4", CentralDivision, true, 5);
-            rule4 = ConfigScheduleRule.CreateByDivisionLevel("Rule 4", 1, true, 5);
+            rule1 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 1", League, true, 2);
+            rule2 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 2", WestDivision, true, 5);
+            rule3 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 3", EastDivision, true, 5);
+            rule4 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 4", CentralDivision, true, 5);
+            rule4 = ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 4", 1, true, 5);
 
             CreateAndAddRule(rule1, rules);
             CreateAndAddRule(rule2, rules);
@@ -50,7 +49,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             CreateAndAddRule(rule4, rules);
         }
 
-        public override void PrivateCreateTeams(Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigDivision> divs)
+        public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)
         {
             Toronto = CreateAndAddTeam("Toronto", 5, EastDivision, teams);
             Montreal = CreateAndAddTeam("Montreal", 5, EastDivision, teams);
@@ -63,7 +62,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             Chicago = CreateAndAddTeam("Chicago", 5, CentralDivision, teams);
         }
 
-        public override void PrivateCreateSortingRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, SortingRule> rules)
+        public override void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules)
         {
             CreateAndAddSortingRule(League, "Sorting Rule 1", 0, WestConference, "1", -1, -1, rules);
             CreateAndAddSortingRule(League, "Sorting Rule 2", 0, EastConference, "1", -1, -1, rules);

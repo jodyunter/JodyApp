@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JodyApp.Domain
 {
+    [Table("Games")]
     public class Game:DomainObject
     {
         static int BASE_GAME_SCORE = 6;
-
+        public int Day { get; set; }
+        public Season Season { get; set; }
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }        
         public int HomeScore { get; set; }

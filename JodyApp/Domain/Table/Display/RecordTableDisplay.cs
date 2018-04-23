@@ -11,9 +11,9 @@ namespace JodyApp.Domain.Table.Display
     public class RecordTableDisplay
     {
 
-        public static String RecordTableTeamFormat = "{0,-5}{1,-15}{2,5}{3,5}{4,5}{5,5}{6,5}{7,5}{8,5}{9,5}{10,15}";
+        public static String TeamFormat = "{0,-5}{1,-15}{2,5}{3,5}{4,5}{5,5}{6,5}{7,5}{8,5}{9,5}{10,15}";
 
-        public static String PrintDivisionStandings(String divisionName, List<RecordTableTeam> teams)
+        public static String PrintDivisionStandings(String divisionName, List<Team> teams)
         {
             string result = divisionName;
 
@@ -28,7 +28,7 @@ namespace JodyApp.Domain.Table.Display
         public static string GetRecordTableRowHeader()
         {
             string result = String.Format(
-                RecordTableTeamFormat,
+                TeamFormat,
                 "R",
                 "Name",
                 "W",
@@ -44,10 +44,10 @@ namespace JodyApp.Domain.Table.Display
 
             return result;
         }
-        public static string GetRecordTableRow(RecordTableTeam team )
+        public static string GetRecordTableRow(Team team )
         {
             string result = String.Format(
-                RecordTableTeamFormat,
+                TeamFormat,
                 team.Stats.Rank,
                 team.Name,
                 team.Stats.Wins,

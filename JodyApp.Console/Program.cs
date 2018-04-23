@@ -8,7 +8,7 @@ using JodyApp.Domain.Table;
 using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Service.Test.DataFolder.Jody;
-using JodyApp.Domain.Season;
+
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table.Display;
 
@@ -41,7 +41,7 @@ namespace JodyApp.Console
 
             season.SetupStandings();
 
-            List<ScheduleGame> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
+            List<Game> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
 
             scheduleGames.ForEach(game =>
            {
@@ -52,14 +52,14 @@ namespace JodyApp.Console
             seasonService.SortAllDivisions(season);
             db.SaveChanges();
 
-            var div = db.SeasonDivisions.Where(d => d.Season.Id == season.Id && d.Name == "League").First();
+            var div = db.Divisions.Where(d => d.Season.Id == season.Id && d.Name == "League").First();
 
 
 
-            var teams = seasonService.GetSeasonTeamsInDivisionByRank(div);
+            var teams = seasonService.GetTeamsInDivisionByRank(div);
             teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
 
-            System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<RecordTableTeam>()));
+            System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<Team>()));
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();

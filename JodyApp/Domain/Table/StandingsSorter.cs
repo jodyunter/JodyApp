@@ -19,19 +19,19 @@ namespace JodyApp.Domain.Table
         
         //we have two things to consider        
        
-        public static SortedDictionary<Division, List<RecordTableTeam>> SortByDivisionLevel(RecordTable table, int divisionLevel)
+        public static SortedDictionary<Division, List<Team>> SortByDivisionLevel(RecordTable table, int divisionLevel)
         {
 
-            List<RecordTableTeam> list = table.Standings.Values.ToList<RecordTableTeam>();
+            List<Team> list = table.Standings.Values.ToList<Team>();
 
-            SortedDictionary<Division, List<RecordTableTeam>> sortedStandings = new SortedDictionary<Division, List<RecordTableTeam>>();
+            SortedDictionary<Division, List<Team>> sortedStandings = new SortedDictionary<Division, List<Team>>();
 
             list.ForEach(team =>
             {
                 SortIntoDivisions(team, divisionLevel, sortedStandings);
             });
 
-            foreach(KeyValuePair<Division, List<RecordTableTeam>> entry in sortedStandings)
+            foreach(KeyValuePair<Division, List<Team>> entry in sortedStandings)
             {
                 //need to apply any sorting rules here
                 entry.Value.Sort();
@@ -46,7 +46,7 @@ namespace JodyApp.Domain.Table
             return sortedStandings;
         }
 
-        private static void SortIntoDivisions(RecordTableTeam team, int divisionLevel, SortedDictionary<Division, List<RecordTableTeam>> teamList)
+        private static void SortIntoDivisions(Team team, int divisionLevel, SortedDictionary<Division, List<Team>> teamList)
         {
             Division a0 = team.Division;
 
@@ -58,12 +58,12 @@ namespace JodyApp.Domain.Table
             AddToDictionary(a0, team, teamList);
         }
 
-        private static void AddToDictionary(Division d, RecordTableTeam team, SortedDictionary<Division, List<RecordTableTeam>> teamList)
+        private static void AddToDictionary(Division d, Team team, SortedDictionary<Division, List<Team>> teamList)
         {
             
             if (!teamList.ContainsKey(d))
             {
-                teamList.Add(d, new List<RecordTableTeam>());                
+                teamList.Add(d, new List<Team>());                
             }
 
             teamList[d].Add(team);
@@ -71,13 +71,13 @@ namespace JodyApp.Domain.Table
         }
 
         //todo we need to remove this method because we need service calls to properly sort the divisions
-        public static List<RecordTableTeam> SortByRules(Dictionary<RecordTableDivision,List<RecordTableTeam>> teamsByDivision, RecordTableDivision division)
+        public static List<Team> SortByRules(Dictionary<Division,List<Team>> teamsByDivision, Division division)
         {
-            var result = new List<RecordTableTeam>();
-            var editableTeams = new List<RecordTableTeam>();
+            var result = new List<Team>();
+            var editableTeams = new List<Team>();
             editableTeams.AddRange(teamsByDivision[division]);
 
-            var ruleGroupings = new SortedDictionary<int, List<RecordTableTeam>>();
+            var ruleGroupings = new SortedDictionary<int, List<Team>>();
 
             if (division.SortingRules == null || division.SortingRules.Count == 0)
             {
@@ -89,12 +89,12 @@ namespace JodyApp.Domain.Table
                 division.SortingRules.ForEach(rule =>
                 {
                     //ensure the division we are getting teams from is sorted
-                    var sortedTeams = SortByRules(teamsByDivision, (RecordTableDivision)rule.DivisionToGetTeamsFrom);
+                    var sortedTeams = SortByRules(teamsByDivision, rule.DivisionToGetTeamsFrom);
 
                     rule.PositionsToUse.Split(',').Select(int.Parse).ToList<int>().ForEach(i =>
                     {
                         var team = sortedTeams[i-1];
-                        if (!ruleGroupings.ContainsKey(rule.GroupNumber)) ruleGroupings.Add(rule.GroupNumber, new List<RecordTableTeam>());
+                        if (!ruleGroupings.ContainsKey(rule.GroupNumber)) ruleGroupings.Add(rule.GroupNumber, new List<Team>());
                         ruleGroupings[rule.GroupNumber].Add(team);
                         editableTeams.Remove(team);
                     });
@@ -119,12 +119,12 @@ namespace JodyApp.Domain.Table
             return result;
         }
 
-        public static List<RecordTableTeam> SortByRanking(RecordTableDivision division)
+        public static List<Team> SortByRanking(Division division)
         {
             if (division.Rankings == null) throw new ApplicationException("Must have rankings done prior to calling this method");
 
             division.Rankings.Sort();
-            List<RecordTableTeam> teams = division.Rankings.Select(i => (RecordTableTeam)i.Team).ToList<RecordTableTeam>();
+            List<Team> teams = division.Rankings.Select(i => (Team)i.Team).ToList<Team>();
 
             return teams;
         }

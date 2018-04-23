@@ -1,6 +1,5 @@
 ﻿using JodyApp.Database;
 using JodyApp.Domain;
-using JodyApp.Domain.Config;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table;
 using System;
@@ -20,11 +19,11 @@ namespace JodyApp.Service.Test.DataFolder
         {
             this.db = db;
         }
-        abstract public void PrivateCreateTeams( Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigDivision> divs);
-        abstract public void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, ConfigDivision> divs);
-        abstract public void PrivateCreateScheduleRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams, Dictionary<string, ConfigScheduleRule> rules);
+        abstract public void PrivateCreateTeams( Dictionary<string, Team> teams, Dictionary<string, Division> divs);
+        abstract public void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Division> divs);
+        abstract public void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules);
         abstract public void PrivateCreateLeagues(Dictionary<string, League> leagues);
-        public abstract void PrivateCreateSortingRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, SortingRule> rules);
+        public abstract void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules);
 
         public void DeleteAllData()
         {
@@ -37,35 +36,35 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
-        public Division CreateAndAddDivision(League league, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules, Dictionary<string, ConfigDivision> map)
+        public Division CreateAndAddDivision(League league, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules, Dictionary<string, Division> map)
         {
-            ConfigDivision div = new ConfigDivision(league, name, shortName, level, order, parent, sortingRules);
+            Division div = new Division(league, name, shortName, level, order, parent, sortingRules);
             map.Add(div.Name, div);
             return div;
         }
 
-        public Team CreateAndAddTeam(string name, int skill, Division division, Dictionary<string, ConfigTeam> map)
+        public Team CreateAndAddTeam(string name, int skill, Division division, Dictionary<string, Team> map)
         {
-            ConfigTeam team = new ConfigTeam(name, skill, division);
+            Team team = new Team(name, skill, division);
             map.Add(team.Name, team);
             division.Teams.Add(team);
             return team;
         }        
         
-        public ScheduleRule CreateAndAddRule(ScheduleRule newRule, Dictionary<string, ConfigScheduleRule> map)
+        public ScheduleRule CreateAndAddRule(ScheduleRule newRule, Dictionary<string, ScheduleRule> map)
         {
-            ConfigScheduleRule rule = new ConfigScheduleRule(newRule);
+            ScheduleRule rule = new ScheduleRule(newRule);
             map.Add(rule.Name, rule);
             return rule;
         }
 
-        public ScheduleRule CreateAndAddRule(string name, 
+        public ScheduleRule CreateAndAddRule(League league, string name, 
                                 int homeType, Team homeTeam, Division homeDivision,
                                 int awayType, Team awayTeam, Division awayDivision,
                                 bool homeAndAway, int rounds, int divisionLevel,
-                                    Dictionary<string, ConfigScheduleRule> map)
+                                    Dictionary<string, ScheduleRule> map)
         {
-            ConfigScheduleRule rule = new ConfigScheduleRule(name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel);
+            ScheduleRule rule = new ScheduleRule(league, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel);
             map.Add(rule.Name, rule);
             return rule;
         }
@@ -109,9 +108,9 @@ namespace JodyApp.Service.Test.DataFolder
                 
         }
 
-        public Dictionary<string, ConfigDivision> CreateDivisions(Dictionary<string, League> leagues)
+        public Dictionary<string, Division> CreateDivisions(Dictionary<string, League> leagues)
         {
-            var divs = new Dictionary<string, ConfigDivision>();
+            var divs = new Dictionary<string, Division>();
 
             PrivateCreateDivisions(leagues, divs);
 
@@ -123,9 +122,9 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
 
-        public Dictionary<string, ConfigTeam> CreateTeams(Dictionary<string, ConfigDivision> divs)
+        public Dictionary<string, Team> CreateTeams(Dictionary<string, Division> divs)
         {
-            var teams = new Dictionary<string, ConfigTeam>();
+            var teams = new Dictionary<string, Team>();
 
             PrivateCreateTeams(teams, divs);
 
@@ -135,11 +134,11 @@ namespace JodyApp.Service.Test.DataFolder
             return teams;
         }
 
-        public Dictionary<string, ConfigScheduleRule> CreateRules(Dictionary<string, ConfigDivision> divs, Dictionary<string, ConfigTeam> teams)
+        public Dictionary<string, ScheduleRule> CreateRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams)
         {
-            var rules = new Dictionary<string, ConfigScheduleRule>();
+            var rules = new Dictionary<string, ScheduleRule>();
 
-            PrivateCreateScheduleRules(divs, teams, rules);
+            PrivateCreateScheduleRules(leagues, divs, teams, rules);
             
             db.ScheduleRules.AddRange(rules.Values);
             db.SaveChanges();
@@ -147,7 +146,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
-        public Dictionary<string, SortingRule> CreateSortingRules(Dictionary<string, ConfigDivision> divs)
+        public Dictionary<string, SortingRule> CreateSortingRules(Dictionary<string, Division> divs)
         {
             var rules = new Dictionary<string, SortingRule>();
 
@@ -164,9 +163,9 @@ namespace JodyApp.Service.Test.DataFolder
         {
             Dictionary<string, League> leagues = CreateLeagues();
             //create divisions
-            Dictionary<string, ConfigDivision> divs = CreateDivisions(leagues);
-            Dictionary<string, ConfigTeam> teams = CreateTeams(divs);
-            Dictionary<string, ConfigScheduleRule> scheduleRules = CreateRules(divs, teams);
+            Dictionary<string, Division> divs = CreateDivisions(leagues);
+            Dictionary<string, Team> teams = CreateTeams(divs);
+            Dictionary<string, ScheduleRule> scheduleRules = CreateRules(leagues, divs, teams);
             Dictionary<string, SortingRule> sortingRules = CreateSortingRules(divs);
         }
     }
