@@ -88,7 +88,7 @@ namespace JodyApp.Domain.Table
             {
                 Team team = entry.Value;
 
-                Division division = (Division)team.Division;
+                Division division = team.Division;
 
                 while (division != null)
                 {

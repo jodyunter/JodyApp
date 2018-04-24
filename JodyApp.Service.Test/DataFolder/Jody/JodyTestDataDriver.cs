@@ -37,11 +37,11 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         {
             ScheduleRule rule1, rule2, rule3, rule4;
 
-            rule1 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 1", League, true, 2);
-            rule2 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 2", WestDivision, true, 5);
-            rule3 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 3", EastDivision, true, 5);
-            rule4 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 4", CentralDivision, true, 5);
-            rule4 = ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 4", 1, true, 5);
+            rule1 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 1", League, true, 2,1);
+            rule2 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 2", WestDivision, true, 5, 1);
+            rule3 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 3", EastDivision, true, 5, 1);
+            rule4 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 4", CentralDivision, true, 5, 1);
+            rule4 = ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 4", 1, true, 5, 1);
 
             CreateAndAddRule(rule1, rules);
             CreateAndAddRule(rule2, rules);

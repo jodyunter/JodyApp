@@ -94,7 +94,8 @@ namespace JodyApp.Service
                                                     awayDiv,
                                                     rule.PlayHomeAway,
                                                     rule.Rounds,
-                                                    rule.DivisionLevel
+                                                    rule.DivisionLevel,
+                                                    rule.Order
                                                     );
                 db.ScheduleRules.Add(seasonRule);
                 seasonScheduleRules.Add(seasonRule.Name, seasonRule);

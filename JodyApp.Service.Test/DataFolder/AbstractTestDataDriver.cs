@@ -61,10 +61,10 @@ namespace JodyApp.Service.Test.DataFolder
         public ScheduleRule CreateAndAddRule(League league, string name, 
                                 int homeType, Team homeTeam, Division homeDivision,
                                 int awayType, Team awayTeam, Division awayDivision,
-                                bool homeAndAway, int rounds, int divisionLevel,
+                                bool homeAndAway, int rounds, int divisionLevel, int order,
                                     Dictionary<string, ScheduleRule> map)
         {
-            ScheduleRule rule = new ScheduleRule(league, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel);
+            ScheduleRule rule = new ScheduleRule(league, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel, order);
             map.Add(rule.Name, rule);
             return rule;
         }

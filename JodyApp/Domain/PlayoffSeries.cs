@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain
 {
-    public class PlayoffSeries
+    public class PlayoffSeries:DomainObject
     {
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }
         public List<Game> Games { get; set; }
 
         //rule that determines number of games, wins home and away and game specific rules
+        //we want total goal series, and best-of series
         
     }
 }
