@@ -64,12 +64,32 @@ namespace JodyApp.Service.Test
             db.SaveChanges();
 
             //need to get counts based on other things.
-            AreEqual(4, teamService.GetTeamsBySeason(season).Count);
-            AreEqual(4, teamService.GetTeamsBySeason(season2).Count);
-            AreEqual(12, db.Teams.Count());
-            AreEqual(4, teamService.GetBaseTeams().Count);
+            AreEqual(6, teamService.GetTeamsBySeason(season).Count);
+            AreEqual(6, teamService.GetTeamsBySeason(season2).Count);
+            AreEqual(18, db.Teams.Count());
+            AreEqual(6, teamService.GetBaseTeams().Count);
 
             db.SaveChanges();
+        }
+
+        [TestMethod]
+        public void ShouldScheduleInOrder()
+        {
+
+            Season season = service.CreateNewSeason(league, "My Season", 1);
+            Random random = new Random(55555);
+
+            season.SetupStandings();
+
+            List<Game> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
+
+            for (int i = 0; i < scheduleGames.Count-2; i++ )
+            {
+                AreNotEqual("Toronto", scheduleGames[i].HomeTeam.Name);
+                AreNotEqual("Toronto", scheduleGames[i].AwayTeam.Name);
+            }
+
+            AreEqual("Toronto", scheduleGames[scheduleGames.Count - 1].HomeTeam.Name);
         }
 
     }
