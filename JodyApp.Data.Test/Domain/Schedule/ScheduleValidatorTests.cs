@@ -35,7 +35,9 @@ namespace JodyApp.Data.Test.Domain.Schedule
         [TestMethod]
         public void ShouldProcessGames()
         {
-            List<Game> games1 = Scheduler.ScheduleGames(TeamTests.CreateBasicTeams(new string[] { "Team 1", "Team 2", "Team 3", "Team 4" }).ToArray(), false);
+            var games1 = new List<Game>();
+
+            Scheduler.ScheduleGames(games1, 0, TeamTests.CreateBasicTeams(new string[] { "Team 1", "Team 2", "Team 3", "Team 4" }).ToArray(), false);
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
             ScheduleValidator.ProcessGames(data, games1);
             ScheduleValidator.ProcessGames(data, games1);

@@ -46,12 +46,16 @@ namespace JodyApp.Domain
         {
             return db.Divisions.Where(d => d.League.Id == league.Id && d.Season == null).ToList<Division>();
         }
-
+        
         public static List<Division> GetDivisionsBySeason(JodyAppContext db, Season season)
         {
             return db.Divisions.Include("Season").Where(d => d.Season.Id == season.Id).ToList<Division>();
         }
 
+        public static List<Division> GetDivisionsByLevel(JodyAppContext db, int level)
+        {
+            return GetDivisionsByLevel(db, level, null);
+        }
         public static List<Division> GetDivisionsByLevel(JodyAppContext db, int level, Season season)
         {
 

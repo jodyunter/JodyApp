@@ -12,6 +12,7 @@ namespace JodyApp.Domain
     {
         static int BASE_GAME_SCORE = 6;
         public int Day { get; set; }
+        public int GameNumber { get; set; }  //this is tracked by individual competitions.  Games should be played in that order
         public Season Season { get; set; }
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }        

@@ -70,7 +70,7 @@ namespace JodyApp.Service
                 
             }
 
-            foreach(ScheduleRule rule in scheduleService.GetLeagueRules(league))
+            foreach (ScheduleRule rule in scheduleService.GetLeagueRules(league).OrderBy(rule => rule.Order)) 
             {
                 Division homeDiv = null;
                 Division awayDiv = null;
@@ -116,6 +116,10 @@ namespace JodyApp.Service
 
                 db.DivisionRanks.AddRange(seasonDiv.Rankings);
             });
+
+            season.Games = new List<Game>();
+            scheduleService.CreateGamesFromRules(season.ScheduleRules, season.Games, 0);
+            db.Games.AddRange(season.Games);
 
             db.SaveChanges();
 

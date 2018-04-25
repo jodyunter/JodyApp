@@ -9,63 +9,70 @@ namespace JodyApp.Domain.Schedule
     public class Scheduler
     {
 
-        public static List<Game> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int rounds)
+        public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int rounds)
         {
-            var games = new List<Game>();
-
             for (int i = 0; i < rounds; i++)
             {
-                games.AddRange(ScheduleGames(HomeTeams, AwayTeams, playHomeAndAway));
+                lastGameNumber = ScheduleGames(games, lastGameNumber, HomeTeams, AwayTeams, playHomeAndAway);
             }
 
-            return games;
+            return lastGameNumber;
         }
-        //need arrays to do this correctly, may need to sort prior to this method
-        public static List<Game> ScheduleGames(Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway)
-        {
-            var games = new List<Game>();
 
+
+        //need arrays to do this correctly, may need to sort prior to this method
+        public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway)
+        {
             if (AwayTeams == null || AwayTeams.Length == 0)
             {
-                return ScheduleGames(HomeTeams, playHomeAndAway);
+                return ScheduleGames(games, lastGameNumber, HomeTeams, playHomeAndAway);
             }
 
             for (int i = 0; i < HomeTeams.Length; i++)
             {
                 for (int j = 0; j < AwayTeams.Length; j++)
                 {
-                    AddGames(games, HomeTeams[i], AwayTeams[j], playHomeAndAway);                    
+                    lastGameNumber = AddGames(lastGameNumber, games, HomeTeams[i], AwayTeams[j], playHomeAndAway);
                 }
             }
 
-            return games;
+            return lastGameNumber;
         }
 
-        public static List<Game> ScheduleGames(Team[] HomeTeams, bool playHomeAndAway)
+        public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, bool playHomeAndAway)
         {
-            var games = new List<Game>();
-
             for (int i = 0; i < HomeTeams.Length - 1; i++)
             {
                 for (int j = i + 1; j < HomeTeams.Length; j++)
                 {
-                    AddGames(games, HomeTeams[i], HomeTeams[j], playHomeAndAway);
+                    lastGameNumber = AddGames(lastGameNumber, games, HomeTeams[i], HomeTeams[j], playHomeAndAway);
                 }
             }
 
-            return games;
+            return lastGameNumber;
         }
 
-        public static void AddGames(List<Game> games, Team a, Team b, bool homeAndAway)
-        {
+        //return last game number
+        public static int AddGames(int lastGameNumber, List<Game> games, Team a, Team b, bool homeAndAway)
+        {            
             if (!a.Name.Equals(b.Name))
             {
-                games.Add(SetupGame(a, b));
-                if (homeAndAway) games.Add(SetupGame(b, a));
+                Game home = SetupGame(lastGameNumber, a, b);
+                games.Add(home);
+                lastGameNumber = home.GameNumber;                
+                if (homeAndAway)
+                {
+                    Game away = SetupGame(lastGameNumber, b, a);
+                    games.Add(away);
+                    lastGameNumber = away.GameNumber;
+                }                
             }
+
+            return lastGameNumber;
         }
-        public static Game SetupGame(Team home, Team away)
-        {
+    
+        public static Game SetupGame(int lastGameNumber, Team home, Team away)
+            {
             return new Game
             {
                 HomeTeam = home,
@@ -73,12 +80,11 @@ namespace JodyApp.Domain.Schedule
                 HomeScore = 0,
                 AwayScore = 0,
                 CanTie = true,
-                Complete = false
-            };
+                Complete = false,
+                GameNumber = ++lastGameNumber
+                };
 
-        }
 
-
-        
+            }
     }
 }

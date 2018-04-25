@@ -47,7 +47,7 @@ namespace JodyApp.Service.Test
 
             season.SetupStandings();
 
-            List<Game> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
+            List<Game> scheduleGames = season.Games;
 
             scheduleGames.ForEach(game =>
             {
@@ -81,13 +81,23 @@ namespace JodyApp.Service.Test
 
             season.SetupStandings();
 
-            List<Game> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
+            var scheduleGames = season.Games;
+            int count = 1;
 
-            for (int i = 0; i < scheduleGames.Count-2; i++ )
+            scheduleGames.OrderBy(s => s.GameNumber).ToList().ForEach(game =>
             {
-                AreNotEqual("Toronto", scheduleGames[i].HomeTeam.Name);
-                AreNotEqual("Toronto", scheduleGames[i].AwayTeam.Name);
-            }
+                if (count < 61)
+                {
+                    AreNotEqual("Toronto", game.HomeTeam.Name);
+                }
+                else
+                {
+                    AreEqual("Toronto", game.HomeTeam.Name);
+                }
+
+                count++;
+
+            });
 
             AreEqual("Toronto", scheduleGames[scheduleGames.Count - 1].HomeTeam.Name);
         }

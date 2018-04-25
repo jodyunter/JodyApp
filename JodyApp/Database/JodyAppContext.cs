@@ -15,7 +15,7 @@ namespace JodyApp.Database
         public DbSet<League> Leagues { get; set; }          
         public DbSet<Division> Divisions { get; set; }
         public DbSet<ScheduleRule> ScheduleRules { get; set; }
-        public DbSet<Game> ScheduleGames { get; set; }
+        public DbSet<Game> Games { get; set; }
         public DbSet<SortingRule> SortingRules { get; set; }
         public DbSet<DivisionRank> DivisionRanks { get; set; }                                
         public DbSet<Season> Seasons { get; set; }

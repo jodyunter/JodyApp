@@ -34,20 +34,19 @@ namespace JodyApp.Service
             return divisionService.GetDivisionsByLevel(rule.DivisionLevel, rule.Season);
         }
 
-        public List<Game> CreateGamesFromRules(List<ScheduleRule> rules)
-        {
-            var games = new List<Game>();
+        //update to get last game number in database for season
+        public List<Game> CreateGamesFromRules(List<ScheduleRule> rules, List<Game> games, int lastGameNumber)
+        {            
             rules.ForEach(rule =>
             {
-                games.AddRange(CreateGamesFromRule(rule));
+                lastGameNumber = CreateGamesFromRule(rule, games, lastGameNumber);
             });
 
             return games;
         }
 
-        public List<Game> CreateGamesFromRule(ScheduleRule rule)
-        {
-            var games = new List<Game>();
+        public int CreateGamesFromRule(ScheduleRule rule, List<Game> games, int lastGameNumber)
+        {        
 
             var homeTeams = new List<Team>();
             var awayTeams = new List<Team>();
@@ -64,7 +63,7 @@ namespace JodyApp.Service
 
                     homeTeams.AddRange(divisionService.GetAllTeamsInDivision(d));
 
-                    games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), null, rule.PlayHomeAway, rule.Rounds));
+                    lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), null, rule.PlayHomeAway, rule.Rounds);
                 });
             }
             else
@@ -72,10 +71,10 @@ namespace JodyApp.Service
                 AddTeamsToListFromRule(homeTeams, rule.HomeType, rule.HomeTeam, rule.HomeDivision);
                 AddTeamsToListFromRule(awayTeams, rule.AwayType, rule.AwayTeam, rule.AwayDivision);
 
-                games.AddRange(Scheduler.ScheduleGames(homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds));
+                lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds);
 
             }
-            return games;
+            return lastGameNumber;
         }
         
         public void AddTeamsToListFromRule(List<Team> teamList, int ruleType, Team team, Division division)

@@ -16,12 +16,13 @@ namespace JodyApp.Data.Test.Domain.Schedule
             Team HomeTeam = TeamTests.CreateBasicTeam("Team 1", 5);
             Team AwayTeam = TeamTests.CreateBasicTeam("Team 2", 5);
 
-            Game scheduleGame = Scheduler.SetupGame(HomeTeam, AwayTeam);
+            Game scheduleGame = Scheduler.SetupGame(15, HomeTeam, AwayTeam);
 
             AreEqual(HomeTeam, scheduleGame.HomeTeam);
             AreEqual(AwayTeam, scheduleGame.AwayTeam);
             AreEqual(0, scheduleGame.HomeScore);
             AreEqual(0, scheduleGame.AwayScore);
+            AreEqual(16, scheduleGame.GameNumber);
             IsFalse(scheduleGame.Complete);
 
 
@@ -34,7 +35,9 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
 
-            var scheduleGames = Scheduler.ScheduleGames(TeamTests.CreateBasicTeams(teams).ToArray(), false);
+            var scheduleGames = new List<Game>();
+
+            Scheduler.ScheduleGames(scheduleGames, 0, TeamTests.CreateBasicTeams(teams).ToArray(), false);
 
             AreEqual(15, scheduleGames.Count);
 
@@ -58,8 +61,11 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
 
-            var scheduleGames = Scheduler.ScheduleGames(TeamTests.CreateBasicTeams(teams).ToArray(), true);
+            var scheduleGames = new List<Game>();
 
+            int LastGameNumber = Scheduler.ScheduleGames(scheduleGames, 0, TeamTests.CreateBasicTeams(teams).ToArray(), true);
+
+            AreEqual(30, LastGameNumber);
             AreEqual(30, scheduleGames.Count);
 
             ScheduleValidator.ProcessGames(data, scheduleGames);
@@ -82,8 +88,11 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
 
-            var scheduleGames = Scheduler.ScheduleGames(TeamTests.CreateBasicTeams(teams).ToArray(), null, true);
+            var scheduleGames = new List<Game>();
 
+            int lastGameNumber = Scheduler.ScheduleGames(scheduleGames, 25, TeamTests.CreateBasicTeams(teams).ToArray(), null, true);
+
+            AreEqual(55, lastGameNumber);
             AreEqual(30, scheduleGames.Count);
 
             ScheduleValidator.ProcessGames(data, scheduleGames);
@@ -106,7 +115,8 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
 
-            var scheduleGames = Scheduler.ScheduleGames(TeamTests.CreateBasicTeams(teams).ToArray(), new Team[] { }, true);
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 5, TeamTests.CreateBasicTeams(teams).ToArray(), new Team[] { }, true);
 
             AreEqual(30, scheduleGames.Count);
 
@@ -130,8 +140,9 @@ namespace JodyApp.Data.Test.Domain.Schedule
             string[] awayTeams = { "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12" };
 
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+            var scheduleGames = new List<Game>();
 
-            var scheduleGames = Scheduler.ScheduleGames(
+            Scheduler.ScheduleGames(scheduleGames, 0,
                 TeamTests.CreateBasicTeams(homeTeams).ToArray(),
                 TeamTests.CreateBasicTeams(awayTeams).ToArray(),
                 false);
@@ -165,7 +176,8 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
 
-            var scheduleGames = Scheduler.ScheduleGames(
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 0,
                 TeamTests.CreateBasicTeams(homeTeams).ToArray(),
                 TeamTests.CreateBasicTeams(awayTeams).ToArray(),
                 true);
@@ -198,7 +210,8 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
 
-            var scheduleGames = Scheduler.ScheduleGames(
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 0, 
                 TeamTests.CreateBasicTeams(homeTeams).ToArray(),
                 TeamTests.CreateBasicTeams(homeTeams).ToArray(),
                 false);
@@ -216,6 +229,12 @@ namespace JodyApp.Data.Test.Domain.Schedule
                 AreEqual(5, data[name].HomeGames);
 
             }
+        }
+
+        [TestMethod]
+        public void ShouldSetupGameNumbers()
+        {
+            throw new NotImplementedException();
         }
 
     }

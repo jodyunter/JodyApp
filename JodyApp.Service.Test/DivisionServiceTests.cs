@@ -60,7 +60,7 @@ namespace JodyApp.Service.Test
 
             season.SetupStandings();
 
-            List<Game> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
+            List<Game> scheduleGames = season.Games;
 
             scheduleGames.ForEach(game =>
             {

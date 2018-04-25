@@ -41,9 +41,7 @@ namespace JodyApp.Console
 
             season.SetupStandings();
 
-            List<Game> scheduleGames = scheduleService.CreateGamesFromRules(season.ScheduleRules);
-
-            scheduleGames.ForEach(game =>
+            season.Games.ForEach(game =>
            {
                game.Play(random);
                season.Standings.ProcessGame(game);

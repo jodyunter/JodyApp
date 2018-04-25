@@ -44,8 +44,11 @@ namespace JodyApp.Data.Test.Domain.Table
             table.TableName = "My Testing Table";
 
             Random random = new Random(1234566);
+            var games = new List<Game>();
 
-            foreach (Game g in Scheduler.ScheduleGames(table.GetSortedListByLeague().ToArray(), true))
+            Scheduler.ScheduleGames(games, 0, table.GetSortedListByLeague().ToArray(), true);
+
+            foreach (Game g in games)
             {
                 g.Play(random);
                 table.ProcessGame(g);
