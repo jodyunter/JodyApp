@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Domain
 {    
@@ -16,6 +16,7 @@ namespace JodyApp.Domain
         virtual public Division Division { get; set; }
         virtual public TeamStatistics Stats { get; set; }
         virtual public Season Season { get; set; }
+        virtual public Playoff Playoff { get; set; }
 
 
         public Team() { }
@@ -33,7 +34,7 @@ namespace JodyApp.Domain
             this.Skill = skill;
             this.Stats = stats;
             this.Division = division;
-        }
+        }        
         
         public Team(Team team, Division division)
             : this(team.Name, team.Skill, new TeamStatistics(), division)

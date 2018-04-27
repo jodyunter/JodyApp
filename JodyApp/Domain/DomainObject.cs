@@ -14,6 +14,7 @@ namespace JodyApp.Domain
 
         bool IEquatable<DomainObject>.Equals(DomainObject other)
         {
+            if (other == null) return false;
             return this.Id.Equals(other.Id);
         }
     }

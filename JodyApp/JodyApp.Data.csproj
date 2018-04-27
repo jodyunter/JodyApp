@@ -58,7 +58,10 @@
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />
-    <Compile Include="Domain\PlayoffSeries.cs" />
+    <Compile Include="Domain\Playoffs\Playoff.cs" />
+    <Compile Include="Domain\Playoffs\PlayoffRoundRule.cs" />
+    <Compile Include="Domain\Playoffs\PlayoffSeries.cs" />
+    <Compile Include="Domain\Playoffs\PlayoffSeriesRule.cs" />
     <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />
     <Compile Include="Domain\Schedule\Scheduler.cs" />
     <Compile Include="Domain\Schedule\ScheduleRule.cs" />
@@ -90,6 +93,10 @@
     <Compile Include="Migrations\201804252029327_gamenumber.Designer.cs">
       <DependentUpon>201804252029327_gamenumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804271617597_Playoffs.cs" />
+    <Compile Include="Migrations\201804271617597_Playoffs.Designer.cs">
+      <DependentUpon>201804271617597_Playoffs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -112,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804252029327_gamenumber.resx">
       <DependentUpon>201804252029327_gamenumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804271617597_Playoffs.resx">
+      <DependentUpon>201804271617597_Playoffs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

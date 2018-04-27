@@ -3,6 +3,7 @@ using JodyApp.Domain;
 
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table;
+using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Database
 {
@@ -21,6 +22,8 @@ namespace JodyApp.Database
         public DbSet<Season> Seasons { get; set; }
 
         public DbSet<TeamStatistics> TeamStatistics { get; set; }        
+        public DbSet<PlayoffSeries> PlayoffSeries { get; set; }
+        public DbSet<Playoff> Playoffs { get; set; }
 
     }
 }

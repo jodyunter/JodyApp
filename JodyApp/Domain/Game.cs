@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Domain
 {
@@ -14,6 +15,7 @@ namespace JodyApp.Domain
         public int Day { get; set; }
         public int GameNumber { get; set; }  //this is tracked by individual competitions.  Games should be played in that order
         public Season Season { get; set; }
+        public Playoff Playoff { get; set; }
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }        
         public int HomeScore { get; set; }
@@ -86,17 +88,21 @@ namespace JodyApp.Domain
 
         public Team GetWinner()
         {
-            if (HomeScore > AwayScore) return HomeTeam;
-            if (AwayScore > HomeScore) return AwayTeam;
-
+            if (Complete)
+            {
+                if (HomeScore > AwayScore) return HomeTeam;
+                if (AwayScore > HomeScore) return AwayTeam;
+            }
             return null;
         }
 
         public Team GetLoser()
         {
-            if (HomeScore > AwayScore) return AwayTeam;
-            if (AwayScore > HomeScore) return HomeTeam;
-
+            if (Complete)
+            {
+                if (HomeScore > AwayScore) return AwayTeam;
+                if (AwayScore > HomeScore) return HomeTeam;
+            }
             return null;
         }
     }
