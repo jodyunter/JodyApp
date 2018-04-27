@@ -28,7 +28,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
                 new Game(){Complete = false, HomeScore = 1, AwayScore = 2, HomeTeam = team1, AwayTeam = team2 },
             };
 
-            PlayoffSeries ps = new PlayoffSeries()
+            Series ps = new Series()
             {
                 HomeTeam = team1,
                 AwayTeam = team2,

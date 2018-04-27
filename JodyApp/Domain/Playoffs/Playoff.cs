@@ -14,7 +14,19 @@ namespace JodyApp.Domain.Playoffs
         public bool Started { get; set; }
         public League League { get; set; }
 
-        virtual public List<PlayoffSeries> Series { get; set; }
+        public int CurrentRound { get; set; }
+        virtual public List<Series> Series { get; set; }
+        virtual public List<RoundRules> RoundRules { get; set; }
+
+        public List<Series> GetSeriesForRound(int round) {
+            return Series.Where(s => s.Round == round).ToList();
+        }
+
+        public List<RoundRules> GetRoundRules(int round)
+        {
+            return RoundRules.Where(r => r.Round == round).ToList();
+        }
+        
         
     }
 }
