@@ -19,17 +19,32 @@ namespace JodyApp.Domain.Playoffs
         public Playoff Playoff { get; set; }
         public Series Series { get; set; }
         
-        public int HomeTeamFromType { get; set; }
-        public Division HomeTeamFromDivision { get; set; }
-        public String HomeTeamFromPoolName { get; set; }
-        public Series HomeTeamFromSeries { get; set; }
-        public int HomeTeamFromValue { get; set; }
+        public int TeamFromType { get; set; }
+        public Division TeamFromDivision { get; set; }
+        public String TeamFromPoolName { get; set; }
+        public Series TeamFromSeries { get; set; }
+        public int TeamFromValue { get; set; }
 
-        public int AwayTeamFromType { get; set; }
-        public Division AwayTeamFromDivision { get; set; }
-        public String AwayTeamFromPoolName { get; set; }
-        public Series AwayTeamFromSeries { get; set; }
-        public int AwayTeamFromValue { get; set; }
+        public bool HomeTeam { get; set; }
+
+        public static SeriesRule CreateFromSeriesWinner()
+        {
+            return null;
+        }
+
+        public static SeriesRule CreateFromSeriesLoser()
+        {
+            return null;
+        }
+
+        public static SeriesRule CreateFromDivision()
+        {
+            return null;
+        }
+        public static SeriesRule CreateFromPool()
+        {
+            return null;
+        }
 
     }
 }

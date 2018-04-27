@@ -21,5 +21,19 @@ namespace JodyApp.Domain.Playoffs
         public Series FromSeries { get; set; } //this means that all series need to be created at playoff creation time
         public int FromValue { get; set; } //ranking or WINNER/LOSER
 
+        public static RoundGroupRule CreateFromDivision()
+        {
+            return null;
+        }
+
+        public static RoundGroupRule CreateFromSeriesWinner()
+        {
+            return null;
+        }
+
+        public static RoundGroupRule CreateFromSeriesLoser()
+        {
+            return null;
+        }
     }
 }
