@@ -23,8 +23,100 @@ namespace JodyApp.Domain.Playoffs
             return Games.Where(g => g.GetWinner() != null && g.GetWinner().Id == team.Id).ToList().Count;
             
         }
-        
 
+        public bool Complete
+        {
+            get
+            {
+                switch (Rule.SeriesType)
+                {
+                    case SeriesRule.TYPE_BEST_OF:
+                        int homeWins = TeamWins(HomeTeam);
+                        int awayWins = TeamWins(AwayTeam);
+                        if (homeWins == Rule.GamesNeeded || awayWins == Rule.GamesNeeded) return true;
+                        break;
+                }
+                return false;
+            }
+        }
+
+        public Team GetWinner()
+        {
+            if (Complete)
+            {
+                return TeamWins(HomeTeam) == Rule.GamesNeeded ? HomeTeam : AwayTeam;
+            }
+
+            return null;
+        }
+
+        //these should move to a playoff scheduler eventually, because we don't have game numbers
+        public int CreateNeededGames(int lastGameNumber, List<Game> games)
+        {
+            switch(Rule.SeriesType)
+            {
+                case SeriesRule.TYPE_BEST_OF:
+                    return CreateNeededGamesForBestOf(lastGameNumber, games);                    
+            }
+
+            return lastGameNumber;
+        }
+        public int CreateNeededGamesForBestOf(int lastGameNumber, List<Game> games)
+        {
+            int currentGamesCreated = Games.Count();
+
+            int homeTeamWins = TeamWins(HomeTeam);
+            int awayTeamWins = TeamWins(AwayTeam);
+
+            int mostWins = homeTeamWins >= awayTeamWins ? homeTeamWins : awayTeamWins;
+
+            int winsNeeded = Rule.GamesNeeded - mostWins;
+
+            int neededGames = winsNeeded + homeTeamWins + awayTeamWins - currentGamesCreated;
+            
+            for (int i = 0; i < neededGames; i++)
+            {
+                lastGameNumber = CreateGameForSeries(lastGameNumber, games);
+            }
+
+            return lastGameNumber;
+        }
+
+
+        //to do need to create constructor game
+        public int CreateGameForSeries(int lastGameNumber, List<Game> games)
+        {
+            //todo determine home and away teams here
+            Game game = new Game(null, Playoff, null, null, -1, lastGameNumber, 0, 0, false, 0, false);
+            SetHomeTeamForGame(game);
+            games.Add(game);
+            Games.Add(game);
+            return lastGameNumber;
+        }
+                
+        public void SetHomeTeamForGame(Game game)
+        {
+            int[] gameList = Rule.HomeGames.Split(',').Select(a => int.Parse(a)).ToArray();
+
+            Team homeTeam = HomeTeam;
+            Team awayTeam = AwayTeam;
+
+            if (gameList.Length == 0 || Games.Count > gameList.Length)
+            {
+                if (Games.Count % 2 == 0)
+                {
+
+                }
+            }
+            else if (gameList[Games.Count - 1] == 0)
+            {
+                homeTeam = AwayTeam;
+                awayTeam = HomeTeam;
+            }
+
+            game.HomeTeam = homeTeam;
+            game.AwayTeam = awayTeam;
+        }
 
     }
 }

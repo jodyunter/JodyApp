@@ -25,6 +25,23 @@ namespace JodyApp.Domain
         public int MaxOverTimePeriods { get; set; }
         //todo: implement Golden Goal or full OT Periods
 
+        public Game() { }
+
+        public Game(Season season, Playoff playoff, Team homeTeam, Team awayTeam, int day, int gameNumber, int homeScore, int awayScore, bool canTie, int maxOverTimePeriods, bool complete)
+        {
+            Season = season;
+            Playoff = playoff;
+            HomeTeam = homeTeam;
+            AwayTeam = awayTeam;
+            Day = day;
+            GameNumber = gameNumber;
+            HomeScore = homeScore;
+            AwayScore = awayScore;
+            CanTie = canTie;
+            MaxOverTimePeriods = maxOverTimePeriods;
+            Complete = complete;
+        }
+
         public void Play(Random random)
         {
             HomeScore = GetScore(HomeTeam, AwayTeam, random);

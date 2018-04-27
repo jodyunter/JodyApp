@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace JodyApp.Data.Test.Domain.Playoffs
 {
     [TestClass]
-    public class PlayoffSeriesTests
+    public class SeriesTests
     {
         [TestMethod]
         public void ShouldCountTeamWins()
@@ -38,6 +38,39 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             AreEqual(1, ps.TeamWins(team2));
             AreEqual(2, ps.TeamWins(team1));
         
+        }
+
+        [TestMethod]
+        public void ShouldBeComplete()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void ShouldSetHomeTeamForGame()
+        {
+            throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void ShouldSetHomeTeamForGameNoHomeGamesString()
+        {
+            throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void ShouldSetHomeTeamForGameNotEnoughinString()
+        {
+            throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void ShouldCreateGameForSeries()
+        {
+            throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void ShouldCreateNeedGames()
+        {
+            //make sure we do all best of 7 scenarios
+            throw new NotImplementedException();
         }
     }
 }
