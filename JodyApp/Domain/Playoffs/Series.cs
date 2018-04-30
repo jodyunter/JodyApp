@@ -93,10 +93,19 @@ namespace JodyApp.Domain.Playoffs
             Games.Add(game);
             return lastGameNumber;
         }
-                
+
+        public int[] GetHomeGamesList()
+        {
+            if (String.IsNullOrEmpty(Rule.HomeGames))
+            {
+                return new int[] { };
+            }
+            return Rule.HomeGames.Split(',').Select(a => int.Parse(a)).ToArray();
+        }
         public void SetHomeTeamForGame(Game game)
         {
-            int[] gameList = Rule.HomeGames.Split(',').Select(a => int.Parse(a)).ToArray();
+
+            int[] gameList = GetHomeGamesList();
 
             Team homeTeam = HomeTeam;
             Team awayTeam = AwayTeam;
@@ -105,7 +114,8 @@ namespace JodyApp.Domain.Playoffs
             {
                 if (Games.Count % 2 == 0)
                 {
-
+                    homeTeam = AwayTeam;
+                    awayTeam = HomeTeam;
                 }
             }
             else if (gameList[Games.Count - 1] == 0)
