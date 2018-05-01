@@ -88,9 +88,9 @@ namespace JodyApp.Domain.Playoffs
         {
             //todo determine home and away teams here
             Game game = new Game(null, Playoff, null, null, -1, lastGameNumber, 0, 0, false, 0, false);
-            SetHomeTeamForGame(game);
             games.Add(game);
             Games.Add(game);
+            SetHomeTeamForGame(game);
             return lastGameNumber;
         }
 
@@ -102,6 +102,8 @@ namespace JodyApp.Domain.Playoffs
             }
             return Rule.HomeGames.Split(',').Select(a => int.Parse(a)).ToArray();
         }
+
+        //if no games are defined, then EVEN games go to AWAY series team and ODD games go to HOME series team (to give that team the first and final game)
         public void SetHomeTeamForGame(Game game)
         {
 

@@ -40,7 +40,7 @@ namespace JodyApp.Domain.Playoffs
         public int GamesNeeded { get; set; } //games needed to win, or total games to play in total goals
 
         public bool CanTie { get; set; } //can games be tied?  
-        public String HomeGames { get; set; } //sets which games are home, if there is not, then alternate 1,1,0,0,1,0,1 is standard exmaple
+        public String HomeGames { get; set; } //sets which games are home, if there is not, then alternate 1,1,0,0,1,0,1 is standard exmaple.  1 = "Home Team" gets first home game
 
         public static SeriesRule CreateFromSeriesWinner()
         {
