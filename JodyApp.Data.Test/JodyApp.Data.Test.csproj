@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Common\FakeRandom.cs" />
     <Compile Include="Domain\Playoffs\SeriesTests.cs" />
+    <Compile Include="Domain\Playoffs\PlayoffTests.cs" />
     <Compile Include="Domain\Schedule\SchedulerTests.cs" />
     <Compile Include="Domain\Schedule\ScheduleValidatorTests.cs" />
     <Compile Include="Domain\Schedule\ScheduleGameTests.cs" />

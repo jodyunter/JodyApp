@@ -49,41 +49,45 @@ namespace JodyApp.Domain.Playoffs
             GroupRules.ForEach(rule => 
             {
                 if (!groupMap.ContainsKey(rule.GroupIdentifier)) groupMap.Add(rule.GroupIdentifier, new List<Team>());
-                switch(rule.RuleType)
-                {
-                    case GroupRule.FROM_TEAM:
-                        groupMap[rule.GroupIdentifier].Add(rule.FromTeam);
-                        break;
-                    case GroupRule.FROM_SERIES:
-                        switch (rule.FromStartValue)
-                        {
-                            case GroupRule.SERIES_WINNER:
-                                groupMap[rule.GroupIdentifier].Add(rule.FromSeries.GetWinner());
-                                break;
-                            case GroupRule.SERIES_LOSER:
-                                groupMap[rule.GroupIdentifier].Add(rule.FromSeries.GetLoser());
-                                break;
-                            default:
-                                throw new ApplicationException("Bad Option in Group Rule From Series");
-                        }
-                        break;
-                    case GroupRule.FROM_DIVISION:
-                        int startingRank = rule.FromStartValue;
-                        int endingRank = rule.FromEndValue;
-
-                        for (int i = startingRank; i <= endingRank; i++)
-                        {
-                            groupMap[rule.GroupIdentifier].Add(rule.FromDivision.GetByRank(i));
-                        }
-                        break;
-                    default:
-                        throw new ApplicationException("Bad option in GroupRule Rule Type");
-                }
-
+                AddTeamsToGroup(rule, groupMap[rule.GroupIdentifier]);                
             }
             );
 
             return groupMap;
+        }
+
+        public void AddTeamsToGroup(GroupRule rule, List<Team> teamsInGroup)
+        {            
+            switch (rule.RuleType)
+            {
+                case GroupRule.FROM_TEAM:
+                    teamsInGroup.Add(rule.FromTeam);
+                    break;
+                case GroupRule.FROM_SERIES:
+                    switch (rule.FromStartValue)
+                    {
+                        case GroupRule.SERIES_WINNER:
+                            teamsInGroup.Add(rule.FromSeries.GetWinner());
+                            break;
+                        case GroupRule.SERIES_LOSER:
+                            teamsInGroup.Add(rule.FromSeries.GetLoser());
+                            break;
+                        default:
+                            throw new ApplicationException("Bad Option in Group Rule From Series");
+                    }
+                    break;
+                case GroupRule.FROM_DIVISION:
+                    int startingRank = rule.FromStartValue;
+                    int endingRank = rule.FromEndValue;
+
+                    for (int i = startingRank; i <= endingRank; i++)
+                    {
+                        teamsInGroup.Add(rule.FromDivision.GetByRank(i));
+                    }
+                    break;
+                default:
+                    throw new ApplicationException("Bad option in GroupRule Rule Type");
+            }            
         }
         
     }
