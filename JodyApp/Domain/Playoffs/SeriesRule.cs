@@ -15,9 +15,9 @@ namespace JodyApp.Domain.Playoffs
         public const int TYPE_BEST_OF = 1;
 
         public League League { get; set; }
-        public Playoff Playoff { get; set; }        
-        public Series Series { get; set; }
-        
+        public Playoff Playoff { get; set; }              
+        public String Name { get; set; }
+        public int Round { get; set; }
         //teams are picked from Groupings of teams.  Sometimes the groupings are only 2 teams sometimse more
         public string HomeTeamFromGroup { get; set; }
         public int HomeTeamFromRank { get; set; }

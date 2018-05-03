@@ -18,9 +18,10 @@ namespace JodyApp.Domain.Playoffs
         public int Round { get; set; }
         //rule that determines number of games, wins home and away and game specific rules
         //we want total goal series, and best-of series
+        public String Name { get; set; }
         
         [Required]
-        public SeriesRule Rule { get; set; }
+        public SeriesRule Rule { get; set; }        
 
         public int TeamWins(Team team)
         {
@@ -54,6 +55,15 @@ namespace JodyApp.Domain.Playoffs
             return null;
         }
 
+        public Team GetLoser()
+        {
+            if (Complete)
+            {
+                return TeamWins(HomeTeam) == Rule.GamesNeeded ? AwayTeam : HomeTeam;
+            }
+
+            return null;
+        }
         //these should move to a playoff scheduler eventually, because we don't have game numbers
         public int CreateNeededGames(int lastGameNumber, List<Game> games)
         {

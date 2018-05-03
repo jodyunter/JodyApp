@@ -22,6 +22,69 @@ namespace JodyApp.Domain.Playoffs
         public List<Series> GetSeriesForRound(int round) {
             return Series.Where(s => s.Round == round).ToList();
         }        
+
+        public Series GetSeriesByName(string name)
+        {
+            return Series.Where(s => s.Name == name).First();
+        }
+
+        public void SetupSeriesForRound(int round)
+        {
+            //setup groups
+            var seriesForRound = GetSeriesForRound(round);
+
+            var groups = SetupGroups();
+
+            seriesForRound.ForEach(s =>
+            {
+                
+            }
+            );
+        }
+
+        public Dictionary<String, List<Team>> SetupGroups()
+        {
+            var groupMap = new Dictionary<String, List<Team>>();
+
+            GroupRules.ForEach(rule => 
+            {
+                if (!groupMap.ContainsKey(rule.GroupIdentifier)) groupMap.Add(rule.GroupIdentifier, new List<Team>());
+                switch(rule.RuleType)
+                {
+                    case GroupRule.FROM_TEAM:
+                        groupMap[rule.GroupIdentifier].Add(rule.FromTeam);
+                        break;
+                    case GroupRule.FROM_SERIES:
+                        switch (rule.FromStartValue)
+                        {
+                            case GroupRule.SERIES_WINNER:
+                                groupMap[rule.GroupIdentifier].Add(rule.FromSeries.GetWinner());
+                                break;
+                            case GroupRule.SERIES_LOSER:
+                                groupMap[rule.GroupIdentifier].Add(rule.FromSeries.GetLoser());
+                                break;
+                            default:
+                                throw new ApplicationException("Bad Option in Group Rule From Series");
+                        }
+                        break;
+                    case GroupRule.FROM_DIVISION:
+                        int startingRank = rule.FromStartValue;
+                        int endingRank = rule.FromEndValue;
+
+                        for (int i = startingRank; i <= endingRank; i++)
+                        {
+                            groupMap[rule.GroupIdentifier].Add(rule.FromDivision.GetByRank(i));
+                        }
+                        break;
+                    default:
+                        throw new ApplicationException("Bad option in GroupRule Rule Type");
+                }
+
+            }
+            );
+
+            return groupMap;
+        }
         
     }
 }

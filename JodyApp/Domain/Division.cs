@@ -90,6 +90,15 @@ namespace JodyApp.Domain
             }
         }
 
+        public Team GetByRank(int rank)
+        {
+            if (Rankings != null)
+            {
+                return Rankings.Where(d => d.Rank == rank).First().Team;
+            }
+
+            return null;
+        }
         public Division CreateDivisionForSeason(Season season)
         {
             Division newDivision = new Division()
