@@ -58,9 +58,11 @@
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />
+    <Compile Include="Domain\Playoffs\Helpers\RoundGroupRuleExtensions.cs" />
+    <Compile Include="Domain\Playoffs\Helpers\RoundRuleExtensions.cs" />
     <Compile Include="Domain\Playoffs\Playoff.cs" />
     <Compile Include="Domain\Playoffs\RoundGroupRule.cs" />
-    <Compile Include="Domain\Playoffs\RoundRules.cs" />
+    <Compile Include="Domain\Playoffs\RoundRule.cs" />
     <Compile Include="Domain\Playoffs\Series.cs" />
     <Compile Include="Domain\Playoffs\SeriesRule.cs" />
     <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />

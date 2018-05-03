@@ -15,5 +15,7 @@ namespace JodyApp.Domain
         bool Complete { get; set; }
         bool Started { get; set; }
         League League { get; set; }
+        string Name { get; set; }
+    
     }
 }

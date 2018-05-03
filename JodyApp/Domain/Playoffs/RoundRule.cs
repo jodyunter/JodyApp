@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Playoffs
 {
-    public class RoundRules:DomainObject
+    public partial class RoundRule:DomainObject
     {
         public League League { get; set; }
         public Playoff Playoff { get; set; }
