@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Playoffs
 {
-    public class Series:DomainObject
+    public partial class Series:DomainObject
     {
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }
@@ -16,6 +18,8 @@ namespace JodyApp.Domain.Playoffs
         public int Round { get; set; }
         //rule that determines number of games, wins home and away and game specific rules
         //we want total goal series, and best-of series
+        
+        [Required]
         public SeriesRule Rule { get; set; }
 
         public int TeamWins(Team team)
@@ -129,6 +133,6 @@ namespace JodyApp.Domain.Playoffs
             game.HomeTeam = homeTeam;
             game.AwayTeam = awayTeam;
         }
-
+        
     }
 }

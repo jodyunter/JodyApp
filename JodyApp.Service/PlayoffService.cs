@@ -22,9 +22,10 @@ namespace JodyApp.Service
             playoff.League = league;
             playoff.Year = year;
             playoff.Name = name;
-            
+
             //step one create and setup the rules properly.
-            
+
+            return null;
 
         }
     }

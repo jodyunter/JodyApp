@@ -17,17 +17,11 @@ namespace JodyApp.Domain.Playoffs
 
         public int CurrentRound { get; set; }
         virtual public List<Series> Series { get; set; }
-        virtual public List<RoundRule> RoundRules { get; set; }
+        virtual public List<GroupRule> GroupRules { get; set; }
 
         public List<Series> GetSeriesForRound(int round) {
             return Series.Where(s => s.Round == round).ToList();
-        }
-
-        public List<RoundRule> GetRoundRules(int round)
-        {
-            return RoundRules.Where(r => r.Round == round).ToList();
-        }
-        
+        }        
         
     }
 }

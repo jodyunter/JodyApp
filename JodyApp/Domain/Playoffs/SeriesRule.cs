@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,33 +9,20 @@ namespace JodyApp.Domain.Playoffs
 {
     public class SeriesRule : DomainObject
     {
-        public static int FROM_SERIES = 0;
-        public static int FROM_DIVISION = 1;
-        public static int FROM_POOL = 2;
-
+        //Series rules determine which Playoff Groupings to get the teams from
+        //and the rules for creating the games, how many are needed etc
         public const int TYPE_TOTAL_GOALS = 0;
         public const int TYPE_BEST_OF = 1;
 
-        public static int SERIES_WINNER = 0;
-        public static int SERIES_LOSERS = 0;        
-
         public League League { get; set; }
-        public Playoff Playoff { get; set; }
+        public Playoff Playoff { get; set; }        
         public Series Series { get; set; }
         
-        public int HomeTeamFromType { get; set; }
-        public Division HomeTeamFromDivision { get; set; }
-        public String HomeTeamFromPoolName { get; set; }
-        public Series HomeTeamFromSeries { get; set; }
-        public int HomeTeamFromValue { get; set; }
-
-        public int AwayTeamFromType { get; set; }
-        public Division AwayTeamFromDivision { get; set; }
-        public String AwayTeamFromPoolName { get; set; }
-        public Series AwayTeamFromSeries { get; set; }
-        public int AwayTeamFromValue { get; set; }
-
-        public bool HomeTeam { get; set; }
+        //teams are picked from Groupings of teams.  Sometimes the groupings are only 2 teams sometimse more
+        public string HomeTeamFromGroup { get; set; }
+        public int HomeTeamFromRank { get; set; }
+        public string AwayTeamFromGroup { get; set; }
+        public int AwayTeamFromRank { get; set; }        
 
         public int SeriesType { get; set; } //total goal series or best of
         public int GamesNeeded { get; set; } //games needed to win, or total games to play in total goals
