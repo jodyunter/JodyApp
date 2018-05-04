@@ -44,12 +44,17 @@ namespace JodyApp.Domain
         
         public static List<Division> GetByLeague(JodyAppContext db, League league)
         {
-            return db.Divisions.Where(d => d.League.Id == league.Id && d.Season == null).ToList<Division>();
+            return db.Divisions.Where(d => d.League.Id == league.Id && d.Season == null).ToList();
+        }
+
+        public static Division GetByLeagueAndSeasonAndName(JodyAppContext db, League league, Season season, String name)
+        {
+            return db.Divisions.Where(d => d.League.Id == league.Id && d.Season.Id == season.Id && d.Name == name).FirstOrDefault();
         }
         
         public static List<Division> GetDivisionsBySeason(JodyAppContext db, Season season)
         {
-            return db.Divisions.Include("Season").Where(d => d.Season.Id == season.Id).ToList<Division>();
+            return db.Divisions.Include("Season").Where(d => d.Season.Id == season.Id).ToList();
         }
 
         public static List<Division> GetDivisionsByLevel(JodyAppContext db, int level)
@@ -59,8 +64,8 @@ namespace JodyApp.Domain
         public static List<Division> GetDivisionsByLevel(JodyAppContext db, int level, Season season)
         {
 
-            if (season == null) return db.Divisions.Where(d => d.Level == level && (d.Season.Id == null)).ToList<Division>();
-            else return db.Divisions.Where(d => d.Level == level && (d.Season.Id == season.Id)).ToList<Division>();
+            if (season == null) return db.Divisions.Where(d => d.Level == level && (d.Season.Id == null)).ToList();
+            else return db.Divisions.Where(d => d.Level == level && (d.Season.Id == season.Id)).ToList();
 
 
         }

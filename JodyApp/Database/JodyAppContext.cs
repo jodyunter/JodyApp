@@ -25,7 +25,7 @@ namespace JodyApp.Database
         public DbSet<SeriesRule> SeriesRules { get; set; }
         public DbSet<Series> Series { get; set; }
         public DbSet<Playoff> Playoffs { get; set; }
-        public DbSet<GroupRule> GroupRule { get; set; }
+        public DbSet<GroupRule> GroupRules { get; set; }
 
     }
 }

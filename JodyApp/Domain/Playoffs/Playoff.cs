@@ -22,7 +22,7 @@ namespace JodyApp.Domain.Playoffs
         virtual public List<GroupRule> GroupRules { get; set; }
         virtual public List<Team> PlayoffTeams { get; set; }
 
-        public Playoff() { CurrentRound = 0;  }
+        public Playoff() { CurrentRound = 0;  Series = new List<Series>(); }
         public Team GetPlayoffTeamByName(string name)
         {
             if (PlayoffTeams == null) PlayoffTeams = new List<Team>();
@@ -39,9 +39,9 @@ namespace JodyApp.Domain.Playoffs
 
         public bool IsComplete()
         {
-            bool complete = true;
+            bool complete = !(Series.Count == 0);
 
-            Series.ForEach(series => { complete = complete && series.Complete; });
+            Series.ForEach(series => { complete = complete && series.Complete; });            
 
             return complete;
         }
@@ -126,10 +126,10 @@ namespace JodyApp.Domain.Playoffs
                     switch (rule.FromStartValue)
                     {
                         case GroupRule.SERIES_WINNER:
-                            AddTeam(rule, teamsInGroup, rule.FromSeries.GetWinner());
+                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.SeriesName).GetWinner());
                             break;
                         case GroupRule.SERIES_LOSER:
-                            AddTeam(rule, teamsInGroup, rule.FromSeries.GetLoser());
+                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.SeriesName).GetLoser());
                             break;
                         default:
                             throw new ApplicationException("Bad Option in Group Rule From Series");

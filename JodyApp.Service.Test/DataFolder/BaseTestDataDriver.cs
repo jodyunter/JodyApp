@@ -7,6 +7,7 @@ using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table;
+using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Service.Test.DataFolder
 {
@@ -45,6 +46,16 @@ namespace JodyApp.Service.Test.DataFolder
         public override void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules)
         {
             //no special sorting rules by default
+            return;
+        }
+
+        public override void PrivateCreateSeriesRules(Dictionary<string, League> leagues, Dictionary<string, SeriesRule> rules)
+        {
+            return;
+        }
+
+        public override void PrivateCreateGroupRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
+        {
             return;
         }
     }

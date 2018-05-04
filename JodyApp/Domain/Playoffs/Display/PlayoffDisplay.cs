@@ -8,5 +8,10 @@ namespace JodyApp.Domain.Playoffs.Display
 {
     public class PlayoffDisplay
     {
+        public static string PrintSeriesSummary(Series series)
+        {
+            string seriesSummaryFormat = "{0,-10}{1,5} : {2,-5}{3,10} - {4,10}";
+            return String.Format(seriesSummaryFormat, series.HomeTeam.Name, series.GetTeamWins(series.HomeTeam), series.GetTeamWins(series.AwayTeam), series.AwayTeam.Name, series.Name);
+        }
     }
 }

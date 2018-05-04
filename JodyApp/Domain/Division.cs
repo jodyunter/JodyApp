@@ -103,7 +103,7 @@ namespace JodyApp.Domain
         public int GetRank(Team team)
         {
             int ArbitraryRankForTeamNotInDivisionOrRanked = 20000;
-            if (Rankings != null)
+            if (Rankings != null && team != null)
             {
                 //must be name because we will be comparing the playoff team to season team
                 var dr = Rankings.Where(d => d.Team.Name == team.Name).FirstOrDefault();

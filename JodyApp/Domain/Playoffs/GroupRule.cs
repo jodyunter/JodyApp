@@ -25,21 +25,29 @@ namespace JodyApp.Domain.Playoffs
         //no rounds because we might want DivA 1 to go directly to the final where as the winners of other places will be put in other groups
         public Division SortByDivision { get; set; } //this is the division rankings that ranks the teams
         public Division FromDivision { get; set; }        
-        public Series FromSeries { get; set; } //this means that all series need to be created at playoff creation time
+        public String SeriesName { get; set; } //this means that all series need to be created at playoff creation time
         public int FromStartValue { get; set; } //ranking or WINNER/LOSER, or start = 1 or start = 2
         public int FromEndValue { get; set; } //division rankings 1, 10
         public Team FromTeam { get; set; }
         public bool IsHomeTeam { get; set; } //use this if we have teams and no sort division
         public String GroupIdentifier { get; set; }  //this is how we know which rules go with which group
 
-        public GroupRule(League league, Playoff playoff, int ruleType, Division sortByDivision, Division fromDivision, Series fromSeries, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, string groupIdentifier)
+        public GroupRule() { }
+        public GroupRule(GroupRule rule, Division sortByDivision, Division fromDivision, Team team, Playoff p) : this(rule.League, p, rule.RuleType, sortByDivision, fromDivision,
+                                                                                                        rule.SeriesName, rule.FromStartValue, rule.FromEndValue, team,
+                                                                                                        rule.IsHomeTeam, rule.GroupIdentifier)
+        { }
+
+        public GroupRule(League league, Playoff playoff, int ruleType, Division sortByDivision, Division fromDivision, 
+                            String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, 
+                            bool isHomeTeam, string groupIdentifier)
         {
             League = league;
             Playoff = playoff;
             RuleType = ruleType;
             SortByDivision = sortByDivision;
             FromDivision = fromDivision;
-            FromSeries = fromSeries;
+            SeriesName = seriesName;
             FromStartValue = fromStartValue;
             FromEndValue = fromEndValue;
             FromTeam = fromTeam;
@@ -55,14 +63,14 @@ namespace JodyApp.Domain.Playoffs
             return new GroupRule(league, null, GroupRule.FROM_DIVISION, sortByDivision, fromDivision, null, highestRank, lowestRank, null, true, groupIdentifier);
         }
 
-        public static GroupRule CreateFromSeriesWinner(League league, string groupIdentifier, Series series, Division sortByDivision)
+        public static GroupRule CreateFromSeriesWinner(League league, string groupIdentifier, string seriesName, Division sortByDivision)
         {
-            return new GroupRule(league, null, GroupRule.FROM_SERIES, sortByDivision, null, series, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null, true, groupIdentifier);
+            return new GroupRule(league, null, GroupRule.FROM_SERIES, sortByDivision, null, seriesName, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null, true, groupIdentifier);
         }
 
-        public static GroupRule CreateFromSeriesLoser(League league, string groupIdentifier, Series series, Division sortByDivision)
+        public static GroupRule CreateFromSeriesLoser(League league, string groupIdentifier, string seriesName, Division sortByDivision)
         {
-            return new GroupRule(league, null, GroupRule.FROM_SERIES, sortByDivision, null, series, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null, true, groupIdentifier);
+            return new GroupRule(league, null, GroupRule.FROM_SERIES, sortByDivision, null, seriesName, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null, true, groupIdentifier);
         }
 
         public static GroupRule CreateFromTeam(League league, string groupIdentifier, Team team, bool isHomeTeam)

@@ -139,7 +139,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             playoff.Series.Add(series);
             IsTrue(series.Complete);
 
-            GroupRule rule = GroupRule.CreateFromSeriesWinner(league, "Series A Winner", series, null);
+            GroupRule rule = GroupRule.CreateFromSeriesWinner(league, "Series A Winner", series.Name, null);
 
             var teamList = new List<Team>();
             playoff.AddTeamsToGroup(rule, teamList);
@@ -154,7 +154,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             playoff.Series.Add(series);
             IsTrue(series.Complete);
 
-            GroupRule rule = GroupRule.CreateFromSeriesLoser(league, "Series A Winner", series, null);
+            GroupRule rule = GroupRule.CreateFromSeriesLoser(league, "Series A Winner", series.Name, null);
 
             var teamList = new List<Team>();
             playoff.AddTeamsToGroup(rule, teamList);
@@ -199,7 +199,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             playoff.Series.Add(series);
             GroupRule rule1 = GroupRule.CreateFromDivision(league, "From Division", division, division, 2, 5);
             GroupRule rule2 = GroupRule.CreateFromDivision(league, "From Division", division, division, 8, 8);
-            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(league, "From Division", series, null);            
+            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(league, "From Division", series.Name, null);            
 
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2, rule3 };
 
@@ -227,7 +227,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             playoff.Series.Add(series);
             GroupRule rule1 = GroupRule.CreateFromDivision(league, "From Division", division, division, 2, 5);
             GroupRule rule2 = GroupRule.CreateFromDivision(league, "From Division", division, division, 8, 8);
-            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(league, "From Division 2", series, null);
+            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(league, "From Division 2", series.Name, null);
 
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2, rule3 };
 
@@ -259,7 +259,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             playoff.Series.Add(series);
             GroupRule rule1 = GroupRule.CreateFromDivision(league, "From Division", division, division, 2, 5);
             GroupRule rule2 = GroupRule.CreateFromDivision(league, "From Division", division, division, 8, 8);
-            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(league, "From Division", series, division);
+            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(league, "From Division", series.Name, division);
 
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2, rule3 };
 

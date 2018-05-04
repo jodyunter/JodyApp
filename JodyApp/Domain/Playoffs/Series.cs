@@ -51,8 +51,6 @@ namespace JodyApp.Domain.Playoffs
                         int awayWins = GetTeamWins(AwayTeam);
                         if (homeWins == Rule.GamesNeeded || awayWins == Rule.GamesNeeded) return true;
                         break;
-                    case default:
-                        throw new ApplicationException("Bad type in Series COMPLETE method");
                 }
                 return false;
             }

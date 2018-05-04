@@ -1,5 +1,6 @@
 ﻿using JodyApp.Database;
 using JodyApp.Domain;
+using JodyApp.Domain.Playoffs;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table;
 using System;
@@ -24,7 +25,8 @@ namespace JodyApp.Service.Test.DataFolder
         abstract public void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules);
         abstract public void PrivateCreateLeagues(Dictionary<string, League> leagues);
         public abstract void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules);
-
+        public abstract void PrivateCreateSeriesRules(Dictionary<string, League> leagues, Dictionary<string, SeriesRule> rules);
+        public abstract void PrivateCreateGroupRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules);
         public void DeleteAllData()
         {
             string[] tables = {"GroupRules", "Games", "SortingRules", "DivisionRanks", "ScheduleRules","Series", "Teams", "TeamStatistics", "SeriesRules", "Divisions", "Seasons", "Playoffs", "Leagues"};
@@ -69,6 +71,16 @@ namespace JodyApp.Service.Test.DataFolder
             return rule;
         }
 
+        public SeriesRule CreateAndAddSeriesRule(League league, string name, int round, string homeTeamFromGroup, int homeTeamFromRank,
+                                            string awayTeamFromGroup, int awayTeamFromRank, int seriesType,
+                                            int gamesNeeded, bool canTie, string homeGames, Dictionary<string, SeriesRule> map)
+        {
+            SeriesRule rule = new SeriesRule(league, null, name, round, homeTeamFromGroup, homeTeamFromRank, awayTeamFromGroup, awayTeamFromRank, seriesType, gamesNeeded, canTie, homeGames);
+            map.Add(rule.Name, rule);
+            return rule;
+            
+        }
+
         public SortingRule CreateAndAddSortingRule(Division division, String name, int groupNumber, Division divToGetTeamsFrom, string positionsToUse, int divisionLevel, int ruleType, Dictionary<string, SortingRule> map)
         {
             SortingRule rule = new SortingRule()
@@ -93,6 +105,23 @@ namespace JodyApp.Service.Test.DataFolder
             leagues.Add(l.Name, l);
 
             return l;
+        }
+
+        public GroupRule CreateAndAddGroupRule(League league, int ruleType, Division sortByDivision, Division fromDivision, 
+                                                String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, 
+                                                string groupIdentifier, Dictionary<string, GroupRule> map)
+        {
+            GroupRule rule = new GroupRule(league, null, ruleType, sortByDivision, fromDivision, seriesName, fromStartValue, fromEndValue, fromTeam, isHomeTeam, groupIdentifier);
+
+            map.Add(map.Keys.Count.ToString(), rule);            
+            return rule;
+        }
+
+        public GroupRule CreateAndAddGroupRule(GroupRule rule, Dictionary<string, GroupRule> map)
+        {
+            map.Add(map.Keys.Count.ToString(), rule);
+
+            return rule;
         }
 
         public Dictionary<string, League> CreateLeagues()
@@ -157,7 +186,34 @@ namespace JodyApp.Service.Test.DataFolder
 
             return rules;
         }
-        
+
+        public Dictionary<string, SeriesRule> CreateSeriesRules(Dictionary<string, League> leagues)
+        {
+            var rules = new Dictionary<string, SeriesRule>();
+
+            PrivateCreateSeriesRules(leagues, rules);
+
+            db.SeriesRules.AddRange(rules.Values);
+            db.SaveChanges();
+
+            return rules;
+        }
+
+        public Dictionary<string, GroupRule> CreateGroupRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs)
+        {
+            var rules = new Dictionary<string, GroupRule>();
+
+            PrivateCreateGroupRules(leagues, divs, rules);
+
+            db.GroupRules.AddRange(rules.Values);
+            db.SaveChanges();
+
+            return rules;
+        }        
+
+
+
+        //public GroupRule(League league, Playoff playoff, int ruleType, Division sortByDivision, Division fromDivision, String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, string groupIdentifier)
 
         public void InsertData()
         {
@@ -167,6 +223,8 @@ namespace JodyApp.Service.Test.DataFolder
             Dictionary<string, Team> teams = CreateTeams(divs);
             Dictionary<string, ScheduleRule> scheduleRules = CreateRules(leagues, divs, teams);
             Dictionary<string, SortingRule> sortingRules = CreateSortingRules(divs);
+            Dictionary<string, SeriesRule> seriesRules = CreateSeriesRules(leagues);
+            Dictionary<string, GroupRule> groupRules = CreateGroupRules(leagues, divs);
         }
     }
 }

@@ -67,6 +67,11 @@ namespace JodyApp.Service
         {
             return Division.GetDivisionsByLevel(db, level, season);
         }
+
+        public Division GetByLeagueAndSeasonAndName(League league, Season season, string name)
+        {
+            return Division.GetByLeagueAndSeasonAndName(db, league, season, name);
+        }
      
     }
 }

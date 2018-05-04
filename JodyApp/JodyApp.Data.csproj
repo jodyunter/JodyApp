@@ -59,6 +59,8 @@
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />
     <Compile Include="Domain\Playoffs\Display\PlayoffDisplay.cs" />
+    <Compile Include="Domain\Playoffs\Helpers\GroupRuleExtensions.cs" />
+    <Compile Include="Domain\Playoffs\Helpers\SeriesRuleExtensions.cs" />
     <Compile Include="Domain\Playoffs\Playoff.cs" />
     <Compile Include="Domain\Playoffs\GroupRule.cs" />
     <Compile Include="Domain\Playoffs\Series.cs" />
@@ -78,6 +80,10 @@
     <Compile Include="Migrations\201805041650577_First.Designer.cs">
       <DependentUpon>201805041650577_First.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805041915120_SeriesName.cs" />
+    <Compile Include="Migrations\201805041915120_SeriesName.Designer.cs">
+      <DependentUpon>201805041915120_SeriesName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -88,6 +94,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201805041650577_First.resx">
       <DependentUpon>201805041650577_First.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805041915120_SeriesName.resx">
+      <DependentUpon>201805041915120_SeriesName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

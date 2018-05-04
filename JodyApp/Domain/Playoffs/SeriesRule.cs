@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Playoffs
 {
-    public class SeriesRule : DomainObject
+    public partial class SeriesRule : DomainObject
     {
         //Series rules determine which Playoff Groupings to get the teams from
         //and the rules for creating the games, how many are needed etc
@@ -35,7 +35,12 @@ namespace JodyApp.Domain.Playoffs
         public string HomeGames { get; set; } //sets which games are home, if there is not, then alternate 1,1,0,0,1,0,1 is standard exmaple.  1 = "Home Team" gets first home game        
         public SeriesRule() { }
 
-        public SeriesRule(League league, Playoff playoff, string name, int round, string homeTeamFromGroup, int homeTeamFromRank, string awayTeamFromGroup, int awayTeamFromRank, int seriesType, int gamesNeeded, bool canTie, string homeGames)
+        public SeriesRule(SeriesRule rule, Playoff p) : this(rule.League, p, rule.Name, rule.Round, rule.HomeTeamFromGroup, 
+                                                            rule.HomeTeamFromRank, rule.AwayTeamFromGroup, rule.AwayTeamFromRank, 
+                                                            rule.SeriesType, rule.GamesNeeded, rule.CanTie, rule.HomeGames) { }
+        public SeriesRule(League league, Playoff playoff, string name, int round, string homeTeamFromGroup,
+                            int homeTeamFromRank, string awayTeamFromGroup, int awayTeamFromRank, 
+                            int seriesType, int gamesNeeded, bool canTie, string homeGames)
         {
             League = league;
             Playoff = playoff;
