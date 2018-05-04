@@ -23,5 +23,6 @@ namespace JodyApp.Data.Test.Domain
             AreNotEqual(d.Name, d.ShortName);
             AreEqual("SHORT", d.ShortName);
         }
+
     }
 }

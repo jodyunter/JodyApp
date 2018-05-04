@@ -15,7 +15,7 @@ namespace JodyApp.Domain
         public int Day { get; set; }
         public int GameNumber { get; set; }  //this is tracked by individual competitions.  Games should be played in that order
         public Season Season { get; set; }
-        public Playoff Playoff { get; set; }
+        public Series Series { get; set; }
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }        
         public int HomeScore { get; set; }
@@ -27,10 +27,10 @@ namespace JodyApp.Domain
 
         public Game() { }
 
-        public Game(Season season, Playoff playoff, Team homeTeam, Team awayTeam, int day, int gameNumber, int homeScore, int awayScore, bool canTie, int maxOverTimePeriods, bool complete)
+        public Game(Season season, Series series, Team homeTeam, Team awayTeam, int day, int gameNumber, int homeScore, int awayScore, bool canTie, int maxOverTimePeriods, bool complete)
         {
             Season = season;
-            Playoff = playoff;
+            Series = series;
             HomeTeam = homeTeam;
             AwayTeam = awayTeam;
             Day = day;
@@ -121,6 +121,12 @@ namespace JodyApp.Domain
                 if (AwayScore > HomeScore) return HomeTeam;
             }
             return null;
+        }
+
+        public static String GameFormat = "{0,-15}{1,5} : {2,-5}{3,15}";
+        public override string ToString()
+        {
+            return String.Format(GameFormat, HomeTeam.Name, HomeScore, AwayScore, AwayTeam.Name);
         }
     }
 }

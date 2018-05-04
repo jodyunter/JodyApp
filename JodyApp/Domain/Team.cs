@@ -17,6 +17,7 @@ namespace JodyApp.Domain
         virtual public TeamStatistics Stats { get; set; }
         virtual public Season Season { get; set; }
         virtual public Playoff Playoff { get; set; }
+        virtual public Team Parent { get; set; }
         public bool EliminatedFromPlayoff { get; set; }
 
         public Team() { }
@@ -28,6 +29,12 @@ namespace JodyApp.Domain
             if (Division != null) Division.Teams.Add(this);            
         }
                 
+        public Team(Team team, Playoff p):this(team.Name, team.Skill, null, null)
+        {
+            this.Parent = team;
+
+            this.Playoff = p;
+        }
         public Team(string name, int skill, TeamStatistics stats, Division division)
         {
             this.Name = name;
@@ -39,7 +46,7 @@ namespace JodyApp.Domain
         public Team(Team team, Division division)
             : this(team.Name, team.Skill, new TeamStatistics(), division)
         {
-            //this.Division = division;
+            this.Parent = team;
         }
 
         public Boolean IsTeamInDivision(String divisionName)

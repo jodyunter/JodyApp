@@ -27,7 +27,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         public void DeleteAllData()
         {
-            string[] tables = {"Games", "SortingRules", "DivisionRanks", "ScheduleRules", "Teams", "TeamStatistics", "Divisions", "Seasons", "Leagues"};
+            string[] tables = {"GroupRules", "Games", "SortingRules", "DivisionRanks", "ScheduleRules","Series", "Teams", "TeamStatistics", "SeriesRules", "Divisions", "Seasons", "Playoffs", "Leagues"};
             var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
             foreach (string table in tables)
             {

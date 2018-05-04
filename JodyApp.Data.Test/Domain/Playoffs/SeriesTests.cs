@@ -35,8 +35,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
                 Games = games
             };
 
-            AreEqual(1, ps.TeamWins(team2));
-            AreEqual(2, ps.TeamWins(team1));
+            AreEqual(1, ps.GetTeamWins(team2));
+            AreEqual(2, ps.GetTeamWins(team1));
         
         }
 
@@ -123,8 +123,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             ps.Games[4].Complete = true; ps.Games[4].HomeScore = 4;
             ps.Games[5].Complete = true; ps.Games[5].HomeScore = 4;
 
-            AreEqual(3, ps.TeamWins(team1));
-            AreEqual(3, ps.TeamWins(team2));
+            AreEqual(3, ps.GetTeamWins(team1));
+            AreEqual(3, ps.GetTeamWins(team2));
 
             lastNumber = ps.CreateNeededGames(lastNumber, games);
 
@@ -173,8 +173,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
 
             //1-0
             AreEqual(team1.Id, game1.GetWinner().Id);
-            AreEqual(1, ps.TeamWins(ps.HomeTeam));
-            AreEqual(0, ps.TeamWins(ps.AwayTeam));
+            AreEqual(1, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(0, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(4, ps.Games.Count);            
 
@@ -182,8 +182,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game2.Complete = true;
             game2.AwayScore = 4;
             AreEqual(team1.Id, game2.GetWinner().Id);
-            AreEqual(2, ps.TeamWins(ps.HomeTeam));
-            AreEqual(0, ps.TeamWins(ps.AwayTeam));
+            AreEqual(2, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(0, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(4, ps.Games.Count);
 
@@ -191,8 +191,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game3.Complete = true;
             game3.HomeScore = 4;
             AreEqual(team1.Id, game3.GetWinner().Id);
-            AreEqual(3, ps.TeamWins(ps.HomeTeam));
-            AreEqual(0, ps.TeamWins(ps.AwayTeam));
+            AreEqual(3, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(0, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(4, ps.Games.Count);
 
@@ -200,8 +200,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game4.Complete = true;
             game4.AwayScore = 4;
             AreEqual(team1.Id, game4.GetWinner().Id);
-            AreEqual(4, ps.TeamWins(ps.HomeTeam));
-            AreEqual(0, ps.TeamWins(ps.AwayTeam));
+            AreEqual(4, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(0, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(4, ps.Games.Count);
             IsTrue(ps.Complete);
@@ -212,8 +212,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game3.Complete = false; game3.HomeScore = 0;
             game4.Complete = false; game3.AwayScore = 0;
             AreEqual(team2.Id, game2.GetWinner().Id);
-            AreEqual(1, ps.TeamWins(ps.HomeTeam));
-            AreEqual(1, ps.TeamWins(ps.AwayTeam));
+            AreEqual(1, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(1, ps.GetTeamWins(ps.AwayTeam));
             lastNumber = ps.CreateNeededGames(lastNumber, games);
             AreEqual(5, ps.Games.Count);
             Game game5 = ps.Games[4];          
@@ -222,8 +222,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game3.Complete = true;
             game3.HomeScore = 4;
             AreEqual(team1.Id, game3.GetWinner().Id);
-            AreEqual(2, ps.TeamWins(ps.HomeTeam));
-            AreEqual(1, ps.TeamWins(ps.AwayTeam));
+            AreEqual(2, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(1, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(5, ps.Games.Count);
 
@@ -231,8 +231,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game4.Complete = true;
             game4.AwayScore = 4;
             AreEqual(team1.Id, game4.GetWinner().Id);
-            AreEqual(3, ps.TeamWins(ps.HomeTeam));
-            AreEqual(1, ps.TeamWins(ps.AwayTeam));
+            AreEqual(3, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(1, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(5, ps.Games.Count);            
 
@@ -240,8 +240,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game5.Complete = true;
             game5.HomeScore = 4;
             AreEqual(team1.Id, game5.GetWinner().Id);
-            AreEqual(4, ps.TeamWins(ps.HomeTeam));
-            AreEqual(1, ps.TeamWins(ps.AwayTeam));
+            AreEqual(4, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(1, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(5, ps.Games.Count);
             IsTrue(ps.Complete);
@@ -250,8 +250,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game4.Complete = true; game4.AwayScore = 0; game4.HomeScore = 4;
             game5.Complete = false; game5.HomeScore = 0;
             AreEqual(team2.Id, game4.GetWinner().Id);
-            AreEqual(2, ps.TeamWins(ps.HomeTeam));
-            AreEqual(2, ps.TeamWins(ps.AwayTeam));
+            AreEqual(2, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(2, ps.GetTeamWins(ps.AwayTeam));
             lastNumber = ps.CreateNeededGames(lastNumber, games);
             AreEqual(6, ps.Games.Count);
             Game game6 = ps.Games[5];
@@ -260,8 +260,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game5.Complete = true;
             game5.HomeScore = 4;
             AreEqual(team1.Id, game5.GetWinner().Id);
-            AreEqual(3, ps.TeamWins(ps.HomeTeam));
-            AreEqual(2, ps.TeamWins(ps.AwayTeam));
+            AreEqual(3, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(2, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(6, ps.Games.Count);
 
@@ -279,8 +279,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game6.Complete = true;
             game6.AwayScore = 4;
             AreEqual(team1.Id, game6.GetWinner().Id);
-            AreEqual(4, ps.TeamWins(ps.HomeTeam));
-            AreEqual(2, ps.TeamWins(ps.AwayTeam));
+            AreEqual(4, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(2, ps.GetTeamWins(ps.AwayTeam));
             AreEqual(lastNumber, ps.CreateNeededGames(lastNumber, games));
             AreEqual(6, ps.Games.Count);
             IsTrue(ps.Complete);
@@ -289,8 +289,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game6.Complete = true; game6.AwayScore = 0;
             game6.HomeScore = 4;
             AreEqual(team2.Id, game6.GetWinner().Id);
-            AreEqual(3, ps.TeamWins(ps.HomeTeam));
-            AreEqual(3, ps.TeamWins(ps.AwayTeam));
+            AreEqual(3, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(3, ps.GetTeamWins(ps.AwayTeam));
             lastNumber = ps.CreateNeededGames(lastNumber, games);
             AreEqual(7, ps.Games.Count);
             IsFalse(ps.Complete);
@@ -300,8 +300,8 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             game7.Complete = true; 
             game7.AwayScore = 4;
             AreEqual(team2.Id, game6.GetWinner().Id);
-            AreEqual(3, ps.TeamWins(ps.HomeTeam));
-            AreEqual(4, ps.TeamWins(ps.AwayTeam));
+            AreEqual(3, ps.GetTeamWins(ps.HomeTeam));
+            AreEqual(4, ps.GetTeamWins(ps.AwayTeam));
             lastNumber = ps.CreateNeededGames(lastNumber, games);
             AreEqual(7, ps.Games.Count);
             IsTrue(ps.Complete);            

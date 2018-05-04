@@ -1,5 +1,7 @@
-﻿using System;
+﻿using JodyApp.Domain.Table;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +12,22 @@ namespace JodyApp.Domain.Playoffs
     {
         public int Year { get; set; }
         public int StartingDay { get; set; }
-        public bool Complete { get; set; }
-        public bool Started { get; set; }
+        public bool Complete { get { return IsComplete(); } set { } }
+        public bool Started { get { return CurrentRound > 0; } set { } }
         public League League { get; set; }
         public string Name { get; set; }
 
-        public int CurrentRound { get; set; }
-        virtual public List<Series> Series { get; set; }
+        public int CurrentRound { get; set; }        
+        virtual public List<Series> Series { get; set; }        
         virtual public List<GroupRule> GroupRules { get; set; }
+        virtual public List<Team> PlayoffTeams { get; set; }
 
+        public Playoff() { CurrentRound = 0;  }
+        public Team GetPlayoffTeamByName(string name)
+        {
+            if (PlayoffTeams == null) PlayoffTeams = new List<Team>();
+            return PlayoffTeams.Where(pt => pt.Name == name).FirstOrDefault();
+        }
         public List<Series> GetSeriesForRound(int round) {
             return Series.Where(s => s.Rule.Round == round).ToList();
         }        
@@ -28,18 +37,31 @@ namespace JodyApp.Domain.Playoffs
             return Series.Where(s => s.Name == name).First();
         }
 
-        public void SetupSeriesForRound(int round)
+        public bool IsComplete()
         {
-            //setup groups
-            var seriesForRound = GetSeriesForRound(round);
+            bool complete = true;
+
+            Series.ForEach(series => { complete = complete && series.Complete; });
+
+            return complete;
+        }
+        public void NextRound()
+        {
+            if (CurrentRound == 0 || IsRoundComplete(CurrentRound))
+            {
+                CurrentRound++;
+                SetupSeriesForRound(CurrentRound);
+            }
+        }
+        public void SetupSeriesForRound(int round)
+        {                        
 
             var groups = SetupGroups();
-
-            seriesForRound.ForEach(s =>
+            GetSeriesForRound(round).ForEach(series =>
             {
-                
-            }
-            );
+                SetTeamsForSeries(groups, series);
+            });
+            
         }
 
         public Dictionary<String, List<Team>> SetupGroups()
@@ -60,8 +82,14 @@ namespace JodyApp.Domain.Playoffs
                 var teamList = groupMap[key];
                 var groupRule = GroupRules.Where(gr => gr.GroupIdentifier == key).First();
                 var division = groupRule.SortByDivision;
-                teamList = teamList.OrderBy(t => division.GetRank(t)).ToList();
                 
+                if (division != null)
+                {
+                    teamList = teamList.OrderBy(t => division.GetRank(t)).ToList();
+                }
+
+                groupMap[key] = teamList;
+
             });
             return groupMap;
         }
@@ -121,19 +149,59 @@ namespace JodyApp.Domain.Playoffs
                     throw new ApplicationException("Bad option in GroupRule Rule Type");
             }            
         }
-        
+                
         public void SetTeamsForSeries(Dictionary<string, List<Team>> groupings, Series series)
         {
             SeriesRule seriesRule = series.Rule;
             var homeTeamList = groupings[seriesRule.HomeTeamFromGroup];
             var awayTeamList = groupings[seriesRule.AwayTeamFromGroup];
 
-            var homeTeam = homeTeamList[seriesRule.HomeTeamFromRank - 1];
-            var awayTeam = awayTeamList[seriesRule.AwayTeamFromRank - 1];
-
+            var homeTeam = GetOrSetupPlayoffTeam(homeTeamList[seriesRule.HomeTeamFromRank - 1]);
+            var awayTeam = GetOrSetupPlayoffTeam(awayTeamList[seriesRule.AwayTeamFromRank - 1]);            
+            
             series.HomeTeam = homeTeam;
             series.AwayTeam = awayTeam;
             
+        }
+
+        public Team GetOrSetupPlayoffTeam(Team team)
+        {
+            var playoffTeam = GetPlayoffTeamByName(team.Name);
+
+            if (playoffTeam == null)
+            {
+                playoffTeam = new Team(team.Parent != null ? team.Parent : team, this);
+                this.PlayoffTeams.Add(playoffTeam);
+
+            }
+
+            return playoffTeam;
+        }
+        //todo need a method to setup playoff teams when they aren't yet pat of the playoffs
+
+        public List<Game> GetNextGamesForRound(int round, int lastGameNumber)
+        {
+            var newGames = new List<Game>();
+
+            GetSeriesForRound(round).ForEach(series =>
+            {
+                series.CreateNeededGames(lastGameNumber, newGames);
+            });
+
+            return newGames;
+        }
+
+        public bool IsRoundComplete(int round)
+        {
+            bool result = true;
+
+            GetSeriesForRound(round).ForEach(series =>
+            {
+                result = result && series.Complete;
+            });
+
+            return result;
+
         }
     }
 }

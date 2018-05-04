@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Playoffs
 {
-    public partial class Series:DomainObject
+    public class Series:DomainObject
     {
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }
@@ -20,9 +20,8 @@ namespace JodyApp.Domain.Playoffs
         //we want total goal series, and best-of series
         public String Name { get; set; }
         //is name redundant since the rule has it?
-        
-        [Required]
-        public SeriesRule Rule { get; set; }
+                        
+        virtual public SeriesRule Rule { get; set; }
 
         public Series() { }
         public Series(Playoff playoff, SeriesRule rule, Team homeTeam, Team awayTeam, List<Game> games, string name)
@@ -35,7 +34,7 @@ namespace JodyApp.Domain.Playoffs
             Name = name;
         }
 
-        public int TeamWins(Team team)
+        public int GetTeamWins(Team team)
         {
             return Games.Where(g => g.GetWinner() != null && g.GetWinner().Id == team.Id).ToList().Count;
             
@@ -48,10 +47,12 @@ namespace JodyApp.Domain.Playoffs
                 switch (Rule.SeriesType)
                 {
                     case SeriesRule.TYPE_BEST_OF:
-                        int homeWins = TeamWins(HomeTeam);
-                        int awayWins = TeamWins(AwayTeam);
+                        int homeWins = GetTeamWins(HomeTeam);
+                        int awayWins = GetTeamWins(AwayTeam);
                         if (homeWins == Rule.GamesNeeded || awayWins == Rule.GamesNeeded) return true;
                         break;
+                    case default:
+                        throw new ApplicationException("Bad type in Series COMPLETE method");
                 }
                 return false;
             }
@@ -61,9 +62,14 @@ namespace JodyApp.Domain.Playoffs
         {
             if (Complete)
             {
-                return TeamWins(HomeTeam) == Rule.GamesNeeded ? HomeTeam : AwayTeam;
+                switch(Rule.SeriesType)
+                {
+                    case SeriesRule.TYPE_BEST_OF:
+                        return GetTeamWins(HomeTeam) == Rule.GamesNeeded ? HomeTeam : AwayTeam;                        
+                    default:
+                        throw new ApplicationException("In Get Winner For Series: Unrecognized Type");
+                }                
             }
-
             return null;
         }
 
@@ -71,9 +77,14 @@ namespace JodyApp.Domain.Playoffs
         {
             if (Complete)
             {
-                return TeamWins(HomeTeam) == Rule.GamesNeeded ? AwayTeam : HomeTeam;
+                switch (Rule.SeriesType)
+                {
+                    case SeriesRule.TYPE_BEST_OF:
+                        return GetTeamWins(HomeTeam) == Rule.GamesNeeded ? AwayTeam : HomeTeam;
+                    default:
+                        throw new ApplicationException("In Get Loser For Series: Unrecognized Type");
+                }
             }
-
             return null;
         }
         //these should move to a playoff scheduler eventually, because we don't have game numbers
@@ -91,8 +102,8 @@ namespace JodyApp.Domain.Playoffs
         {
             int currentGamesCreated = Games.Count();
 
-            int homeTeamWins = TeamWins(HomeTeam);
-            int awayTeamWins = TeamWins(AwayTeam);
+            int homeTeamWins = GetTeamWins(HomeTeam);
+            int awayTeamWins = GetTeamWins(AwayTeam);
 
             int mostWins = homeTeamWins >= awayTeamWins ? homeTeamWins : awayTeamWins;
 
@@ -113,7 +124,7 @@ namespace JodyApp.Domain.Playoffs
         public int CreateGameForSeries(int lastGameNumber, List<Game> games)
         {
             //todo determine home and away teams here
-            Game game = new Game(null, Playoff, null, null, -1, lastGameNumber, 0, 0, false, 0, false);
+            Game game = new Game(null, this, null, null, -1, lastGameNumber, 0, 0, false, 0, false);            
             games.Add(game);
             Games.Add(game);
             SetHomeTeamForGame(game);
