@@ -12,7 +12,7 @@ namespace JodyApp.Domain.Playoffs
         //Series rules determine which Playoff Groupings to get the teams from
         //and the rules for creating the games, how many are needed etc
         public const int TYPE_TOTAL_GOALS = 0;
-        public const int TYPE_BEST_OF = 1;
+        public const int TYPE_BEST_OF = 1;;        
 
         public League League { get; set; }
         public Playoff Playoff { get; set; }              
@@ -30,26 +30,25 @@ namespace JodyApp.Domain.Playoffs
         public bool CanTie { get; set; } //can games be tied?  
         public String HomeGames { get; set; } //sets which games are home, if there is not, then alternate 1,1,0,0,1,0,1 is standard exmaple.  1 = "Home Team" gets first home game
 
+        public SeriesRule() { }
 
-
-        public static SeriesRule CreateFromSeriesWinner()
+        public SeriesRule(League league, Playoff playoff, string name, int round, string homeTeamFromGroup, int homeTeamFromRank, string awayTeamFromGroup, int awayTeamFromRank, int seriesType, int gamesNeeded, bool canTie, string homeGames)
         {
-            return null;
+            League = league;
+            Playoff = playoff;
+            Name = name;
+            Round = round;
+            HomeTeamFromGroup = homeTeamFromGroup;
+            HomeTeamFromRank = homeTeamFromRank;
+            AwayTeamFromGroup = awayTeamFromGroup;
+            AwayTeamFromRank = awayTeamFromRank;
+            SeriesType = seriesType;
+            GamesNeeded = gamesNeeded;
+            CanTie = canTie;
+            HomeGames = homeGames;
         }
 
-        public static SeriesRule CreateFromSeriesLoser()
-        {
-            return null;
-        }
-
-        public static SeriesRule CreateFromDivision()
-        {
-            return null;
-        }
-        public static SeriesRule CreateFromPool()
-        {
-            return null;
-        }
+            
 
     }
 }

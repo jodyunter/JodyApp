@@ -19,9 +19,21 @@ namespace JodyApp.Domain.Playoffs
         //rule that determines number of games, wins home and away and game specific rules
         //we want total goal series, and best-of series
         public String Name { get; set; }
+        //is name redundant since the rule has it?
         
         [Required]
-        public SeriesRule Rule { get; set; }        
+        public SeriesRule Rule { get; set; }
+
+        public Series() { }
+        public Series(Playoff playoff, SeriesRule rule, Team homeTeam, Team awayTeam, List<Game> games, string name)
+        {
+            Playoff = playoff;
+            Rule = rule;            
+            HomeTeam = homeTeam;
+            AwayTeam = awayTeam;
+            Games = games;
+            Name = name;
+        }
 
         public int TeamWins(Team team)
         {

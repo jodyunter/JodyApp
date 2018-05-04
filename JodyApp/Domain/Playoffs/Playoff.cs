@@ -20,7 +20,7 @@ namespace JodyApp.Domain.Playoffs
         virtual public List<GroupRule> GroupRules { get; set; }
 
         public List<Series> GetSeriesForRound(int round) {
-            return Series.Where(s => s.Round == round).ToList();
+            return Series.Where(s => s.Rule.Round == round).ToList();
         }        
 
         public Series GetSeriesByName(string name)
@@ -53,6 +53,15 @@ namespace JodyApp.Domain.Playoffs
             }
             );
 
+            //loop through the group rules and verify that where there is no division to sort by the teams are in the proper order
+            //hometeams should be first
+            groupMap.Keys.ToList().ForEach(key =>
+            {
+                var teamList = groupMap[key];
+                var division = GroupRules.Where(gr => gr.GroupIdentifier == key).First().SortByDivision;
+
+                
+            });
             return groupMap;
         }
 
@@ -90,5 +99,13 @@ namespace JodyApp.Domain.Playoffs
             }            
         }
         
+        public void SetTeamsForSeries(Dictionary<string, List<Team>> groupings, Series series)
+        {
+            SeriesRule seriesRule = series.Rule;
+            var homeTeamList = groupings[seriesRule.HomeTeamFromGroup];
+            var awayTeamList = groupings[seriesRule.AwayTeamFromGroup];
+            
+            
+        }
     }
 }

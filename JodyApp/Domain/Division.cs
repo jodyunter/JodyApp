@@ -99,6 +99,19 @@ namespace JodyApp.Domain
 
             return null;
         }
+
+        public int GetRank(Team team)
+        {
+            if (Rankings != null)
+            {
+                return Rankings.Where(d => d.Team.Id == team.Id).First().Rank;
+            }
+
+            //return an arbitrarily large number to ensure teams without rank are sorted at the bottom
+            return 20000;
+
+        }
+        
         public Division CreateDivisionForSeason(Season season)
         {
             Division newDivision = new Division()

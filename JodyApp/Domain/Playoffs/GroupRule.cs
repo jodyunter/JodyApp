@@ -55,12 +55,12 @@ namespace JodyApp.Domain.Playoffs
 
         public static GroupRule CreateFromSeriesWinner(League league, string groupIdentifier, Series series, Division sortByDivision)
         {
-            return new GroupRule(league, null, GroupRule.SERIES_WINNER, sortByDivision, null, series, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null, true, groupIdentifier);
+            return new GroupRule(league, null, GroupRule.FROM_SERIES, sortByDivision, null, series, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null, true, groupIdentifier);
         }
 
         public static GroupRule CreateFromSeriesLoser(League league, string groupIdentifier, Series series, Division sortByDivision)
         {
-            return new GroupRule(league, null, GroupRule.SERIES_WINNER, sortByDivision, null, series, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null, true, groupIdentifier);
+            return new GroupRule(league, null, GroupRule.FROM_SERIES, sortByDivision, null, series, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null, true, groupIdentifier);
         }
 
         public static GroupRule CreateFromTeam(League league, string groupIdentifier, Team team, bool isHomeTeam)
