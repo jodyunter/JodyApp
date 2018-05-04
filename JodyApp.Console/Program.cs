@@ -21,26 +21,35 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            JodyAppContext db = new JodyAppContext();
+            string prod = "Jody";
+            string test = "JodyTest";
+            JodyAppContext db = new JodyAppContext(test) ;
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
-            driver.DeleteAllData();
-            driver.InsertData();
+            //driver.DeleteAllData();
+            //driver.InsertData();
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
             DivisionService divisionService = new DivisionService(db);
             PlayoffService playoffService = new PlayoffService(db);
 
-            Random random = new Random();
 
-            //Array.Sort(teamList, StandingsSorter.SortByDivisionLevel_0);
+            int year = 0;
+            if (db.Seasons.ToList().Count <= 0)
+            {
+                year = 0;
+            } 
+            else
+            {
+                year = db.Seasons.Max(s => s.Year);
+            }
 
+            year++;
 
-            //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORTY_BY_CONFERENCE));
-            //System.Console.WriteLine(RecordTableDisplay.PrintRecordTable(table, StandingsSorter.SORT_BY_DIVISION));
+            Random random = new Random();            
 
             League league = db.Leagues.Where(l => l.Name == "Jody League").First();
-            Season season = seasonService.CreateNewSeason(league, "My Season", 1);
+            Season season = seasonService.CreateNewSeason(league, "My Season", year);
 
             season.SetupStandings();
 
@@ -62,7 +71,7 @@ namespace JodyApp.Console
 
             System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<Team>()));
 
-            Playoff p = playoffService.CreateNewPlayoff(league, season, "Playoff 1", 1);
+            Playoff p = playoffService.CreateNewPlayoff(league, season, "Playoff", year);
 
             var pGames = new List<Game>();
             while (!p.Complete)
@@ -70,6 +79,26 @@ namespace JodyApp.Console
                 PlayRound(p, pGames, random, db);                
             }
             
+
+            db.SaveChanges();
+
+            System.Console.WriteLine("\n");
+            System.Console.WriteLine("Champion List");
+            db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == "Final").ToList().ForEach(series =>
+            {
+                System.Console.WriteLine(series.Playoff.Year + " : " + series.GetWinner().Name);
+            });
+                        
+
+            teamService.GetBaseTeams().ForEach(team =>
+            {
+                int num = random.Next(0, 9);
+                if (num < 2) team.Skill += 1;
+                if (num > 7) team.Skill += 1;
+                if (team.Skill > 10) team.Skill = 10;
+                if (team.Skill < 1) team.Skill = 1;
+
+            });
 
             db.SaveChanges();
 

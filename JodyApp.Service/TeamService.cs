@@ -20,7 +20,7 @@ namespace JodyApp.Service
         public List<Team> GetBaseTeams()
         {
 
-            return Team.GetTeams(db, null);
+            return Team.GetBaseTeams(db);
         }
 
         public Team GetTeamByName(String name)
