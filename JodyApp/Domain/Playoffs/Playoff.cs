@@ -58,34 +58,57 @@ namespace JodyApp.Domain.Playoffs
             groupMap.Keys.ToList().ForEach(key =>
             {
                 var teamList = groupMap[key];
-                var division = GroupRules.Where(gr => gr.GroupIdentifier == key).First().SortByDivision;
-
+                var groupRule = GroupRules.Where(gr => gr.GroupIdentifier == key).First();
+                var division = groupRule.SortByDivision;
+                teamList = teamList.OrderBy(t => division.GetRank(t)).ToList();
                 
             });
             return groupMap;
         }
 
+        private static void AddTeam(GroupRule rule, List<Team> teamsInGroup, Team team)
+        {
+            if (rule.SortByDivision == null)
+            {
+                if (teamsInGroup.Count > 0)
+                {
+                    if (rule.IsHomeTeam)
+                    {
+                        teamsInGroup.Insert(0, team);
+                    }
+                    else
+                    {
+                        teamsInGroup.Insert(1, team);
+                    }
+                }
+                else
+                    teamsInGroup.Add(team);
+            }
+            else
+                teamsInGroup.Add(team);            
+        }
         public void AddTeamsToGroup(GroupRule rule, List<Team> teamsInGroup)
         {            
             switch (rule.RuleType)
             {
                 case GroupRule.FROM_TEAM:
-                    teamsInGroup.Add(rule.FromTeam);
+                    AddTeam(rule, teamsInGroup, rule.FromTeam);                        
                     break;
                 case GroupRule.FROM_SERIES:
                     switch (rule.FromStartValue)
                     {
                         case GroupRule.SERIES_WINNER:
-                            teamsInGroup.Add(rule.FromSeries.GetWinner());
+                            AddTeam(rule, teamsInGroup, rule.FromSeries.GetWinner());
                             break;
                         case GroupRule.SERIES_LOSER:
-                            teamsInGroup.Add(rule.FromSeries.GetLoser());
+                            AddTeam(rule, teamsInGroup, rule.FromSeries.GetLoser());
                             break;
                         default:
                             throw new ApplicationException("Bad Option in Group Rule From Series");
                     }
                     break;
                 case GroupRule.FROM_DIVISION:
+                    //current assumption is from division MUST have sort by division
                     int startingRank = rule.FromStartValue;
                     int endingRank = rule.FromEndValue;
 
@@ -104,7 +127,12 @@ namespace JodyApp.Domain.Playoffs
             SeriesRule seriesRule = series.Rule;
             var homeTeamList = groupings[seriesRule.HomeTeamFromGroup];
             var awayTeamList = groupings[seriesRule.AwayTeamFromGroup];
-            
+
+            var homeTeam = homeTeamList[seriesRule.HomeTeamFromRank - 1];
+            var awayTeam = awayTeamList[seriesRule.AwayTeamFromRank - 1];
+
+            series.HomeTeam = homeTeam;
+            series.AwayTeam = awayTeam;
             
         }
     }

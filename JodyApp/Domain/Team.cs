@@ -17,7 +17,7 @@ namespace JodyApp.Domain
         virtual public TeamStatistics Stats { get; set; }
         virtual public Season Season { get; set; }
         virtual public Playoff Playoff { get; set; }
-
+        public bool EliminatedFromPlayoff { get; set; }
 
         public Team() { }
         public Team(string name, int skill, Division div)

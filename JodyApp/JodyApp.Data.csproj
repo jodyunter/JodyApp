@@ -81,6 +81,10 @@
     <Compile Include="Migrations\201805031841252_moregrouprules.Designer.cs">
       <DependentUpon>201805031841252_moregrouprules.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805041455224_moreplayoffstuff.cs" />
+    <Compile Include="Migrations\201805041455224_moreplayoffstuff.Designer.cs">
+      <DependentUpon>201805041455224_moreplayoffstuff.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805031841252_moregrouprules.resx">
       <DependentUpon>201805031841252_moregrouprules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805041455224_moreplayoffstuff.resx">
+      <DependentUpon>201805041455224_moreplayoffstuff.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -29,7 +29,7 @@ namespace JodyApp.Domain.Playoffs
         public int FromStartValue { get; set; } //ranking or WINNER/LOSER, or start = 1 or start = 2
         public int FromEndValue { get; set; } //division rankings 1, 10
         public Team FromTeam { get; set; }
-        bool IsHomeTeam { get; set; } //use this if we have teams and no sort division
+        public bool IsHomeTeam { get; set; } //use this if we have teams and no sort division
         public String GroupIdentifier { get; set; }  //this is how we know which rules go with which group
 
         public GroupRule(League league, Playoff playoff, int ruleType, Division sortByDivision, Division fromDivision, Series fromSeries, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, string groupIdentifier)
@@ -50,6 +50,8 @@ namespace JodyApp.Domain.Playoffs
 
         public static GroupRule CreateFromDivision(League league, string groupIdentifier, Division sortByDivision, Division fromDivision, int highestRank, int lowestRank)
         {
+            if (sortByDivision == null) throw new ApplicationException("Cannot create new Gorup rule from division if SortByDivision is null");
+
             return new GroupRule(league, null, GroupRule.FROM_DIVISION, sortByDivision, fromDivision, null, highestRank, lowestRank, null, true, groupIdentifier);
         }
 

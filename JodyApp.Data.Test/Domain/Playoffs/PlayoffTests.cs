@@ -41,9 +41,9 @@ namespace JodyApp.Data.Test.Domain.Playoffs
 
         }
 
-        public Team CreateForByTeam()
+        public Team CreateForByTeam(string teamName, int id)
         {
-            return new Team() { Name = "My Team Name", Skill = 5, Playoff = playoff };
+            return new Team() { Name =teamName, Skill = 5, Id = id, Playoff = playoff };
         }
 
         public Division CreateDivision()
@@ -84,7 +84,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         [TestMethod]
         public void ShouldGetTeamsByTeam()
         {
-            Team team = CreateForByTeam();
+            Team team = CreateForByTeam("My Team Name", 12);
             GroupRule rule = GroupRule.CreateFromTeam(league, "TeamGroup", team, false);
 
             var teamList = new List<Team>();
@@ -92,6 +92,43 @@ namespace JodyApp.Data.Test.Domain.Playoffs
 
             AreEqual(1, teamList.Count);
             AreEqual("My Team Name", teamList[0].Name);            
+        }
+        [TestMethod]
+        public void ShouldGetByTeamInOrderAwayFirst()
+        {
+            Team team1 = CreateForByTeam("Team 1", 12);
+            GroupRule rule1 = GroupRule.CreateFromTeam(league, "TeamGroup", team1, false);
+
+            Team team2 = CreateForByTeam("Team 2", 13);
+            GroupRule rule2 = GroupRule.CreateFromTeam(league, "TeamGroup", team2, true);
+
+            
+            playoff.GroupRules = new List<GroupRule>() { rule1, rule2 };
+            var groupMap = playoff.SetupGroups();
+            var teamList = groupMap["TeamGroup"];
+
+            AreEqual(2, teamList.Count);
+            AreEqual("Team 1", teamList[1].Name);
+            AreEqual("Team 2", teamList[0].Name);
+            
+        }
+        [TestMethod]
+        public void ShouldGetByTeamInOrderHomeFirst()
+        {
+            Team team1 = CreateForByTeam("Team 2", 13);
+            GroupRule rule1 = GroupRule.CreateFromTeam(league, "TeamGroup", team1, true);
+
+            Team team2 = CreateForByTeam("Team 1", 12);
+            GroupRule rule2 = GroupRule.CreateFromTeam(league, "TeamGroup", team2, false);
+
+
+            playoff.GroupRules = new List<GroupRule>() { rule1, rule2 };
+            var groupMap = playoff.SetupGroups();
+            var teamList = groupMap["TeamGroup"];
+
+            AreEqual(2, teamList.Count);
+            AreEqual("Team 1", teamList[1].Name);
+            AreEqual("Team 2", teamList[0].Name);
         }
         [TestMethod]
         public void ShouldGetTeamsBySeriesWinner()
@@ -220,7 +257,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             playoff.Series.Add(series);
             GroupRule rule1 = GroupRule.CreateFromDivision(league, "From Division", division, division, 2, 5);
             GroupRule rule2 = GroupRule.CreateFromDivision(league, "From Division", division, division, 8, 8);
-            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(league, "From Division", series, null);
+            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(league, "From Division", series, division);
 
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2, rule3 };
 
@@ -230,12 +267,29 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             IsNotNull(result["From Division"]);
             var teamList = result["From Division"];
             AreEqual(6, teamList.Count);
+            AreEqual("Team 26", teamList[0].Name);
+            AreEqual("Team 25", teamList[1].Name);
+            AreEqual("Team 24", teamList[2].Name);
+            AreEqual("Team 22", teamList[3].Name);
+            AreEqual("Team 27", teamList[4].Name);
+            AreEqual("Team 3", teamList[5].Name);
 
+
+        }
+        [TestMethod]
+        public void ShouldSetSeriesTeamsFromSeriesWinnerAndLoserRule()
+        {
             throw new NotImplementedException();
         }
 
         [TestMethod]
-        public void ShouldSetupProperGroupingForTwoteamSeriesNoDivisionToSortBy()
+        public void ShouldSetseriesTeamFromDivisionRankings()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void ShouldSetSeriesTeamsFromGroupingWithTeam()
         {
             throw new NotImplementedException();
         }

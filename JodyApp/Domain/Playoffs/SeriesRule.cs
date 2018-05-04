@@ -12,7 +12,11 @@ namespace JodyApp.Domain.Playoffs
         //Series rules determine which Playoff Groupings to get the teams from
         //and the rules for creating the games, how many are needed etc
         public const int TYPE_TOTAL_GOALS = 0;
-        public const int TYPE_BEST_OF = 1;;        
+        public const int TYPE_BEST_OF = 1;
+
+        //these set the rank if it is setup by series
+        public const int SERIES_WINNER = 1;
+        public const int SERIES_LOSER = 2;
 
         public League League { get; set; }
         public Playoff Playoff { get; set; }              

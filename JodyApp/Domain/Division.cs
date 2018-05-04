@@ -102,13 +102,16 @@ namespace JodyApp.Domain
 
         public int GetRank(Team team)
         {
+            int ArbitraryRankForTeamNotInDivisionOrRanked = 20000;
             if (Rankings != null)
             {
-                return Rankings.Where(d => d.Team.Id == team.Id).First().Rank;
-            }
+                var dr = Rankings.Where(d => d.Team.Id == team.Id).FirstOrDefault();
+                if (dr != null) return dr.Rank;
+                else return ArbitraryRankForTeamNotInDivisionOrRanked;
 
+            }
             //return an arbitrarily large number to ensure teams without rank are sorted at the bottom
-            return 20000;
+            return ArbitraryRankForTeamNotInDivisionOrRanked;
 
         }
         
