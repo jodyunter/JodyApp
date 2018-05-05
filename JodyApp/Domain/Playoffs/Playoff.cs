@@ -115,6 +115,7 @@ namespace JodyApp.Domain.Playoffs
             else
                 teamsInGroup.Add(team);            
         }
+
         public void AddTeamsToGroup(GroupRule rule, List<Team> teamsInGroup)
         {            
             switch (rule.RuleType)
@@ -201,7 +202,6 @@ namespace JodyApp.Domain.Playoffs
             });
 
             return result;
-
-        }
+        }        
     }
 }

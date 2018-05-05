@@ -23,10 +23,9 @@ namespace JodyApp.Console
         {
             string prod = "Jody";
             string test = "JodyTest";
-            JodyAppContext db = new JodyAppContext(test) ;
+            JodyAppContext db = new JodyAppContext(JodyAppContext.HOME_PROD) ;
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
-            //driver.DeleteAllData();
-            //driver.InsertData();
+            //driver.DeleteAllData();            
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
@@ -38,6 +37,7 @@ namespace JodyApp.Console
             if (db.Seasons.ToList().Count <= 0)
             {
                 year = 0;
+                driver.InsertData();
             } 
             else
             {

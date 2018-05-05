@@ -8,10 +8,37 @@ using JodyApp.Domain.Playoffs;
 namespace JodyApp.Database
 {
     public class JodyAppContext:DbContext
-    {        
-        public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }
+    {
+        public static string DATASOURCE_FORMAT = "Data Source={0};Initial Catalog={1};Integrated Security=True";
+        public const string HOME_DATA_SOURCE= "(localdb)\\MSSQLLocalDB";
+        public const string WORK_DATA_SOURCE = "localhost";
+        public const string PROD = "Jody";
+        public const string TEST = "JodyTest";
+        public const int HOME_PROD = 0;
+        public const int HOME_TEST = 1;
+        public const int WORK_PROD = 2;
+        public const int WORK_TEST = 3;
+
+        public static string GetDataSource(int location) 
+        {
+            switch(location)
+            {
+                case HOME_PROD:
+                    return string.Format(DATASOURCE_FORMAT, HOME_DATA_SOURCE, PROD);                    
+                case HOME_TEST:
+                    return string.Format(DATASOURCE_FORMAT, HOME_DATA_SOURCE, TEST);                    
+                case WORK_PROD:
+                    return string.Format(DATASOURCE_FORMAT, WORK_DATA_SOURCE, TEST);
+                case WORK_TEST:
+                    return string.Format(DATASOURCE_FORMAT, WORK_DATA_SOURCE, TEST);
+                default:
+                    return GetDataSource(WORK_PROD);
+            }            
+        }
+        //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }
         public JodyAppContext(string databaseName) : base("Data Source=localhost;Initial Catalog="+ databaseName + ";Integrated Security=True") { }
-        //public JodyAppContext() : base("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True") { }
+        public JodyAppContext() : base("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True") { }
+        public JodyAppContext(int type) : base(GetDataSource(type)) { }
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<League> Leagues { get; set; }          

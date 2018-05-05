@@ -23,6 +23,9 @@ namespace JodyApp.Domain.Playoffs
                         
         virtual public SeriesRule Rule { get; set; }
 
+        public int HomeWins { get; set; }
+        public int AwayWins { get; set; }
+
         public Series() { }
         public Series(Playoff playoff, SeriesRule rule, Team homeTeam, Team awayTeam, List<Game> games, string name)
         {
@@ -47,9 +50,7 @@ namespace JodyApp.Domain.Playoffs
                 switch (Rule.SeriesType)
                 {
                     case SeriesRule.TYPE_BEST_OF:
-                        int homeWins = GetTeamWins(HomeTeam);
-                        int awayWins = GetTeamWins(AwayTeam);
-                        if (homeWins == Rule.GamesNeeded || awayWins == Rule.GamesNeeded) return true;
+                        if (HomeWins == Rule.GamesNeeded || AwayWins == Rule.GamesNeeded) return true;
                         break;
                 }
                 return false;
@@ -63,7 +64,7 @@ namespace JodyApp.Domain.Playoffs
                 switch(Rule.SeriesType)
                 {
                     case SeriesRule.TYPE_BEST_OF:
-                        return GetTeamWins(HomeTeam) == Rule.GamesNeeded ? HomeTeam : AwayTeam;                        
+                        return HomeWins == Rule.GamesNeeded ? HomeTeam : AwayTeam;                        
                     default:
                         throw new ApplicationException("In Get Winner For Series: Unrecognized Type");
                 }                
@@ -78,7 +79,7 @@ namespace JodyApp.Domain.Playoffs
                 switch (Rule.SeriesType)
                 {
                     case SeriesRule.TYPE_BEST_OF:
-                        return GetTeamWins(HomeTeam) == Rule.GamesNeeded ? AwayTeam : HomeTeam;
+                        return AwayWins == Rule.GamesNeeded ? AwayTeam : HomeTeam;
                     default:
                         throw new ApplicationException("In Get Loser For Series: Unrecognized Type");
                 }
@@ -164,6 +165,10 @@ namespace JodyApp.Domain.Playoffs
             game.HomeTeam = homeTeam;
             game.AwayTeam = awayTeam;
         }
-        
+     
+        public void ProcessGame(Game g)
+        {
+            
+        }
     }
 }
