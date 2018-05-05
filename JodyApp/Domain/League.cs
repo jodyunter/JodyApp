@@ -9,5 +9,8 @@ namespace JodyApp.Domain
     public class League:DomainObject
     {
         public string Name { get; set; }
+        public int CurrentYear { get; set; }
+        public String SeasonName { get; set; }
+        public String PlayoffName { get; set; }
     }
 }

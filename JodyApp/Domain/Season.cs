@@ -38,6 +38,9 @@ namespace JodyApp.Domain
            });
         }
 
-
+        public void ProcessGame(Game g)
+        {
+            Standings.ProcessGame(g);
+        }
     }
 }

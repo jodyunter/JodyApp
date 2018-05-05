@@ -24,6 +24,30 @@ namespace JodyApp.Service
             scheduleService = new ScheduleService(context);
         }
 
+        public bool IsSeasonComplete(Season season)
+        {
+            bool complete = true;
+            if (db.Games.Where(g => g.Season.Id == season.Id && g.Complete == false).ToList().Count > 0) complete = false;
+            
+            return complete;
+        }
+
+        public List<Game> GetNextGames(Season season)
+        {
+            return db.Games.Where(g => g.Season.Id == season.Id && g.Complete == false).ToList();
+        }
+
+        public void PlayGames(Season s, List<Game> games, Random random)
+        {
+            games.ForEach(g => { PlayGame(s, g, random); });
+        }
+
+        public void PlayGame(Season s, Game g, Random random)
+        {
+            g.Play(random);
+            s.ProcessGame(g);
+        }
+        
         public Season CreateNewSeason(League league, string name, int year)
         {
             Season season = new Season();
@@ -121,6 +145,7 @@ namespace JodyApp.Service
             scheduleService.CreateGamesFromRules(season.ScheduleRules, season.Games, 0);
             db.Games.AddRange(season.Games);
 
+            season.SetupStandings();
             db.SaveChanges();
 
             return season;

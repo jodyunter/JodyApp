@@ -35,12 +35,12 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
 
         public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {            
-            CreateAndAddRule(ScheduleRule.CreateByTeamVsDivision(leagues[LeagueName],"Rule 1", teams["Team 1"], divs["Div 2"], false, 1, 1), rules);                        
-            CreateAndAddRule(ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 2", divs["Div 2"], true, 1, 1), rules);
-            CreateAndAddRule(ScheduleRule.CreateByTeamVsTeam(leagues[LeagueName], "Rule 3", teams["Team 4"], teams["Team 2"], false, 1, 1), rules);            
-            CreateAndAddRule(ScheduleRule.CreateByDivisionVsDivision(leagues[LeagueName], "Rule 4", divs["Div 1"], divs["Div 2"], true, 1, 1), rules);
-            CreateAndAddRule(ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 5", 0, true, 2, 1), rules);
-            CreateAndAddRule(ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 6", 1, true, 2, 1), rules);
+            CreateAndAddScheduleRule(ScheduleRule.CreateByTeamVsDivision(leagues[LeagueName],"Rule 1", teams["Team 1"], divs["Div 2"], false, 1, 1), rules);                        
+            CreateAndAddScheduleRule(ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 2", divs["Div 2"], true, 1, 1), rules);
+            CreateAndAddScheduleRule(ScheduleRule.CreateByTeamVsTeam(leagues[LeagueName], "Rule 3", teams["Team 4"], teams["Team 2"], false, 1, 1), rules);            
+            CreateAndAddScheduleRule(ScheduleRule.CreateByDivisionVsDivision(leagues[LeagueName], "Rule 4", divs["Div 1"], divs["Div 2"], true, 1, 1), rules);
+            CreateAndAddScheduleRule(ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 5", 0, true, 2, 1), rules);
+            CreateAndAddScheduleRule(ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 6", 1, true, 2, 1), rules);
 
 
         }

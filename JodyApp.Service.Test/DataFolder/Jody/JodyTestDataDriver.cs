@@ -45,18 +45,19 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         //todo add league everywhere
         public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {
-            ScheduleRule rule1, rule2, rule3, rule4;
+            ScheduleRule rule1, rule2, rule3, rule4, rule5;
 
             rule1 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 1", League, true, 2,1);
             rule2 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 2", WestDivision, true, 5, 1);
             rule3 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 3", EastDivision, true, 5, 1);
             rule4 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 4", CentralDivision, true, 5, 1);
-            rule4 = ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 5", 1, true, 5, 1);
+            rule5 = ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 5", 1, true, 5, 1);
 
-            CreateAndAddRule(rule1, rules);
-            CreateAndAddRule(rule2, rules);
-            CreateAndAddRule(rule3, rules);
-            CreateAndAddRule(rule4, rules);
+            CreateAndAddScheduleRule(rule1, rules);
+            CreateAndAddScheduleRule(rule2, rules);
+            CreateAndAddScheduleRule(rule3, rules);
+            CreateAndAddScheduleRule(rule4, rules);
+            CreateAndAddScheduleRule(rule5, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)

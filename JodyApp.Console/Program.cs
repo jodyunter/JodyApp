@@ -21,7 +21,7 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            JodyAppContext db = new JodyAppContext(JodyAppContext.HOME_PROD) ;
+            JodyAppContext db = new JodyAppContext(JodyAppContext.HOME_TEST) ;
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
             driver.DeleteAllData();            
             TeamService teamService = new TeamService(db);
@@ -47,17 +47,10 @@ namespace JodyApp.Console
             Random random = new Random();            
 
             League league = db.Leagues.Where(l => l.Name == "Jody League").First();
-            Season season = seasonService.CreateNewSeason(league, "My Season", year);
-
-            season.SetupStandings();
-
-            season.Games.ForEach(game =>
-           {
-               game.Play(random);
-               season.Standings.ProcessGame(game);
-           });
-
-            seasonService.SortAllDivisions(season);
+            Season season = seasonService.CreateNewSeason(league, "My Season", year);            
+            var nextGames = seasonService.GetNextGames(season);
+            seasonService.PlayGames(season, nextGames, random);
+            seasonService.SortAllDivisions(season);            
             db.SaveChanges();
 
             var div = db.Divisions.Where(d => d.Season.Id == season.Id && d.Name == "League").First();
