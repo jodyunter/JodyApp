@@ -35,7 +35,17 @@ namespace JodyApp.Service
             return Team.GetTeams(db, season);
         }
 
-
+        public void SetNewSkills(Random random)
+        {
+            GetBaseTeams().ForEach(team =>
+            {
+                int num = random.Next(0, 9);
+                if (num < 4) team.Skill -= 1;
+                if (num > 7) team.Skill += 1;
+                if (team.Skill > 10) team.Skill = 10;
+                if (team.Skill < 1) team.Skill = 1;
+            });
+        }
 
 
     }

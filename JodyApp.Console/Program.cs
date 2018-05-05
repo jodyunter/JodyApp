@@ -49,7 +49,7 @@ namespace JodyApp.Console
             League league = db.Leagues.Where(l => l.Name == "Jody League").First();
             Season season = seasonService.CreateNewSeason(league, "My Season", year);            
             var nextGames = seasonService.GetNextGames(season);
-            seasonService.PlayGames(season, nextGames, random);
+            seasonService.PlayGames(season, nextGames, random);            
             seasonService.SortAllDivisions(season);            
             db.SaveChanges();
 
@@ -61,13 +61,17 @@ namespace JodyApp.Console
             teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
 
             System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<Team>()));
-
+            
             Playoff p = playoffService.CreateNewPlayoff(league, season, "Playoff", year);
 
             var pGames = new List<Game>();
             while (!p.Complete)
             {
-                PlayRound(p, pGames, random, db);                
+                int currentRound = p.CurrentRound;
+                currentRound = currentRound == 0 ? 1 : currentRound;
+                playoffService.PlayRound(p, random);
+                System.Console.WriteLine("Round " + currentRound + ":");
+                p.GetSeriesForRound(currentRound).ForEach(series => System.Console.WriteLine(PlayoffDisplay.PrintSeriesSummary(series)));
             }
             
 
@@ -79,17 +83,9 @@ namespace JodyApp.Console
             {
                 System.Console.WriteLine(series.Playoff.Year + " : " + series.GetWinner().Name);
             });
-                        
 
-            teamService.GetBaseTeams().ForEach(team =>
-            {
-                int num = random.Next(0, 9);
-                if (num < 4) team.Skill -= 1;
-                if (num > 7) team.Skill += 1;
-                if (team.Skill > 10) team.Skill = 10;
-                if (team.Skill < 1) team.Skill = 1;
 
-            });
+            teamService.SetNewSkills(random);
 
             db.SaveChanges();
 
@@ -100,31 +96,5 @@ namespace JodyApp.Console
 
         }
 
-        static void PlayRound(Playoff p, List<Game> pGames, Random random, JodyAppContext db)
-        {
-            if (!p.Started)
-            {
-                p.NextRound();
-                db.SaveChanges();
-            }
-
-            System.Console.WriteLine("Round " + p.CurrentRound + ":");                 
-            while (!p.IsRoundComplete(p.CurrentRound))
-            {
-                pGames.AddRange(p.GetNextGamesForRound(p.CurrentRound, 0));
-
-                pGames.Where(g => !g.Complete).ToList().ForEach(game =>
-                {
-                    game.Play(random);
-                    p.ProcessGame(game);
-                });
-            }
-
-            p.GetSeriesForRound(p.CurrentRound).ForEach(series => System.Console.WriteLine(PlayoffDisplay.PrintSeriesSummary(series)));
-
-            p.NextRound();
-            db.SaveChanges();
-
-        }
     }
 }

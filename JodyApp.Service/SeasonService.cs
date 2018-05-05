@@ -24,11 +24,17 @@ namespace JodyApp.Service
             scheduleService = new ScheduleService(context);
         }
 
+        public bool IsSeasonStarted(Season season)
+        {
+            return season.Started;
+        }
         public bool IsSeasonComplete(Season season)
         {
             bool complete = true;
             if (db.Games.Where(g => g.Season.Id == season.Id && g.Complete == false).ToList().Count > 0) complete = false;
-            
+
+            season.Complete = complete;
+
             return complete;
         }
 
@@ -39,6 +45,7 @@ namespace JodyApp.Service
 
         public void PlayGames(Season s, List<Game> games, Random random)
         {
+            s.Started = true;
             games.ForEach(g => { PlayGame(s, g, random); });
         }
 

@@ -88,5 +88,31 @@ namespace JodyApp.Service
         {
             return GroupRule.GetByLeague(db, league, null);
         }
+
+        public List<Game> PlayRound(Playoff p, Random random)
+        {
+            var pGames = new List<Game>();
+
+            if (!p.Started)
+            {
+                p.NextRound();
+                db.SaveChanges();
+            }            
+            while (!p.IsRoundComplete(p.CurrentRound))
+            {
+                pGames.AddRange(p.GetNextGamesForRound(p.CurrentRound, 0));
+
+                pGames.Where(g => !g.Complete).ToList().ForEach(game =>
+                {
+                    game.Play(random);
+                    p.ProcessGame(game);
+                });
+            }            
+
+            p.NextRound();
+            db.SaveChanges();
+
+            return pGames;
+        }
     }
 }
