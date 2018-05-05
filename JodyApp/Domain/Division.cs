@@ -28,7 +28,7 @@ namespace JodyApp.Domain
 
         public League League { get; set; }
         public Division() { }
-        public Division(League league, string name, string shortName, int level, int order, Division parent)
+        public Division(League league, Season season, string name, string shortName, int level, int order, Division parent)
         {
             this.Name = name;
             this.ShortName = shortName;
@@ -36,11 +36,12 @@ namespace JodyApp.Domain
             this.Order = order;
             this.Parent = parent;
             this.League = league;
+            this.Season = season;
             Teams = new List<Team>();
             Rankings = new List<DivisionRank>();
                  
         }
-        public Division(League league, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : this(league, name, shortName, level, order, parent)
+        public Division(League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : this(league, season, name, shortName, level, order, parent)
         {
             if (sortingRules == null) sortingRules = new List<SortingRule>();
             SortingRules = sortingRules;

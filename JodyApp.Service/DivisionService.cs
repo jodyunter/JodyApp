@@ -24,6 +24,10 @@ namespace JodyApp.Service
             return Division.GetAllTeamsInDivision(db, division);
         }
 
+        public List<Division> GetByReferenceSeason(Season season)
+        {
+            return Division.GetDivisionsBySeason(db, season);
+        }
 
         public List<Division> GetDivisionsByParent(Division parent)
         {

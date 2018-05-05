@@ -21,18 +21,18 @@ namespace JodyApp.Service.Test.DataFolder.SeasonTestData
         
         }
 
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Division> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
         {
-            CreateAndAddDivision(leagues[LeagueName], "League",null, 0, 1, null, null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "East", null, 1, 2, divs["League"], null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "West", null, 1, 3, divs["League"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "League", null, 0, 1, null, null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "East", null, 1, 2, divs["League"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "West", null, 1, 3, divs["League"], null, divs);
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {
             //CreateAndAddRule(leagues[LeagueName], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, 1, rules);
-            CreateAndAddScheduleRule(leagues[LeagueName], "Rule 2", ScheduleRule.BY_DIVISION, null, divs["West"], ScheduleRule.NONE, null, null, false, 10, 0, 2, rules);
-            CreateAndAddScheduleRule(leagues[LeagueName], "Rule 3", ScheduleRule.BY_DIVISION, null, divs["East"], ScheduleRule.NONE, null, null, false, 10, 0, 3, rules);
+            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 2", ScheduleRule.BY_DIVISION, null, divs["West"], ScheduleRule.NONE, null, null, false, 10, 0, 2, rules);
+            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 3", ScheduleRule.BY_DIVISION, null, divs["East"], ScheduleRule.NONE, null, null, false, 10, 0, 3, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)

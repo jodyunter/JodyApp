@@ -15,9 +15,9 @@ namespace JodyApp.Service
         TeamService teamService;
 
 
-        public List<ScheduleRule> GetLeagueRules(League league)
+        public List<ScheduleRule> GetBySeasonReference(Season season)
         {
-            return ScheduleRule.GetRules(db, league, null);
+            return GetRules(season.League, season);
         }
         public List<ScheduleRule> GetRules(League league, Season season)
         {

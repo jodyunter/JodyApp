@@ -55,11 +55,11 @@ namespace JodyApp.Service
             s.ProcessGame(g);
         }
         
-        public Season CreateNewSeason(League league, string name, int year)
+        public Season CreateNewSeason(Season referenceSeason, string name, int year)
         {
             Season season = new Season();
 
-            season.League = league;
+            season.League = referenceSeason.League;
             season.Name = name;
             season.Year = year;
 
@@ -68,7 +68,7 @@ namespace JodyApp.Service
             Dictionary<string, ScheduleRule> seasonScheduleRules = new Dictionary<string, ScheduleRule>();
 
             //loop once to create teams and new season divisions, order means we will not add a parent we haven't created yet
-            divisionService.GetByLeague(league).OrderBy(d => d.Level).ToList<Division>().ForEach(division => 
+            divisionService.GetByReferenceSeason(referenceSeason).OrderBy(d => d.Level).ToList<Division>().ForEach(division => 
             {
                 Division seasonDiv = division.CreateDivisionForSeason(season);
                 if (division.Parent != null) seasonDiv.Parent = seasonDivisions[division.Parent.Name];
@@ -77,7 +77,7 @@ namespace JodyApp.Service
             });
 
             //now add new season related teams.
-            foreach (Division d in divisionService.GetByLeague(league))
+            foreach (Division d in divisionService.GetByReferenceSeason(referenceSeason))
             {
                 d.Teams.ForEach(dt => {
                     Team seasonTeam = new Team(dt, seasonDivisions[d.Name]);
@@ -88,7 +88,7 @@ namespace JodyApp.Service
             }
 
             //loop to process the sorting rules, this requires the divisions be created first
-            foreach (Division d in divisionService.GetByLeague(league))
+            foreach (Division d in divisionService.GetByReferenceSeason(referenceSeason))
             {
                 Division seasonDiv = seasonDivisions[d.Name];
                 seasonDiv.SortingRules = new List<SortingRule>();
@@ -101,7 +101,7 @@ namespace JodyApp.Service
                 
             }
 
-            foreach (ScheduleRule rule in scheduleService.GetLeagueRules(league).OrderBy(rule => rule.Order)) 
+            foreach (ScheduleRule rule in scheduleService.GetBySeasonReference(referenceSeason).OrderBy(rule => rule.Order)) 
             {
                 Division homeDiv = null;
                 Division awayDiv = null;
@@ -114,7 +114,7 @@ namespace JodyApp.Service
                 if (rule.HomeTeam != null) { homeTeam = seasonTeams[rule.HomeTeam.Name]; }
 
                 ScheduleRule seasonRule = new ScheduleRule(
-                                                    league,
+                                                    referenceSeason.League,
                                                     season,
                                                     rule.Name,
                                                     rule.HomeType,

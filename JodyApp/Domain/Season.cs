@@ -28,7 +28,16 @@ namespace JodyApp.Domain
                 
         public League League { get; set; }
 
-
+        public Season() { }
+        public Season(League league, string name, int year, bool started, bool complete, int startingDay)
+        {
+            this.League = league;
+            this.Name = name;
+            this.Year = year;
+            this.Started = started;
+            this.Complete = complete;
+            this.StartingDay = startingDay;
+        }
         public void SetupStandings()
         {
             Standings = new RecordTable();

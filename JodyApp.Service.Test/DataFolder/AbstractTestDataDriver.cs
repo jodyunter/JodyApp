@@ -21,12 +21,13 @@ namespace JodyApp.Service.Test.DataFolder
             this.db = db;
         }
         abstract public void PrivateCreateTeams( Dictionary<string, Team> teams, Dictionary<string, Division> divs);
-        abstract public void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Division> divs);
-        abstract public void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules);
+        abstract public void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs);
+        abstract public void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules);
         abstract public void PrivateCreateLeagues(Dictionary<string, League> leagues);
         public abstract void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules);
         public abstract void PrivateCreateSeriesRules(Dictionary<string, League> leagues, Dictionary<string, SeriesRule> rules);
         public abstract void PrivateCreateGroupRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules);
+        public abstract void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons);
         public void DeleteAllData()
         {
             string[] tables = {"GroupRules", "Games", "SortingRules", "DivisionRanks", "ScheduleRules","Series", "Teams", "TeamStatistics", "SeriesRules", "Divisions", "Seasons", "Playoffs", "Leagues"};
@@ -38,9 +39,19 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
-        public Division CreateAndAddDivision(League league, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules, Dictionary<string, Division> map)
+        public Season CreateAndAddSeason(League league, string name, Dictionary<string, Season> seasons)
         {
-            Division div = new Division(league, name, shortName, level, order, parent, sortingRules);
+            Season season = new Season(league, name, 0, true, true, 0);
+
+            seasons.Add(name, season);
+
+            return season;
+
+        }
+
+        public Division CreateAndAddDivision(League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules, Dictionary<string, Division> map)
+        {
+            Division div = new Division(league, season, name, shortName, level, order, parent, sortingRules);
             map.Add(div.Name, div);
             return div;
         }
@@ -60,13 +71,13 @@ namespace JodyApp.Service.Test.DataFolder
             return rule;
         }
 
-        public ScheduleRule CreateAndAddScheduleRule(League league, string name, 
+        public ScheduleRule CreateAndAddScheduleRule(League league, Season season, string name, 
                                 int homeType, Team homeTeam, Division homeDivision,
                                 int awayType, Team awayTeam, Division awayDivision,
                                 bool homeAndAway, int rounds, int divisionLevel, int order,
                                     Dictionary<string, ScheduleRule> map)
         {
-            ScheduleRule rule = new ScheduleRule(league, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel, order);
+            ScheduleRule rule = new ScheduleRule(league, season, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel, order);
             map.Add(rule.Name, rule);
             return rule;
         }
@@ -137,11 +148,22 @@ namespace JodyApp.Service.Test.DataFolder
                 
         }
 
-        public Dictionary<string, Division> CreateDivisions(Dictionary<string, League> leagues)
+        public Dictionary<string, Season> CreateSeasons(Dictionary<string, League> leagues)
+        {
+            var seasons = new Dictionary<string, Season>();
+            PrivateCreateSeasons(leagues, seasons);
+
+            db.Seasons.AddRange(seasons.Values);
+            db.SaveChanges();
+
+            return seasons;
+        }
+
+        public Dictionary<string, Division> CreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
         {
             var divs = new Dictionary<string, Division>();
 
-            PrivateCreateDivisions(leagues, divs);
+            PrivateCreateDivisions(leagues, seasons, divs);
 
             db.Divisions.AddRange(divs.Values);
             db.SaveChanges();
@@ -163,11 +185,11 @@ namespace JodyApp.Service.Test.DataFolder
             return teams;
         }
 
-        public Dictionary<string, ScheduleRule> CreateRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams)
+        public Dictionary<string, ScheduleRule> CreateRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams)
         {
             var rules = new Dictionary<string, ScheduleRule>();
 
-            PrivateCreateScheduleRules(leagues, divs, teams, rules);
+            PrivateCreateScheduleRules(leagues, seasons, divs, teams, rules);
             
             db.ScheduleRules.AddRange(rules.Values);
             db.SaveChanges();
@@ -218,10 +240,10 @@ namespace JodyApp.Service.Test.DataFolder
         public void InsertData()
         {
             Dictionary<string, League> leagues = CreateLeagues();
-            //create divisions
-            Dictionary<string, Division> divs = CreateDivisions(leagues);
+            Dictionary<string, Season> seasons = CreateSeasons(leagues);
+            Dictionary<string, Division> divs = CreateDivisions(leagues, seasons);
             Dictionary<string, Team> teams = CreateTeams(divs);
-            Dictionary<string, ScheduleRule> scheduleRules = CreateRules(leagues, divs, teams);
+            Dictionary<string, ScheduleRule> scheduleRules = CreateRules(leagues, seasons, divs, teams);
             Dictionary<string, SortingRule> sortingRules = CreateSortingRules(divs);
             Dictionary<string, SeriesRule> seriesRules = CreateSeriesRules(leagues);
             Dictionary<string, GroupRule> groupRules = CreateGroupRules(leagues, divs);

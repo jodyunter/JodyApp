@@ -21,6 +21,8 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         Team Toronto, Montreal, Ottawa;
         Team Vancouver, Edmonton, Calgary;
         Team Winnipeg, Minnesota, Chicago;
+        Season RegularSeason;
+        League MyLeague;
         
         SeriesRule Playin1, Playin2, PlayinF, QF1Rule, QF2Rule, SF1Rule, SF2Rule, FinalRule;
         string Pool2Name = "The Rest";
@@ -31,27 +33,27 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         string PNPWinners = "Play in Pool Winners";
         string PNPChampion = "Play in Pool Champ";
 
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Division> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
         {
-            League = CreateAndAddDivision(leagues[LeagueName], "League", null, 0, 1, null, null, divs);
-            WestConference = CreateAndAddDivision(leagues[LeagueName], "Western Confterence", "Western", 1, 1, League, null, divs);
-            EastConference = CreateAndAddDivision(leagues[LeagueName], "Eastern Conference", "Eastern", 1, 2, League, null, divs);
-            CentralConference = CreateAndAddDivision(leagues[LeagueName], "Central Conference", "Central", 1, 3, League, null, divs);
-            WestDivision = CreateAndAddDivision(leagues[LeagueName], "West", "West", 2, 1, WestConference, null, divs);
-            EastDivision = CreateAndAddDivision(leagues[LeagueName], "East", "East", 2, 2, EastConference, null, divs);
-            CentralDivision = CreateAndAddDivision(leagues[LeagueName], "Central", "Central", 2, 3, CentralConference, null, divs);
+            League = CreateAndAddDivision(MyLeague, RegularSeason, "League", null, 0, 1, null, null, divs);
+            WestConference = CreateAndAddDivision(MyLeague, RegularSeason, "Western Confterence", "Western", 1, 1, League, null, divs);
+            EastConference = CreateAndAddDivision(MyLeague, RegularSeason, "Eastern Conference", "Eastern", 1, 2, League, null, divs);
+            CentralConference = CreateAndAddDivision(MyLeague, RegularSeason, "Central Conference", "Central", 1, 3, League, null, divs);
+            WestDivision = CreateAndAddDivision(MyLeague, RegularSeason, "West", "West", 2, 1, WestConference, null, divs);
+            EastDivision = CreateAndAddDivision(MyLeague, RegularSeason, "East", "East", 2, 2, EastConference, null, divs);
+            CentralDivision = CreateAndAddDivision(MyLeague, RegularSeason, "Central", "Central", 2, 3, CentralConference, null, divs);
         }
 
         //todo add league everywhere
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {
             ScheduleRule rule1, rule2, rule3, rule4, rule5;
 
-            rule1 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 1", League, true, 2,1);
-            rule2 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 2", WestDivision, true, 5, 1);
-            rule3 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 3", EastDivision, true, 5, 1);
-            rule4 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 4", CentralDivision, true, 5, 1);
-            rule5 = ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 5", 1, true, 5, 1);
+            rule1 = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", League, true, 2,1);
+            rule2 = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 2", WestDivision, true, 5, 1);
+            rule3 = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 3", EastDivision, true, 5, 1);
+            rule4 = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 4", CentralDivision, true, 5, 1);
+            rule5 = ScheduleRule.CreateByDivisionLevel(MyLeague, RegularSeason, "Rule 5", 1, true, 5, 1);
 
             CreateAndAddScheduleRule(rule1, rules);
             CreateAndAddScheduleRule(rule2, rules);
@@ -81,41 +83,44 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         }
         public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
         {
-            League league;
+            MyLeague = CreateAndAddLeague(LeagueName, leagues);
+        }
 
-            league = CreateAndAddLeague(LeagueName, leagues);
+        public override void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
+        {
+            RegularSeason = CreateAndAddSeason(MyLeague, "Regular Season", seasons);
         }
 
         public override void PrivateCreateSeriesRules(Dictionary<string, League> leagues, Dictionary<string, SeriesRule> rules)
         {
-            Playin1 = CreateAndAddSeriesRule(leagues[LeagueName], "Play in 1", 1, PlayinPool, 1, PlayinPool, 4, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
-            Playin2 = CreateAndAddSeriesRule(leagues[LeagueName], "Play in 2", 1, PlayinPool, 2, PlayinPool, 3, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
-            PlayinF = CreateAndAddSeriesRule(leagues[LeagueName], "Play in Final", 2, PNPWinners, 1, PNPWinners, 2, SeriesRule.TYPE_BEST_OF, 2, false, "1", rules);
-            QF1Rule = CreateAndAddSeriesRule(leagues[LeagueName], "Quarter Final 1", 3, Pool1Name, 3, PNPChampion, 1, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            QF2Rule = CreateAndAddSeriesRule(leagues[LeagueName], "Quarter Final 2", 3, Pool2Name, 1, Pool2Name, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            SF1Rule = CreateAndAddSeriesRule(leagues[LeagueName], "Semi Final 1", 4, Pool1Name, 1, SFPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            SF2Rule = CreateAndAddSeriesRule(leagues[LeagueName], "Semi Final 2", 4, Pool1Name, 2, SFPoolName, 1, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            FinalRule = CreateAndAddSeriesRule(leagues[LeagueName], "Final", 5, FinalPoolName, 1, FinalPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            Playin1 = CreateAndAddSeriesRule(MyLeague, "Play in 1", 1, PlayinPool, 1, PlayinPool, 4, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
+            Playin2 = CreateAndAddSeriesRule(MyLeague, "Play in 2", 1, PlayinPool, 2, PlayinPool, 3, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
+            PlayinF = CreateAndAddSeriesRule(MyLeague, "Play in Final", 2, PNPWinners, 1, PNPWinners, 2, SeriesRule.TYPE_BEST_OF, 2, false, "1", rules);
+            QF1Rule = CreateAndAddSeriesRule(MyLeague, "Quarter Final 1", 3, Pool1Name, 3, PNPChampion, 1, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            QF2Rule = CreateAndAddSeriesRule(MyLeague, "Quarter Final 2", 3, Pool2Name, 1, Pool2Name, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            SF1Rule = CreateAndAddSeriesRule(MyLeague, "Semi Final 1", 4, Pool1Name, 1, SFPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            SF2Rule = CreateAndAddSeriesRule(MyLeague, "Semi Final 2", 4, Pool1Name, 2, SFPoolName, 1, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            FinalRule = CreateAndAddSeriesRule(MyLeague, "Final", 5, FinalPoolName, 1, FinalPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
 
             
         }
 
         public override void PrivateCreateGroupRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
         {
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(leagues[LeagueName], Pool1Name, League, EastDivision, 1, 1), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(leagues[LeagueName], Pool1Name, League, WestDivision, 1, 1), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(leagues[LeagueName], Pool1Name, League, CentralDivision, 1, 1), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(leagues[LeagueName], Pool2Name, League, EastDivision, 2, 3), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(leagues[LeagueName], Pool2Name, League, WestDivision, 2, 3), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(leagues[LeagueName], Pool2Name, League, CentralDivision, 2, 3), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(leagues[LeagueName], SFPoolName, QF1Rule.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(leagues[LeagueName], SFPoolName, QF2Rule.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(leagues[LeagueName], FinalPoolName, SF1Rule.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(leagues[LeagueName], FinalPoolName, SF2Rule.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(leagues[LeagueName], PlayinPool, League, League, 6, 9), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(leagues[LeagueName], PNPWinners, Playin1.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(leagues[LeagueName], PNPWinners, Playin2.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(leagues[LeagueName], PNPChampion, PlayinF.Name, League), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(MyLeague, Pool1Name, League, EastDivision, 1, 1), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(MyLeague, Pool1Name, League, WestDivision, 1, 1), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(MyLeague, Pool1Name, League, CentralDivision, 1, 1), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(MyLeague, Pool2Name, League, EastDivision, 2, 3), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(MyLeague, Pool2Name, League, WestDivision, 2, 3), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(MyLeague, Pool2Name, League, CentralDivision, 2, 3), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(MyLeague, SFPoolName, QF1Rule.Name, League), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(MyLeague, SFPoolName, QF2Rule.Name, League), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(MyLeague, FinalPoolName, SF1Rule.Name, League), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(MyLeague, FinalPoolName, SF2Rule.Name, League), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(MyLeague, PlayinPool, League, League, 6, 9), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(MyLeague, PNPWinners, Playin1.Name, League), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(MyLeague, PNPWinners, Playin2.Name, League), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(MyLeague, PNPChampion, PlayinF.Name, League), rules);
 
 
         }

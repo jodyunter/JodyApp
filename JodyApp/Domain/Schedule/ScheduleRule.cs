@@ -48,38 +48,36 @@ namespace JodyApp.Domain.Schedule
         public Season Season { get; set; }
         public ScheduleRule() { }
 
-        public ScheduleRule(ScheduleRule rule) : this(rule.League, rule.Name, rule.HomeType, rule.HomeTeam, rule.HomeDivision,
+        public ScheduleRule(ScheduleRule rule) : this(rule.League, rule.Season, rule.Name, rule.HomeType, rule.HomeTeam, rule.HomeDivision,
      rule.AwayType, rule.AwayTeam, rule.AwayDivision,
      rule.PlayHomeAway, rule.Rounds, rule.DivisionLevel, rule.Order)
         {
 
-        }
-        public ScheduleRule(League league, String name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds, int divisionLevel, int order)
-        {
-            League = league;
-            Name = name;
-            HomeType = homeType;
-            HomeTeam = homeTeam;
-            HomeDivision = homeDivision;
-            AwayType = awayType;
-            AwayTeam = awayTeam;
-            AwayDivision = awayDivision;
-            PlayHomeAway = playHomeAway;
-            Rounds = rounds;
-            DivisionLevel = divisionLevel;
-            Order = order;
         }
 
         public ScheduleRule(Season season, ScheduleRule rule) : this(rule)
         {
             Season = season;
         }
-        public ScheduleRule(League league, Season season, String name, int homeType, Team homeTeam, Division homeDivision, int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds, int divisionLevel, int order) : this(league, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, playHomeAway, rounds, divisionLevel, order)
+        public ScheduleRule(League league, Season season, String name, int homeType, Team homeTeam, Division homeDivision,
+                int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds, int divisionLevel, int order)
         {
-            Season = season;
+            this.League = league;
+            this.Season = season;
+            this.Name = name;
+            this.HomeType = homeType;
+            this.HomeTeam = homeTeam;
+            this.HomeDivision = homeDivision;
+            this.AwayType = awayType;
+            this.AwayTeam = awayTeam;
+            this.AwayDivision = awayDivision;
+            this.PlayHomeAway = playHomeAway;
+            this.Rounds = rounds;
+            this.DivisionLevel = divisionLevel;
+            this.Order = order;
         }
 
-        public static ScheduleRule CreateByDivisionVsSelf(League league, String name, Division division, bool playHomeAway, int rounds, int order)
+        public static ScheduleRule CreateByDivisionVsSelf(League league, Season season, String name, Division division, bool playHomeAway, int rounds, int order)
         {
             return new ScheduleRule()
             {
@@ -90,11 +88,12 @@ namespace JodyApp.Domain.Schedule
                 PlayHomeAway = playHomeAway,
                 Rounds = rounds,
                 League = division.League,
-                Order = order
+                Order = order,
+                Season = season
 
             };
         }
-        public static ScheduleRule CreateByDivisionVsDivision(League league, String name, Division homeDivision, Division awayDivision, bool playHomeAway, int rounds, int order)
+        public static ScheduleRule CreateByDivisionVsDivision(League league, Season season, String name, Division homeDivision, Division awayDivision, bool playHomeAway, int rounds, int order)
         {
             return new ScheduleRule()
             {
@@ -105,13 +104,15 @@ namespace JodyApp.Domain.Schedule
                 AwayDivision = awayDivision,
                 PlayHomeAway = playHomeAway,
                 Rounds = rounds,
-                League = homeDivision.League
+                League = homeDivision.League,
+                Season = season
 
             };
         }
-        public static ScheduleRule CreateByTeamVsTeam(League league, String name, Team homeTeam, Team awayTeam, bool playHomeAway, int rounds, int order)
+        public static ScheduleRule CreateByTeamVsTeam(League league, Season season, String name, Team homeTeam, Team awayTeam, bool playHomeAway, int rounds, int order)
         {
             return new ScheduleRule(league,
+                season,
                 name,
                 BY_TEAM,
                 homeTeam,
@@ -125,10 +126,11 @@ namespace JodyApp.Domain.Schedule
                 order);
 
         }
-        public static ScheduleRule CreateByTeamVsDivision(League league, string name, Team team, Division division, bool playHomeAway, int rounds, int order)
+        public static ScheduleRule CreateByTeamVsDivision(League league, Season season, string name, Team team, Division division, bool playHomeAway, int rounds, int order)
         {
             return new ScheduleRule(
                 league,
+                season,
                 name,
                 BY_TEAM,
                 team,
@@ -142,10 +144,11 @@ namespace JodyApp.Domain.Schedule
                 order
                 );
         }
-        public static ScheduleRule CreateByDivisionVsTeam(League league, string name, Division division, Team team, bool playHomeAway, int rounds, int order)
+        public static ScheduleRule CreateByDivisionVsTeam(League league, Season season, string name, Division division, Team team, bool playHomeAway, int rounds, int order)
         {
             return new ScheduleRule(
                 league,
+                season,
                 name,
                 BY_DIVISION,
                 null,
@@ -158,10 +161,11 @@ namespace JodyApp.Domain.Schedule
                 -1,
                 order);
         }
-        public static ScheduleRule CreateByDivisionLevel(League league, string name, int divisionLevel, bool playHomeAway, int rounds, int order)
+        public static ScheduleRule CreateByDivisionLevel(League league, Season season, string name, int divisionLevel, bool playHomeAway, int rounds, int order)
         {
             return new ScheduleRule(
                 league,
+                season, 
                 name,
                 BY_DIVISION_LEVEL,
                 null,

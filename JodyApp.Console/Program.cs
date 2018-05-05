@@ -23,7 +23,7 @@ namespace JodyApp.Console
         {
             JodyAppContext db = new JodyAppContext(JodyAppContext.HOME_TEST) ;
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
-            driver.DeleteAllData();            
+            //driver.DeleteAllData();            
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
@@ -47,7 +47,8 @@ namespace JodyApp.Console
             Random random = new Random();            
 
             League league = db.Leagues.Where(l => l.Name == "Jody League").First();
-            Season season = seasonService.CreateNewSeason(league, "My Season", year);            
+            Season referenceSeason = db.Seasons.Where(s => s.Name == "Regular Season").First();
+            Season season = seasonService.CreateNewSeason(referenceSeason, "My Season", year);            
             var nextGames = seasonService.GetNextGames(season);
             seasonService.PlayGames(season, nextGames, random);            
             seasonService.SortAllDivisions(season);            

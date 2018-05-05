@@ -21,26 +21,26 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
             CreateAndAddLeague(this.LeagueName, leagues);
             CreateAndAddLeague("Extra", leagues);
         }
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Division> divs)
+        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
         {            
-            CreateAndAddDivision(leagues[LeagueName], "League", null, 0, 1, null, null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "West", null, 1, 2, divs["League"], null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "East", null, 1, 2, divs["League"], null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "Pacific", null, 2, 1, divs["West"], null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "Central", null, 2, 2, divs["West"], null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "North West", null, 2, 3, divs["West"], null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "North East", null, 2, 4, divs["East"], null, divs);
-            CreateAndAddDivision(leagues[LeagueName], "Atlantic", null, 2, 4, divs["East"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "League", null, 0, 1, null, null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "West", null, 1, 2, divs["League"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "East", null, 1, 2, divs["League"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "Pacific", null, 2, 1, divs["West"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "Central", null, 2, 2, divs["West"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "North West", null, 2, 3, divs["West"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "North East", null, 2, 4, divs["East"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "Atlantic", null, 2, 4, divs["East"], null, divs);
 
-            CreateAndAddDivision(leagues["Extra"], "Extra Top", null, 0, 1, null, null, divs);
-            CreateAndAddDivision(leagues["Extra"], "Extra Child", null, 1, 2,divs["Extra Top"], null, divs);
+            CreateAndAddDivision(leagues["Extra"], seasons["My Season"], "Extra Top", null, 0, 1, null, null, divs);
+            CreateAndAddDivision(leagues["Extra"], seasons["My Season"], "Extra Child", null, 1, 2,divs["Extra Top"], null, divs);
 
 
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {
-            CreateAndAddScheduleRule(leagues[LeagueName], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 2, 0, 1, rules);
+            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 2, 0, 1, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)

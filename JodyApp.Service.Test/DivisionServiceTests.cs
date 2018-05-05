@@ -40,7 +40,8 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetSeasonDivisionsByParent()
         {
-            season = seasonService.CreateNewSeason(league, "Season Test", 15);
+            var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
+            season = seasonService.CreateNewSeason(refSeason, "Season Test", 15);
             Division leagueDiv = service.GetByName("League", league, season);
             List<Division> divisions = service.GetDivisionsByParent(leagueDiv);
 
@@ -54,8 +55,8 @@ namespace JodyApp.Service.Test
         public void ShouldSortByDivision()
         {
 
-
-            Season season = seasonService.CreateNewSeason(league, "Season Testing", 2);            
+            var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
+            Season season = seasonService.CreateNewSeason(refSeason, "Season Testing", 2);            
             Random random = new Random(15);
 
             season.SetupStandings();
