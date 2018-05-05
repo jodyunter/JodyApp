@@ -14,8 +14,8 @@ namespace JodyApp.Service.Test
 {
     [TestClass]
     public class DivisionServiceTests
-    {        
-        Database.JodyAppContext db = new Database.JodyAppContext();
+    {
+        Database.JodyAppContext db;
         DivisionService service;
         DivisionTestDataDriver driver;
         SeasonService seasonService;

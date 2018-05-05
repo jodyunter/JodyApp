@@ -21,11 +21,9 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            string prod = "Jody";
-            string test = "JodyTest";
             JodyAppContext db = new JodyAppContext(JodyAppContext.HOME_PROD) ;
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
-            //driver.DeleteAllData();            
+            driver.DeleteAllData();            
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
@@ -84,7 +82,7 @@ namespace JodyApp.Console
 
             System.Console.WriteLine("\n");
             System.Console.WriteLine("Champion List");
-            db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == "Final").ToList().ForEach(series =>
+            db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == "Final").OrderByDescending(s => s.Playoff.Year).ToList().ForEach(series =>
             {
                 System.Console.WriteLine(series.Playoff.Year + " : " + series.GetWinner().Name);
             });
@@ -93,7 +91,7 @@ namespace JodyApp.Console
             teamService.GetBaseTeams().ForEach(team =>
             {
                 int num = random.Next(0, 9);
-                if (num < 2) team.Skill += 1;
+                if (num < 4) team.Skill -= 1;
                 if (num > 7) team.Skill += 1;
                 if (team.Skill > 10) team.Skill = 10;
                 if (team.Skill < 1) team.Skill = 1;
@@ -125,6 +123,7 @@ namespace JodyApp.Console
                 pGames.Where(g => !g.Complete).ToList().ForEach(game =>
                 {
                     game.Play(random);
+                    p.ProcessGame(game);
                 });
             }
 

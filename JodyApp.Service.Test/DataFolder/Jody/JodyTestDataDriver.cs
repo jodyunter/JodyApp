@@ -51,7 +51,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             rule2 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 2", WestDivision, true, 5, 1);
             rule3 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 3", EastDivision, true, 5, 1);
             rule4 = ScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], "Rule 4", CentralDivision, true, 5, 1);
-            rule4 = ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 4", 1, true, 5, 1);
+            rule4 = ScheduleRule.CreateByDivisionLevel(leagues[LeagueName], "Rule 5", 1, true, 5, 1);
 
             CreateAndAddRule(rule1, rules);
             CreateAndAddRule(rule2, rules);
@@ -89,7 +89,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         {
             Playin1 = CreateAndAddSeriesRule(leagues[LeagueName], "Play in 1", 1, PlayinPool, 1, PlayinPool, 4, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
             Playin2 = CreateAndAddSeriesRule(leagues[LeagueName], "Play in 2", 1, PlayinPool, 2, PlayinPool, 3, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
-            PlayinF = CreateAndAddSeriesRule(leagues[LeagueName], "Play in Final", 2, PNPWinners, 1, PNPWinners, 2, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
+            PlayinF = CreateAndAddSeriesRule(leagues[LeagueName], "Play in Final", 2, PNPWinners, 1, PNPWinners, 2, SeriesRule.TYPE_BEST_OF, 2, false, "1", rules);
             QF1Rule = CreateAndAddSeriesRule(leagues[LeagueName], "Quarter Final 1", 3, Pool1Name, 3, PNPChampion, 1, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
             QF2Rule = CreateAndAddSeriesRule(leagues[LeagueName], "Quarter Final 2", 3, Pool2Name, 1, Pool2Name, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
             SF1Rule = CreateAndAddSeriesRule(leagues[LeagueName], "Semi Final 1", 4, Pool1Name, 1, SFPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);

@@ -9,6 +9,11 @@ namespace JodyApp.Database
 {
     public class JodyAppContext:DbContext
     {
+        public const string HOME_PROD_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jodytest;Integrated Security=True";
+        public const string HOME_TEST_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jodytest;Integrated Security=True";
+        public const string WORK_TEST_CONNECTION_STRING = "Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True";
+        public const string WORK_PROD_CONNECTION_STRING = "Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True";
+
         public static string DATASOURCE_FORMAT = "Data Source={0};Initial Catalog={1};Integrated Security=True";
         public const string HOME_DATA_SOURCE= "(localdb)\\MSSQLLocalDB";
         public const string WORK_DATA_SOURCE = "localhost";
@@ -35,10 +40,10 @@ namespace JodyApp.Database
                     return GetDataSource(WORK_PROD);
             }            
         }
-        //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }
-        public JodyAppContext(string databaseName) : base("Data Source=localhost;Initial Catalog="+ databaseName + ";Integrated Security=True") { }
-        public JodyAppContext() : base("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True") { }
+        //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }        
+        public JodyAppContext() : base(HOME_TEST_CONNECTION_STRING) { }
         public JodyAppContext(int type) : base(GetDataSource(type)) { }
+        
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<League> Leagues { get; set; }          

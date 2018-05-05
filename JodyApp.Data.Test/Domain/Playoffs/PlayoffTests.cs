@@ -22,7 +22,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             SeriesRule seriesRule = new SeriesRule(league, playoff, "Series 1", 1, "Series A", SeriesRule.SERIES_WINNER, "Series A", SeriesRule.SERIES_LOSER, SeriesRule.TYPE_BEST_OF, 1, false, "1");
             var games = new List<Game>();
             
-            Series series = new Series(playoff, seriesRule, homeTeam, awayTeam, games, "Series 1");
+            Series series = new Series(playoff, seriesRule, homeTeam, 0, awayTeam, 1, games, "Series 1");
             games.Add(new Game(null, series, homeTeam, awayTeam, 1, 1, 2, 5, false, 0, true));
 
             return series;
@@ -36,7 +36,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             SeriesRule seriesRule = new SeriesRule(league, playoff, "Series 2", 1, "Series B", SeriesRule.SERIES_WINNER, "Series B", SeriesRule.SERIES_LOSER, SeriesRule.TYPE_BEST_OF, 1, false, "1");
             var games = new List<Game>();
             
-            Series series = new Series(playoff, seriesRule, homeTeam, awayTeam, games, "Series 2");
+            Series series = new Series(playoff, seriesRule, homeTeam, 0, awayTeam, 1, games, "Series 2");
             games.Add(new Game(null, series, homeTeam, awayTeam, 1, 1, 2, 5, false, 0, true));
 
             return series;

@@ -202,6 +202,16 @@ namespace JodyApp.Domain.Playoffs
             });
 
             return result;
-        }        
+        }       
+        
+        public void ProcessGame(Game g)
+        {
+            var series = Series.Where(s => s.Name == g.Series.Name).FirstOrDefault();
+
+            if (series == null) throw new ApplicationException("Trying to process a playoff series game with the wrong series");
+
+            series.ProcessGame(g);
+        }
+
     }
 }

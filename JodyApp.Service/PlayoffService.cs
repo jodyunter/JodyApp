@@ -45,7 +45,7 @@ namespace JodyApp.Service
             //setup series   
             newSeriesRules.ForEach(seriesRule =>
             {
-                Series series = new Series(seriesRule.Playoff, seriesRule, null, null, new List<Game>(), seriesRule.Name);
+                Series series = new Series(seriesRule.Playoff, seriesRule, null, 0, null, 0, new List<Game>(), seriesRule.Name);
                 newSeries.Add(series);
             });
 

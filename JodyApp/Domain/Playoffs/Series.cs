@@ -15,6 +15,7 @@ namespace JodyApp.Domain.Playoffs
         public List<Game> Games { get; set; }
 
         public Playoff Playoff { get; set; }
+        //redundant because of series rule?
         public int Round { get; set; }
         //rule that determines number of games, wins home and away and game specific rules
         //we want total goal series, and best-of series
@@ -26,8 +27,8 @@ namespace JodyApp.Domain.Playoffs
         public int HomeWins { get; set; }
         public int AwayWins { get; set; }
 
-        public Series() { }
-        public Series(Playoff playoff, SeriesRule rule, Team homeTeam, Team awayTeam, List<Game> games, string name)
+        public Series() { HomeWins = 0; AwayWins = 0; }
+        public Series(Playoff playoff, SeriesRule rule, Team homeTeam, int homeWins, Team awayTeam, int awayWins, List<Game> games, string name)
         {
             Playoff = playoff;
             Rule = rule;            
@@ -35,11 +36,16 @@ namespace JodyApp.Domain.Playoffs
             AwayTeam = awayTeam;
             Games = games;
             Name = name;
+            HomeWins = homeWins;
+            AwayWins = awayWins;
+            Round = rule.Round;
         }
 
         public int GetTeamWins(Team team)
         {
-            return Games.Where(g => g.GetWinner() != null && g.GetWinner().Id == team.Id).ToList().Count;
+            if (HomeTeam.Id == team.Id) return HomeWins;
+            else if (AwayTeam.Id == team.Id) return AwayWins;
+            else return -1;
             
         }
 
@@ -79,7 +85,7 @@ namespace JodyApp.Domain.Playoffs
                 switch (Rule.SeriesType)
                 {
                     case SeriesRule.TYPE_BEST_OF:
-                        return AwayWins == Rule.GamesNeeded ? AwayTeam : HomeTeam;
+                        return AwayWins == Rule.GamesNeeded ? HomeTeam : AwayTeam;
                     default:
                         throw new ApplicationException("In Get Loser For Series: Unrecognized Type");
                 }
@@ -168,7 +174,23 @@ namespace JodyApp.Domain.Playoffs
      
         public void ProcessGame(Game g)
         {
-            
+            Team winner = g.GetWinner();
+            if (winner != null)
+            {
+                if (winner.Id == HomeTeam.Id) HomeWins++;
+                else if (winner.Id == AwayTeam.Id) AwayWins++;
+            }
+        }
+
+        public void SetTeamWinsByGames()
+        {
+            HomeWins = 0;
+            AwayWins = 0;
+
+            Games.ForEach(game =>
+            {
+                ProcessGame(game);
+            });
         }
     }
 }
