@@ -23,6 +23,16 @@ namespace JodyApp.Domain.Playoffs
         virtual public List<Team> PlayoffTeams { get; set; }
 
         public Playoff() { CurrentRound = 0;  Series = new List<Series>(); }
+
+        public Playoff(League league, string name, int year, bool started, bool complete, int startingDay):base()
+        {
+            this.League = league;
+            this.Name = name;
+            this.Year = year;
+            this.Started = started;
+            this.Complete = complete;
+            this.StartingDay = startingDay;
+        }
         public Team GetPlayoffTeamByName(string name)
         {
             if (PlayoffTeams == null) PlayoffTeams = new List<Team>();
@@ -39,9 +49,11 @@ namespace JodyApp.Domain.Playoffs
 
         public bool IsComplete()
         {
-            bool complete = !(Series.Count == 0);
+            bool complete = true;
 
-            Series.ForEach(series => { complete = complete && series.Complete; });            
+            if (Series == null) complete = false;
+            else 
+                Series.ForEach(series => { complete = complete && series.Complete; });            
 
             return complete;
         }

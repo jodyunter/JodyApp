@@ -41,7 +41,7 @@ namespace JodyApp.Service.Test
         public void ShouldGetSeasonDivisionsByParent()
         {
             var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
-            season = seasonService.CreateNewSeason(refSeason, "Season Test", 15);
+            season = seasonService.CreateNewSeason(refSeason, 15);
             Division leagueDiv = service.GetByName("League", league, season);
             List<Division> divisions = service.GetDivisionsByParent(leagueDiv);
 
@@ -56,7 +56,7 @@ namespace JodyApp.Service.Test
         {
 
             var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
-            Season season = seasonService.CreateNewSeason(refSeason, "Season Testing", 2);            
+            Season season = seasonService.CreateNewSeason(refSeason, 2);            
             Random random = new Random(15);
 
             season.SetupStandings();

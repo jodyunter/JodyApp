@@ -17,8 +17,7 @@ namespace JodyApp.Domain.Playoffs
         //these set the rank if it is setup by series
         public const int SERIES_WINNER = 1;
         public const int SERIES_LOSER = 2;
-
-        public League League { get; set; }
+        
         public Playoff Playoff { get; set; }              
         public string Name { get; set; }
         public int Round { get; set; }
@@ -35,14 +34,13 @@ namespace JodyApp.Domain.Playoffs
         public string HomeGames { get; set; } //sets which games are home, if there is not, then alternate 1,1,0,0,1,0,1 is standard exmaple.  1 = "Home Team" gets first home game        
         public SeriesRule() { }
 
-        public SeriesRule(SeriesRule rule, Playoff p) : this(rule.League, p, rule.Name, rule.Round, rule.HomeTeamFromGroup, 
+        public SeriesRule(SeriesRule rule, Playoff p) : this(p, rule.Name, rule.Round, rule.HomeTeamFromGroup, 
                                                             rule.HomeTeamFromRank, rule.AwayTeamFromGroup, rule.AwayTeamFromRank, 
                                                             rule.SeriesType, rule.GamesNeeded, rule.CanTie, rule.HomeGames) { }
-        public SeriesRule(League league, Playoff playoff, string name, int round, string homeTeamFromGroup,
+        public SeriesRule(Playoff playoff, string name, int round, string homeTeamFromGroup,
                             int homeTeamFromRank, string awayTeamFromGroup, int awayTeamFromRank, 
                             int seriesType, int gamesNeeded, bool canTie, string homeGames)
-        {
-            League = league;
+        {            
             Playoff = playoff;
             Name = name;
             Round = round;

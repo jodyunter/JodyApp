@@ -12,5 +12,8 @@ namespace JodyApp.Domain
         public int CurrentYear { get; set; }
         public String SeasonName { get; set; }
         public String PlayoffName { get; set; }
+        virtual public List<ReferenceCompetition> ReferenceCompetitions { get; set; }
+
+        public League() { ReferenceCompetitions = new List<ReferenceCompetition>(); }
     }
 }

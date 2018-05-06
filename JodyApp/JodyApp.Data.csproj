@@ -65,6 +65,7 @@
     <Compile Include="Domain\Playoffs\GroupRule.cs" />
     <Compile Include="Domain\Playoffs\Series.cs" />
     <Compile Include="Domain\Playoffs\SeriesRule.cs" />
+    <Compile Include="Domain\ReferenceCompetition.cs" />
     <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />
     <Compile Include="Domain\Schedule\Scheduler.cs" />
     <Compile Include="Domain\Schedule\ScheduleRule.cs" />
@@ -92,6 +93,14 @@
     <Compile Include="Migrations\201805051520214_NewLeagueStuff.Designer.cs">
       <DependentUpon>201805051520214_NewLeagueStuff.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805060002370_LeagueReferences.cs" />
+    <Compile Include="Migrations\201805060002370_LeagueReferences.Designer.cs">
+      <DependentUpon>201805060002370_LeagueReferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805060110168_PlayoffLeagueReferences.cs" />
+    <Compile Include="Migrations\201805060110168_PlayoffLeagueReferences.Designer.cs">
+      <DependentUpon>201805060110168_PlayoffLeagueReferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -111,6 +120,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805051520214_NewLeagueStuff.resx">
       <DependentUpon>201805051520214_NewLeagueStuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805060002370_LeagueReferences.resx">
+      <DependentUpon>201805060002370_LeagueReferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805060110168_PlayoffLeagueReferences.resx">
+      <DependentUpon>201805060110168_PlayoffLeagueReferences.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

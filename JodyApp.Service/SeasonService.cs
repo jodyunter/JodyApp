@@ -31,7 +31,8 @@ namespace JodyApp.Service
         public bool IsSeasonComplete(Season season)
         {
             bool complete = true;
-            if (db.Games.Where(g => g.Season.Id == season.Id && g.Complete == false).ToList().Count > 0) complete = false;
+            
+            if (db.Games.Where(g => g.Season.Id == season.Id && g.Complete).ToList().Count > 0) complete = false;
 
             season.Complete = complete;
 
@@ -55,12 +56,12 @@ namespace JodyApp.Service
             s.ProcessGame(g);
         }
         
-        public Season CreateNewSeason(Season referenceSeason, string name, int year)
+        public Season CreateNewSeason(Season referenceSeason, int year)
         {
             Season season = new Season();
 
             season.League = referenceSeason.League;
-            season.Name = name;
+            season.Name = referenceSeason.Name;
             season.Year = year;
 
             Dictionary<string, Division> seasonDivisions = new Dictionary<string, Division>();

@@ -9,10 +9,9 @@ namespace JodyApp.Domain.Playoffs
 {
     public partial class SeriesRule
     {
-        public static List<SeriesRule> GetByLeague(JodyAppContext db, League league, Playoff p)
+        public static List<SeriesRule> GetByReference(JodyAppContext db, Playoff p)
         {
-            if (p == null) return db.SeriesRules.Where(sr => sr.League.Id == league.Id && sr.Playoff == null).ToList();
-            else return db.SeriesRules.Where(sr => sr.League.Id == league.Id && sr.Playoff.Id == p.Id).ToList();
+            return db.SeriesRules.Where(sr => sr.Playoff.Id == p.Id).ToList();            
         }
     }
 }

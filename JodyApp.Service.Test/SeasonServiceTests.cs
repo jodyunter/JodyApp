@@ -42,7 +42,7 @@ namespace JodyApp.Service.Test
         public void ShouldCreateSecondSeason()
         {
             var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
-            Season season = service.CreateNewSeason(refSeason, "My Season", 1);
+            Season season = service.CreateNewSeason(refSeason, 1);
             Random random = new Random(55555);
 
             season.SetupStandings();
@@ -57,7 +57,7 @@ namespace JodyApp.Service.Test
 
             db.SaveChanges();
             
-            Season season2 = service.CreateNewSeason(refSeason, "Season 2", 2);
+            Season season2 = service.CreateNewSeason(refSeason, 2);
 
             season2.SetupStandings();
 
@@ -76,7 +76,7 @@ namespace JodyApp.Service.Test
         public void ShouldScheduleInOrder()
         {
             var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
-            Season season = service.CreateNewSeason(refSeason, "My Season", 1);
+            Season season = service.CreateNewSeason(refSeason, 1);
             Random random = new Random(55555);
 
             season.SetupStandings();

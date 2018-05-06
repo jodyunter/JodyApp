@@ -18,10 +18,10 @@ namespace JodyApp.Service
             divisionService = new DivisionService(db);
         }
 
-        public Playoff CreateNewPlayoff(League league, Season season, string name, int year)
+        public Playoff CreateNewPlayoff(Playoff referencePlayoff, Season season, string name, int year)
         {
             Playoff playoff = new Playoff();
-            playoff.League = league;
+            playoff.League = referencePlayoff.League;
             playoff.Year = year;
             playoff.Name = name;
 
@@ -29,16 +29,16 @@ namespace JodyApp.Service
             List<GroupRule> newGroupRules = new List<GroupRule>();
             List<Series> newSeries = new List<Series>();
 
-            GetSeriesRulesByLeague(league).ForEach(seriesRule =>
+            GetSeriesRulesByReference(referencePlayoff).ForEach(seriesRule =>
             {
                 SeriesRule newRule = new SeriesRule(seriesRule, playoff);
                 newSeriesRules.Add(newRule);
 
             });
 
-            GetGroupRulesByLeague(league).ForEach(groupRule =>
+            GetGroupRulesByReference(referencePlayoff).ForEach(groupRule =>
             {
-                var newRule = CreateNewGroupRule(groupRule, league, season, playoff);
+                var newRule = CreateNewGroupRule(groupRule, referencePlayoff.League, season, playoff);
                 newGroupRules.Add(newRule);           
             });
 
@@ -79,14 +79,14 @@ namespace JodyApp.Service
 
             return newRule;
         }
-        public List<SeriesRule> GetSeriesRulesByLeague(League league)
+        public List<SeriesRule> GetSeriesRulesByReference(Playoff playoff)
         {
-            return SeriesRule.GetByLeague(db, league, null);
+            return SeriesRule.GetByReference(db, playoff);
         }
 
-        public List<GroupRule> GetGroupRulesByLeague(League league)
+        public List<GroupRule> GetGroupRulesByReference(Playoff playoff)
         {
-            return GroupRule.GetByLeague(db, league, null);
+            return GroupRule.GetByReference(db, playoff);
         }
 
         public List<Game> PlayRound(Playoff p, Random random)

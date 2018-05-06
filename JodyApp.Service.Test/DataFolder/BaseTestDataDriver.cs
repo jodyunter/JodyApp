@@ -27,7 +27,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
         {
-            CreateAndAddSeason(leagues[LeagueName], "My Season", seasons);
+            CreateAndAddSeason(leagues[LeagueName], "My Season", seasons, 1);
         }
 
         public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
@@ -54,12 +54,17 @@ namespace JodyApp.Service.Test.DataFolder
             return;
         }
 
-        public override void PrivateCreateSeriesRules(Dictionary<string, League> leagues, Dictionary<string, SeriesRule> rules)
+        public override void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, SeriesRule> rules)
         {
             return;
         }
 
-        public override void PrivateCreateGroupRules(Dictionary<string, League> leagues, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
+        public override void PrivateCreateGroupRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
+        {
+            return;
+        }
+
+        public override void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Playoff> playoffs)
         {
             return;
         }

@@ -46,11 +46,13 @@ namespace JodyApp.Console
 
             Random random = new Random();            
 
-            League league = db.Leagues.Where(l => l.Name == "Jody League").First();
-            Season referenceSeason = db.Seasons.Where(s => s.Name == "Regular Season").First();
-            Season season = seasonService.CreateNewSeason(referenceSeason, "My Season", year);            
+            League league = db.Leagues.Include("ReferenceCompetitions.Playoff").Where(l => l.Name == "Jody League").First();            
+            Season referenceSeason = league.ReferenceCompetitions.Where(rc => rc.Order == 1).First().Season;
+
+            Season season = seasonService.CreateNewSeason(referenceSeason, year);            
             var nextGames = seasonService.GetNextGames(season);
-            seasonService.PlayGames(season, nextGames, random);            
+            seasonService.PlayGames(season, nextGames, random);
+            seasonService.IsSeasonComplete(season);
             seasonService.SortAllDivisions(season);            
             db.SaveChanges();
 
@@ -62,8 +64,9 @@ namespace JodyApp.Console
             teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
 
             System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<Team>()));
-            
-            Playoff p = playoffService.CreateNewPlayoff(league, season, "Playoff", year);
+
+            Playoff referencePlayoff = league.ReferenceCompetitions.Where(rc => rc.Order == 2).First().Playoff;
+            Playoff p = playoffService.CreateNewPlayoff(referencePlayoff, season, "Playoffs", year);
 
             var pGames = new List<Game>();
             while (!p.Complete)

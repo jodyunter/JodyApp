@@ -27,6 +27,7 @@ namespace JodyApp.Domain.Schedule
         virtual public Team HomeTeam { get; set; }        
         virtual public Division HomeDivision { get; set; }
 
+        //should probably remove this
         virtual public League League { get; set; }
         public int AwayType { get; set; }                     
         virtual public Team AwayTeam { get; set; }        
