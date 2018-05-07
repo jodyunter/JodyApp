@@ -28,7 +28,7 @@ namespace JodyApp.Service.Test.DataFolder
         abstract public void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, SeriesRule> rules);
         abstract public void PrivateCreateGroupRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules);
         abstract public void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons);
-        abstract public void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Playoff> playoffs);
+        abstract public void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Playoff> playoffs);        
 
         public void DeleteAllData()
         {
@@ -117,10 +117,10 @@ namespace JodyApp.Service.Test.DataFolder
         public ScheduleRule CreateAndAddScheduleRule(League league, Season season, string name, 
                                 int homeType, Team homeTeam, Division homeDivision,
                                 int awayType, Team awayTeam, Division awayDivision,
-                                bool homeAndAway, int rounds, int divisionLevel, int order,
+                                bool homeAndAway, int rounds, int divisionLevel, int order, bool reverse,
                                     Dictionary<string, ScheduleRule> map)
         {
-            ScheduleRule rule = new ScheduleRule(league, season, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel, order);
+            ScheduleRule rule = new ScheduleRule(league, season, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel, order, reverse);
             map.Add(rule.Name, rule);
             return rule;
         }

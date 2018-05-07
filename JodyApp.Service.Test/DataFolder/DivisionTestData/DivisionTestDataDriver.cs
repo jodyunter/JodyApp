@@ -40,7 +40,7 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
 
         public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
         {
-            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 2, 0, 1, rules);
+            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 2, 0, 1, false, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)

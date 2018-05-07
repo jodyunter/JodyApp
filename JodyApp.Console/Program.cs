@@ -21,7 +21,7 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_PROD) ;
+            JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_PROD);
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
             //driver.DeleteAllData();
             //driver.InsertData();

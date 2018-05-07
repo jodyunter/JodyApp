@@ -112,5 +112,10 @@ namespace JodyApp.Service.Test
         }
 
         //need special test for season schedule rule
+        [TestMethod]
+        public void ShouldCreateGamesFromRuleTeamReversed()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -103,6 +103,10 @@
     <Compile Include="Migrations\201805060110168_PlayoffLeagueReferences.Designer.cs">
       <DependentUpon>201805060110168_PlayoffLeagueReferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805072010495_next01.cs" />
+    <Compile Include="Migrations\201805072010495_next01.Designer.cs">
+      <DependentUpon>201805072010495_next01.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -128,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805060110168_PlayoffLeagueReferences.resx">
       <DependentUpon>201805060110168_PlayoffLeagueReferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805072010495_next01.resx">
+      <DependentUpon>201805072010495_next01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

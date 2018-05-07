@@ -59,17 +59,19 @@ namespace JodyApp.Service
 
                 divisions.ForEach(d =>
                 {
-                    homeTeams = new List<Team>();                    
+                    homeTeams = new List<Team>();
 
-                    homeTeams.AddRange(divisionService.GetAllTeamsInDivision(d));
+                    var list = divisionService.GetAllTeamsInDivision(d);
+                    if (rule.Reverse) list.Reverse();
+                    homeTeams.AddRange(list);
 
                     lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), null, rule.PlayHomeAway, rule.Rounds);
                 });
             }
             else
             {
-                AddTeamsToListFromRule(homeTeams, rule.HomeType, rule.HomeTeam, rule.HomeDivision);
-                AddTeamsToListFromRule(awayTeams, rule.AwayType, rule.AwayTeam, rule.AwayDivision);
+                AddTeamsToListFromRule(homeTeams, rule.HomeType, rule.HomeTeam, rule.HomeDivision, rule.Reverse);
+                AddTeamsToListFromRule(awayTeams, rule.AwayType, rule.AwayTeam, rule.AwayDivision, rule.Reverse);
 
                 lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds);
 
@@ -77,7 +79,7 @@ namespace JodyApp.Service
             return lastGameNumber;
         }
         
-        public void AddTeamsToListFromRule(List<Team> teamList, int ruleType, Team team, Division division)
+        public void AddTeamsToListFromRule(List<Team> teamList, int ruleType, Team team, Division division, bool reverse)
         {
             switch (ruleType)
             {
@@ -85,7 +87,9 @@ namespace JodyApp.Service
                     teamList.Add(team);
                     break;
                 case ScheduleRule.BY_DIVISION:
-                    teamList.AddRange(divisionService.GetAllTeamsInDivision(division));
+                    var list = divisionService.GetAllTeamsInDivision(division);
+                    if (reverse) list.Reverse();
+                    teamList.AddRange(list);
                     break;
                 case ScheduleRule.NONE:
                     break;
