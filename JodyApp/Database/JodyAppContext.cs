@@ -9,7 +9,7 @@ namespace JodyApp.Database
 {
     public class JodyAppContext:DbContext
     {
-        public const string HOME_PROD_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jodytest;Integrated Security=True";
+        public const string HOME_PROD_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True";
         public const string HOME_TEST_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jodytest;Integrated Security=True";
         public const string WORK_TEST_CONNECTION_STRING = "Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True";
         public const string WORK_PROD_CONNECTION_STRING = "Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True";
@@ -41,7 +41,7 @@ namespace JodyApp.Database
             }            
         }
         //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }        
-        public JodyAppContext() : base(HOME_TEST_CONNECTION_STRING) { }
+        public JodyAppContext() : base(WORK_TEST_CONNECTION_STRING) { }
         public JodyAppContext(int type) : base(GetDataSource(type)) { }
         
 

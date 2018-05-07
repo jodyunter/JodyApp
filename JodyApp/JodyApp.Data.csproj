@@ -53,6 +53,7 @@
     <Compile Include="Database\JodyAppContext.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DivisionRank.cs" />
+    <Compile Include="Domain\Helpers\SeasonExtensions.cs" />
     <Compile Include="Domain\Helpers\DivisionExtentions.cs" />
     <Compile Include="Domain\Helpers\TeamExtensions.cs" />
     <Compile Include="Domain\DomainObject.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Domain\League.cs" />
     <Compile Include="Domain\Playoffs\Display\PlayoffDisplay.cs" />
     <Compile Include="Domain\Playoffs\Helpers\GroupRuleExtensions.cs" />
+    <Compile Include="Domain\Playoffs\Helpers\PlayoffExtensions.cs" />
     <Compile Include="Domain\Playoffs\Helpers\SeriesRuleExtensions.cs" />
     <Compile Include="Domain\Playoffs\Playoff.cs" />
     <Compile Include="Domain\Playoffs\GroupRule.cs" />

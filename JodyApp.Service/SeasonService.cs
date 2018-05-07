@@ -28,34 +28,7 @@ namespace JodyApp.Service
         {
             return season.Started;
         }
-        public bool IsSeasonComplete(Season season)
-        {
-            bool complete = true;
-            
-            if (db.Games.Where(g => g.Season.Id == season.Id && g.Complete).ToList().Count > 0) complete = false;
 
-            season.Complete = complete;
-
-            return complete;
-        }
-
-        public List<Game> GetNextGames(Season season)
-        {
-            return db.Games.Where(g => g.Season.Id == season.Id && g.Complete == false).ToList();
-        }
-
-        public void PlayGames(Season s, List<Game> games, Random random)
-        {
-            s.Started = true;
-            games.ForEach(g => { PlayGame(s, g, random); });
-        }
-
-        public void PlayGame(Season s, Game g, Random random)
-        {
-            g.Play(random);
-            s.ProcessGame(g);
-        }
-        
         public Season CreateNewSeason(Season referenceSeason, int year)
         {
             Season season = new Season();

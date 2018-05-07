@@ -1,4 +1,5 @@
-﻿using JodyApp.Domain.Table;
+﻿using JodyApp.Database;
+using JodyApp.Domain.Table;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Playoffs
 {
-    public class Playoff : DomainObject, Competition
+    public partial class Playoff : DomainObject, Competition
     {
         public int Year { get; set; }
         public int StartingDay { get; set; }
@@ -52,14 +53,26 @@ namespace JodyApp.Domain.Playoffs
             bool complete = true;
 
             if (Series == null) complete = false;
-            else 
-                Series.ForEach(series => { complete = complete && series.Complete; });            
+            else
+                Series.ForEach(series => { complete = complete && series.Complete; });
+
+            Complete = complete;
 
             return complete;
         }
+        public bool IsComplete(JodyAppContext db)
+        {
+            return IsComplete();
+        }
+
+        public void StartCompetition()
+        {                     
+            NextRound();
+        }
+
         public void NextRound()
         {
-            if (CurrentRound == 0 || IsRoundComplete(CurrentRound))
+            if (!Started || IsRoundComplete(CurrentRound))
             {
                 CurrentRound++;
                 SetupSeriesForRound(CurrentRound);
@@ -216,6 +229,17 @@ namespace JodyApp.Domain.Playoffs
             return result;
         }       
         
+        public void PlayGames(List<Game> games, Random random)
+        {
+            games.ForEach(g => PlayGame(g, random));
+        }
+
+        public void PlayGame(Game g, Random random)
+        {
+            g.Play(random);
+            ProcessGame(g);
+        }
+
         public void ProcessGame(Game g)
         {
             var series = Series.Where(s => s.Name == g.Series.Name).FirstOrDefault();
@@ -224,6 +248,12 @@ namespace JodyApp.Domain.Playoffs
 
             series.ProcessGame(g);
         }
+
+        public List<Game> GetNextGames(JodyAppContext db)
+        {
+            return db.Games.Include("Series.Playoff").Where(g => g.Series.Playoff.Id == this.Id && !g.Complete).ToList();
+        }
+
 
     }
 }

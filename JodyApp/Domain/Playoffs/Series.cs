@@ -27,7 +27,7 @@ namespace JodyApp.Domain.Playoffs
         public int HomeWins { get; set; }
         public int AwayWins { get; set; }
 
-        public Series() { HomeWins = 0; AwayWins = 0; }
+        public Series() { HomeWins = 0; AwayWins = 0; Games = new List<Game>(); }
         public Series(Playoff playoff, SeriesRule rule, Team homeTeam, int homeWins, Team awayTeam, int awayWins, List<Game> games, string name)
         {
             Playoff = playoff;
@@ -39,6 +39,7 @@ namespace JodyApp.Domain.Playoffs
             HomeWins = homeWins;
             AwayWins = awayWins;
             Round = rule.Round;
+            
         }
 
         public int GetTeamWins(Team team)

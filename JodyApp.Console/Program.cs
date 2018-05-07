@@ -21,61 +21,63 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            JodyAppContext db = new JodyAppContext(JodyAppContext.HOME_TEST) ;
+            JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_TEST) ;
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
-            //driver.DeleteAllData();            
+            driver.DeleteAllData();
+            driver.InsertData();
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
             DivisionService divisionService = new DivisionService(db);
             PlayoffService playoffService = new PlayoffService(db);
-
-
-            int year = 0;
-            if (db.Seasons.ToList().Count <= 0)
-            {
-                year = 0;
-                driver.InsertData();
-            } 
-            else
-            {
-                year = db.Seasons.Max(s => s.Year);
-            }
-
-            year++;
+            LeagueService leagueService = new LeagueService(db);       
 
             Random random = new Random();            
 
             League league = db.Leagues.Include("ReferenceCompetitions.Playoff").Where(l => l.Name == "Jody League").First();            
-            Season referenceSeason = league.ReferenceCompetitions.Where(rc => rc.Order == 1).First().Season;
+            if (leagueService.IsCurrentYearComplete(league))
+            {
+                league.CurrentYear++;
 
-            Season season = seasonService.CreateNewSeason(referenceSeason, year);            
-            var nextGames = seasonService.GetNextGames(season);
-            seasonService.PlayGames(season, nextGames, random);
-            seasonService.IsSeasonComplete(season);
-            seasonService.SortAllDivisions(season);            
-            db.SaveChanges();
+                Season referenceSeason = league.ReferenceCompetitions.Where(rc => rc.Order == 1).First().Season;
+                Season season = seasonService.CreateNewSeason(referenceSeason, league.CurrentYear);
 
-            var div = db.Divisions.Where(d => d.Season.Id == season.Id && d.Name == "League").First();
+            }
+
+            Competition c = leagueService.GetNextCompetition(league);
+            if (c is Season)
+            {
+                var nextGames = c.GetNextGames(db);
+                c.StartCompetition();
+                c.PlayGames(nextGames, random);
+                c.IsComplete(db);
+                seasonService.SortAllDivisions((Season)c);
+                db.SaveChanges();
+
+                var div = db.Divisions.Where(d => d.Season.Id == ((Season)c).Id && d.Name == "League").First();
 
 
+                var teams = seasonService.GetTeamsInDivisionByRank(div);
+                teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
 
-            var teams = seasonService.GetTeamsInDivisionByRank(div);
-            teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
+                System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<Team>()));
+            }
 
-            System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<Team>()));
+            Competition p = leagueService.GetNextCompetition(league);
+            if (c == null)
+            {
+                Playoff referencePlayoff = league.ReferenceCompetitions.Where(rc => rc.Order == 2).First().Playoff;
+                p = playoffService.CreateNewPlayoff(referencePlayoff, ((Season)c), "Playoffs", league.CurrentYear);
+            }
 
-            Playoff referencePlayoff = league.ReferenceCompetitions.Where(rc => rc.Order == 2).First().Playoff;
-            Playoff p = playoffService.CreateNewPlayoff(referencePlayoff, season, "Playoffs", year);
-
+            p.StartCompetition();
             var pGames = new List<Game>();
             while (!p.Complete)
             {
-                int currentRound = p.CurrentRound;
-                currentRound = currentRound == 0 ? 1 : currentRound;
-                playoffService.PlayRound(p, random);
-                System.Console.WriteLine("Round " + currentRound + ":");
-                p.GetSeriesForRound(currentRound).ForEach(series => System.Console.WriteLine(PlayoffDisplay.PrintSeriesSummary(series)));
+
+                playoffService.PlayRound((Playoff)p, random).ForEach(g => System.Console.WriteLine(g));
+                System.Console.WriteLine("Round " + ((Playoff)p).CurrentRound + ":");
+                //((Playoff)p).GetSeriesForRound(((Playoff)p).CurrentRound).ForEach(series => System.Console.WriteLine(PlayoffDisplay.PrintSeriesSummary(series)));
             }
             
 
