@@ -20,9 +20,8 @@ namespace JodyApp.Domain
 
         public static Division GetByName(JodyAppContext db, string name, League league, Season season)
         {            
-            
-            if (season == null) return db.Divisions.Where(d => (d.Name == name) && (d.League.Id == league.Id) && (d.Season == null)).First();
-            else return db.Divisions.Where(d => (d.Name == name) && (d.League.Id == league.Id) && (d.Season.Id == season.Id)).First();
+                        
+            return db.Divisions.Where(d => (d.Name == name) && (d.League.Id == league.Id) && (d.Season.Id == season.Id)).FirstOrDefault();
 
         }
 
@@ -63,9 +62,8 @@ namespace JodyApp.Domain
         }
         public static List<Division> GetDivisionsByLevel(JodyAppContext db, int level, Season season)
         {
-
-            if (season == null) return db.Divisions.Where(d => d.Level == level && (d.Season.Id == null)).ToList();
-            else return db.Divisions.Where(d => d.Level == level && (d.Season.Id == season.Id)).ToList();
+          
+            return db.Divisions.Where(d => d.Level == level && (d.Season.Id == season.Id)).ToList();
 
 
         }

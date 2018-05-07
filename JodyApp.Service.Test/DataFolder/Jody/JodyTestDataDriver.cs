@@ -25,14 +25,11 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         League MyLeague;
         Playoff Playoffs;
         
-        SeriesRule Playin1, Playin2, PlayinF, QF1Rule, QF2Rule, SF1Rule, SF2Rule, FinalRule;
+        SeriesRule QF1Rule, QF2Rule, SF1Rule, SF2Rule, FinalRule;
         string Pool2Name = "The Rest";
         string Pool1Name = "Division Winers";
         string SFPoolName = "Quarter Final Winners";
         string FinalPoolName = "Semi Final Winners";
-        string PlayinPool = "Play in Pool";
-        string PNPWinners = "Play in Pool Winners";
-        string PNPChampion = "Play in Pool Champ";
 
         public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
         {
@@ -99,14 +96,11 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
         public override void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, SeriesRule> rules)
         {
-            Playin1 = CreateAndAddSeriesRule(Playoffs, "Play in 1", 1, PlayinPool, 1, PlayinPool, 4, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
-            Playin2 = CreateAndAddSeriesRule(Playoffs, "Play in 2", 1, PlayinPool, 2, PlayinPool, 3, SeriesRule.TYPE_BEST_OF, 1, false, "1", rules);
-            PlayinF = CreateAndAddSeriesRule(Playoffs, "Play in Final", 2, PNPWinners, 1, PNPWinners, 2, SeriesRule.TYPE_BEST_OF, 2, false, "1", rules);
-            QF1Rule = CreateAndAddSeriesRule(Playoffs, "Quarter Final 1", 3, Pool1Name, 3, PNPChampion, 1, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            QF2Rule = CreateAndAddSeriesRule(Playoffs, "Quarter Final 2", 3, Pool2Name, 1, Pool2Name, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            SF1Rule = CreateAndAddSeriesRule(Playoffs, "Semi Final 1", 4, Pool1Name, 1, SFPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            SF2Rule = CreateAndAddSeriesRule(Playoffs, "Semi Final 2", 4, Pool1Name, 2, SFPoolName, 1, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            FinalRule = CreateAndAddSeriesRule(Playoffs, "Final", 5, FinalPoolName, 1, FinalPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            QF1Rule = CreateAndAddSeriesRule(Playoffs, "Quarter Final 1", 1, Pool1Name, 3, Pool2Name, 3, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            QF2Rule = CreateAndAddSeriesRule(Playoffs, "Quarter Final 2", 1, Pool2Name, 1, Pool2Name, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            SF1Rule = CreateAndAddSeriesRule(Playoffs, "Semi Final 1", 2, Pool1Name, 1, SFPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            SF2Rule = CreateAndAddSeriesRule(Playoffs, "Semi Final 2", 2, Pool1Name, 2, SFPoolName, 1, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            FinalRule = CreateAndAddSeriesRule(Playoffs, "Final", 3, FinalPoolName, 1, FinalPoolName, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
 
             
         }
@@ -123,10 +117,6 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(Playoffs, SFPoolName, QF2Rule.Name, League), rules);
             CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(Playoffs, FinalPoolName, SF1Rule.Name, League), rules);
             CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(Playoffs, FinalPoolName, SF2Rule.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, PlayinPool, League, League, 6, 9), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(Playoffs, PNPWinners, Playin1.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(Playoffs, PNPWinners, Playin2.Name, League), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromSeriesWinner(Playoffs, PNPChampion, PlayinF.Name, League), rules);
 
 
         }

@@ -55,6 +55,13 @@ namespace JodyApp.Service
             db.SeriesRules.AddRange(newSeriesRules);
             db.GroupRules.AddRange(newGroupRules);
             db.Series.AddRange(newSeries);
+            
+            season.TeamData.ForEach(team =>
+            {
+                playoff.GetOrSetupPlayoffTeam(team);
+            });
+            //setup playoff teams
+            db.Teams.AddRange(playoff.PlayoffTeams);
             db.SaveChanges();
 
             return playoff;

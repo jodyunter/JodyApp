@@ -17,8 +17,8 @@ namespace JodyApp.Domain
         bool Started { get; set; }
         League League { get; set; }
         string Name { get; set; }
-        List<Game> GetNextGames(JodyAppContext db);
-        bool IsComplete(JodyAppContext db);
+        List<Game> GetNextGames(int lastGameNumber);
+        bool IsComplete();
         void PlayGame(Game g, Random random);
         void PlayGames(List<Game> games, Random random);
         void ProcessGame(Game g);

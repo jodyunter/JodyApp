@@ -21,10 +21,10 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_TEST) ;
+            JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_PROD) ;
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
-            driver.DeleteAllData();
-            driver.InsertData();
+            //driver.DeleteAllData();
+            //driver.InsertData();
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
@@ -32,7 +32,8 @@ namespace JodyApp.Console
             PlayoffService playoffService = new PlayoffService(db);
             LeagueService leagueService = new LeagueService(db);       
 
-            Random random = new Random();            
+            Random random = new Random();
+            int lastGameNumber = 0;
 
             League league = db.Leagues.Include("ReferenceCompetitions.Playoff").Where(l => l.Name == "Jody League").First();            
             if (leagueService.IsCurrentYearComplete(league))
@@ -40,19 +41,19 @@ namespace JodyApp.Console
                 league.CurrentYear++;
 
                 Season referenceSeason = league.ReferenceCompetitions.Where(rc => rc.Order == 1).First().Season;
-                Season season = seasonService.CreateNewSeason(referenceSeason, league.CurrentYear);
+                Season season = seasonService.CreateNewSeason(referenceSeason, league.CurrentYear);                
 
             }
 
             Competition c = leagueService.GetNextCompetition(league);
             if (c is Season)
             {
-                var nextGames = c.GetNextGames(db);
+                var nextGames = c.GetNextGames(lastGameNumber);
                 c.StartCompetition();
                 c.PlayGames(nextGames, random);
-                c.IsComplete(db);
+                c.IsComplete();
                 seasonService.SortAllDivisions((Season)c);
-                db.SaveChanges();
+               
 
                 var div = db.Divisions.Where(d => d.Season.Id == ((Season)c).Id && d.Name == "League").First();
 
@@ -64,36 +65,64 @@ namespace JodyApp.Console
             }
 
             Competition p = leagueService.GetNextCompetition(league);
-            if (c == null)
+            if (p == null)
             {
                 Playoff referencePlayoff = league.ReferenceCompetitions.Where(rc => rc.Order == 2).First().Playoff;
                 p = playoffService.CreateNewPlayoff(referencePlayoff, ((Season)c), "Playoffs", league.CurrentYear);
             }
 
-            p.StartCompetition();
-            var pGames = new List<Game>();
-            while (!p.Complete)
+            if (p is Playoff)
             {
+                p.StartCompetition();                
+                while (!p.Complete)
+                {                                  
+                    var pGames = p.GetNextGames(lastGameNumber);
+                    p.PlayGames(pGames, random);         
+                    
+                    p.IsComplete();
+                }
 
-                playoffService.PlayRound((Playoff)p, random).ForEach(g => System.Console.WriteLine(g));
-                System.Console.WriteLine("Round " + ((Playoff)p).CurrentRound + ":");
-                //((Playoff)p).GetSeriesForRound(((Playoff)p).CurrentRound).ForEach(series => System.Console.WriteLine(PlayoffDisplay.PrintSeriesSummary(series)));
+                for (int i = 1; i <= ((Playoff)p).CurrentRound; i++)
+                {
+                    System.Console.WriteLine("Round " + i + ":");
+                    ((Playoff)p).GetSeriesForRound(i).ForEach(series => System.Console.WriteLine(PlayoffDisplay.PrintSeriesSummary(series)));                    
+                }
+
             }
-            
+
 
             db.SaveChanges();
-
-            System.Console.WriteLine("\n");
-            System.Console.WriteLine("Champion List");
-            db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == "Final").OrderByDescending(s => s.Playoff.Year).ToList().ForEach(series =>
-            {
-                System.Console.WriteLine(series.Playoff.Year + " : " + series.GetWinner().Name);
-            });
 
 
             teamService.SetNewSkills(random);
 
             db.SaveChanges();
+
+            var playoffWinners = new Dictionary<int, string>();
+            var playoffLosers = new Dictionary<int, string>();
+
+            db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == "Final").OrderByDescending(s => s.Playoff.Year).ToList().ForEach(series =>
+            {
+                playoffWinners.Add(series.Playoff.Year, series.GetWinner().Name);
+                playoffLosers.Add(series.Playoff.Year, series.GetLoser().Name);
+            });
+
+            var divisionRanks = db.DivisionRanks
+                .Include("Division.Season")
+                .Include("Team")
+                .Where(dr => dr.Division.Name == "League" && dr.Rank == 1).ToDictionary(dr => dr.Division.Season.Year, dr => dr.Team.Name);
+
+            divisionRanks.OrderByDescending(m => m.Key);
+
+            string formatter = "{0,3}{1,12}{2,12}{3,12}";
+            System.Console.WriteLine("\n");
+            System.Console.WriteLine(String.Format(formatter, "Yr", "Champion", "Runner-Up", "Season"));
+            
+            for (int i = playoffWinners.Count; i > 0; i--)
+            {
+                System.Console.WriteLine(String.Format(formatter, i, playoffWinners[i], playoffLosers[i], divisionRanks[i]));
+            }
+
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();

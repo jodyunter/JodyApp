@@ -33,6 +33,7 @@ namespace JodyApp.Service.Test
             driver.InsertData();
             scheduleService = new ScheduleService(db);
             league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
+            season = league.ReferenceCompetitions.Where(s => s.League.Id == league.Id && s.Season.Name == "My Season").First().Season;
             seasonService = new SeasonService(db);            
 
         }
@@ -110,8 +111,9 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetByName()
         {
-            Division d = service.GetByName( "West", league, null);
+            Division d = service.GetByName( "West", league, season);
 
+            IsNotNull(d);
             IsNotNull(d.Id);
             AreEqual(d.Name, "West");
 
@@ -120,32 +122,32 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetDivisionsByParent()
         {
-            AreEqual(2, service.GetDivisionsByParent(service.GetByName("League", league, null)).Count);
-            AreEqual(3, service.GetDivisionsByParent(service.GetByName("West", league, null)).Count);
-            AreEqual(2, service.GetDivisionsByParent(service.GetByName("East", league, null)).Count);
-            AreEqual(1, service.GetDivisionsByParent(service.GetByName("Extra Top", db.Leagues.Where(l => l.Name.Equals("Extra")).First(), null)).Count);            
+            AreEqual(2, service.GetDivisionsByParent(service.GetByName("League", league, season)).Count);
+            AreEqual(3, service.GetDivisionsByParent(service.GetByName("West", league, season)).Count);
+            AreEqual(2, service.GetDivisionsByParent(service.GetByName("East", league, season)).Count);
+            AreEqual(1, service.GetDivisionsByParent(service.GetByName("Extra Top", db.Leagues.Where(l => l.Name.Equals("Extra")).First(), season)).Count);            
         }
 
         [TestMethod]
         public void ShouldGetTeamsInDivision()
         {
-            List<Team> teams = service.GetAllTeamsInDivision(service.GetByName("League", league, null));
+            List<Team> teams = service.GetAllTeamsInDivision(service.GetByName("League", league, season));
 
             AreEqual(17, teams.Count);
 
-            teams = service.GetAllTeamsInDivision(service.GetByName("East", league, null));
+            teams = service.GetAllTeamsInDivision(service.GetByName("East", league, season));
 
             AreEqual(8, teams.Count);
 
-            teams = service.GetAllTeamsInDivision(service.GetByName("West", league, null));
+            teams = service.GetAllTeamsInDivision(service.GetByName("West", league, season));
 
             AreEqual(9, teams.Count);
 
-            teams = service.GetAllTeamsInDivision(service.GetByName("Atlantic", league, null));
+            teams = service.GetAllTeamsInDivision(service.GetByName("Atlantic", league, season));
 
             AreEqual(4, teams.Count);
 
-            teams = service.GetAllTeamsInDivision(service.GetByName("Central", league, null));
+            teams = service.GetAllTeamsInDivision(service.GetByName("Central", league, season));
 
             AreEqual(3, teams.Count);
         }
@@ -153,9 +155,9 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetDivisionsByLevel()
         {
-            AreEqual(2, service.GetDivisionsByLevel(0, null).Count);
-            AreEqual(3, service.GetDivisionsByLevel(1, null).Count);
-            AreEqual(5, service.GetDivisionsByLevel(2, null).Count);
+            AreEqual(2, service.GetDivisionsByLevel(0, season).Count);
+            AreEqual(3, service.GetDivisionsByLevel(1, season).Count);
+            AreEqual(5, service.GetDivisionsByLevel(2, season).Count);
         }
 
         private static string SHOULDSORTBYDIVISION_EXPECTED =

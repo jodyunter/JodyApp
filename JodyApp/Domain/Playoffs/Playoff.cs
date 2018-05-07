@@ -13,8 +13,8 @@ namespace JodyApp.Domain.Playoffs
     {
         public int Year { get; set; }
         public int StartingDay { get; set; }
-        public bool Complete { get { return IsComplete(); } set { } }
-        public bool Started { get { return CurrentRound > 0; } set { } }
+        public bool Complete { get; set; }
+        public bool Started { get; set; }
         public League League { get; set; }
         public string Name { get; set; }
 
@@ -60,19 +60,16 @@ namespace JodyApp.Domain.Playoffs
 
             return complete;
         }
-        public bool IsComplete(JodyAppContext db)
-        {
-            return IsComplete();
-        }
 
         public void StartCompetition()
-        {                     
+        {
+            Started = true;            
             NextRound();
         }
 
         public void NextRound()
         {
-            if (!Started || IsRoundComplete(CurrentRound))
+            if (Started && IsRoundComplete(CurrentRound))
             {
                 CurrentRound++;
                 SetupSeriesForRound(CurrentRound);
@@ -231,7 +228,7 @@ namespace JodyApp.Domain.Playoffs
         
         public void PlayGames(List<Game> games, Random random)
         {
-            games.ForEach(g => PlayGame(g, random));
+            games.ForEach(g => { PlayGame(g, random); });
         }
 
         public void PlayGame(Game g, Random random)
@@ -249,9 +246,20 @@ namespace JodyApp.Domain.Playoffs
             series.ProcessGame(g);
         }
 
-        public List<Game> GetNextGames(JodyAppContext db)
+        public List<Game> GetNextGames(int lastGameNumber)
         {
-            return db.Games.Include("Series.Playoff").Where(g => g.Series.Playoff.Id == this.Id && !g.Complete).ToList();
+            if (IsRoundComplete(CurrentRound)) NextRound();
+
+            GetNextGamesForRound(CurrentRound, lastGameNumber);
+
+            var unPlayedGames = new List<Game>();
+
+            Series.ForEach(s =>
+            {
+                unPlayedGames.AddRange(s.Games.Where(g => !g.Complete).ToList());
+            });
+
+            return unPlayedGames;
         }
 
 

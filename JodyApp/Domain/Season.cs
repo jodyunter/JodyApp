@@ -50,7 +50,7 @@ namespace JodyApp.Domain
 
         public void PlayGames(List<Game> games, Random random)
         {
-            games.ForEach(g => PlayGame(g, random));
+            games.ForEach(g => { PlayGame(g, random); ProcessGame(g); });
         }
         public void PlayGame(Game g, Random random)
         {
@@ -60,19 +60,16 @@ namespace JodyApp.Domain
         {
             Standings.ProcessGame(g);
         }
-        public List<Game> GetNextGames(JodyAppContext db)
+        public List<Game> GetNextGames(int lastGameNumber)
         {
-            return db.Games
-                .Include("HomeTeam")
-                .Include("AwayTeam")                
-                .Where(g => g.Season.Id == this.Id && g.Complete == false).ToList();
+            return Games.Where(g => !g.Complete).ToList();
         }
 
-        public bool IsComplete(JodyAppContext db)
+        public bool IsComplete()
         {
             bool complete = true;
 
-            if (db.Games.Where(g => g.Season.Id == this.Id && !g.Complete).ToList().Count > 0) complete = false;
+            complete = GetNextGames(-1).Count == 0;
 
             Complete = complete;
 

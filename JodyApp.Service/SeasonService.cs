@@ -139,6 +139,8 @@ namespace JodyApp.Service
 
             divisions.ForEach(div => { divisionService.SortByDivision(div); });
 
+            db.SaveChanges();
+
         }
      
         public List<Team> GetTeamsInDivisionByRank(Division division)

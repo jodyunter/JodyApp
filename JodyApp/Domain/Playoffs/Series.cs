@@ -43,10 +43,10 @@ namespace JodyApp.Domain.Playoffs
         }
 
         public int GetTeamWins(Team team)
-        {
+        {            
             if (HomeTeam.Id == team.Id) return HomeWins;
             else if (AwayTeam.Id == team.Id) return AwayWins;
-            else return -1;
+            else return 0;
             
         }
 
