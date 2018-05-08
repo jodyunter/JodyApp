@@ -23,9 +23,10 @@ namespace JodyApp.Domain.Playoffs
         virtual public List<GroupRule> GroupRules { get; set; }
         virtual public List<Team> PlayoffTeams { get; set; }
 
+        public Season Season { get; set; }
         public Playoff() { CurrentRound = 0;  Series = new List<Series>(); }
 
-        public Playoff(League league, string name, int year, bool started, bool complete, int startingDay):base()
+        public Playoff(League league, string name, int year, bool started, bool complete, int startingDay, Season season):base()
         {
             this.League = league;
             this.Name = name;
@@ -33,6 +34,7 @@ namespace JodyApp.Domain.Playoffs
             this.Started = started;
             this.Complete = complete;
             this.StartingDay = startingDay;
+            this.Season = season;
         }
         public Team GetPlayoffTeamByName(string name)
         {

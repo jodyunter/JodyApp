@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201805072010495_next01.Designer.cs">
       <DependentUpon>201805072010495_next01.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805081820153_seasonforplayoffs.cs" />
+    <Compile Include="Migrations\201805081820153_seasonforplayoffs.Designer.cs">
+      <DependentUpon>201805081820153_seasonforplayoffs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -135,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805072010495_next01.resx">
       <DependentUpon>201805072010495_next01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805081820153_seasonforplayoffs.resx">
+      <DependentUpon>201805081820153_seasonforplayoffs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

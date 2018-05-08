@@ -63,6 +63,7 @@
     <Compile Include="DataFolder\SeasonTestData\SeasontestDataDriver.cs" />
     <Compile Include="DivisionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LeagueServiceTests.cs" />
     <Compile Include="SeasonServiceTests.cs" />
     <Compile Include="ScheduleServiceTests.cs" />
   </ItemGroup>

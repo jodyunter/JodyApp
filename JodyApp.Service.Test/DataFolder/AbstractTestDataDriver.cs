@@ -28,7 +28,7 @@ namespace JodyApp.Service.Test.DataFolder
         abstract public void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, SeriesRule> rules);
         abstract public void PrivateCreateGroupRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules);
         abstract public void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons);
-        abstract public void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Playoff> playoffs);        
+        abstract public void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Playoff> playoffs);        
 
         public void DeleteAllData()
         {
@@ -44,8 +44,8 @@ namespace JodyApp.Service.Test.DataFolder
                 "SeriesRules",
                 "Divisions",
                 "ReferenceCompetitions",
-                "Seasons",
                 "Playoffs",
+                "Seasons",
                 "Leagues" };
             var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
             foreach (string table in tables)
@@ -74,9 +74,9 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
 
-        public Playoff CreateAndAddPlayoff(League league, string name, Dictionary<string, Playoff> playoffs, int order)
+        public Playoff CreateAndAddPlayoff(League league, string name, Dictionary<string, Playoff> playoffs, int order, Season season)
         {
-            Playoff playoff = new Playoff(league, name, 0, true, true, 0);
+            Playoff playoff = new Playoff(league, name, 0, true, true, 0, season);
 
             playoffs.Add(name, playoff);
 
@@ -203,10 +203,10 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
 
-        public Dictionary<string, Playoff> CreatePlayoffs(Dictionary<string, League> leagues)
+        public Dictionary<string, Playoff> CreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
         {
             var playoffs = new Dictionary<string, Playoff>();
-            PrivateCreatePlayoffs(leagues, playoffs);
+            PrivateCreatePlayoffs(leagues, seasons, playoffs);
 
             db.Playoffs.AddRange(playoffs.Values);
             db.SaveChanges();
@@ -296,7 +296,7 @@ namespace JodyApp.Service.Test.DataFolder
         {
             Dictionary<string, League> leagues = CreateLeagues();
             Dictionary<string, Season> seasons = CreateSeasons(leagues);
-            Dictionary<string, Playoff> playoffs = CreatePlayoffs(leagues);
+            Dictionary<string, Playoff> playoffs = CreatePlayoffs(leagues, seasons);
             Dictionary<string, Division> divs = CreateDivisions(leagues, seasons);
             Dictionary<string, Team> teams = CreateTeams(divs);
             Dictionary<string, ScheduleRule> scheduleRules = CreateRules(leagues, seasons, divs, teams);

@@ -64,7 +64,7 @@ namespace JodyApp.Service.Test.DataFolder
             return;
         }
 
-        public override void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Playoff> playoffs)
+        public override void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Playoff> playoffs)
         {
             return;
         }

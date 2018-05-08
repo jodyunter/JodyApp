@@ -18,12 +18,15 @@ namespace JodyApp.Service
             divisionService = new DivisionService(db);
         }
 
-        public Playoff CreateNewPlayoff(Playoff referencePlayoff, Season season, string name, int year)
+        public Playoff CreateNewPlayoff(Playoff referencePlayoff, int year)
         {
             Playoff playoff = new Playoff();
             playoff.League = referencePlayoff.League;
             playoff.Year = year;
-            playoff.Name = name;
+            playoff.Name = referencePlayoff.Name;
+
+            //change to a service call
+            Season season = db.Seasons.Where(s => s.Year == year && referencePlayoff.Season.Name == s.Name).FirstOrDefault();
 
             List<SeriesRule> newSeriesRules = new List<SeriesRule>();
             List<GroupRule> newGroupRules = new List<GroupRule>();

@@ -21,10 +21,10 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_PROD);
+            JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_TEST);
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
-            //driver.DeleteAllData();
-            //driver.InsertData();
+            driver.DeleteAllData();
+            driver.InsertData();
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
@@ -40,35 +40,50 @@ namespace JodyApp.Console
             {
                 league.CurrentYear++;
 
-                Season referenceSeason = league.ReferenceCompetitions.Where(rc => rc.Order == 1).First().Season;
-                Season season = seasonService.CreateNewSeason(referenceSeason, league.CurrentYear);                
-
             }
-
-            Competition c = leagueService.GetNextCompetition(league);
-            if (c is Season)
+                        
+            
+            while (!leagueService.IsYearDone(league))
             {
+                Competition c = leagueService.GetNextCompetition(league);
+                
                 var nextGames = c.GetNextGames(lastGameNumber);
                 c.StartCompetition();
-                c.PlayGames(nextGames, random);
-                c.IsComplete();
-                seasonService.SortAllDivisions((Season)c);
-               
+                while (!c.Complete)
+                {
+                    c.PlayGames(nextGames, random);
+                    c.IsComplete();
+                }
 
-                var div = db.Divisions.Where(d => d.Season.Id == ((Season)c).Id && d.Name == "League").First();
+                if (c is Season)
+                {
+                    seasonService.SortAllDivisions((Season)c);
 
 
-                var teams = seasonService.GetTeamsInDivisionByRank(div);
-                teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
+                    var div = db.Divisions.Where(d => d.Season.Id == ((Season)c).Id && d.Name == "League").First();
 
-                System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<Team>()));
+
+                    var teams = seasonService.GetTeamsInDivisionByRank(div);
+                    teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
+
+                    System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("League", teams.ToList<Team>()));
+                }
+                else if (c is Playoff)
+                {
+                    for (int i = 1; i <= ((Playoff)c).CurrentRound; i++)
+                    {
+                        System.Console.WriteLine("Round " + i + ":");
+                        ((Playoff)c).GetSeriesForRound(i).ForEach(series => System.Console.WriteLine(PlayoffDisplay.PrintSeriesSummary(series)));
+                    }
+                }
+                
             }
 
+            /*
             Competition p = leagueService.GetNextCompetition(league);
             if (p == null)
             {
-                Playoff referencePlayoff = league.ReferenceCompetitions.Where(rc => rc.Order == 2).First().Playoff;
-                p = playoffService.CreateNewPlayoff(referencePlayoff, ((Season)c), "Playoffs", league.CurrentYear);
+
             }
 
             if (p is Playoff)
@@ -89,7 +104,7 @@ namespace JodyApp.Console
                 }
 
             }
-
+            */
 
             db.SaveChanges();
 
