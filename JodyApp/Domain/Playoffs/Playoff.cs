@@ -65,8 +65,12 @@ namespace JodyApp.Domain.Playoffs
 
         public void StartCompetition()
         {
-            Started = true;            
-            NextRound();
+            if (!Complete)
+            {
+                Started = true;
+                NextRound();
+            }
+            else throw new Exception("Trying to start playoff when already compelted");
         }
 
         public void NextRound()

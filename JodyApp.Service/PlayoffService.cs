@@ -27,6 +27,7 @@ namespace JodyApp.Service
 
             //change to a service call
             Season season = db.Seasons.Where(s => s.Year == year && referencePlayoff.Season.Name == s.Name).FirstOrDefault();
+            playoff.Season = season;
 
             List<SeriesRule> newSeriesRules = new List<SeriesRule>();
             List<GroupRule> newGroupRules = new List<GroupRule>();
@@ -124,5 +125,16 @@ namespace JodyApp.Service
 
             return pGames;
         }
+
+        public Series GetSeriesByYear(string name, int year)
+        {
+            return db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == name && s.Playoff.Year == year).FirstOrDefault();
+        }
+
+        public List<Series> GetSeries(string name)
+        {            
+            return db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == name).ToList();
+        }
     }
+
 }

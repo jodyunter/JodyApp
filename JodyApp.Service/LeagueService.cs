@@ -45,7 +45,7 @@ namespace JodyApp.Service
                     //if yes, move on, we alreayd know at least one is not complete
                     //if no return it
                     //if no return it
-                    ReferenceCompetition rc = referenceComps[0];
+                    ReferenceCompetition rc = referenceComps[i];
                     Competition competitionReference = null;
 
                     if (rc.Season != null)
@@ -70,11 +70,11 @@ namespace JodyApp.Service
             
 
         public bool IsYearDone(League league)
-        {
-            var completeCompetitions = db.ReferenceCompetitions
-                    .Include("Season")
-                    .Include("Playoff")
-                    .Where(rc => rc.League.Id == league.Id && rc.League.CurrentYear == league.CurrentYear && ((rc.Playoff != null && rc.Playoff.Complete) || (rc.Season != null && rc.Season.Complete))).ToList();
+        {            
+            var completeCompetitions = new List<Competition>();
+
+            completeCompetitions.AddRange(db.Seasons.Where(s => s.Year == league.CurrentYear && s.Complete).ToList());
+            completeCompetitions.AddRange(db.Playoffs.Where(p => p.Year == league.CurrentYear && p.Complete).ToList());
 
             return completeCompetitions.Count == league.ReferenceCompetitions.Count;
             
@@ -93,10 +93,6 @@ namespace JodyApp.Service
             return null;
         }
 
-        public bool IsCurrentYearComplete(League league)
-        {
-            return GetNextCompetition(league) == null;
-        }
 
     }
 }

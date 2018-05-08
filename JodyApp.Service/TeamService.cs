@@ -47,6 +47,19 @@ namespace JodyApp.Service
             });
         }
 
+        public void ChangeDivision(Team team, string newDivisionName)
+        {
+
+            while (team.Parent != null)
+            {
+                team = team.Parent;
+            }
+
+            team.Division = db.Divisions.Where(d => d.Name == newDivisionName && d.Season.Year == 0).FirstOrDefault();
+
+            db.SaveChanges();
+        }
+
 
     }
 }
