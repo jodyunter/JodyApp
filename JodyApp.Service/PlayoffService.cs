@@ -142,7 +142,8 @@ namespace JodyApp.Service
         {            
             return db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == name).ToList();
         }
-        
+       
+
     }
 
 }

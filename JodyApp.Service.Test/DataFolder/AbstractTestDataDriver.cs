@@ -107,8 +107,7 @@ namespace JodyApp.Service.Test.DataFolder
         public Team CreateAndAddTeam(string name, int skill, Division division, Dictionary<string, Team> map)
         {
             Team team = new Team(name, skill, division);
-            map.Add(team.Name, team);
-            division.Teams.Add(team);
+            map.Add(team.Name, team);            
             return team;
         }        
         

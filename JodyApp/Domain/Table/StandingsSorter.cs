@@ -91,13 +91,23 @@ namespace JodyApp.Domain.Table
                     //ensure the division we are getting teams from is sorted
                     var sortedTeams = SortByRules(teamsByDivision, rule.DivisionToGetTeamsFrom);
 
-                    rule.PositionsToUse.Split(',').Select(int.Parse).ToList<int>().ForEach(i =>
+                    if (!ruleGroupings.ContainsKey(rule.GroupNumber)) ruleGroupings.Add(rule.GroupNumber, new List<Team>());
+
+                    //if no positions are specified by this rule, add all of the sorted teams.
+                    if (rule.PositionsToUse == null)
                     {
-                        var team = sortedTeams[i-1];
-                        if (!ruleGroupings.ContainsKey(rule.GroupNumber)) ruleGroupings.Add(rule.GroupNumber, new List<Team>());
-                        ruleGroupings[rule.GroupNumber].Add(team);
-                        editableTeams.Remove(team);
-                    });
+                        ruleGroupings[rule.GroupNumber].AddRange(sortedTeams);
+                        sortedTeams.ForEach(team => editableTeams.Remove(team));                        
+                    }
+                    else
+                    {
+                        rule.PositionsToUse.Split(',').Select(int.Parse).ToList<int>().ForEach(i =>
+                        {
+                            var team = sortedTeams[i - 1];
+                            ruleGroupings[rule.GroupNumber].Add(team);
+                            editableTeams.Remove(team);
+                        });
+                    }
                     
                 });
 

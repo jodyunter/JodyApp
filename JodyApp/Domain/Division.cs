@@ -126,7 +126,7 @@ namespace JodyApp.Domain
                 ShortName = this.ShortName,
                 Level = this.Level,
                 Order = this.Order,
-                League = this.League,
+                League = season.League,
                 Teams = new List<Team>(),
                 Rankings = new List<DivisionRank>()
                 //sorting rules must be handled seperately

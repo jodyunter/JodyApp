@@ -55,6 +55,7 @@ namespace JodyApp.Service
                 team = team.Parent;
             }
 
+            //not good enough for division
             team.Division = db.Divisions.Where(d => d.Name == newDivisionName && d.Season.Year == 0).FirstOrDefault();
 
             db.SaveChanges();

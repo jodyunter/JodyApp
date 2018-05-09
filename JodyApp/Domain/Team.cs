@@ -25,7 +25,7 @@ namespace JodyApp.Domain
         {
             this.Name = name;
             this.Skill = skill;
-            this.Division = Division;
+            this.Division = div;
             if (Division != null) Division.Teams.Add(this);            
         }
                 

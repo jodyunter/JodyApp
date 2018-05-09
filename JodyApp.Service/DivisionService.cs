@@ -23,7 +23,7 @@ namespace JodyApp.Service
 
             return Division.GetAllTeamsInDivision(db, division);
         }
-
+        
         public List<Division> GetByReferenceSeason(Season season)
         {
             return Division.GetDivisionsBySeason(db, season);
@@ -76,6 +76,7 @@ namespace JodyApp.Service
         {
             return Division.GetByLeagueAndSeasonAndName(db, league, season, name);
         }
+        
      
     }
 }

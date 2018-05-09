@@ -14,7 +14,10 @@ namespace JodyApp.Domain.Playoffs
         public const int FROM_DIVISION = 0;
         public const int FROM_TEAM = 1;
         public const int FROM_SERIES = 2;
+
+        public const int POSITIONS_FROM_BOTTOM = -5000;
         
+
         public Playoff Playoff { get; set; }                    
 
         public int RuleType { get; set; }

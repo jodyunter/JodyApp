@@ -248,6 +248,12 @@ namespace JodyApp.Data.Test.Domain.Table
             
         }
 
+        [TestMethod]
+        public void ShouldSortDivisionWithNoStartAndEndPositions()
+        {
+            throw new NotImplementedException();
+        }
+
         static string SHOULDSORTNORMALLY_EXPECTED =
     @"League
 R    Name               W    L    T  Pts   GP   GF   GA   GD            Div

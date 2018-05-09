@@ -71,6 +71,7 @@ namespace JodyApp.Console
 
                     System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("Premier", teams.Where(t => t.Division.Name == "Premier").ToList()));
                     System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("Division1", teams.Where(t => t.Division.Name == "Division1").ToList()));
+                    System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("Division2", teams.Where(t => t.Division.Name == "Division2").ToList()));
                 }
                 else if (c is Playoff)
                 {
@@ -91,11 +92,11 @@ namespace JodyApp.Console
             
             var promotionSeries = playoffService.GetSeriesByYear("Qualification", league.CurrentYear);
 
-            Team Promoted = promotionSeries.GetWinner().Parent;
-            Team Relegated = promotionSeries.GetLoser().Parent;
+            Team PromotedD1 = promotionSeries.GetWinner().Parent;
+            Team RelegatedP = promotionSeries.GetLoser().Parent;
 
-            teamService.ChangeDivision(Promoted, "Premier");
-            teamService.ChangeDivision(Relegated, "Division1");
+            teamService.ChangeDivision(PromotedD1, "Premier");
+            teamService.ChangeDivision(RelegatedP, "Division1");
 
             
             db.SaveChanges();

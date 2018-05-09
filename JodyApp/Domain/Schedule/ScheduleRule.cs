@@ -91,7 +91,7 @@ namespace JodyApp.Domain.Schedule
                 AwayType = ScheduleRule.NONE,
                 PlayHomeAway = playHomeAway,
                 Rounds = rounds,
-                League = division.League,
+                League = league,
                 Order = order,
                 Season = season,
                 Reverse = reverse
@@ -109,7 +109,7 @@ namespace JodyApp.Domain.Schedule
             AwayDivision = awayDivision,
             PlayHomeAway = playHomeAway,
             Rounds = rounds,
-            League = homeDivision.League,
+            League = league,
             Season = season,
             Reverse = reverse
             };
