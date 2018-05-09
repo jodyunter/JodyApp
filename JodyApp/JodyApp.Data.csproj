@@ -111,6 +111,10 @@
     <Compile Include="Migrations\201805081820153_seasonforplayoffs.Designer.cs">
       <DependentUpon>201805081820153_seasonforplayoffs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805091407099_GroupRuleName.cs" />
+    <Compile Include="Migrations\201805091407099_GroupRuleName.Designer.cs">
+      <DependentUpon>201805091407099_GroupRuleName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -142,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805081820153_seasonforplayoffs.resx">
       <DependentUpon>201805081820153_seasonforplayoffs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805091407099_GroupRuleName.resx">
+      <DependentUpon>201805091407099_GroupRuleName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

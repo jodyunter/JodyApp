@@ -15,6 +15,8 @@ namespace JodyApp.Service.Test.DataFolder
     {
         public String LeagueName = "Base League Name";
 
+        public BaseTestDataDriver() : base() { }
+
         public BaseTestDataDriver(JodyAppContext db) : base(db) { }
 
         public override void PrivateCreateLeagues(Dictionary<string, League> leagues)

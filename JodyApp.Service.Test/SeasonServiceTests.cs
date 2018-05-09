@@ -28,10 +28,11 @@ namespace JodyApp.Service.Test
         [TestInitialize]
         public void Setup()
         {
-            db = new JodyAppContext();
+            driver = new SeasontestDataDriver();
+            db = driver.db;
             service = new SeasonService(db);
             scheduleService = new ScheduleService(db);
-            driver = new SeasontestDataDriver(db);
+            
             teamService = new TeamService(db);
             driver.DeleteAllData();
             driver.InsertData();

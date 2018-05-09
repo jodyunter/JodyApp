@@ -12,7 +12,7 @@ namespace JodyApp.Service.Test
     [TestClass]
     public class ScheduleServiceTests
     {
-        Database.JodyAppContext db = new Database.JodyAppContext();
+        Database.JodyAppContext db;
         ScheduleService service;
         DivisionService divisionService;
         TeamService teamService;
@@ -21,12 +21,13 @@ namespace JodyApp.Service.Test
         [TestInitialize]
         public void Setup()
         {
-            db = new Database.JodyAppContext();
+            driver = new ScheduleTestDataDriver();
+            db = driver.db;
             service = new ScheduleService(db);
             teamService = new TeamService(db);
             divisionService = new DivisionService(db);
 
-            driver = new ScheduleTestDataDriver(db);
+            
             driver.DeleteAllData();
             driver.InsertData();
         }

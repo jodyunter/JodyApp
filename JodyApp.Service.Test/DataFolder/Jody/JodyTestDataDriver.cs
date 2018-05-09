@@ -14,7 +14,8 @@ namespace JodyApp.Service.Test.DataFolder.Jody
     public class JodyTestDataDriver : AbstractTestDataDriver
     {
         String LeagueName = "Jody League";
-        public JodyTestDataDriver(JodyAppContext db) : base(db) { }
+        public JodyTestDataDriver() : base() { }
+        public JodyTestDataDriver(JodyAppContext db) : base() { }
 
         Division League, Premier, Division1;
         Team Toronto, Montreal, Ottawa, NewYork, Boston, QuebecCity;
@@ -94,13 +95,52 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
         public override void PrivateCreateGroupRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
         {
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, QualificationPool, Premier, Premier, 6, 6), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, QualificationPool, Division1, Division1, 1, 1), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, FinalPool, Premier, Premier, 1, 2), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 1", QualificationPool, Premier, Premier, 6, 6), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 2", QualificationPool, Division1, Division1, 1, 1), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 3", FinalPool, Premier, Premier, 1, 2), rules);
 
 
 
         }
+
+        public override void UpdateData()
+        {
+
+            SeriesRule SemiFinal1, SemiFinal2;
+            
+
+            Playoffs = db.Playoffs.Where(p => p.Year == 0).First();
+            Premier = db.Divisions.Include("Season").Where(d => d.Name == "Premier" && d.Season.Year == 0).First();
+           
+            //create semi final pools
+            var SemiFinalPool = "Semi Final Pool";
+            var SemiFinalGroup = GroupRule.CreateFromDivision(Playoffs, "Group Rule 4", SemiFinalPool, Premier, Premier, 1, 4);
+            db.GroupRules.Add(SemiFinalGroup);
+
+            //create semi final series rules
+            SemiFinal1 = new SeriesRule(Playoffs, "Semi Final 1", 2, SemiFinalPool, 1, SemiFinalPool, 4, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1");
+            SemiFinal2 = new SeriesRule(Playoffs, "Semi Final 2", 2, SemiFinalPool, 2, SemiFinalPool, 3, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1");
+
+            db.SeriesRules.Add(SemiFinal1);
+            db.SeriesRules.Add(SemiFinal2);
+
+            //delete old final pool rule
+            var FinalPoolRule = db.GroupRules.Where(gr => gr.Name == "Group Rule 3" && gr.Playoff.Year == 0).First();
+            db.GroupRules.Remove(FinalPoolRule);
+
+            //add new final pool rules
+            db.GroupRules.Add(GroupRule.CreateFromSeriesWinner(Playoffs, "Group Rule 5", FinalPool, SemiFinal1.Name, Premier));
+            db.GroupRules.Add(GroupRule.CreateFromSeriesWinner(Playoffs, "Group Rule 6", FinalPool, SemiFinal2.Name, Premier));
+
+            FinalRule = db.SeriesRules.Where(s => s.Playoff.Year == 0 && s.Name == "Final").First();
+            FinalRule.Round = 3;
+
+            db.SaveChanges();
+            
+                
+        }
+
+
 
     }
 }

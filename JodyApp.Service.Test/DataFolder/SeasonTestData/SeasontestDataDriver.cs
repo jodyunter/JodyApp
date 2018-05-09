@@ -11,7 +11,7 @@ namespace JodyApp.Service.Test.DataFolder.SeasonTestData
 {
     public class SeasontestDataDriver:BaseTestDataDriver
     {       
-        public SeasontestDataDriver(JodyAppContext db) : base(db) { }
+        public SeasontestDataDriver() : base() { }
 
         public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
         {

@@ -11,7 +11,7 @@ namespace JodyApp.Service.Test.DataFolder.ScheduleTestData
 {
     public class ScheduleTestDataDriver:BaseTestDataDriver
     {        
-        public ScheduleTestDataDriver(JodyAppContext db) : base(db) { }
+        public ScheduleTestDataDriver() : base() { }
 
         public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
         {            

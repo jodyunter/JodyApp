@@ -20,6 +20,10 @@ namespace JodyApp.Service
 
         public Playoff CreateNewPlayoff(Playoff referencePlayoff, int year)
         {
+            return CreateNewPlayoff(referencePlayoff, year, false);
+        }
+        public Playoff CreateNewPlayoff(Playoff referencePlayoff, int year, bool test)
+        {
             Playoff playoff = new Playoff();
             playoff.League = referencePlayoff.League;
             playoff.Year = year;
@@ -66,7 +70,10 @@ namespace JodyApp.Service
             });
             //setup playoff teams
             db.Teams.AddRange(playoff.PlayoffTeams);
-            db.SaveChanges();
+            if (!test)
+            {
+                db.SaveChanges();
+            }            
 
             return playoff;
 
@@ -135,6 +142,7 @@ namespace JodyApp.Service
         {            
             return db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == name).ToList();
         }
+        
     }
 
 }

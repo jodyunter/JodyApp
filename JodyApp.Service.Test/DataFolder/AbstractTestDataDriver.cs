@@ -13,8 +13,13 @@ namespace JodyApp.Service.Test.DataFolder
 {
     public abstract class AbstractTestDataDriver
     {
-        JodyAppContext db;
+        public JodyAppContext db;
         String LeagueName = "Abstract League Name";
+
+        public AbstractTestDataDriver()
+        {
+            db = new JodyAppContext(JodyAppContext.WORK_TEST);
+        }
 
         public AbstractTestDataDriver(JodyAppContext db)
         {
@@ -161,11 +166,11 @@ namespace JodyApp.Service.Test.DataFolder
             return l;
         }
 
-        public GroupRule CreateAndAddGroupRule(Playoff p, int ruleType, Division sortByDivision, Division fromDivision, 
+        public GroupRule CreateAndAddGroupRule(Playoff p, string name, int ruleType, Division sortByDivision, Division fromDivision, 
                                                 String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, 
                                                 string groupIdentifier, Dictionary<string, GroupRule> map)
         {
-            GroupRule rule = new GroupRule(p, ruleType, sortByDivision, fromDivision, seriesName, fromStartValue, fromEndValue, fromTeam, isHomeTeam, groupIdentifier);
+            GroupRule rule = new GroupRule(p, name, ruleType, sortByDivision, fromDivision, seriesName, fromStartValue, fromEndValue, fromTeam, isHomeTeam, groupIdentifier);
 
             map.Add(map.Keys.Count.ToString(), rule);            
             return rule;
@@ -292,7 +297,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         //public GroupRule(League league, Playoff playoff, int ruleType, Division sortByDivision, Division fromDivision, String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, string groupIdentifier)
 
-        public void InsertData()
+        public virtual void InsertData()
         {
             Dictionary<string, League> leagues = CreateLeagues();
             Dictionary<string, Season> seasons = CreateSeasons(leagues);
@@ -303,6 +308,11 @@ namespace JodyApp.Service.Test.DataFolder
             Dictionary<string, SortingRule> sortingRules = CreateSortingRules(divs);
             Dictionary<string, SeriesRule> seriesRules = CreateSeriesRules(playoffs);
             Dictionary<string, GroupRule> groupRules = CreateGroupRules(playoffs, divs);
+        }
+
+        public virtual void UpdateData()
+        {
+
         }
     }
 }

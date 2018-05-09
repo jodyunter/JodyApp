@@ -25,7 +25,8 @@ namespace JodyApp.Console
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
             //driver.DeleteAllData();
             //driver.InsertData();
-            //driver.UpdateData();
+            driver.UpdateData();
+            
 
             TeamService teamService = new TeamService(db);
             SeasonService seasonService = new SeasonService(db);

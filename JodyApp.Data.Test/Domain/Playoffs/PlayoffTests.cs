@@ -87,7 +87,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         public void ShouldGetTeamsByTeam()
         {
             Team team = CreateForByTeam("My Team Name", 12);
-            GroupRule rule = GroupRule.CreateFromTeam(playoff, "TeamGroup", team, false);
+            GroupRule rule = GroupRule.CreateFromTeam(playoff, "Team Rule", "TeamGroup", team, false);
 
             var teamList = new List<Team>();
             playoff.AddTeamsToGroup(rule, teamList);
@@ -99,10 +99,10 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         public void ShouldGetByTeamInOrderAwayFirst()
         {
             Team team1 = CreateForByTeam("Team 1", 12);
-            GroupRule rule1 = GroupRule.CreateFromTeam(playoff, "TeamGroup", team1, false);
+            GroupRule rule1 = GroupRule.CreateFromTeam(playoff, "Team Rule 1", "TeamGroup", team1, false);
 
             Team team2 = CreateForByTeam("Team 2", 13);
-            GroupRule rule2 = GroupRule.CreateFromTeam(playoff, "TeamGroup", team2, true);
+            GroupRule rule2 = GroupRule.CreateFromTeam(playoff, "Team Rule 2", "TeamGroup", team2, true);
 
             
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2 };
@@ -118,10 +118,10 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         public void ShouldGetByTeamInOrderHomeFirst()
         {
             Team team1 = CreateForByTeam("Team 2", 13);
-            GroupRule rule1 = GroupRule.CreateFromTeam(playoff, "TeamGroup", team1, true);
+            GroupRule rule1 = GroupRule.CreateFromTeam(playoff, "Team Rule 1", "TeamGroup", team1, true);
 
             Team team2 = CreateForByTeam("Team 1", 12);
-            GroupRule rule2 = GroupRule.CreateFromTeam(playoff, "TeamGroup", team2, false);
+            GroupRule rule2 = GroupRule.CreateFromTeam(playoff, "Team Rule 2", "TeamGroup", team2, false);
 
 
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2 };
@@ -139,7 +139,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             playoff.Series.Add(series);
             IsTrue(series.Complete);
 
-            GroupRule rule = GroupRule.CreateFromSeriesWinner(playoff, "Series A Winner", series.Name, null);
+            GroupRule rule = GroupRule.CreateFromSeriesWinner(playoff, "Series Grp Rule 1", "Series A Winner", series.Name, null);
 
             var teamList = new List<Team>();
             playoff.AddTeamsToGroup(rule, teamList);
@@ -154,7 +154,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             playoff.Series.Add(series);
             IsTrue(series.Complete);
 
-            GroupRule rule = GroupRule.CreateFromSeriesLoser(playoff, "Series A Winner", series.Name, null);
+            GroupRule rule = GroupRule.CreateFromSeriesLoser(playoff, "Series Grp Rule 1", "Series A Winner", series.Name, null);
 
             var teamList = new List<Team>();
             playoff.AddTeamsToGroup(rule, teamList);
@@ -165,7 +165,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         public void ShouldGetTeamByDivisionSingleTeam()
         {
             Division division = CreateDivision();
-            GroupRule rule = GroupRule.CreateFromDivision(playoff, "From Division", division, division, 7, 7);
+            GroupRule rule = GroupRule.CreateFromDivision(playoff, "Serise Grp Rule 1", "From Division", division, division, 7, 7);
 
             var teamList = new List<Team>();
             playoff.AddTeamsToGroup(rule, teamList);
@@ -180,7 +180,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         public void ShouldGetTeamByDivisionMulitpleTeams()
         {
             Division division = CreateDivision();
-            GroupRule rule = GroupRule.CreateFromDivision(playoff, "From Division", division, division, 2, 5);
+            GroupRule rule = GroupRule.CreateFromDivision(playoff, "division grp rule 1", "From Division", division, division, 2, 5);
 
             var teamList = new List<Team>();
             playoff.AddTeamsToGroup(rule, teamList);
@@ -197,9 +197,9 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var division = CreateDivision();
             var series = CreateLosingSeries();
             playoff.Series.Add(series);
-            GroupRule rule1 = GroupRule.CreateFromDivision(playoff, "From Division", division, division, 2, 5);
-            GroupRule rule2 = GroupRule.CreateFromDivision(playoff, "From Division", division, division, 8, 8);
-            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(playoff, "From Division", series.Name, null);            
+            GroupRule rule1 = GroupRule.CreateFromDivision(playoff, "division grp rule 1", "From Division", division, division, 2, 5);
+            GroupRule rule2 = GroupRule.CreateFromDivision(playoff, "division grp rule 2", "From Division", division, division, 8, 8);
+            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(playoff, "series grp rule 1", "From Division", series.Name, null);            
 
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2, rule3 };
 
@@ -225,9 +225,9 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var division = CreateDivision();
             var series = CreateLosingSeries();            
             playoff.Series.Add(series);
-            GroupRule rule1 = GroupRule.CreateFromDivision(playoff, "From Division", division, division, 2, 5);
-            GroupRule rule2 = GroupRule.CreateFromDivision(playoff, "From Division", division, division, 8, 8);
-            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(playoff, "From Division 2", series.Name, null);
+            GroupRule rule1 = GroupRule.CreateFromDivision(playoff, "division grp rule 1", "From Division", division, division, 2, 5);
+            GroupRule rule2 = GroupRule.CreateFromDivision(playoff, "division grp rule 2", "From Division", division, division, 8, 8);
+            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(playoff, "series grp rule 1", "From Division 2", series.Name, null);
 
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2, rule3 };
 
@@ -257,9 +257,9 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var division = CreateDivision();
             var series = CreateLosingSeries();
             playoff.Series.Add(series);
-            GroupRule rule1 = GroupRule.CreateFromDivision(playoff, "From Division", division, division, 2, 5);
-            GroupRule rule2 = GroupRule.CreateFromDivision(playoff, "From Division", division, division, 8, 8);
-            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(playoff, "From Division", series.Name, division);
+            GroupRule rule1 = GroupRule.CreateFromDivision(playoff, "division grp rule 1", "From Division", division, division, 2, 5);
+            GroupRule rule2 = GroupRule.CreateFromDivision(playoff, "division grp rule 2", "From Division", division, division, 8, 8);
+            GroupRule rule3 = GroupRule.CreateFromSeriesLoser(playoff, "series grp rule 1", "From Division", series.Name, division);
 
             playoff.GroupRules = new List<GroupRule>() { rule1, rule2, rule3 };
 

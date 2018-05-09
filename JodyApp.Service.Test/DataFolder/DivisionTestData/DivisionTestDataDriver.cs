@@ -12,7 +12,7 @@ namespace JodyApp.Service.Test.DataFolder.DivisionTestData
     public class DivisionTestDataDriver:BaseTestDataDriver
     {        
 
-        public DivisionTestDataDriver(JodyAppContext db) : base(db) { }
+        public DivisionTestDataDriver() : base() { }
 
 
         public override void PrivateCreateLeagues(Dictionary<string, League> leagues)

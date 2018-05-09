@@ -30,14 +30,14 @@ namespace JodyApp.Domain.Playoffs
         public Team FromTeam { get; set; }
         public bool IsHomeTeam { get; set; } //use this if we have teams and no sort division
         public String GroupIdentifier { get; set; }  //this is how we know which rules go with which group
-
+        public string Name { get; set; }
         public GroupRule() { }
-        public GroupRule(GroupRule rule, Division sortByDivision, Division fromDivision, Team team, Playoff p) : this(p, rule.RuleType, sortByDivision, fromDivision,
+        public GroupRule(GroupRule rule, Division sortByDivision, Division fromDivision, Team team, Playoff p) : this(p, rule.SeriesName, rule.RuleType, sortByDivision, fromDivision,
                                                                                                         rule.SeriesName, rule.FromStartValue, rule.FromEndValue, team,
                                                                                                         rule.IsHomeTeam, rule.GroupIdentifier)
         { }
 
-        public GroupRule(Playoff playoff, int ruleType, Division sortByDivision, Division fromDivision, 
+        public GroupRule(Playoff playoff, string name, int ruleType, Division sortByDivision, Division fromDivision, 
                             String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, 
                             bool isHomeTeam, string groupIdentifier)
         {            
@@ -51,29 +51,30 @@ namespace JodyApp.Domain.Playoffs
             FromTeam = fromTeam;
             IsHomeTeam = isHomeTeam;
             GroupIdentifier = groupIdentifier;
+            Name = name;
         }
 
 
-        public static GroupRule CreateFromDivision(Playoff p, string groupIdentifier, Division sortByDivision, Division fromDivision, int highestRank, int lowestRank)
+        public static GroupRule CreateFromDivision(Playoff p, string name, string groupIdentifier, Division sortByDivision, Division fromDivision, int highestRank, int lowestRank)
         {
             if (sortByDivision == null) throw new ApplicationException("Cannot create new Gorup rule from division if SortByDivision is null");
 
-            return new GroupRule(p, GroupRule.FROM_DIVISION, sortByDivision, fromDivision, null, highestRank, lowestRank, null, true, groupIdentifier);
+            return new GroupRule(p, name, GroupRule.FROM_DIVISION, sortByDivision, fromDivision, null, highestRank, lowestRank, null, true, groupIdentifier);
         }
 
-        public static GroupRule CreateFromSeriesWinner(Playoff p, string groupIdentifier, string seriesName, Division sortByDivision)
+        public static GroupRule CreateFromSeriesWinner(Playoff p, string name, string groupIdentifier, string seriesName, Division sortByDivision)
         {
-            return new GroupRule(p, GroupRule.FROM_SERIES, sortByDivision, null, seriesName, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null, true, groupIdentifier);
+            return new GroupRule(p, name, GroupRule.FROM_SERIES, sortByDivision, null, seriesName, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null, true, groupIdentifier);
         }
 
-        public static GroupRule CreateFromSeriesLoser(Playoff p, string groupIdentifier, string seriesName, Division sortByDivision)
+        public static GroupRule CreateFromSeriesLoser(Playoff p, string name, string groupIdentifier, string seriesName, Division sortByDivision)
         {
-            return new GroupRule(p, GroupRule.FROM_SERIES, sortByDivision, null, seriesName, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null, true, groupIdentifier);
+            return new GroupRule(p, name, GroupRule.FROM_SERIES, sortByDivision, null, seriesName, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null, true, groupIdentifier);
         }
 
-        public static GroupRule CreateFromTeam(Playoff p, string groupIdentifier, Team team, bool isHomeTeam)
+        public static GroupRule CreateFromTeam(Playoff p, string name, string groupIdentifier, Team team, bool isHomeTeam)
         {
-            return new GroupRule(p, GroupRule.FROM_TEAM, null, null, null, 1, 1, team, isHomeTeam, groupIdentifier);
+            return new GroupRule(p, name, GroupRule.FROM_TEAM, null, null, null, 1, 1, team, isHomeTeam, groupIdentifier);
         }
     }
 }
