@@ -10,10 +10,10 @@ namespace JodyApp.Domain
 {
     public class ReferenceCompetition:DomainObject
     {
-        public League League { get; set; }
-        public Season Season { get; set; }
+        virtual public League League { get; set; }
+        virtual public Season Season { get; set; }
         public int Order { get; set; }
-        public Playoff Playoff { get; set; }
+        virtual public Playoff Playoff { get; set; }
 
     }
 }

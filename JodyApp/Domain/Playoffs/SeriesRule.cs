@@ -17,8 +17,8 @@ namespace JodyApp.Domain.Playoffs
         //these set the rank if it is setup by series
         public const int SERIES_WINNER = 1;
         public const int SERIES_LOSER = 2;
-        
-        public Playoff Playoff { get; set; }              
+
+        virtual public Playoff Playoff { get; set; }              
         public string Name { get; set; }
         public int Round { get; set; }
         //teams are picked from Groupings of teams.  Sometimes the groupings are only 2 teams sometimse more

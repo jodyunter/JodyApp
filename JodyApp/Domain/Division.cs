@@ -15,18 +15,18 @@ namespace JodyApp.Domain
         private string _shortName;
 
         public string Name { get; set; }
-        public String ShortName { get { if (_shortName == null) return Name; else return _shortName; } set { _shortName = value; } }
+        public string ShortName { get { if (_shortName == null) return Name; else return _shortName; } set { _shortName = value; } }
         virtual public List<Team> Teams { get; set; }
         virtual public Division Parent { get; set; }
         virtual public List<ScheduleRule> Rules { get; set; }
         [InverseProperty("Division")]
         virtual public List<SortingRule> SortingRules { get; set; }
-        public List<DivisionRank> Rankings { get; set; }
+        virtual public List<DivisionRank> Rankings { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
         virtual public Season Season { get; set; }
 
-        public League League { get; set; }
+        virtual public League League { get; set; }
         public Division() { }
         public Division(League league, Season season, string name, string shortName, int level, int order, Division parent)
         {

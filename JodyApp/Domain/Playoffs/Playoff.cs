@@ -15,15 +15,15 @@ namespace JodyApp.Domain.Playoffs
         public int StartingDay { get; set; }
         public bool Complete { get; set; }
         public bool Started { get; set; }
-        public League League { get; set; }
+        virtual public League League { get; set; }
         public string Name { get; set; }
 
-        public int CurrentRound { get; set; }        
-        virtual public List<Series> Series { get; set; }        
+        public int CurrentRound { get; set; }
+        virtual public List<Series> Series { get; set; }
         virtual public List<GroupRule> GroupRules { get; set; }
         virtual public List<Team> PlayoffTeams { get; set; }
 
-        public Season Season { get; set; }
+        virtual public Season Season { get; set; }
         public Playoff() { CurrentRound = 0;  Series = new List<Series>(); }
 
         public Playoff(League league, string name, int year, bool started, bool complete, int startingDay, Season season):base()
@@ -172,6 +172,15 @@ namespace JodyApp.Domain.Playoffs
                     for (int i = startingRank; i <= endingRank; i++)
                     {
                         teamsInGroup.Add(rule.FromDivision.GetByRank(i));
+                    }
+                    break;
+                case GroupRule.FROM_DIVISION_BOTTOM:
+                    var reversedList = rule.FromDivision.Rankings.OrderByDescending(m => m.Rank).ToList();
+                    int bottomRank = rule.FromStartValue;
+                    int topRank = rule.FromEndValue;
+                    for (int i = bottomRank; i <= topRank; i++)
+                    {
+                        teamsInGroup.Add(reversedList[i-1].Team);
                     }
                     break;
                 default:

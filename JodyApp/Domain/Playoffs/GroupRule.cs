@@ -14,8 +14,7 @@ namespace JodyApp.Domain.Playoffs
         public const int FROM_DIVISION = 0;
         public const int FROM_TEAM = 1;
         public const int FROM_SERIES = 2;
-
-        public const int POSITIONS_FROM_BOTTOM = -5000;
+        public const int FROM_DIVISION_BOTTOM = 3;        
         
 
         public Playoff Playoff { get; set; }                    
@@ -25,14 +24,14 @@ namespace JodyApp.Domain.Playoffs
         //we sort by league
         //but we take DivA, 1,2,3 and DivB, 4,5 and ConferenceA, 1
         //no rounds because we might want DivA 1 to go directly to the final where as the winners of other places will be put in other groups
-        public Division SortByDivision { get; set; } //this is the division rankings that ranks the teams
-        public Division FromDivision { get; set; }        
+        virtual public Division SortByDivision { get; set; } //this is the division rankings that ranks the teams
+        virtual public Division FromDivision { get; set; }        
         public String SeriesName { get; set; } //this means that all series need to be created at playoff creation time
-        public int FromStartValue { get; set; } //ranking or WINNER/LOSER, or start = 1 or start = 2
+        public int FromStartValue { get; set; } //ranking or WINNER/LOSER, or start = 1 or start = 2, or start at bottom and use end value to go backwards
         public int FromEndValue { get; set; } //division rankings 1, 10
-        public Team FromTeam { get; set; }
+        virtual public Team FromTeam { get; set; }
         public bool IsHomeTeam { get; set; } //use this if we have teams and no sort division
-        public String GroupIdentifier { get; set; }  //this is how we know which rules go with which group
+        virtual public String GroupIdentifier { get; set; }  //this is how we know which rules go with which group
         public string Name { get; set; }
         public GroupRule() { }
         public GroupRule(GroupRule rule, Division sortByDivision, Division fromDivision, Team team, Playoff p) : this(p, rule.SeriesName, rule.RuleType, sortByDivision, fromDivision,
@@ -63,6 +62,13 @@ namespace JodyApp.Domain.Playoffs
             if (sortByDivision == null) throw new ApplicationException("Cannot create new Gorup rule from division if SortByDivision is null");
 
             return new GroupRule(p, name, GroupRule.FROM_DIVISION, sortByDivision, fromDivision, null, highestRank, lowestRank, null, true, groupIdentifier);
+        }
+
+        public static GroupRule CreateFromDivisionBottom(Playoff p, string name, string groupIdentifier, Division sortByDivision, Division fromDivision, int highestRank, int lowestRank)
+        {
+            if (sortByDivision == null) throw new ApplicationException("Cannot create new Gorup rule from division if SortByDivision is null");
+
+            return new GroupRule(p, name, GroupRule.FROM_DIVISION_BOTTOM, sortByDivision, fromDivision, null, highestRank, lowestRank, null, true, groupIdentifier);
         }
 
         public static GroupRule CreateFromSeriesWinner(Playoff p, string name, string groupIdentifier, string seriesName, Division sortByDivision)

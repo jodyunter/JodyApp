@@ -100,8 +100,8 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
         public override void PrivateCreateGroupRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
         {
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 1", QualificationPool, Premier, Premier, 6, 6), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 2", QualificationPool, Division1, Division1, 1, 1), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivisionBottom(Playoffs, "Group Rule 1", QualificationPool, League, Premier, 1, 1), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 2", QualificationPool, League, Division1, 1, 1), rules);
             CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 3", FinalPool, Premier, Premier, 1, 2), rules);
 
 
@@ -113,7 +113,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
 
             Playoffs = db.Playoffs.Where(p => p.Year == 0).First();
-            Premier = db.Divisions.Include("Season").Where(d => d.Name == "Premier" && d.Season.Year == 0).First();
+            Premier = db.Divisions.Where(d => d.Name == "Premier" && d.Season.Year == 0).First();
 
             //create semi final pools            
             var SemiFinalGroup = GroupRule.CreateFromDivision(Playoffs, "Group Rule 4", SemiFinalPool, Premier, Premier, 1, 4);
@@ -218,8 +218,8 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             
             Playoffs = db.Playoffs.Where(p => p.Year == 0).First();
 
-            var D1QualGroupRule1 = GroupRule.CreateFromDivision(Playoffs, "Group Rule 7", D1QualPool, League, Division1, 6, 4);
-            var D1QualGroupRule2 = GroupRule.CreateFromDivision(Playoffs, "Group Rule 8", D1QualPool, League, Division2, 1, 4);
+            var D1QualGroupRule1 = GroupRule.CreateFromDivisionBottom(Playoffs, "Group Rule 7", D1QualPool, League, Division1, 1, 1);
+            var D1QualGroupRule2 = GroupRule.CreateFromDivision(Playoffs, "Group Rule 8", D1QualPool, League, Division2, 1, 1);
             db.GroupRules.Add(D1QualGroupRule1);
             db.GroupRules.Add(D1QualGroupRule2);
 
@@ -233,12 +233,14 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         public override void UpdateData()
         {
 
-            //RunUpdate1();
-            //RunUpdate2();
-            //RunUpdate3();
-            //RunUpdate4();
-            //RunUpdate5();
-            //RunUpdate6();
+            DeleteAllData();
+            InsertData();
+            RunUpdate1();
+            RunUpdate2();
+            RunUpdate3();
+            RunUpdate4();
+            RunUpdate5();
+            RunUpdate6();            
         }
 
 

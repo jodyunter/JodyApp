@@ -23,8 +23,6 @@ namespace JodyApp.Console
         {
             JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_TEST);
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
-            //driver.DeleteAllData();
-            //driver.InsertData();
             driver.UpdateData();
             
 
@@ -38,7 +36,7 @@ namespace JodyApp.Console
             Random random = new Random();
             int lastGameNumber = 0;
 
-            League league = db.Leagues.Include("ReferenceCompetitions.Playoff").Where(l => l.Name == "Jody League").First();            
+            League league = db.Leagues.Where(l => l.Name == "Jody League").First();            
             if (leagueService.IsYearDone(league))
             {
                 league.CurrentYear++;
@@ -98,6 +96,15 @@ namespace JodyApp.Console
             teamService.ChangeDivision(PromotedD1, "Premier");
             teamService.ChangeDivision(RelegatedP, "Division1");
 
+            var d1promotionSeries = playoffService.GetSeriesByYear("Division 1 Qualification", league.CurrentYear);
+            if (d1promotionSeries != null)
+            {
+                Team PromotedD2 = d1promotionSeries.GetWinner().Parent;
+                Team RelegatedD1 = d1promotionSeries.GetLoser().Parent;
+
+                teamService.ChangeDivision(PromotedD2, "Division1");
+                teamService.ChangeDivision(RelegatedD1, "Division2");
+            }
             
             db.SaveChanges();
 
@@ -111,24 +118,26 @@ namespace JodyApp.Console
             });
 
             var divisionRanks = db.DivisionRanks
-                .Include("Division.Season")
-                .Include("Team")
                 .Where(dr => dr.Division.Name == "League" && dr.Rank == 1).ToDictionary(dr => dr.Division.Season.Year, dr => dr.Team.Name);
 
             divisionRanks.OrderByDescending(m => m.Key);
 
-            string formatter = "{0,3}{1,12}{2,12}{3,12}{4,12}{5,12}";
+            string formatter = "{0,3}{1,15}{2,15}{3,15}{4,15}{5,15}{6,15}{7,15}";
             System.Console.WriteLine("\n");
-            System.Console.WriteLine(String.Format(formatter, "Yr", "Champion", "Runner-Up", "Season", "Promotoed", "Relegated"));
+            System.Console.WriteLine(String.Format(formatter, "Yr", "Champion", "Runner-Up", "Season", "To Premier", "To D1", "To D1", "To D2"));
 
             var qualificationSeries = playoffService.GetSeries("Qualification");
+            var qualificationSeries2 = playoffService.GetSeries("Division 1 Qualification");
 
             for (int i = playoffWinners.Count; i > 0; i--)
             {
                 var promoted = qualificationSeries.Where(s => s.Playoff.Year == i).FirstOrDefault();
+                var promoted2 = qualificationSeries2.Where(s => s.Playoff.Year == i).FirstOrDefault();
                 System.Console.WriteLine(String.Format(formatter, i, playoffWinners[i], playoffLosers[i], divisionRanks[i],
                     promoted != null ? promoted.GetWinner().Name : "",
-                    promoted != null ? promoted.GetLoser().Name : ""));
+                    promoted != null ? promoted.GetLoser().Name : "",
+                    promoted2 != null ? promoted2.GetWinner().Name : "",
+                    promoted2 != null ? promoted2.GetLoser().Name : ""));
             }
 
 

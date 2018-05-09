@@ -135,12 +135,12 @@ namespace JodyApp.Service
 
         public Series GetSeriesByYear(string name, int year)
         {
-            return db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == name && s.Playoff.Year == year).FirstOrDefault();
+            return db.Series.Where(s => s.Name == name && s.Playoff.Year == year).FirstOrDefault();
         }
 
         public List<Series> GetSeries(string name)
         {            
-            return db.Series.Include("HomeTeam").Include("AwayTeam").Include("Games").Include("Playoff").Where(s => s.Name == name).ToList();
+            return db.Series.Where(s => s.Name == name).ToList();
         }
        
 

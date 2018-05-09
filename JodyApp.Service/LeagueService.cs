@@ -30,10 +30,7 @@ namespace JodyApp.Service
             {
 
                 //step one find any outstanding competitions
-                var referenceComps = db.ReferenceCompetitions
-                                    .Include("Season")
-                                    .Include("Playoff")
-                                    .Where(rc => rc.League.Id == league.Id).OrderBy(rc => rc.Order).ToList();
+                var referenceComps = db.ReferenceCompetitions.Where(rc => rc.League.Id == league.Id).OrderBy(rc => rc.Order).ToList();
 
                 Competition currentComp = null;
                 bool found = false;

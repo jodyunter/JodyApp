@@ -11,7 +11,7 @@ namespace JodyApp.Domain
     [Table("Teams")]
     public partial class Team : DomainObject, IComparable<Team>
     {               
-        public String Name { get; set; }
+        public string Name { get; set; }
         public int Skill { get; set; }
         virtual public Division Division { get; set; }
         virtual public TeamStatistics Stats { get; set; }

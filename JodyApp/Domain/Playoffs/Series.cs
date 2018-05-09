@@ -10,18 +10,18 @@ namespace JodyApp.Domain.Playoffs
 {
     public class Series:DomainObject
     {
-        public Team HomeTeam { get; set; }
-        public Team AwayTeam { get; set; }
-        public List<Game> Games { get; set; }
+        virtual public Team HomeTeam { get; set; }
+        virtual public Team AwayTeam { get; set; }
+        virtual public List<Game> Games { get; set; }
 
-        public Playoff Playoff { get; set; }
+        virtual public Playoff Playoff { get; set; }
         //redundant because of series rule?
         public int Round { get; set; }
         //rule that determines number of games, wins home and away and game specific rules
         //we want total goal series, and best-of series
         public String Name { get; set; }
         //is name redundant since the rule has it?
-                        
+
         virtual public SeriesRule Rule { get; set; }
 
         public int HomeWins { get; set; }

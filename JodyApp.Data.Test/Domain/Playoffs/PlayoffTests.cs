@@ -279,6 +279,11 @@ namespace JodyApp.Data.Test.Domain.Playoffs
 
         }
         [TestMethod]
+        public void ShouldGetFromLastPlace()
+        {
+            throw new NotImplementedException();
+        }
+        [TestMethod]
         public void ShouldSetSeriesTeamsFromSeriesWinnerAndLoserRule()
         {
             throw new NotImplementedException();

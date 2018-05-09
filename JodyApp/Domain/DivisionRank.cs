@@ -10,8 +10,8 @@ namespace JodyApp.Domain
     [Table("DivisionRanks")]
     public class DivisionRank:DomainObject, IComparable<DivisionRank>
     {
-        public Division Division { get; set; }
-        public Team Team { get; set; }
+        virtual public Division Division { get; set; }
+        virtual public Team Team { get; set; }
         public int Rank { get; set; }
 
 

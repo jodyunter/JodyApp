@@ -53,7 +53,7 @@ namespace JodyApp.Domain
         
         public static List<Division> GetDivisionsBySeason(JodyAppContext db, Season season)
         {
-            return db.Divisions.Include("Season").Where(d => d.Season.Id == season.Id).ToList();
+            return db.Divisions.Where(d => d.Season.Id == season.Id).ToList();
         }
 
         public static List<Division> GetDivisionsByLevel(JodyAppContext db, int level)

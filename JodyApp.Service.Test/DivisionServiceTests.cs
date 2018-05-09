@@ -33,7 +33,7 @@ namespace JodyApp.Service.Test
             driver.DeleteAllData();
             driver.InsertData();
             scheduleService = new ScheduleService(db);
-            league = db.Leagues.Include("ReferenceCompetitions.Season").Where(l => l.Name == driver.LeagueName).First();
+            league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
             season = league.ReferenceCompetitions.Where(s => s.League.Id == league.Id && s.Season.Name == "My Season").First().Season;
             seasonService = new SeasonService(db);            
 
