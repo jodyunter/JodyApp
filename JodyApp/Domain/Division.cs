@@ -18,7 +18,7 @@ namespace JodyApp.Domain
         public string ShortName { get { if (_shortName == null) return Name; else return _shortName; } set { _shortName = value; } }
         virtual public List<Team> Teams { get; set; }
         virtual public Division Parent { get; set; }
-        virtual public List<ScheduleRule> Rules { get; set; }
+        virtual public List<ScheduleRule> ScheduleRules { get; set; }
         [InverseProperty("Division")]
         virtual public List<SortingRule> SortingRules { get; set; }
         virtual public List<DivisionRank> Rankings { get; set; }

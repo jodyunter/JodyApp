@@ -61,6 +61,24 @@ namespace JodyApp.Service
             db.SaveChanges();
         }
 
+        public Team GetByName(string name)
+        {
+            return db.Teams.Where(t => t.Parent == null && t.Name == name).FirstOrDefault();
+        }
 
+        public Team CreateTeam(string name, int skill, string divisionName)
+        {
+            var team = CreateTeam(name, skill, (Division)null);
+            ChangeDivision(team, divisionName);
+
+            return team;
+        }
+
+        public Team CreateTeam(string name, int skill, Division div)
+        {
+            var team = new Team(name, skill, div);
+            db.Teams.Add(team);
+            return team;
+        }
     }
 }

@@ -117,8 +117,8 @@ namespace JodyApp.Console
                 playoffLosers.Add(series.Playoff.Year, series.GetLoser().Name);
             });
 
-            var divisionRanks = db.DivisionRanks
-                .Where(dr => dr.Division.Name == "League" && dr.Rank == 1).ToDictionary(dr => dr.Division.Season.Year, dr => dr.Team.Name);
+            var divisionRanks = db.DivisionRanks.Include("Division").Include("Division.Season").Include("Team")
+                .Where(dr => dr.Division.Name == "League" && dr.Rank == 1).ToDictionary(dr2 => dr2.Division.Season.Year, dr2 => dr2.Team.Name);
 
             divisionRanks.OrderByDescending(m => m.Key);
 

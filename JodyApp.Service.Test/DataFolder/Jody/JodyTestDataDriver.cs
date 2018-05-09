@@ -14,14 +14,16 @@ namespace JodyApp.Service.Test.DataFolder.Jody
     public class JodyTestDataDriver : AbstractTestDataDriver
     {
         String LeagueName = "Jody League";
+        TeamService teamService;
         public JodyTestDataDriver() : base() { }
-        public JodyTestDataDriver(JodyAppContext db) : base() { }
+        public JodyTestDataDriver(JodyAppContext db) : base() {  teamService = new TeamService(db); }
 
         Division League, Premier, Division1, Division2;
         Team Toronto, Montreal, Ottawa, NewYork, Boston, QuebecCity;
         Team Vancouver, Edmonton, Calgary;
         Team Winnipeg, Minnesota, Chicago;
         Team Colorado, Pittsburgh, Philadelphia, NewJersey, Hamilton, Nashville;
+        Team Washington, Victoria, Columbus;
         Season RegularSeason;
         League MyLeague;
         Playoff Playoffs;
@@ -72,8 +74,8 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
         public override void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules)
         {
-            CreateAndAddSortingRule(League, "Sorting Rule 1", 0, Premier,  "1,2,3,4,5,6", 0, -1, rules);
-            CreateAndAddSortingRule(League, "Sorting Rule 2", 1, Division1, "1,2,3,4,5,6", 0, -1, rules);
+            CreateAndAddSortingRule(League, "Sorting Rule 1", 0, Premier,  null, 0, -1, rules);
+            CreateAndAddSortingRule(League, "Sorting Rule 2", 1, Division1, null, 0, -1, rules);
         }
         public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
         {
@@ -230,17 +232,30 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             db.SaveChanges();
 
         }
+        public void RunUpdate7()
+        {
+
+            Columbus = teamService.CreateTeam("Columbus", 1, "Division2");
+            Victoria = teamService.CreateTeam("Victoria", 3, "Division2");
+
+            var scheduleRule = db.ScheduleRules.Where(sc => sc.Name == "Rule 3" && sc.Season.Year == 0).First();
+            scheduleRule.Rounds = 3;
+
+            db.SaveChanges();
+        }
         public override void UpdateData()
         {
 
-            DeleteAllData();
-            InsertData();
-            RunUpdate1();
-            RunUpdate2();
-            RunUpdate3();
-            RunUpdate4();
-            RunUpdate5();
-            RunUpdate6();            
+            //DeleteAllData();
+            //InsertData();
+            //RunUpdate1();
+            //RunUpdate2();
+            //RunUpdate3();
+            //RunUpdate4();
+            //RunUpdate5();
+            //RunUpdate6();                  
+            //RunUpdate7();
+            
         }
 
 

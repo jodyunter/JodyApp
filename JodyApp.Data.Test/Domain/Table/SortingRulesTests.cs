@@ -253,6 +253,11 @@ namespace JodyApp.Data.Test.Domain.Table
         {
             throw new NotImplementedException();
         }
+        [TestMethod]
+        public void ShouldSortDivisionWithOneRuleWithPositionsAndAnotherRuleWithout()
+        {
+            throw new NotImplementedException();
+        }
 
         static string SHOULDSORTNORMALLY_EXPECTED =
     @"League

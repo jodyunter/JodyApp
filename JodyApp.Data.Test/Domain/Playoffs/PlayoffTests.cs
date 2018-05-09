@@ -19,7 +19,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         {
             Team homeTeam = new Team() { Name = "Team 1", Skill = 5, Id = 12 };
             Team awayTeam = new Team() { Name = "Team 2", Skill = 5, Id = 55 };
-            SeriesRule seriesRule = new SeriesRule(playoff, "Series 1", 1, "Series A", SeriesRule.SERIES_WINNER, "Series A", SeriesRule.SERIES_LOSER, SeriesRule.TYPE_BEST_OF, 1, false, "1");
+            SeriesRule seriesRule = new SeriesRule(playoff, "Series 1", 1, null, SeriesRule.SERIES_WINNER, null, SeriesRule.SERIES_LOSER, SeriesRule.TYPE_BEST_OF, 1, false, "1");
             var games = new List<Game>();
             
             Series series = new Series(playoff, seriesRule, homeTeam, 0, awayTeam, 1, games, "Series 1");
@@ -33,7 +33,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         {
             Team homeTeam = new Team() { Name = "Team 3", Skill = 5, Id = 11 };
             Team awayTeam = new Team() { Name = "Team 4", Skill = 5, Id = 56 };
-            SeriesRule seriesRule = new SeriesRule(playoff, "Series 2", 1, "Series B", SeriesRule.SERIES_WINNER, "Series B", SeriesRule.SERIES_LOSER, SeriesRule.TYPE_BEST_OF, 1, false, "1");
+            SeriesRule seriesRule = new SeriesRule(playoff, "Series 2", 1, null, SeriesRule.SERIES_WINNER, null, SeriesRule.SERIES_LOSER, SeriesRule.TYPE_BEST_OF, 1, false, "1");
             var games = new List<Game>();
             
             Series series = new Series(playoff, seriesRule, homeTeam, 0, awayTeam, 1, games, "Series 2");

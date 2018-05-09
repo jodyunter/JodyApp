@@ -77,7 +77,6 @@ namespace JodyApp.Service
             return Division.GetByLeagueAndSeasonAndName(db, league, season, name);
         }
         
-     
     }
 }
 
