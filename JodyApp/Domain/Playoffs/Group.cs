@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Playoffs
 {
-    public class Group:DomainObject
+    public class Group:ConfigurableDomainObject
     {
         public string Name { get; set; }
         virtual public Playoff Playoff { get; set; }
@@ -23,6 +23,36 @@ namespace JodyApp.Domain.Playoffs
             GroupRules = groupRules;
             SortByDivision = sortByDivision;
         }
+
+        #region Validation
+
+        public override void CheckForErrors(List<string> errorMessages)
+        {
+            string formatter = "{0}";
+            bool noRuleErrors = true;
+            GroupRules.ForEach(gr =>
+            {
+                var validRule = gr.ValidateConfiguration(errorMessages);
+
+                if (validRule)
+                {
+                    //if from series does series exist?
+                    if (gr.RuleType == GroupRule.FROM_SERIES)
+                    {
+                        var seriesName = gr.FromSeries;
+                        validRule = Playoff.SeriesRules.Where(sr => sr.Name == seriesName).FirstOrDefault() != null;
+                        if (!validRule) AddMessage(formatter, errorMessages, "Series with Name: " + seriesName + " does not exist in Playoff: " + Playoff.Name);
+                    }
+                }
+
+                noRuleErrors = noRuleErrors && validRule;
+
+            });
+
+            if (!noRuleErrors) AddMessage("{0}", errorMessages, "Errors in Group Rules");
+            
+        }
+        #endregion
 
     }
 }

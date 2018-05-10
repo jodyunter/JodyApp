@@ -171,11 +171,11 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             League = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "League");
             Division1 = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "Division1");
             Division2 = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "Division2");
-
+            
             //First create the group that will determine the teams
             Division1QualificationGroup = new Group("Division 1 Qualification Group", Playoffs, League, new List<GroupRule>());
             GroupRule.CreateFromDivisionBottom(Division1QualificationGroup, "D1Q Rule 1", Division1, 1, 1);
-            GroupRule.CreateFromDivision(Division1QualificationGroup, "D1Q Rule 2", Division2, 1, 1);
+            GroupRule.CreateFromDivision(Division1QualificationGroup, "D1Q Rule 2", Division2, 1, 1);            
 
             //add the groups to prevent the multiplicity issue
             db.Groups.Add(Division1QualificationGroup);
@@ -197,10 +197,10 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         public override void UpdateData()
         {
 
-            //DeleteAllData();
-            //InsertData();
-            //RunUpdate1();
-            //RunUpdate2();
+            DeleteAllData();
+            InsertData();
+            RunUpdate1();
+            RunUpdate2();
             //RunUpdate3();
             //RunUpdate4();
             //RunUpdate5();

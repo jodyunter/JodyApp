@@ -21,7 +21,8 @@ namespace JodyApp.Domain.Playoffs
         public int CurrentRound { get; set; }
         virtual public List<Series> Series { get; set; }
         virtual public List<Group> Groups { get; set; }
-        virtual public List<Team> PlayoffTeams { get; set; }
+        virtual public List<Team> PlayoffTeams { get; set; }        
+        virtual public List<SeriesRule> SeriesRules { get; set; }
 
         virtual public Season Season { get; set; }
         public Playoff() { CurrentRound = 0;  Series = new List<Series>(); }
