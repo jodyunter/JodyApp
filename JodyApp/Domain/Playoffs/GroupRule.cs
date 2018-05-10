@@ -11,11 +11,13 @@ namespace JodyApp.Domain.Playoffs
     {
         public const string INVALID_GROUP_TYPE = "Invalid Group Type";
         public const string CANNOT_BE_NULL = "Group Cannot Be Null";
+        public const string NAME_CANNOT_BE_NULL = "Name Cannot be Null";
         public const string FROM_DIVISION_CANNOT_BE_NULL = "From Division Cannot be null";
         public const string FROM_DIVISION_HAS_NO_TEAMS = "From Division has No Teams";
         public const string FROM_DIVISION_NOT_ENOUGH_TEAMS = "From Division does not have enough teams, expecting: {0}, found: {1}";
         public const string FROM_SERIES_CANNOT_BE_NULL = "From Series Cannot be null";
         public const string FROM_SERIES_BAD_TEAM_VALUE = "Value must be Series Winner or Series Loser";
+        public const string FROM_TEAM_CANNOT_BE_NULL = "From Team Cannot be null";
 
         public const int SERIES_WINNER = 0;
         public const int SERIES_LOSER = 1;
@@ -87,6 +89,7 @@ namespace JodyApp.Domain.Playoffs
 
             string formatter = "{0}. Type: {1}. Name: {2}.";
             string TypeName = GetTypeName(RuleType);
+            if (String.IsNullOrEmpty(Name)) AddMessage(formatter, errorMessages, NAME_CANNOT_BE_NULL, TypeName, Name);
             if (TypeName.Equals(INVALID_GROUP_TYPE)) AddMessage(formatter, errorMessages, "No message here", TypeName, Name);
 
             if (Group == null)
@@ -105,7 +108,7 @@ namespace JodyApp.Domain.Playoffs
                     ValidationFromSeries(formatter, errorMessages, TypeName);
                     break;
                 case FROM_TEAM:
-                    //validationFromTeam(formatter, errorMessages, TypeName);
+                    ValidationFromTeam(formatter, errorMessages, TypeName);
                     break;
             }
         }
@@ -129,6 +132,11 @@ namespace JodyApp.Domain.Playoffs
                 if (FromStartValue != SERIES_WINNER && FromStartValue != SERIES_LOSER)
                     AddMessage(formatter, errorMessages, FROM_SERIES_BAD_TEAM_VALUE, TypeName, Name);
             
+        }
+
+        private void ValidationFromTeam(String formatter, List<string> errorMessages, string TypeName)
+        {
+            if (FromTeam == null) AddMessage(formatter, errorMessages, FROM_TEAM_CANNOT_BE_NULL, TypeName, Name);
         }
         #endregion
 

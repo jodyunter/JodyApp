@@ -11,6 +11,26 @@ namespace JodyApp.Data.Test.Domain.Playoffs
     [TestClass]
     public class GroupRuleValidationTests
     {
+
+        [TestMethod]
+        public void ShouldValidateGroupRuleNoName()
+        {
+            var expected = "Name Cannot be Null. Type: From Division Top. Name: .";
+            Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
+            Group group = new Group("Group 1", p, null, new List<GroupRule>());
+            Division fromDivision = new Division(null, null, "Test Me", null, 1, 1, null);
+            fromDivision.Teams.Add(new Team("Temp Team", 0, fromDivision));
+            fromDivision.Teams.Add(new Team("Temp Team 2", 0, fromDivision));
+            fromDivision.Teams.Add(new Team("Temp Team 3", 0, fromDivision));
+            GroupRule rule = new GroupRule(group, "", GroupRule.FROM_DIVISION, fromDivision, "", 1, 3, null, false);
+
+            var errors = new List<string>();
+
+            IsFalse(rule.ValidateConfiguration(errors));
+            AreEqual(1, errors.Count);
+            AreEqual(expected, errors[0]);
+        }
+
         [TestMethod]
         public void ShouldValidateGroupRuleInvalidGroupType()
         {
@@ -139,6 +159,34 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
             GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "MY Sereis", GroupRule.SERIES_LOSER, 3, null, false);
+
+            var errors = new List<string>();
+
+            IsTrue(rule.ValidateConfiguration(errors));
+            AreEqual(0, errors.Count);            
+        }
+
+        [TestMethod]
+        public void ShouldValidateGroupRuleFromTeamNoTeam()
+        {
+            var expected = "From Team Cannot be null. Type: From Team. Name: Name.";
+            Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
+            Group group = new Group("Group 1", p, null, new List<GroupRule>());
+            GroupRule rule = new GroupRule(group, "Name", GroupRule.FROM_TEAM, null, "", 1, 3, null, false);
+
+            var errors = new List<string>();
+
+            IsFalse(rule.ValidateConfiguration(errors));
+            AreEqual(1, errors.Count);
+            AreEqual(expected, errors[0]);
+        }
+
+        [TestMethod]
+        public void ShouldValidateGroupRuleFromTeam_Success()
+        {            
+            Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
+            Group group = new Group("Group 1", p, null, new List<GroupRule>());
+            GroupRule rule = new GroupRule(group, "Name", GroupRule.FROM_TEAM, null, "", 1, 3, new Team("My Team", 5, null), false);
 
             var errors = new List<string>();
 
