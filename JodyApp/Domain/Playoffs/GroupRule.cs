@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using JodyApp.Domain.Exceptions;
 
 namespace JodyApp.Domain.Playoffs
 {
@@ -39,19 +38,16 @@ namespace JodyApp.Domain.Playoffs
         virtual public Division FromDivision { get; set; }        
         public String FromSeries { get; set; } //this means that all series need to be created at playoff creation time
         public int FromStartValue { get; set; } //ranking or WINNER/LOSER, or start = 1 or start = 2, or start at bottom and use end value to go backwards
-        public int FromEndValue { get; set; } //division rankings 1, 10
-        virtual public Team FromTeam { get; set; }
-        public bool IsHomeTeam { get; set; } //use this if we have teams and no sort division       
+        public int FromEndValue { get; set; } //division rankings 1, 10        
+        virtual public Team FromTeam { get; set; }        
         public string Name { get; set; }
         public GroupRule() { }
         public GroupRule(GroupRule rule, Division fromDivision, Team team, Group g) : this(g, rule.FromSeries, rule.RuleType, fromDivision,
-                                                                                                        rule.FromSeries, rule.FromStartValue, rule.FromEndValue, team,
-                                                                                                        rule.IsHomeTeam)
+                                                                                                        rule.FromSeries, rule.FromStartValue, rule.FromEndValue, team)
         { }
 
         public GroupRule(Group group, string name, int ruleType, Division fromDivision, 
-                            String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, 
-                            bool isHomeTeam)
+                            String seriesName, int fromStartValue, int fromEndValue, Team fromTeam)
         {
             Group = group;
             RuleType = ruleType;            
@@ -59,8 +55,7 @@ namespace JodyApp.Domain.Playoffs
             FromSeries = seriesName;
             FromStartValue = fromStartValue;
             FromEndValue = fromEndValue;
-            FromTeam = fromTeam;
-            IsHomeTeam = isHomeTeam;            
+            FromTeam = fromTeam;                     
             Name = name;
         }
 
@@ -143,35 +138,35 @@ namespace JodyApp.Domain.Playoffs
         #region Static Creates
         public static GroupRule CreateFromDivision(Group g, string name,Division fromDivision, int highestRank, int lowestRank)
         {            
-            var rule =  new GroupRule(g, name, GroupRule.FROM_DIVISION, fromDivision, null, highestRank, lowestRank, null, true);
+            var rule =  new GroupRule(g, name, GroupRule.FROM_DIVISION, fromDivision, null, highestRank, lowestRank, null);
             g.GroupRules.Add(rule);
             return rule;
         }
 
         public static GroupRule CreateFromDivisionBottom(Group g, string name, Division fromDivision, int highestRank, int lowestRank)
         {            
-            var rule = new GroupRule(g, name, GroupRule.FROM_DIVISION_BOTTOM, fromDivision, null, highestRank, lowestRank, null, true);
+            var rule = new GroupRule(g, name, GroupRule.FROM_DIVISION_BOTTOM, fromDivision, null, highestRank, lowestRank, null);
             g.GroupRules.Add(rule);
             return rule;
         }
 
         public static GroupRule CreateFromSeriesWinner(Group g, string name, string seriesName)
         {
-            var rule = new GroupRule(g, name, GroupRule.FROM_SERIES, null, seriesName, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null, true);
+            var rule = new GroupRule(g, name, GroupRule.FROM_SERIES, null, seriesName, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null);
             g.GroupRules.Add(rule);
             return rule;
         }
 
         public static GroupRule CreateFromSeriesLoser(Group g, string name, string seriesName)
         {
-            var rule = new GroupRule(g, name, GroupRule.FROM_SERIES, null, seriesName, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null, true);
+            var rule = new GroupRule(g, name, GroupRule.FROM_SERIES, null, seriesName, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null);
             g.GroupRules.Add(rule);
             return rule;
         }
 
-        public static GroupRule CreateFromTeam(Group g, string name, Team team, bool isHomeTeam)
+        public static GroupRule CreateFromTeam(Group g, string name, Team team)
         {
-            var rule = new GroupRule(g, name, GroupRule.FROM_TEAM, null, null, 1, 1, team, isHomeTeam);
+            var rule = new GroupRule(g, name, GroupRule.FROM_TEAM, null, null, 1, 1, team);
             g.GroupRules.Add(rule);
             return rule;
         }

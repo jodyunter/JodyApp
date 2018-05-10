@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
+using System.Data.Entity;
 
 namespace JodyApp.Service.Test.DataFolder.Jody
 {
@@ -30,20 +32,31 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
         Division League, Premier, Division1;
         Division Division2;
+
         Team Toronto, Montreal, Ottawa, NewYork, Boston, QuebecCity;
         Team Vancouver, Edmonton, Calgary;
         Team Winnipeg, Minnesota, Chicago;
         Team Colorado, Pittsburgh, Philadelphia, NewJersey, Hamilton, Nashville;
         Team Washington, Victoria, Columbus, Seattle, SanJose, LosAngelas;
+
         Group PremierQualificationGroup;
         Group ChampionshipGroup;
         Group Division1QualificationGroup;
+        Group SemiFinalGroup;
+        string ChampionshipGroupName = "ChampionshipGroup";
+        string SemiFinalGroupName = "SemiFinalGroup";
+
         Season RegularSeason;
+
         League MyLeague;
         Playoff Playoffs;
                 
         SeriesRule PremierQualificationSeriesRule, ChampionshipSeriesRule;
         SeriesRule Division1QualificationSeriesRule;
+        SeriesRule SemiFinal1Rule, SemiFinal2Rule;
+        string ChampionshipSeriesName = "Final";
+        string SemiFinal1SeriesName = "Semi Final 1";
+        string SemiFinal2SeriesName = "Semi Final 2";
 
         public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
         {
@@ -104,7 +117,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         public override void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups, Dictionary<string, SeriesRule> rules)
         {
             PremierQualificationSeriesRule = CreateAndAddSeriesRule(Playoffs, "Qualification", 1, PremierQualificationGroup, 1, PremierQualificationGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, rules);
-            ChampionshipSeriesRule = CreateAndAddSeriesRule(Playoffs, "Final", 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false,SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, rules);
+            ChampionshipSeriesRule = CreateAndAddSeriesRule(Playoffs, ChampionshipSeriesName, 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false,SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, rules);
 
             
         }
@@ -112,7 +125,7 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         public override void PrivateCreateGroups(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, Group> groups)
         {
             PremierQualificationGroup = CreateAndAddGroup(Playoffs, "Premier Qualification Group", League, groups);
-            ChampionshipGroup = CreateAndAddGroup(Playoffs, "ChampionshipGroup", Premier, groups);
+            ChampionshipGroup = CreateAndAddGroup(Playoffs, ChampionshipGroupName, Premier, groups);
         }
 
         public override void PrivateCreateGroupRules(Dictionary<string, Group> groups, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
@@ -191,16 +204,64 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         }
 
         public void RunUpdate3()
-        {
+        {            
+            MyLeague = db.Leagues.Where(l => l.Name == LeagueName).First();
+            Playoffs = (Playoff)competitionService.GetReferenceCompetitionByName(MyLeague, PlayoffName);
+            RegularSeason = (Season)competitionService.GetReferenceCompetitionByName(MyLeague, RegularSeasonName);
+
+            ChampionshipSeriesRule = Playoffs.SeriesRules.Where(sr => sr.Name == ChampionshipSeriesName).First();
+            ChampionshipGroup = Playoffs.Groups.Where(gr => gr.Name == ChampionshipGroupName).First();
+
+            League = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "League");
+            Premier = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "Premier");
+
+            SemiFinalGroup = new Group(SemiFinalGroupName, Playoffs, Premier, new List<GroupRule>());
+            GroupRule.CreateFromDivision(SemiFinalGroup, "SF Group Rule 1", Premier, 1, 4);
+
+            db.Groups.Add(SemiFinalGroup);
+
+            SemiFinal1Rule = new SeriesRule(Playoffs, SemiFinal1SeriesName, 2, SemiFinalGroup, 1, SemiFinalGroup, 4,
+                SeriesRule.TYPE_BEST_OF, 4, false, SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES);
+            SemiFinal2Rule = new SeriesRule(Playoffs, SemiFinal2SeriesName, 2, SemiFinalGroup, 2, SemiFinalGroup, 3,
+                SeriesRule.TYPE_BEST_OF, 4, false, SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES);
+
+            db.SeriesRules.AddRange(new SeriesRule[] { SemiFinal1Rule, SemiFinal2Rule });
+
+            ChampionshipSeriesRule.Round = 3;
+            ChampionshipGroup.GroupRules[0].FromDivision = null;
+            ChampionshipGroup.GroupRules[0].FromSeries = SemiFinal1SeriesName;
+            ChampionshipGroup.GroupRules[0].RuleType = GroupRule.FROM_SERIES;
+            ChampionshipGroup.GroupRules[0].FromStartValue = GroupRule.SERIES_WINNER;
+            GroupRule.CreateFromSeriesWinner(ChampionshipGroup, "CH Grp Rule 2", SemiFinal2SeriesName);
+
+            var errorMessages = new List<string>();
+
+            bool valid = true;
+            valid = valid && SemiFinalGroup.ValidateConfiguration(errorMessages);
+            valid = valid && ChampionshipGroup.ValidateConfiguration(errorMessages);
+
+            errorMessages.ForEach(s => Console.WriteLine(s));
+
+            if (!valid)
+            {
+                competitionService.Rollback();
+            }
+            else
+            {
+                db.SaveChanges();
+            }
+
+            db.SaveChanges();
+
 
         }
         public override void UpdateData()
         {
 
-            DeleteAllData();
-            InsertData();
-            RunUpdate1();
-            RunUpdate2();
+            //DeleteAllData();
+            //InsertData();
+            //RunUpdate1();
+            //RunUpdate2();
             //RunUpdate3();
             //RunUpdate4();
             //RunUpdate5();

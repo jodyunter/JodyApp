@@ -54,7 +54,6 @@
     <Compile Include="Database\JodyAppContext.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DivisionRank.cs" />
-    <Compile Include="Domain\Exceptions\ConfigurationException.cs" />
     <Compile Include="Domain\Helpers\SeasonExtensions.cs" />
     <Compile Include="Domain\Helpers\DivisionExtentions.cs" />
     <Compile Include="Domain\Helpers\TeamExtensions.cs" />
@@ -128,6 +127,10 @@
     <Compile Include="Migrations\201805101441380_whatisgoingon.Designer.cs">
       <DependentUpon>201805101441380_whatisgoingon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805101818302_GroupRulevalidation01.cs" />
+    <Compile Include="Migrations\201805101818302_GroupRulevalidation01.Designer.cs">
+      <DependentUpon>201805101818302_GroupRulevalidation01.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -171,6 +174,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805101441380_whatisgoingon.resx">
       <DependentUpon>201805101441380_whatisgoingon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805101818302_GroupRulevalidation01.resx">
+      <DependentUpon>201805101818302_GroupRulevalidation01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

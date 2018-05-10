@@ -22,7 +22,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             fromDivision.Teams.Add(new Team("Temp Team", 0, fromDivision));
             fromDivision.Teams.Add(new Team("Temp Team 2", 0, fromDivision));
             fromDivision.Teams.Add(new Team("Temp Team 3", 0, fromDivision));
-            GroupRule rule = new GroupRule(group, "", GroupRule.FROM_DIVISION, fromDivision, "", 1, 3, null, false);
+            GroupRule rule = new GroupRule(group, "", GroupRule.FROM_DIVISION, fromDivision, "", 1, 3, null);
 
             var errors = new List<string>();
 
@@ -37,7 +37,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var expected = "No message here. Type: Invalid Group Type. Name: Name1.";
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            GroupRule rule = new GroupRule(group, "Name1", 55, null, "", 1, 1, null, false);
+            GroupRule rule = new GroupRule(group, "Name1", 55, null, "", 1, 1, null);
 
             var errors = new List<string>();
 
@@ -51,7 +51,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         public void ShouldValidateGroupRuleNoGroup()
         {
             var expected = "Group Cannot Be Null. Type: From Division Top. Name: Name1.";
-            GroupRule rule = new GroupRule(null, "Name1", GroupRule.FROM_DIVISION, null, "", 1, 1, null, false);
+            GroupRule rule = new GroupRule(null, "Name1", GroupRule.FROM_DIVISION, null, "", 1, 1, null);
 
             var errors = new List<string>();
 
@@ -66,7 +66,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var expected = "From Division Cannot be null. Type: From Division Top. Name: Name1.";
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_DIVISION, null, "", 1, 1, null, false);
+            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_DIVISION, null, "", 1, 1, null);
 
             var errors = new List<string>();
 
@@ -83,7 +83,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
             Division fromDivision = new Division(null, null, "Test Me", null, 1, 1, null);
             fromDivision.Teams.Add(new Team("Temp Team", 0, fromDivision));
-            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_DIVISION, fromDivision, "", 1, 3, null, false);
+            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_DIVISION, fromDivision, "", 1, 3, null);
 
             var errors = new List<string>();
 
@@ -101,7 +101,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             fromDivision.Teams.Add(new Team("Temp Team", 0, fromDivision));
             fromDivision.Teams.Add(new Team("Temp Team 2", 0, fromDivision));
             fromDivision.Teams.Add(new Team("Temp Team 3", 0, fromDivision));
-            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_DIVISION, fromDivision, "", 1, 3, null, false);
+            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_DIVISION, fromDivision, "", 1, 3, null);
 
             var errors = new List<string>();
 
@@ -115,7 +115,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var expected = "From Series Cannot be null. Type: From Series. Name: Name1.";
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());            
-            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "", 1, 3, null, false);
+            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "", 1, 3, null);
 
             var errors = new List<string>();
 
@@ -130,7 +130,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var expected = "Value must be Series Winner or Series Loser. Type: From Series. Name: Name1.";
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "My Series", -10, 1, null, false);
+            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "My Series", -10, 1, null);
 
             var errors = new List<string>();
 
@@ -144,7 +144,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         {            
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "My Series", GroupRule.SERIES_WINNER, 3, null, false);
+            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "My Series", GroupRule.SERIES_WINNER, 3, null);
 
             var errors = new List<string>();
 
@@ -158,7 +158,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         {            
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "MY Sereis", GroupRule.SERIES_LOSER, 3, null, false);
+            GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_SERIES, null, "MY Sereis", GroupRule.SERIES_LOSER, 3, null);
 
             var errors = new List<string>();
 
@@ -172,7 +172,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var expected = "From Team Cannot be null. Type: From Team. Name: Name.";
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            GroupRule rule = new GroupRule(group, "Name", GroupRule.FROM_TEAM, null, "", 1, 3, null, false);
+            GroupRule rule = new GroupRule(group, "Name", GroupRule.FROM_TEAM, null, "", 1, 3, null);
 
             var errors = new List<string>();
 
@@ -186,7 +186,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         {            
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            GroupRule rule = new GroupRule(group, "Name", GroupRule.FROM_TEAM, null, "", 1, 3, new Team("My Team", 5, null), false);
+            GroupRule rule = new GroupRule(group, "Name", GroupRule.FROM_TEAM, null, "", 1, 3, new Team("My Team", 5, null));
 
             var errors = new List<string>();
 

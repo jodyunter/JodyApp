@@ -88,52 +88,13 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         {
             Team team = CreateForByTeam("My Team Name", 12);
             Group group = new Group("Team Group", playoff, null, new List<GroupRule>());
-            GroupRule rule = GroupRule.CreateFromTeam(group, "Team Rule", team, false);
+            GroupRule rule = GroupRule.CreateFromTeam(group, "Team Rule", team);
 
             var teamList = new List<Team>();
             playoff.AddTeamsToGroup(rule, teamList);
 
             AreEqual(1, teamList.Count);
             AreEqual("My Team Name", teamList[0].Name);            
-        }
-        [TestMethod]
-        public void ShouldGetByTeamInOrderAwayFirst()
-        {
-            Team team1 = CreateForByTeam("Team 1", 12);
-            Group group = new Group("Team Group", playoff, null, new List<GroupRule>());
-            GroupRule rule1 = GroupRule.CreateFromTeam(group, "Team Rule 1", team1, false);
-
-            Team team2 = CreateForByTeam("Team 2", 13);
-            GroupRule rule2 = GroupRule.CreateFromTeam(group, "Team Rule 2", team2, true);
-
-            
-            playoff.Groups = new List<Group>() { group };
-            var groupMap = playoff.SetupGroups();
-            var teamList = groupMap[group.Name];
-
-            AreEqual(2, teamList.Count);
-            AreEqual("Team 1", teamList[1].Name);
-            AreEqual("Team 2", teamList[0].Name);
-            
-        }
-        [TestMethod]
-        public void ShouldGetByTeamInOrderHomeFirst()
-        {
-            Team team1 = CreateForByTeam("Team 2", 13);
-            Group group = new Group("Team Group", playoff, null, new List<GroupRule>());
-            GroupRule rule1 = GroupRule.CreateFromTeam(group, "Team Rule 1", team1, true);
-
-            Team team2 = CreateForByTeam("Team 1", 12);
-            GroupRule rule2 = GroupRule.CreateFromTeam(group, "Team Rule 2", team2, false);
-
-
-            playoff.Groups = new List<Group>() { group };
-            var groupMap = playoff.SetupGroups();
-            var teamList = groupMap[group.Name];
-
-            AreEqual(2, teamList.Count);
-            AreEqual("Team 1", teamList[1].Name);
-            AreEqual("Team 2", teamList[0].Name);
         }
         [TestMethod]
         public void ShouldGetTeamsBySeriesWinner()

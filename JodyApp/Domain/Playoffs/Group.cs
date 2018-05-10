@@ -8,6 +8,10 @@ namespace JodyApp.Domain.Playoffs
 {
     public class Group:ConfigurableDomainObject
     {
+        public const string GROUP_RULE_ERRORS = "Errors in Group Rules";
+        public const string NOSORTBYDIVISION_ONE_RULE_ONLY = "Only one rule can be used when no Sort By Division is set";
+        public const string FROM_SERIES_DOES_NOT_EXIST = "Series with Name: {0} does not exist in Playoff: {1}";
+        public const string FROM_DIVISION_NOSORTBYDIVISION_TOO_MANY_POSITIONS = "When using a From Division Rule without a Sort By Division, you can only specify one position in the division";
         public string Name { get; set; }
         virtual public Playoff Playoff { get; set; }
         virtual public List<GroupRule> GroupRules { get; set; }
@@ -28,8 +32,12 @@ namespace JodyApp.Domain.Playoffs
 
         public override void CheckForErrors(List<string> errorMessages)
         {
-            string formatter = "{0}";
+            string formatter = "{0}. GroupRule: {1}.";
             bool noRuleErrors = true;
+    
+            if (SortByDivision == null)            
+                if (GroupRules.Count > 1) AddMessage(formatter, errorMessages, NOSORTBYDIVISION_ONE_RULE_ONLY, Name);                
+            
             GroupRules.ForEach(gr =>
             {
                 var validRule = gr.ValidateConfiguration(errorMessages);
@@ -37,19 +45,26 @@ namespace JodyApp.Domain.Playoffs
                 if (validRule)
                 {
                     //if from series does series exist?
-                    if (gr.RuleType == GroupRule.FROM_SERIES)
+                    switch(gr.RuleType) 
                     {
-                        var seriesName = gr.FromSeries;
-                        validRule = Playoff.SeriesRules.Where(sr => sr.Name == seriesName).FirstOrDefault() != null;
-                        if (!validRule) AddMessage(formatter, errorMessages, "Series with Name: " + seriesName + " does not exist in Playoff: " + Playoff.Name);
-                    }
+                        case GroupRule.FROM_SERIES:
+                            var seriesName = gr.FromSeries;
+                            validRule = Playoff.SeriesRules.Where(sr => sr.Name == seriesName).FirstOrDefault() != null;
+                            if (!validRule) AddMessage(formatter, errorMessages, String.Format(FROM_SERIES_DOES_NOT_EXIST, seriesName, Playoff.Name), Name);
+                            break;
+                        case GroupRule.FROM_DIVISION:
+                        case GroupRule.FROM_DIVISION_BOTTOM:
+                            if (SortByDivision == null)
+                                if (gr.FromStartValue != gr.FromEndValue) AddMessage(formatter, errorMessages, FROM_DIVISION_NOSORTBYDIVISION_TOO_MANY_POSITIONS, Name);
+                            break;
+                    }                    
                 }
 
                 noRuleErrors = noRuleErrors && validRule;
 
             });
 
-            if (!noRuleErrors) AddMessage("{0}", errorMessages, "Errors in Group Rules");
+            if (!noRuleErrors) AddMessage(formatter, errorMessages, GROUP_RULE_ERRORS, Name);
             
         }
         #endregion

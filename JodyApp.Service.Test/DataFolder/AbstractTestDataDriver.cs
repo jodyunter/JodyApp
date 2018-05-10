@@ -13,8 +13,7 @@ namespace JodyApp.Service.Test.DataFolder
 {
     public abstract class AbstractTestDataDriver
     {
-        public JodyAppContext db;
-        String LeagueName = "Abstract League Name";
+        public JodyAppContext db;        
 
         public AbstractTestDataDriver()
         {
@@ -175,10 +174,10 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
         public GroupRule CreateAndAddGroupRule(Group g, string name, int ruleType, Division fromDivision, 
-                                                String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, 
+                                                String seriesName, int fromStartValue, int fromEndValue, Team fromTeam,  
                                                 Dictionary<string, GroupRule> map)
         {
-            GroupRule rule = new GroupRule(g, name, ruleType, fromDivision, seriesName, fromStartValue, fromEndValue, fromTeam, isHomeTeam);
+            GroupRule rule = new GroupRule(g, name, ruleType, fromDivision, seriesName, fromStartValue, fromEndValue, fromTeam);
 
             map.Add(map.Keys.Count.ToString(), rule);            
             return rule;

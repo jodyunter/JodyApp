@@ -115,46 +115,23 @@ namespace JodyApp.Domain.Playoffs
             return groupMap;
         }
 
-        private static void AddTeam(GroupRule rule, List<Team> teamsInGroup, Team team, bool specificTeams)
-        {
-            if (specificTeams)
-            { 
-                if (teamsInGroup.Count > 0)
-                {
-                    if (rule.IsHomeTeam)
-                    {
-                        teamsInGroup.Insert(0, team);
-                    }
-                    else
-                    {
-                        teamsInGroup.Insert(1, team);
-                    }
-                }
-                else
-                    teamsInGroup.Add(team);
-            }
-            else
-                teamsInGroup.Add(team);            
-        }
 
         public void AddTeamsToGroup(GroupRule rule, List<Team> teamsInGroup)
         {            
             switch (rule.RuleType)
             {
                 case GroupRule.FROM_TEAM:
-                    AddTeam(rule, teamsInGroup, rule.FromTeam, true);                        
+                    teamsInGroup.Add(rule.FromTeam);                    
                     break;
                 case GroupRule.FROM_SERIES:
                     switch (rule.FromStartValue)
                     {
                         case GroupRule.SERIES_WINNER:
-                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.FromSeries).GetWinner(), false);
+                            teamsInGroup.Add(GetSeriesByName(rule.FromSeries).GetWinner());
                             break;
                         case GroupRule.SERIES_LOSER:
-                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.FromSeries).GetLoser(), false);
+                            teamsInGroup.Add(GetSeriesByName(rule.FromSeries).GetLoser());
                             break;
-                        default:
-                            throw new ApplicationException("Bad Option in Group Rule From Series");
                     }
                     break;
                 case GroupRule.FROM_DIVISION:
@@ -176,8 +153,6 @@ namespace JodyApp.Domain.Playoffs
                         teamsInGroup.Add(reversedList[i-1].Team);
                     }
                     break;
-                default:
-                    throw new ApplicationException("Bad option in GroupRule Rule Type");
             }            
         }
                 
