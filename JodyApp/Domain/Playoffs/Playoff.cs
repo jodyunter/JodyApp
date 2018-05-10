@@ -20,7 +20,7 @@ namespace JodyApp.Domain.Playoffs
 
         public int CurrentRound { get; set; }
         virtual public List<Series> Series { get; set; }
-        virtual public List<GroupRule> GroupRules { get; set; }
+        virtual public List<Group> Groups { get; set; }
         virtual public List<Team> PlayoffTeams { get; set; }
 
         virtual public Season Season { get; set; }
@@ -96,36 +96,28 @@ namespace JodyApp.Domain.Playoffs
         {
             var groupMap = new Dictionary<String, List<Team>>();
 
-            GroupRules.ForEach(rule => 
+            //this should put all teams into the group map, and then sort (if needed) the teams
+            Groups.ForEach(group =>
             {
-                if (!groupMap.ContainsKey(rule.GroupIdentifier)) groupMap.Add(rule.GroupIdentifier, new List<Team>());
-                AddTeamsToGroup(rule, groupMap[rule.GroupIdentifier]);                
-            }
-            );
-
-            //loop through the group rules and verify that where there is no division to sort by the teams are in the proper order
-            //hometeams should be first
-            groupMap.Keys.ToList().ForEach(key =>
-            {
-                var teamList = groupMap[key];
-                var groupRule = GroupRules.Where(gr => gr.GroupIdentifier == key).First();
-                var division = groupRule.SortByDivision;
-                
-                if (division != null)
+                if (!groupMap.ContainsKey(group.Name)) groupMap.Add(group.Name, new List<Team>());
+                group.GroupRules.ForEach(groupRule =>
                 {
-                    teamList = teamList.OrderBy(t => division.GetRank(t)).ToList();
+                    AddTeamsToGroup(groupRule, groupMap[group.Name]);
+                });
+
+                if (group.SortByDivision != null)
+                {
+                    groupMap[group.Name] = groupMap[group.Name].OrderBy(t => group.SortByDivision.GetRank(t)).ToList();
                 }
-
-                groupMap[key] = teamList;
-
             });
+
             return groupMap;
         }
 
-        private static void AddTeam(GroupRule rule, List<Team> teamsInGroup, Team team)
+        private static void AddTeam(GroupRule rule, List<Team> teamsInGroup, Team team, bool specificTeams)
         {
-            if (rule.SortByDivision == null)
-            {
+            if (specificTeams)
+            { 
                 if (teamsInGroup.Count > 0)
                 {
                     if (rule.IsHomeTeam)
@@ -149,16 +141,16 @@ namespace JodyApp.Domain.Playoffs
             switch (rule.RuleType)
             {
                 case GroupRule.FROM_TEAM:
-                    AddTeam(rule, teamsInGroup, rule.FromTeam);                        
+                    AddTeam(rule, teamsInGroup, rule.FromTeam, true);                        
                     break;
                 case GroupRule.FROM_SERIES:
                     switch (rule.FromStartValue)
                     {
                         case GroupRule.SERIES_WINNER:
-                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.SeriesName).GetWinner());
+                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.SeriesName).GetWinner(), false);
                             break;
                         case GroupRule.SERIES_LOSER:
-                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.SeriesName).GetLoser());
+                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.SeriesName).GetLoser(), false);
                             break;
                         default:
                             throw new ApplicationException("Bad Option in Group Rule From Series");
@@ -191,8 +183,8 @@ namespace JodyApp.Domain.Playoffs
         public void SetTeamsForSeries(Dictionary<string, List<Team>> groupings, Series series)
         {
             SeriesRule seriesRule = series.Rule;
-            var homeTeamList = groupings[seriesRule.HomeTeamFromGroup];
-            var awayTeamList = groupings[seriesRule.AwayTeamFromGroup];
+            var homeTeamList = groupings[seriesRule.HomeTeamFromGroup.Name];
+            var awayTeamList = groupings[seriesRule.AwayTeamFromGroup.Name];
 
             var homeTeam = GetOrSetupPlayoffTeam(homeTeamList[seriesRule.HomeTeamFromRank - 1]);
             var awayTeam = GetOrSetupPlayoffTeam(awayTeamList[seriesRule.AwayTeamFromRank - 1]);            

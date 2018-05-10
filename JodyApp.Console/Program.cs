@@ -21,7 +21,7 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            JodyAppContext db = new JodyAppContext(JodyAppContext.WORK_TEST);
+            JodyAppContext db = new JodyAppContext(JodyAppContext.HOME_TEST);
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
             driver.UpdateData();
             

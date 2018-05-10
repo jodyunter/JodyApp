@@ -39,6 +39,7 @@ namespace JodyApp.Domain
             this.Season = season;
             Teams = new List<Team>();
             Rankings = new List<DivisionRank>();
+            SortingRules = new List<SortingRule>();
                  
         }
         public Division(League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : this(league, season, name, shortName, level, order, parent)

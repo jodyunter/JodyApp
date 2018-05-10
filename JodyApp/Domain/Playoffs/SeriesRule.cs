@@ -22,9 +22,9 @@ namespace JodyApp.Domain.Playoffs
         public string Name { get; set; }
         public int Round { get; set; }
         //teams are picked from Groupings of teams.  Sometimes the groupings are only 2 teams sometimse more
-        public string HomeTeamFromGroup { get; set; }
+        public Group HomeTeamFromGroup { get; set; }
         public int HomeTeamFromRank { get; set; }
-        public string AwayTeamFromGroup { get; set; }
+        public Group AwayTeamFromGroup { get; set; }
         public int AwayTeamFromRank { get; set; }        
 
         public int SeriesType { get; set; } //total goal series or best of
@@ -34,11 +34,8 @@ namespace JodyApp.Domain.Playoffs
         public string HomeGames { get; set; } //sets which games are home, if there is not, then alternate 1,1,0,0,1,0,1 is standard exmaple.  1 = "Home Team" gets first home game        
         public SeriesRule() { }
 
-        public SeriesRule(SeriesRule rule, Playoff p) : this(p, rule.Name, rule.Round, rule.HomeTeamFromGroup, 
-                                                            rule.HomeTeamFromRank, rule.AwayTeamFromGroup, rule.AwayTeamFromRank, 
-                                                            rule.SeriesType, rule.GamesNeeded, rule.CanTie, rule.HomeGames) { }
-        public SeriesRule(Playoff playoff, string name, int round, string homeTeamFromGroup,
-                            int homeTeamFromRank, string awayTeamFromGroup, int awayTeamFromRank, 
+        public SeriesRule(Playoff playoff, string name, int round, Group homeTeamFromGroup,
+                            int homeTeamFromRank, Group awayTeamFromGroup, int awayTeamFromRank, 
                             int seriesType, int gamesNeeded, bool canTie, string homeGames)
         {            
             Playoff = playoff;

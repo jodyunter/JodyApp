@@ -16,10 +16,8 @@ namespace JodyApp.Domain.Table
 
         //need to modify so that we have types, such as Division or Division Level
         public String Name { get; set; }
-        public int GroupNumber { get; set; }          
-        [Required]
-        public Division Division { get; set; }
-        [Required]
+        public int GroupNumber { get; set; }                  
+        public Division Division { get; set; }        
         public Division DivisionToGetTeamsFrom { get; set; }
         public string PositionsToUse { get; set; }
         public int DivisionLevel { get; set; }

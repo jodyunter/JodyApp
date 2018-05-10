@@ -18,7 +18,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         public AbstractTestDataDriver()
         {
-            db = new JodyAppContext(JodyAppContext.WORK_TEST);
+            db = new JodyAppContext(JodyAppContext.HOME_TEST);
         }
 
         public AbstractTestDataDriver(JodyAppContext db)
@@ -30,8 +30,9 @@ namespace JodyApp.Service.Test.DataFolder
         abstract public void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules);
         abstract public void PrivateCreateLeagues(Dictionary<string, League> leagues);
         abstract public void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules);
-        abstract public void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, SeriesRule> rules);
-        abstract public void PrivateCreateGroupRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules);
+        abstract public void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups, Dictionary<string, SeriesRule> rules);
+        abstract public void PrivateCreateGroups(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divisions, Dictionary<string, Group> groups);
+        abstract public void PrivateCreateGroupRules(Dictionary<string, Group> groups, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules);
         abstract public void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons);
         abstract public void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Playoff> playoffs);        
 
@@ -39,14 +40,15 @@ namespace JodyApp.Service.Test.DataFolder
         {
             string[] tables = {
                 "GroupRules",
-                "Games",
                 "SortingRules",
                 "DivisionRanks",
-                "ScheduleRules",
+                "Games",
                 "Series",
-                "Teams",
-                "TeamStatistics",
                 "SeriesRules",
+                "Groups",
+                "ScheduleRules",
+                "Teams",
+                "TeamStatistics",           
                 "Divisions",
                 "ReferenceCompetitions",
                 "Playoffs",
@@ -129,8 +131,8 @@ namespace JodyApp.Service.Test.DataFolder
             return rule;
         }
 
-        public SeriesRule CreateAndAddSeriesRule(Playoff p, string name, int round, string homeTeamFromGroup, int homeTeamFromRank,
-                                            string awayTeamFromGroup, int awayTeamFromRank, int seriesType,
+        public SeriesRule CreateAndAddSeriesRule(Playoff p, string name, int round, Group homeTeamFromGroup, int homeTeamFromRank,
+                                            Group awayTeamFromGroup, int awayTeamFromRank, int seriesType,
                                             int gamesNeeded, bool canTie, string homeGames, Dictionary<string, SeriesRule> map)
         {
             SeriesRule rule = new SeriesRule(p, name, round, homeTeamFromGroup, homeTeamFromRank, awayTeamFromGroup, awayTeamFromRank, seriesType, gamesNeeded, canTie, homeGames);
@@ -165,11 +167,18 @@ namespace JodyApp.Service.Test.DataFolder
             return l;
         }
 
-        public GroupRule CreateAndAddGroupRule(Playoff p, string name, int ruleType, Division sortByDivision, Division fromDivision, 
-                                                String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, 
-                                                string groupIdentifier, Dictionary<string, GroupRule> map)
+        public Group CreateAndAddGroup(Playoff p, string name, Division sortByDivision, Dictionary<string, Group> map)
         {
-            GroupRule rule = new GroupRule(p, name, ruleType, sortByDivision, fromDivision, seriesName, fromStartValue, fromEndValue, fromTeam, isHomeTeam, groupIdentifier);
+            Group group = new Group(name, p, sortByDivision, new List<GroupRule>());
+            map.Add(name, group);
+            return group;
+
+        }
+        public GroupRule CreateAndAddGroupRule(Group g, string name, int ruleType, Division fromDivision, 
+                                                String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, 
+                                                Dictionary<string, GroupRule> map)
+        {
+            GroupRule rule = new GroupRule(g, name, ruleType, fromDivision, seriesName, fromStartValue, fromEndValue, fromTeam, isHomeTeam);
 
             map.Add(map.Keys.Count.ToString(), rule);            
             return rule;
@@ -268,11 +277,11 @@ namespace JodyApp.Service.Test.DataFolder
             return rules;
         }
 
-        public Dictionary<string, SeriesRule> CreateSeriesRules(Dictionary<string, Playoff> playoffs)
+        public Dictionary<string, SeriesRule> CreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups)
         {
             var rules = new Dictionary<string, SeriesRule>();
 
-            PrivateCreateSeriesRules(playoffs, rules);
+            PrivateCreateSeriesRules(playoffs, groups, rules);
 
             db.SeriesRules.AddRange(rules.Values);
             db.SaveChanges();
@@ -280,11 +289,22 @@ namespace JodyApp.Service.Test.DataFolder
             return rules;
         }
 
-        public Dictionary<string, GroupRule> CreateGroupRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs)
+        public Dictionary<string, Group> CreateGroups(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divisions)
+        {
+            var groups = new Dictionary<string, Group>();
+
+            PrivateCreateGroups(playoffs, divisions, groups);
+
+            db.Groups.AddRange(groups.Values);
+            db.SaveChanges();
+
+            return groups;
+        }
+        public Dictionary<string, GroupRule> CreateGroupRules(Dictionary<string, Group> groups, Dictionary<string, Division> divs)
         {
             var rules = new Dictionary<string, GroupRule>();
 
-            PrivateCreateGroupRules(playoffs, divs, rules);
+            PrivateCreateGroupRules(groups, divs, rules);
 
             db.GroupRules.AddRange(rules.Values);
             db.SaveChanges();
@@ -305,8 +325,10 @@ namespace JodyApp.Service.Test.DataFolder
             Dictionary<string, Team> teams = CreateTeams(divs);
             Dictionary<string, ScheduleRule> scheduleRules = CreateRules(leagues, seasons, divs, teams);
             Dictionary<string, SortingRule> sortingRules = CreateSortingRules(divs);
-            Dictionary<string, SeriesRule> seriesRules = CreateSeriesRules(playoffs);
-            Dictionary<string, GroupRule> groupRules = CreateGroupRules(playoffs, divs);
+            Dictionary<string, Group> groups = CreateGroups(playoffs, divs);
+            Dictionary<string, GroupRule> groupRules = CreateGroupRules(groups, divs);
+            Dictionary<string, SeriesRule> seriesRules = CreateSeriesRules(playoffs, groups);
+
         }
 
         public virtual void UpdateData()

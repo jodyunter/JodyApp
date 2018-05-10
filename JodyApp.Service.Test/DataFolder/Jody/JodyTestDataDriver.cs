@@ -16,25 +16,24 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         String LeagueName = "Jody League";
         TeamService teamService;
         public JodyTestDataDriver() : base() { }
-        public JodyTestDataDriver(JodyAppContext db) : base() {  teamService = new TeamService(db); }
+        public JodyTestDataDriver(JodyAppContext db) : base(db) {  teamService = new TeamService(db); }
 
-        Division League, Premier, Division1, Division2;
+        Division League, Premier, Division1;
+        Division Division2;
         Team Toronto, Montreal, Ottawa, NewYork, Boston, QuebecCity;
         Team Vancouver, Edmonton, Calgary;
         Team Winnipeg, Minnesota, Chicago;
         Team Colorado, Pittsburgh, Philadelphia, NewJersey, Hamilton, Nashville;
-        Team Washington, Victoria, Columbus;
+        Team Washington, Victoria, Columbus, Seattle, SanJose, LosAngelas;
+        Group PremierQualificationGroup;
+        Group ChampionshipGroup;
         Season RegularSeason;
         League MyLeague;
         Playoff Playoffs;
-        
+                
         SeriesRule QualificationRule, FinalRule;
         SeriesRule SemiFinal1, SemiFinal2;
         SeriesRule D1QualificationRule;
-        string QualificationPool = "Qualification Pool";
-        string FinalPool = "Final Pool";
-        string SemiFinalPool = "Semi Final Pool";
-        string D1QualPool = "Division 1 Qualification Pool";
 
         public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
         {
@@ -92,154 +91,63 @@ namespace JodyApp.Service.Test.DataFolder.Jody
             Playoffs = CreateAndAddPlayoff(MyLeague, "Playoffs", playoffs, 2, RegularSeason);
         }
 
-        public override void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, SeriesRule> rules)
+        public override void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups, Dictionary<string, SeriesRule> rules)
         {
-            QualificationRule = CreateAndAddSeriesRule(Playoffs, "Qualification", 1, QualificationPool, 1, QualificationPool, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            FinalRule = CreateAndAddSeriesRule(Playoffs, "Final", 2, FinalPool, 1, FinalPool, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            QualificationRule = CreateAndAddSeriesRule(Playoffs, "Qualification", 1, PremierQualificationGroup, 1, PremierQualificationGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            FinalRule = CreateAndAddSeriesRule(Playoffs, "Final", 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
 
             
         }
 
-        public override void PrivateCreateGroupRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
+        public override void PrivateCreateGroups(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, Group> groups)
         {
-            CreateAndAddGroupRule(GroupRule.CreateFromDivisionBottom(Playoffs, "Group Rule 1", QualificationPool, League, Premier, 1, 1), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 2", QualificationPool, League, Division1, 1, 1), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(Playoffs, "Group Rule 3", FinalPool, Premier, Premier, 1, 2), rules);
+            PremierQualificationGroup = CreateAndAddGroup(Playoffs, "Premier Qualification Group", League, groups);
+            ChampionshipGroup = CreateAndAddGroup(Playoffs, "ChampionshipGroup", Premier, groups);
+        }
 
-
+        public override void PrivateCreateGroupRules(Dictionary<string, Group> groups, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
+        {
+            CreateAndAddGroupRule(GroupRule.CreateFromDivisionBottom(PremierQualificationGroup, "Group Rule 1", Premier, 1, 1), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(PremierQualificationGroup, "Group Rule 2", Division1, 1, 1), rules);
+            CreateAndAddGroupRule(GroupRule.CreateFromDivision(ChampionshipGroup, "Group Rule 3", Premier, 1, 2), rules);
 
         }
-        
+
+        //how to add a new division
         public void RunUpdate1()
-        {            
-
-
-            Playoffs = db.Playoffs.Where(p => p.Year == 0).First();
-            Premier = db.Divisions.Where(d => d.Name == "Premier" && d.Season.Year == 0).First();
-
-            //create semi final pools            
-            var SemiFinalGroup = GroupRule.CreateFromDivision(Playoffs, "Group Rule 4", SemiFinalPool, Premier, Premier, 1, 4);
-            db.GroupRules.Add(SemiFinalGroup);
-
-            //create semi final series rules
-            SemiFinal1 = new SeriesRule(Playoffs, "Semi Final 1", 2, SemiFinalPool, 1, SemiFinalPool, 4, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1");
-            SemiFinal2 = new SeriesRule(Playoffs, "Semi Final 2", 2, SemiFinalPool, 2, SemiFinalPool, 3, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1");
-
-            db.SeriesRules.Add(SemiFinal1);
-            db.SeriesRules.Add(SemiFinal2);
-
-            //delete old final pool rule
-            var FinalPoolRule = db.GroupRules.Where(gr => gr.Name == "Group Rule 3" && gr.Playoff.Year == 0).First();
-            db.GroupRules.Remove(FinalPoolRule);
-
-            //add new final pool rules
-            db.GroupRules.Add(GroupRule.CreateFromSeriesWinner(Playoffs, "Group Rule 5", FinalPool, SemiFinal1.Name, Premier));
-            db.GroupRules.Add(GroupRule.CreateFromSeriesWinner(Playoffs, "Group Rule 6", FinalPool, SemiFinal2.Name, Premier));
-
-            FinalRule = db.SeriesRules.Where(s => s.Playoff.Year == 0 && s.Name == "Final").First();
-            FinalRule.Round = 3;
-
-            db.SaveChanges();
-        }
-        public void RunUpdate2()
         {
-            Division1 = db.Divisions.Where(d => d.Name == "Division1" && d.Season.Year == 0).First();
-            RegularSeason = Division1.Season;
-            MyLeague = Division1.League;
-            League = Division1.Parent;
+            MyLeague = db.Leagues.Where(l => l.Name == LeagueName).First();
+            RegularSeason = db.Seasons.Where(s => s.League.Id == MyLeague.Id && s.Year == 0 && s.Name == "Regular Season").First();
 
-            Division2 = new Division(MyLeague, RegularSeason, "Division2", null, 1, 3, League, null);
+            Division2 = new Division(MyLeague, RegularSeason, "Division2", null, 1, 2, League);
             db.Divisions.Add(Division2);
 
-            var scheduleRule = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 3", Division2, true, 5, 1, false);
-            db.ScheduleRules.Add(scheduleRule);
+            Colorado = teamService.CreateTeam("Colorado", 1, Division2);
+            Pittsburgh = teamService.CreateTeam("Pittsburgh", 1, Division2);
+            Philadelphia = teamService.CreateTeam("Philadelphia", 1, Division2);
+            NewJersey = teamService.CreateTeam("New Jersey", 1, Division2);
+            Hamilton = teamService.CreateTeam("Hamilton", 1, Division2);
+            Nashville = teamService.CreateTeam("Nashville", 1, Division2);
 
-            Colorado = new Team("Colorado", 1, Division2);
-            Pittsburgh = new Team("Pittsburgh", 1, Division2);
-            Philadelphia = new Team("Philadelphia", 1, Division2);
-            var teamList = new Team[] { Colorado, Pittsburgh, Philadelphia };
-            Division2.Teams.AddRange(teamList);
-            db.Teams.AddRange(teamList);
-            
-            SortingRule sortingRule = new SortingRule()
+            //may not be needed if no division specific schedule rules are needed
+            ScheduleRule division2ScheduleRule = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 3", Division2, true, 5, 1, false);
+            db.ScheduleRules.Add(division2ScheduleRule);
+
+            //where does it fit in when sorting?  They will be "rest of" if nothing is specified
+            //here we are sorting by League so we have to put all members of this division behind all members of other divisions, so this is Group 2 (0, 1, 2)
+            SortingRule division2SortingRule = new SortingRule()
             {
                 Division = League,
+                DivisionToGetTeamsFrom = Division2,
                 Name = "Sorting Rule 3",
                 GroupNumber = 2,
-                DivisionToGetTeamsFrom = Division2,
                 PositionsToUse = null,
                 DivisionLevel = 0,
-                Type = SortingRule.SINGLE_DIVISION
+                Type = -1
+
             };
-
-            db.SortingRules.Add(sortingRule);
-
-            db.SaveChanges();
-
-        }
-
-        public void RunUpdate3()
-        {
-            Division2 = db.Divisions.Where(d => d.Name == "Division2" && d.Season.Year == 0).First();            
-            
-            NewJersey = new Team("New Jersey", 1, Division2);            
-            db.Teams.Add(NewJersey);
-
-            db.SaveChanges();
-            
-        }
-
-        public void RunUpdate4()
-        {
-            Division2 = db.Divisions.Where(d => d.Name == "Division2" && d.Season.Year == 0).First();
-
-            Hamilton = new Team("Hamilton", 1, Division2);            
-            db.Teams.Add(Hamilton);
-
-            db.SaveChanges();
-
-        }
-
-        public void RunUpdate5()
-        {
-            Division2 = db.Divisions.Where(d => d.Name == "Division2" && d.Season.Year == 0).First();
-
-            Nashville = new Team("Nashville", 1, Division2);
-            Division2.Teams.Add(Nashville);
-            db.Teams.Add(Nashville);
-
-            db.SaveChanges();
-
-        }
-
-        public void RunUpdate6()
-        {
-            Division1 = db.Divisions.Where(d => d.Name == "Division1" && d.Season.Year == 0).First();
-            Division2 = db.Divisions.Where(d => d.Name == "Division2" && d.Season.Year == 0).First();
-            League = db.Divisions.Where(d => d.Name == "League" && d.Season.Year == 0).First();
-            
-            Playoffs = db.Playoffs.Where(p => p.Year == 0).First();
-
-            var D1QualGroupRule1 = GroupRule.CreateFromDivisionBottom(Playoffs, "Group Rule 7", D1QualPool, League, Division1, 1, 1);
-            var D1QualGroupRule2 = GroupRule.CreateFromDivision(Playoffs, "Group Rule 8", D1QualPool, League, Division2, 1, 1);
-            db.GroupRules.Add(D1QualGroupRule1);
-            db.GroupRules.Add(D1QualGroupRule2);
-
-            //create semi final series rules
-            D1QualificationRule = new SeriesRule(Playoffs, "Division 1 Qualification", 1, D1QualPool, 1, D1QualPool, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1");            
-            db.SeriesRules.Add(D1QualificationRule);
-
-            db.SaveChanges();
-
-        }
-        public void RunUpdate7()
-        {
-
-            Columbus = teamService.CreateTeam("Columbus", 1, "Division2");
-            Victoria = teamService.CreateTeam("Victoria", 3, "Division2");
-
-            var scheduleRule = db.ScheduleRules.Where(sc => sc.Name == "Rule 3" && sc.Season.Year == 0).First();
-            scheduleRule.Rounds = 3;
+            Division2.SortingRules.Add(division2SortingRule);
+            db.SortingRules.Add(division2SortingRule);
 
             db.SaveChanges();
         }
@@ -248,14 +156,16 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
             //DeleteAllData();
             //InsertData();
-            //RunUpdate1();
+            RunUpdate1();
             //RunUpdate2();
             //RunUpdate3();
             //RunUpdate4();
             //RunUpdate5();
             //RunUpdate6();                  
             //RunUpdate7();
-            
+ 
+
+
         }
 
 

@@ -34,20 +34,37 @@ namespace JodyApp.Service
             playoff.Season = season;
 
             List<SeriesRule> newSeriesRules = new List<SeriesRule>();
-            List<GroupRule> newGroupRules = new List<GroupRule>();
+            List<Group> newGroups = new List<Group>();            
             List<Series> newSeries = new List<Series>();
+
+            referencePlayoff.Groups.ForEach(group =>            
+            {
+                Group newGroup = new Group(group.Name, playoff,
+                    group.SortByDivision != null ? season.Divisions.Where(d => d.Name == group.SortByDivision.Name).FirstOrDefault() : null,
+                    new List<GroupRule>());
+                
+                group.GroupRules.ForEach(groupRule =>
+                {
+                    GroupRule newGroupRule = new GroupRule(groupRule,
+                        groupRule.FromDivision != null ? season.Divisions.Where(d => d.Name == groupRule.FromDivision.Name).FirstOrDefault() : null,
+                        groupRule.FromTeam != null ? season.TeamData.Where(team => team.Name == groupRule.FromTeam.Name).FirstOrDefault() : null,
+                        newGroup);
+
+                    newGroup.GroupRules.Add(newGroupRule);                    
+                });
+           
+                newGroups.Add(newGroup);                
+            });
+            db.Groups.AddRange(newGroups);
+
 
             GetSeriesRulesByReference(referencePlayoff).ForEach(seriesRule =>
             {
-                SeriesRule newRule = new SeriesRule(seriesRule, playoff);
+                SeriesRule newRule = new SeriesRule(playoff, seriesRule.Name, seriesRule.Round,
+                    newGroups.Where(ng => ng.Name == seriesRule.HomeTeamFromGroup.Name).First(), seriesRule.HomeTeamFromRank,
+                    newGroups.Where(ng => ng.Name == seriesRule.AwayTeamFromGroup.Name).First(), seriesRule.AwayTeamFromRank,
+                    seriesRule.SeriesType, seriesRule.GamesNeeded, seriesRule.CanTie, seriesRule.HomeGames);
                 newSeriesRules.Add(newRule);
-
-            });
-
-            GetGroupRulesByReference(referencePlayoff).ForEach(groupRule =>
-            {
-                var newRule = CreateNewGroupRule(groupRule, referencePlayoff.League, season, playoff);
-                newGroupRules.Add(newRule);           
             });
 
             //setup series   
@@ -58,10 +75,9 @@ namespace JodyApp.Service
             });
 
             playoff.Series = newSeries;
-            playoff.GroupRules = newGroupRules;
+            playoff.Groups = newGroups;
 
-            db.SeriesRules.AddRange(newSeriesRules);
-            db.GroupRules.AddRange(newGroupRules);
+            db.SeriesRules.AddRange(newSeriesRules);            
             db.Series.AddRange(newSeries);
             
             season.TeamData.ForEach(team =>
@@ -79,34 +95,16 @@ namespace JodyApp.Service
 
         }
 
-        public GroupRule CreateNewGroupRule(GroupRule groupRule, League league, Season season, Playoff playoff)
-        {
-            Division sortByDiv = null;
-            Division fromDiv = null;
-            Team team = null;
-
-            if (groupRule.SortByDivision != null) sortByDiv = divisionService.GetByLeagueAndSeasonAndName(league, season, groupRule.SortByDivision.Name);
-            if (groupRule.FromDivision != null) fromDiv = divisionService.GetByLeagueAndSeasonAndName(league, season, groupRule.FromDivision.Name);
-
-            if (groupRule.FromTeam != null)
-            {
-                team = groupRule.FromTeam.Parent == null ? groupRule.FromTeam : groupRule.FromTeam.Parent;
-            }
-
-            GroupRule newRule = new GroupRule(groupRule, sortByDiv, fromDiv, team, playoff);
-
-            return newRule;
-        }
         public List<SeriesRule> GetSeriesRulesByReference(Playoff playoff)
         {
-            return SeriesRule.GetByReference(db, playoff);
+            return db.SeriesRules.Where(sr => sr.Playoff.Id == playoff.Id).ToList();
         }
 
-        public List<GroupRule> GetGroupRulesByReference(Playoff playoff)
+        public List<Group> GetGroupRules(Playoff playoff)
         {
-            return GroupRule.GetByReference(db, playoff);
-        }
+            return db.Groups.Where(g => g.Playoff.Id == playoff.Id).ToList();
 
+        }
         public List<Game> PlayRound(Playoff p, Random random)
         {
             var pGames = new List<Game>();

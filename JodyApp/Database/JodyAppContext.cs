@@ -41,7 +41,7 @@ namespace JodyApp.Database
             }            
         }
         //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }        
-        public JodyAppContext() : base(WORK_TEST_CONNECTION_STRING) { }
+        public JodyAppContext() : base(HOME_TEST_CONNECTION_STRING) { }
         public JodyAppContext(int type) : base(GetDataSource(type)) { }
         
 
@@ -58,6 +58,7 @@ namespace JodyApp.Database
         public DbSet<SeriesRule> SeriesRules { get; set; }
         public DbSet<Series> Series { get; set; }
         public DbSet<Playoff> Playoffs { get; set; }
+        public DbSet<Group> Groups { get; set; }
         public DbSet<GroupRule> GroupRules { get; set; }
         public DbSet<ReferenceCompetition> ReferenceCompetitions { get; set; }
 

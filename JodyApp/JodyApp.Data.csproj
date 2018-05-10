@@ -60,9 +60,8 @@
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />
     <Compile Include="Domain\Playoffs\Display\PlayoffDisplay.cs" />
-    <Compile Include="Domain\Playoffs\Helpers\GroupRuleExtensions.cs" />
+    <Compile Include="Domain\Playoffs\Group.cs" />
     <Compile Include="Domain\Playoffs\Helpers\PlayoffExtensions.cs" />
-    <Compile Include="Domain\Playoffs\Helpers\SeriesRuleExtensions.cs" />
     <Compile Include="Domain\Playoffs\Playoff.cs" />
     <Compile Include="Domain\Playoffs\GroupRule.cs" />
     <Compile Include="Domain\Playoffs\Series.cs" />
@@ -115,6 +114,14 @@
     <Compile Include="Migrations\201805091407099_GroupRuleName.Designer.cs">
       <DependentUpon>201805091407099_GroupRuleName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805100204458_GroupChange01.cs" />
+    <Compile Include="Migrations\201805100204458_GroupChange01.Designer.cs">
+      <DependentUpon>201805100204458_GroupChange01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805100211575_SeriesGroupInsteadofString.cs" />
+    <Compile Include="Migrations\201805100211575_SeriesGroupInsteadofString.Designer.cs">
+      <DependentUpon>201805100211575_SeriesGroupInsteadofString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -149,6 +156,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805091407099_GroupRuleName.resx">
       <DependentUpon>201805091407099_GroupRuleName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805100204458_GroupChange01.resx">
+      <DependentUpon>201805100204458_GroupChange01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805100211575_SeriesGroupInsteadofString.resx">
+      <DependentUpon>201805100211575_SeriesGroupInsteadofString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
