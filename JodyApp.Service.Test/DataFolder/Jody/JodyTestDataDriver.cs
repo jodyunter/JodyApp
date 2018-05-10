@@ -14,9 +14,19 @@ namespace JodyApp.Service.Test.DataFolder.Jody
     public class JodyTestDataDriver : AbstractTestDataDriver
     {
         String LeagueName = "Jody League";
+        String PlayoffName = "Playoffs";
+        String RegularSeasonName = "Regular Season";
+
         TeamService teamService;
+        DivisionService divisionService;
+        CompetitionService competitionService;
         public JodyTestDataDriver() : base() { }
-        public JodyTestDataDriver(JodyAppContext db) : base(db) {  teamService = new TeamService(db); }
+        public JodyTestDataDriver(JodyAppContext db) : base(db)
+        {
+            teamService = new TeamService(db);
+            divisionService = new DivisionService(db);
+            competitionService = new CompetitionService(db);
+        }
 
         Division League, Premier, Division1;
         Division Division2;
@@ -27,13 +37,13 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         Team Washington, Victoria, Columbus, Seattle, SanJose, LosAngelas;
         Group PremierQualificationGroup;
         Group ChampionshipGroup;
+        Group Division1QualificationGroup;
         Season RegularSeason;
         League MyLeague;
         Playoff Playoffs;
                 
-        SeriesRule QualificationRule, FinalRule;
-        SeriesRule SemiFinal1, SemiFinal2;
-        SeriesRule D1QualificationRule;
+        SeriesRule PremierQualificationSeriesRule, ChampionshipSeriesRule;
+        SeriesRule Division1QualificationSeriesRule;
 
         public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
         {
@@ -83,18 +93,18 @@ namespace JodyApp.Service.Test.DataFolder.Jody
 
         public override void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
         {
-            RegularSeason = CreateAndAddSeason(MyLeague, "Regular Season", seasons, 1);
+            RegularSeason = CreateAndAddSeason(MyLeague, RegularSeasonName, seasons, 1);
         }
 
         public override void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Playoff> playoffs)
         {
-            Playoffs = CreateAndAddPlayoff(MyLeague, "Playoffs", playoffs, 2, RegularSeason);
+            Playoffs = CreateAndAddPlayoff(MyLeague, PlayoffName, playoffs, 2, RegularSeason);
         }
 
         public override void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups, Dictionary<string, SeriesRule> rules)
         {
-            QualificationRule = CreateAndAddSeriesRule(Playoffs, "Qualification", 1, PremierQualificationGroup, 1, PremierQualificationGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
-            FinalRule = CreateAndAddSeriesRule(Playoffs, "Final", 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, "1,1,0,0,1,0,1", rules);
+            PremierQualificationSeriesRule = CreateAndAddSeriesRule(Playoffs, "Qualification", 1, PremierQualificationGroup, 1, PremierQualificationGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, rules);
+            ChampionshipSeriesRule = CreateAndAddSeriesRule(Playoffs, "Final", 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false,SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, rules);
 
             
         }
@@ -117,7 +127,8 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         public void RunUpdate1()
         {
             MyLeague = db.Leagues.Where(l => l.Name == LeagueName).First();
-            RegularSeason = db.Seasons.Where(s => s.League.Id == MyLeague.Id && s.Year == 0 && s.Name == "Regular Season").First();
+            RegularSeason = (Season)competitionService.GetReferenceCompetitionByName(MyLeague, RegularSeasonName);
+            League = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "League");
 
             Division2 = new Division(MyLeague, RegularSeason, "Division2", null, 1, 2, League);
             db.Divisions.Add(Division2);
@@ -145,18 +156,50 @@ namespace JodyApp.Service.Test.DataFolder.Jody
                 DivisionLevel = 0,
                 Type = -1
 
-            };
-            Division2.SortingRules.Add(division2SortingRule);
+            };            
             db.SortingRules.Add(division2SortingRule);
 
             db.SaveChanges();
+        }
+
+        //how to add a new playoff series
+        public void RunUpdate2()
+        {
+            MyLeague = db.Leagues.Where(l => l.Name == LeagueName).First();
+            RegularSeason = (Season)competitionService.GetReferenceCompetitionByName(MyLeague, RegularSeasonName);
+            Playoffs = (Playoff)competitionService.GetReferenceCompetitionByName(MyLeague, PlayoffName);
+            League = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "League");
+            Division1 = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "Division1");
+            Division2 = divisionService.GetByLeagueAndSeasonAndName(MyLeague, RegularSeason, "Division2");
+
+            //First create the group that will determine the teams
+            Division1QualificationGroup = new Group("Division 1 Qualification Group", Playoffs, League, new List<GroupRule>());
+            GroupRule.CreateFromDivisionBottom(Division1QualificationGroup, "D1Q Rule 1", Division1, 1, 1);
+            GroupRule.CreateFromDivision(Division1QualificationGroup, "D1Q Rule 2", Division2, 1, 1);
+
+            //add the groups to prevent the multiplicity issue
+            db.Groups.Add(Division1QualificationGroup);
+
+            //next create the series rule
+            Division1QualificationSeriesRule = new SeriesRule(Playoffs, "D1 Qualification", 1, Division1QualificationGroup, 1, Division1QualificationGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES);
+            db.SeriesRules.Add(Division1QualificationSeriesRule);
+            //do any other series need modifications?  Does the winner/loser go somewhere else, do other rounds need to be bumped or changed?
+
+            db.SaveChanges();
+
+
+        }
+
+        public void RunUpdate3()
+        {
+
         }
         public override void UpdateData()
         {
 
             //DeleteAllData();
             //InsertData();
-            RunUpdate1();
+            //RunUpdate1();
             //RunUpdate2();
             //RunUpdate3();
             //RunUpdate4();

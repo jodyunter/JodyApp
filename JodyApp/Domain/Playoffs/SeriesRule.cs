@@ -18,6 +18,8 @@ namespace JodyApp.Domain.Playoffs
         public const int SERIES_WINNER = 1;
         public const int SERIES_LOSER = 2;
 
+        public const string SEVEN_GAME_SERIES_HOME_GAMES = "1,1,0,0,1,0,1";
+
         virtual public Playoff Playoff { get; set; }              
         public string Name { get; set; }
         public int Round { get; set; }

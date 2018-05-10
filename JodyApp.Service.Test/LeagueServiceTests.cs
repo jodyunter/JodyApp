@@ -6,16 +6,27 @@ using JodyApp.Domain;
 using JodyApp.Domain.Schedule;
 using System.Linq;
 using System.Collections.Generic;
+using JodyApp.Database;
 
 namespace JodyApp.Service.Test
 {
     [TestClass]
     public class LeagueServiceTests
     {
-        Database.JodyAppContext db = new Database.JodyAppContext();
+        JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
 
         [TestMethod]
         public void ShouldTestWhenYearIsDone()
+        {
+            throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void ShouldGetSeasonCompetitionByReference()
+        {
+            throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void ShouldGetPlayoffCompetitionByReference()
         {
             throw new NotImplementedException();
         }

@@ -147,10 +147,10 @@ namespace JodyApp.Domain.Playoffs
                     switch (rule.FromStartValue)
                     {
                         case GroupRule.SERIES_WINNER:
-                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.SeriesName).GetWinner(), false);
+                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.FromSeries).GetWinner(), false);
                             break;
                         case GroupRule.SERIES_LOSER:
-                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.SeriesName).GetLoser(), false);
+                            AddTeam(rule, teamsInGroup, GetSeriesByName(rule.FromSeries).GetLoser(), false);
                             break;
                         default:
                             throw new ApplicationException("Bad Option in Group Rule From Series");

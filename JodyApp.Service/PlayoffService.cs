@@ -9,7 +9,7 @@ using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Service
 {
-    public class PlayoffService:BaseService
+    public class PlayoffService:CompetitionService
     {
         DivisionService divisionService;
 
@@ -95,6 +95,7 @@ namespace JodyApp.Service
 
         }
 
+        
         public List<SeriesRule> GetSeriesRulesByReference(Playoff playoff)
         {
             return db.SeriesRules.Where(sr => sr.Playoff.Id == playoff.Id).ToList();
@@ -140,7 +141,6 @@ namespace JodyApp.Service
         {            
             return db.Series.Where(s => s.Name == name).ToList();
         }
-       
 
     }
 

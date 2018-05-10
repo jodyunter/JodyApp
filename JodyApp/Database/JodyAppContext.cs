@@ -8,7 +8,8 @@ using JodyApp.Domain.Playoffs;
 namespace JodyApp.Database
 {
     public class JodyAppContext:DbContext
-    {
+    {        
+
         public const string HOME_PROD_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True";
         public const string HOME_TEST_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jodytest;Integrated Security=True";
         public const string WORK_TEST_CONNECTION_STRING = "Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True";
@@ -23,6 +24,8 @@ namespace JodyApp.Database
         public const int HOME_TEST = 1;
         public const int WORK_PROD = 2;
         public const int WORK_TEST = 3;
+
+        public static int CURRENT_DATABASE = WORK_TEST;
 
         public static string GetDataSource(int location) 
         {
@@ -41,7 +44,7 @@ namespace JodyApp.Database
             }            
         }
         //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }        
-        public JodyAppContext() : base(HOME_TEST_CONNECTION_STRING) { }
+        public JodyAppContext() : this(CURRENT_DATABASE) { }
         public JodyAppContext(int type) : base(GetDataSource(type)) { }
         
 

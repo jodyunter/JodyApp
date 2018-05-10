@@ -18,7 +18,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         public AbstractTestDataDriver()
         {
-            db = new JodyAppContext(JodyAppContext.HOME_TEST);
+            db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
         }
 
         public AbstractTestDataDriver(JodyAppContext db)

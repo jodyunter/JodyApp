@@ -17,5 +17,6 @@ namespace JodyApp.Domain
             if (other == null) return false;
             return this.Id.Equals(other.Id);
         }
+
     }
 }

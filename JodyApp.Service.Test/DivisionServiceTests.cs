@@ -26,7 +26,7 @@ namespace JodyApp.Service.Test
         [TestInitialize]
         public void Setup()
         {
-            db = new Database.JodyAppContext();
+            db = new Database.JodyAppContext(Database.JodyAppContext.CURRENT_DATABASE);
             driver = new DivisionTestDataDriver();
             service = new DivisionService(driver.db);
             

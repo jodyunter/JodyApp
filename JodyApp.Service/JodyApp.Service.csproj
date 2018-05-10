@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
+    <Compile Include="CompetitionService.cs" />
     <Compile Include="DivisionService.cs" />
     <Compile Include="LeagueService.cs" />
     <Compile Include="PlayoffService.cs" />

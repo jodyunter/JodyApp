@@ -21,7 +21,7 @@ namespace JodyApp.Console
 
         static void Main(string[] args)
         {
-            JodyAppContext db = new JodyAppContext(JodyAppContext.HOME_TEST);
+            JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
             driver.UpdateData();
             
@@ -96,7 +96,7 @@ namespace JodyApp.Console
             teamService.ChangeDivision(PromotedD1, "Premier");
             teamService.ChangeDivision(RelegatedP, "Division1");
 
-            var d1promotionSeries = playoffService.GetSeriesByYear("Division 1 Qualification", league.CurrentYear);
+            var d1promotionSeries = playoffService.GetSeriesByYear("D1 Qualification", league.CurrentYear);
             if (d1promotionSeries != null)
             {
                 Team PromotedD2 = d1promotionSeries.GetWinner().Parent;
@@ -127,7 +127,7 @@ namespace JodyApp.Console
             System.Console.WriteLine(String.Format(formatter, "Yr", "Champion", "Runner-Up", "Season", "To Premier", "To D1", "To D1", "To D2"));
 
             var qualificationSeries = playoffService.GetSeries("Qualification");
-            var qualificationSeries2 = playoffService.GetSeries("Division 1 Qualification");
+            var qualificationSeries2 = playoffService.GetSeries("D1 Qualification");
 
             for (int i = playoffWinners.Count; i > 0; i--)
             {

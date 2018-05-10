@@ -13,6 +13,7 @@ namespace JodyApp.Domain.Playoffs
         virtual public List<GroupRule> GroupRules { get; set; }
         virtual public Division SortByDivision { get; set; }
 
+        //when validating make sure that all series group rules have a series that exists in the playoffs
         public Group() { }
 
         public Group(string name, Playoff playoff, Division sortByDivision, List<GroupRule> groupRules)

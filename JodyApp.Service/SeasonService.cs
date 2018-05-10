@@ -143,6 +143,11 @@ namespace JodyApp.Service
             db.SaveChanges();
 
         }
+
+        public Competition GetReferenceByName(League league, string name)
+        {
+            return db.Seasons.Where(s => s.League.Id == league.Id && s.Year == 0 && s.Name == name).FirstOrDefault();
+        }
      
         public List<Team> GetTeamsInDivisionByRank(Division division)
         {
