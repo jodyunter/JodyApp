@@ -15,6 +15,8 @@ using JodyApp.Domain.Playoffs;
 using JodyApp.Domain.Playoffs.Display;
 using JodyApp.Console.Views;
 using JodyApp.ViewModel;
+using JodyApp.Console.Controllers;
+using static System.Console;
 
 namespace JodyApp.Console
 {
@@ -149,11 +151,19 @@ namespace JodyApp.Console
             }
 
 
-            SeasonView seasonView = new SeasonView();            
-            SeasonViewModel svm = new SeasonViewModel(db);
-            seasonView.viewModel = svm;
-            svm.SetSeason(LeagueName, RegularSeasonName, "Premier");
-            System.Console.WriteLine(seasonView.GetDisplayString());
+
+            BaseController controller = new LeagueController();
+            controller.View = new LeagueView();
+
+            controller.Display();
+            string input = controller.GetInput();
+            if (controller.Error)
+            {
+                WriteLine("Error!");
+                WriteLine(input);
+            }
+            controller.ProcessInput(input);
+            controller.Display();
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();

@@ -22,5 +22,7 @@ namespace JodyApp.Console.Views
             standingsView.viewModel = viewModel.Standings;
             return standingsView.GetDisplayString();
         }
+
+
     }
 }
