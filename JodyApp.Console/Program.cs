@@ -152,9 +152,10 @@ namespace JodyApp.Console
 
 
 
-            BaseController controller = new StartController();
-
-            controller.ParseInput(new List<string> { "Display", "League", "80" }, 0);
+            Controller controller = new StartController();
+            WriteLine(controller.ParseInput(new List<string> { "Display", "League", "80" }, 0).GetDisplayString());
+            WriteLine(controller.ParseInput(new List<string> { "Display", "Season", "153" }, 0).GetDisplayString());
+            
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();

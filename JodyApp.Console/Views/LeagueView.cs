@@ -7,25 +7,24 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Console.Views
 {
-    public class LeagueView : BaseView
+    public class LeagueView : SingleEntityView
     {
-        public static string LEAGUE_FORMATTER = "{0,-5}{1,-15}{2,5}{3,10} {4,-15}";        
-        public LeagueViewModel viewModel { get; set; }
-        
+        public override string FORMATTER { get { return "{0,-5}{1,-15}{2,5}{3,10} {4,-15}"; } }                
+       
+
         public LeagueView():base()
         {
-            viewModel = new LeagueViewModel();
+            ViewModel = new LeagueViewModel();
         }
 
-        public string GetDisplayHeaderString()
+        public override object[] GetHeaderStrings()
         {
-            return string.Format(LEAGUE_FORMATTER, "Id", "Name", "Year", "Complete", "Next");
+            return new object[] { "Id", "Name", "Year", "Complete", "Next" };
         }
-        public override string GetDisplayString()
-        {            
-            return 
-                GetDisplayHeaderString() + "\n" +
-                String.Format(LEAGUE_FORMATTER, viewModel.Id, viewModel.LeagueName, viewModel.CurrentYear, viewModel.IsComplete, viewModel.CurrentCompetition);
+        public override object[] GetDisplayStrings()
+        {
+            var vm = (LeagueViewModel)ViewModel;
+            return new object[] { vm.Id, vm.LeagueName, vm.CurrentYear, vm.IsComplete, vm.CurrentCompetition };
         }
     }
 }

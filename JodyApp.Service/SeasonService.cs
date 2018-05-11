@@ -172,5 +172,10 @@ namespace JodyApp.Service
         {
             return db.Seasons.Where(s => s.Name == name && s.Year == year && s.League.Id == league.Id).FirstOrDefault();
         }
+
+        public Season GetById(int id)
+        {
+            return db.Seasons.Where(s => s.Id == id).FirstOrDefault();
+        }
     }
 }

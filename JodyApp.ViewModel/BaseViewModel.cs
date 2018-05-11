@@ -2,7 +2,7 @@
 
 namespace JodyApp.ViewModel
 {
-    public class BaseViewModel
+    public abstract class BaseViewModel
     {
         protected Database.JodyAppContext db = new Database.JodyAppContext(Database.JodyAppContext.CURRENT_DATABASE);
         public bool Error { get; set; }
@@ -13,5 +13,6 @@ namespace JodyApp.ViewModel
             Error = true;
             ErrorMessages.Add(message);
         }
+
     }
 }

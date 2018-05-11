@@ -49,16 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Controller.cs" />
     <Compile Include="Controllers\DisplayController.cs" />
-    <Compile Include="Controllers\LeagueController.cs" />
     <Compile Include="Controllers\StartController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\BaseView.cs" />
+    <Compile Include="Views\LeagueListView.cs" />
+    <Compile Include="Views\SingleEntityView.cs" />
     <Compile Include="Views\LeagueView.cs" />
     <Compile Include="Views\SeasonView.cs" />
     <Compile Include="Views\StandingsView.cs" />
+    <Compile Include="Views\View.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

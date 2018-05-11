@@ -86,7 +86,11 @@ namespace JodyApp.Service
 
             return completeCompetitions.Count == league.ReferenceCompetitions.Count;
             
+        }
 
+        public List<League> GetAll()
+        {
+            return db.Leagues.ToList();
         }
 
         public List<Game> PlayNextGames(Competition competition, Random random)

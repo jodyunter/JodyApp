@@ -8,29 +8,26 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class SeasonViewModel:BaseViewModel
+    public class SeasonViewModel : SingleEntityViewModel
     {
-        string Name { get; set; }
-        int Year { get; set; }
-        string LeagueName { get; set; }
-        public StandingsViewModel Standings { get; set; }
-        
+        public int? Id { get; set; }
+        public string Name { get; set; }
+        public int Year { get; set; }
+        public string LeagueName { get; set; }
+        public bool Complete { get; set; }
 
-        public SeasonViewModel(JodyAppContext db)
-        {
-            Standings = new StandingsViewModel(db);
-        }
+        SeasonService seasonService;
 
-        public void SetSeason(string leagueName, string seasonName, params string[] divisions)
+        public SeasonViewModel() : base() { seasonService = new SeasonService(db); }          
+
+        public override void SetById(int id)
         {
-            LeagueName = leagueName;
-            Name = seasonName;
-            Year = Standings.Year;
-            SetStandings(leagueName, seasonName, divisions);
-        }
-        public void SetStandings(string leagueName, string seasonName, params string[] divisions) 
-        {         
-            Standings.SetStandingsCurrentYear(leagueName, Name, divisions);            
+            var season = seasonService.GetById(id);
+            Id = season.Id;
+            Name = season.Name;
+            Year = season.Year;
+            LeagueName = season.League.Name;
+            Complete = season.IsComplete();
         }
     }
 }

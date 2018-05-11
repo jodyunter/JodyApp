@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class LeagueViewModel:BaseViewModel
+    public class LeagueViewModel:SingleEntityViewModel
     {
         LeagueService leagueService;
 
@@ -19,7 +19,17 @@ namespace JodyApp.ViewModel
         public string CurrentCompetition { get; set; }
 
         public LeagueViewModel():base() { leagueService = new LeagueService(db); }
-        public void SetById(int id)
+
+        public LeagueViewModel(int? id, string leagueName, int currentYear, bool isComplete, string currentCompetition)
+        {            
+            Id = id;
+            LeagueName = leagueName;
+            CurrentYear = currentYear;
+            IsComplete = isComplete;
+            CurrentCompetition = currentCompetition;
+        }        
+
+        public override void SetById(int id)
         {
             var league = leagueService.GetById(id);
 
@@ -35,6 +45,7 @@ namespace JodyApp.ViewModel
             }
 
         }
+    
 
     }
 }
