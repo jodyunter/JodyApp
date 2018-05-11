@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeasonViewModel.cs" />
     <Compile Include="StandingsRecordViewModel.cs" />
     <Compile Include="StandingsViewModel.cs" />
   </ItemGroup>

@@ -14,7 +14,7 @@ namespace JodyApp.ViewModel
         public string SeasonName { get; set; }
         public int Year { get; set; }
         public string StandingsName { get; set; }
-        public List<StandingsRecordViewModel> Records { get; set; }
+        public Dictionary<string, List<StandingsRecordViewModel>> Records { get; set; }
 
         public SeasonService seasonService { get; set; }
         public LeagueService leagueService { get; set; }
@@ -25,7 +25,7 @@ namespace JodyApp.ViewModel
             leagueService = new LeagueService(db);
         }
 
-        public void SetStandingsCurrentYear(string leagueName, string seasonName, string divisionName)
+        public void SetStandingsCurrentYear(string leagueName, string seasonName, params string[] divisionNames)
         {
             var league = leagueService.GetByName(leagueName);
 
@@ -35,10 +35,10 @@ namespace JodyApp.ViewModel
                 return;
             }
 
-            SetStandings(league, seasonName, league.CurrentYear, divisionName);
+            SetStandings(league, seasonName, league.CurrentYear, divisionNames);
         }
         
-        public void SetStandings(string leagueName, string seasonName, int year, string divisionName)
+        public void SetStandings(string leagueName, string seasonName, int year, params string[] divisionNames)
         {
             var league = leagueService.GetByName(leagueName);
 
@@ -48,10 +48,10 @@ namespace JodyApp.ViewModel
                 return;
             }
 
-            SetStandings(league, seasonName, league.CurrentYear, divisionName);
+            SetStandings(league, seasonName, league.CurrentYear, divisionNames);
         }
 
-        public void SetStandings(League league, string seasonName, int year, string divisionName)
+        public void SetStandings(League league, string seasonName, int year, params string[] divisionNames)
         {
             var season = seasonService.GetSeason(league, seasonName, year);
 
@@ -67,44 +67,51 @@ namespace JodyApp.ViewModel
             season.SetupStandings();
             seasonService.SortAllDivisions(season);
 
-            var divisionToSortBy = season.Divisions.Where(d => d.Name == divisionName).FirstOrDefault();
-            if (divisionToSortBy == null)
+            Records = new Dictionary<string, List<StandingsRecordViewModel>>();
+
+            foreach (string divisionName in divisionNames)
             {
-                AddError("Cannot sort by division.");
-                return;
+                Records.Add(divisionName, new List<StandingsRecordViewModel>());
+
+                var divisionToSortBy = season.Divisions.Where(d => d.Name == divisionName).FirstOrDefault();
+                if (divisionToSortBy == null)
+                {
+                    AddError("Cannot sort by division.");
+                    return;
+                }
+
+                var teams = seasonService.GetTeamsInDivisionByRank(divisionToSortBy);
+
+                if (teams == null || teams.Count == 0)
+                {
+                    AddError("No Teams in division.");
+                    return;
+                }
+                
+
+                teams.ForEach(team =>
+                {
+                    Records[divisionName].Add( 
+                        new StandingsRecordViewModel(
+                            team.Name,
+                            divisionToSortBy.Rankings.Where(r => r.Team.Name == team.Name).First().Rank,
+                            team.Stats.Wins,
+                            team.Stats.Loses,
+                            team.Stats.Ties,
+                            team.Stats.GamesPlayed,
+                            team.Stats.Points,
+                            team.Stats.GoalsFor,
+                            team.Stats.GoalsAgainst,
+                            team.Stats.GoalDifference
+                            ));
+                });
+
+
+                Records[divisionName] = Records[divisionName].OrderBy(r => r.Rank).ToList();
+                
             }
-            
-            var teams = seasonService.GetTeamsInDivisionByRank(divisionToSortBy);
 
-            if (teams == null || teams.Count == 0)
-            {
-                AddError("No Teams in division.");
-                return;
-            }
-
-            Records = new List<StandingsRecordViewModel>();
-
-            teams.ForEach(team =>
-            {
-                Records.Add(
-                    new StandingsRecordViewModel(
-                        team.Name,
-                        divisionToSortBy.Rankings.Where(r => r.Team.Name == team.Name).First().Rank,
-                        team.Stats.Wins,
-                        team.Stats.Loses,
-                        team.Stats.Ties,
-                        team.Stats.GamesPlayed,
-                        team.Stats.Points,
-                        team.Stats.GoalsFor,
-                        team.Stats.GoalsAgainst,
-                        team.Stats.GoalDifference
-                        ));
-            });
-
-
-            Records = Records.OrderBy(r => r.Rank).ToList();
-
-            StandingsName = divisionName;
+            StandingsName = league.Name;
 
         }
 

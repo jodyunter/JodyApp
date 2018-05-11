@@ -59,13 +59,25 @@ namespace JodyApp.Console.Views
         {
             string result = String.Format(FORMAT_STANDINGS_HEADER, viewModel.StandingsName, viewModel.SeasonName, viewModel.Year);
 
-            result += "\n" + GetStandingsRecordHeader();
-            viewModel.Records.ForEach(rec =>
-            {
-                result += "\n" + GetStandingsRecordRow(rec);
-            });
 
+            viewModel.Records.ToList().ForEach(
+                pair =>
+                {
+                    string divisionName = pair.Key;
+                    result += "\n" + divisionName;
+                    result += "\n" + GetStandingsRecordHeader();
+                    var teamList = pair.Value;
+
+                    teamList.ForEach(rec =>
+                    {
+                        result += "\n" + GetStandingsRecordRow(rec);
+                    });
+                }
+             );
             return result;
-        }
+        }            
+
+         
+        
     }
 }

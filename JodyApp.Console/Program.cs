@@ -72,9 +72,12 @@ namespace JodyApp.Console
                     var teams = seasonService.GetTeamsInDivisionByRank(div);
                     teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
 
-                    System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("Premier", teams.Where(t => t.Division.Name == "Premier").ToList()));
-                    System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("Division1", teams.Where(t => t.Division.Name == "Division1").ToList()));
-                    System.Console.WriteLine(RecordTableDisplay.PrintDivisionStandings("Division2", teams.Where(t => t.Division.Name == "Division2").ToList()));
+                    StandingsView standingsView = new StandingsView();
+                    StandingsViewModel standingsViewModel = new StandingsViewModel(db);
+                    standingsView.viewModel = standingsViewModel;
+                    standingsViewModel.SetStandingsCurrentYear(LeagueName, RegularSeasonName, "Premier", "Division1", "Division2");
+                    System.Console.WriteLine(standingsView.GetStandingsDisplay());
+
                 }
                 else if (c is Playoff)
                 {
@@ -146,16 +149,7 @@ namespace JodyApp.Console
             }
 
             
-            StandingsView standingsView = new StandingsView();
-            StandingsViewModel standingsViewModel = new StandingsViewModel(db);
-            standingsView.viewModel = standingsViewModel;
-            standingsViewModel.SetStandingsCurrentYear(LeagueName, RegularSeasonName, "Premier");
-            System.Console.WriteLine(standingsView.GetStandingsDisplay());
-            standingsViewModel.SetStandingsCurrentYear(LeagueName, RegularSeasonName, "Division1");
-            System.Console.WriteLine(standingsView.GetStandingsDisplay());
-            standingsViewModel.SetStandingsCurrentYear(LeagueName, RegularSeasonName, "Division2");
-            System.Console.WriteLine(standingsView.GetStandingsDisplay());
-
+            
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();
