@@ -50,6 +50,7 @@ namespace JodyApp.ViewModel
 
             SetStandings(league, seasonName, league.CurrentYear, divisionNames);
         }
+        
 
         public void SetStandings(League league, string seasonName, int year, params string[] divisionNames)
         {
@@ -69,6 +70,11 @@ namespace JodyApp.ViewModel
 
             Records = new Dictionary<string, List<StandingsRecordViewModel>>();
 
+            //assume all divisions if this is the case
+            if (divisionNames == null)
+            {
+                divisionNames = season.Divisions.Select(d => d.Name).ToArray();
+            }
             foreach (string divisionName in divisionNames)
             {
                 Records.Add(divisionName, new List<StandingsRecordViewModel>());

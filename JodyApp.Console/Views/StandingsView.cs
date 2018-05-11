@@ -55,7 +55,7 @@ namespace JodyApp.Console.Views
             return result;
         }
 
-        public string GetStandingsDisplay()
+        public string GetDisplayString()
         {
             string result = String.Format(FORMAT_STANDINGS_HEADER, viewModel.StandingsName, viewModel.SeasonName, viewModel.Year);
 

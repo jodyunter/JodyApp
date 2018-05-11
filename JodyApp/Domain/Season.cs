@@ -10,7 +10,7 @@ using JodyApp.Database;
 
 namespace JodyApp.Domain
 {
-    public partial class Season:DomainObject, Competition
+    public class Season:DomainObject, Competition
     {        
         public string Name { get; set; }  //may not be unique, name + year should be unique
         public int Year { get; set; }  //this is how we group everything together   

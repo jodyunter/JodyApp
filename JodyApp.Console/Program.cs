@@ -76,7 +76,7 @@ namespace JodyApp.Console
                     StandingsViewModel standingsViewModel = new StandingsViewModel(db);
                     standingsView.viewModel = standingsViewModel;
                     standingsViewModel.SetStandingsCurrentYear(LeagueName, RegularSeasonName, "Premier", "Division1", "Division2");
-                    System.Console.WriteLine(standingsView.GetStandingsDisplay());
+                    System.Console.WriteLine(standingsView.GetDisplayString());
 
                 }
                 else if (c is Playoff)
@@ -148,8 +148,12 @@ namespace JodyApp.Console
                     promoted2 != null ? promoted2.GetLoser().Name : ""));
             }
 
-            
-            
+
+            SeasonView seasonView = new SeasonView();            
+            SeasonViewModel svm = new SeasonViewModel(db);
+            seasonView.viewModel = svm;
+            svm.SetSeason(LeagueName, RegularSeasonName, "Premier");
+            System.Console.WriteLine(seasonView.GetDisplayString());
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();
