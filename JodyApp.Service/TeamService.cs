@@ -10,13 +10,13 @@ using JodyApp.Database;
 namespace JodyApp.Service
 {
     public class TeamService:BaseService
-    {        
-        DivisionService divisionService = null;
+    {
+        DivisionService divisionService = new DivisionService();
 
-        public TeamService(JodyAppContext context):base(context)
-        {            
-            this.divisionService = new DivisionService(context);
-        }
+        public override void Initialize() { divisionService.db = db; }
+
+        public TeamService(JodyAppContext context) : base(context) { }
+
         public List<Team> GetBaseTeams()
         {
 
@@ -55,7 +55,7 @@ namespace JodyApp.Service
                 team = team.Parent;
             }
 
-            //not good enough for division
+            //not good enough for division            
             team.Division = db.Divisions.Where(d => d.Name == newDivisionName && d.Season.Year == 0).FirstOrDefault();
 
             db.SaveChanges();

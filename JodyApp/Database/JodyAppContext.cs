@@ -25,7 +25,7 @@ namespace JodyApp.Database
         public const int WORK_PROD = 2;
         public const int WORK_TEST = 3;
 
-        public static int CURRENT_DATABASE = HOME_TEST;
+        public static int CURRENT_DATABASE = WORK_TEST;
 
         public static string GetDataSource(int location) 
         {
@@ -46,7 +46,8 @@ namespace JodyApp.Database
         //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }        
         public JodyAppContext() : this(CURRENT_DATABASE) { }
         public JodyAppContext(int type) : base(GetDataSource(type)) { }
-        
+
+        public JodyAppContext(string ConnectionString) : base(ConnectionString) { }
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<League> Leagues { get; set; }          

@@ -13,6 +13,8 @@ using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table.Display;
 using JodyApp.Domain.Playoffs;
 using JodyApp.Domain.Playoffs.Display;
+using JodyApp.Console.Views;
+using JodyApp.ViewModel;
 
 namespace JodyApp.Console
 {
@@ -31,12 +33,15 @@ namespace JodyApp.Console
             ScheduleService scheduleService = new ScheduleService(db);
             DivisionService divisionService = new DivisionService(db);
             PlayoffService playoffService = new PlayoffService(db);
-            LeagueService leagueService = new LeagueService(db);       
+            LeagueService leagueService = new LeagueService(db);
+
+            string LeagueName = "Jody League";
+            string RegularSeasonName = "Regular Season";
 
             Random random = new Random();
             int lastGameNumber = 0;
 
-            League league = db.Leagues.Where(l => l.Name == "Jody League").First();            
+            League league = db.Leagues.Where(l => l.Name == LeagueName).First();            
             if (leagueService.IsYearDone(league))
             {
                 league.CurrentYear++;
@@ -139,6 +144,17 @@ namespace JodyApp.Console
                     promoted2 != null ? promoted2.GetWinner().Name : "",
                     promoted2 != null ? promoted2.GetLoser().Name : ""));
             }
+
+            
+            StandingsView standingsView = new StandingsView();
+            StandingsViewModel standingsViewModel = new StandingsViewModel(db);
+            standingsView.viewModel = standingsViewModel;
+            standingsViewModel.SetStandingsCurrentYear(LeagueName, RegularSeasonName, "Premier");
+            System.Console.WriteLine(standingsView.GetStandingsDisplay());
+            standingsViewModel.SetStandingsCurrentYear(LeagueName, RegularSeasonName, "Division1");
+            System.Console.WriteLine(standingsView.GetStandingsDisplay());
+            standingsViewModel.SetStandingsCurrentYear(LeagueName, RegularSeasonName, "Division2");
+            System.Console.WriteLine(standingsView.GetStandingsDisplay());
 
 
             System.Console.WriteLine("Press ENTER to end program.");

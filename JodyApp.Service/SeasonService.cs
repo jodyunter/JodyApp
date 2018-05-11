@@ -13,15 +13,18 @@ namespace JodyApp.Service
 {
     public class SeasonService:BaseService
     {
-        TeamService teamService;
-        DivisionService divisionService;
-        ScheduleService scheduleService;
+        public DivisionService divisionService = new DivisionService();        
 
-        public SeasonService(JodyAppContext context):base(context)
+        private string connectionString;
+
+        public SeasonService(JodyAppContext context) : base(context) { }
+
+        public SeasonService(string connectionString) : base(connectionString) { }
+
+        public SeasonService() : base() { }
+        public override void Initialize()
         {
-            teamService = new TeamService(context);
-            divisionService = new DivisionService(context);
-            scheduleService = new ScheduleService(context);
+            divisionService = new DivisionService(db);
         }
 
         public bool IsSeasonStarted(Season season)
@@ -31,6 +34,9 @@ namespace JodyApp.Service
 
         public Season CreateNewSeason(Season referenceSeason, int year)
         {
+            var divisionService = new DivisionService(db);
+            var scheduleService = new ScheduleService(db);
+
             Season season = new Season();
 
             season.League = referenceSeason.League;
@@ -136,6 +142,7 @@ namespace JodyApp.Service
 
         public void SortAllDivisions(Season season)
         {
+            
             List<Division> divisions = divisionService.GetDivisionsBySeason(season);
 
             divisions.ForEach(div => { divisionService.SortByDivision(div); });
@@ -144,7 +151,7 @@ namespace JodyApp.Service
 
         }
 
-        public Competition GetReferenceByName(League league, string name)
+        public Competition GetReferenceByName(League league, string name, DivisionService divisionService)
         {
             return db.Seasons.Where(s => s.League.Id == league.Id && s.Year == 0 && s.Name == name).FirstOrDefault();
         }
@@ -159,6 +166,11 @@ namespace JodyApp.Service
             division.Rankings.ForEach(r => { teams[r.Team.Name].Stats.Rank = rank; rank++; });
 
             return teams.Values.ToList();
+        }
+
+        public Season GetSeason(League league, string name, int year)
+        {
+            return db.Seasons.Where(s => s.Name == name && s.Year == year && s.League.Id == league.Id).FirstOrDefault();
         }
     }
 }

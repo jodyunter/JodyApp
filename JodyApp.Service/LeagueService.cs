@@ -11,13 +11,16 @@ namespace JodyApp.Service
 {
     public class LeagueService:BaseService
     {
-        SeasonService seasonService;
-        PlayoffService playoffService;
+        CompetitionService competitionService;
 
-        public LeagueService(JodyAppContext db) : base(db) {
-            seasonService = new SeasonService(db);
-            playoffService = new PlayoffService(db);
+        public override void Initialize()
+        {
+             competitionService = new CompetitionService(db);
         }
+
+        public LeagueService() : base() { }
+        public LeagueService(JodyAppContext db) : base(db) { }
+        public LeagueService(string ConnectionString) : base(ConnectionString) { }
 
         //also good for getting current competition
         public Competition GetNextCompetition(League league)
@@ -56,7 +59,7 @@ namespace JodyApp.Service
                         competitionReference = rc.Playoff;
                     }
 
-                    if (currentComp == null) return CreateCompetition(competitionReference, league.CurrentYear);
+                    if (currentComp == null) return competitionService.CreateCompetition(competitionReference, league.CurrentYear);
                     else if (!currentComp.Complete) return currentComp;
 
                 }
@@ -65,6 +68,10 @@ namespace JodyApp.Service
             }
         }
             
+        public League GetByName(string name)
+        {
+            return db.Leagues.Where(l => l.Name == name).FirstOrDefault();
+        }
 
         public bool IsYearDone(League league)
         {            
@@ -76,13 +83,6 @@ namespace JodyApp.Service
             return completeCompetitions.Count == league.ReferenceCompetitions.Count;
             
 
-        }
-        public Competition CreateCompetition(Competition reference, int year)
-        {
-            if (reference is Season) return seasonService.CreateNewSeason((Season)reference, year);
-            else if (reference is Playoff) return playoffService.CreateNewPlayoff((Playoff)reference, year);
-
-            return null;
         }
 
         public List<Game> PlayNextGames(Competition competition, Random random)

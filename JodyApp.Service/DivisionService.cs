@@ -12,11 +12,15 @@ using JodyApp.Domain.Table;
 namespace JodyApp.Service
 {
     public class DivisionService:BaseService
-    {        
+    {
+
+        public DivisionService() : base() { }
 
         public DivisionService(JodyAppContext context):base(context)
         {                        
         }
+
+        public override void Initialize() { }
 
         public List<Team> GetAllTeamsInDivision(Division division)
         {           

@@ -8,14 +8,25 @@ using JodyApp.Database;
 
 namespace JodyApp.Service
 {
-    public class BaseService
-    {
-        public JodyAppContext db { get; }
+    public abstract class BaseService
+    {        
+
+        public JodyAppContext db { get; set;  }
+
+        public abstract void Initialize();
+
+        public BaseService() { db = null; Initialize();  }
 
         public BaseService(JodyAppContext dbContext)
         {
-            this.db = dbContext;
+            db = dbContext;
+            Initialize();
+        }
 
+        public BaseService(string ConnectionString)
+        {
+            db = new JodyAppContext(ConnectionString);
+            Initialize();
         }
 
         public void Rollback()

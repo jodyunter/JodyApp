@@ -11,10 +11,12 @@ namespace JodyApp.Service
 {
     public class ScheduleService : BaseService
     {
-        DivisionService divisionService;        
-        TeamService teamService;
+        DivisionService divisionService = new DivisionService();
 
+        public ScheduleService() : base() { }
+        public ScheduleService(JodyAppContext db) : base(db) {}
 
+        public override void Initialize() { divisionService.db = db; }
         public List<ScheduleRule> GetBySeasonReference(Season season)
         {
             return GetRules(season.League, season);
@@ -22,11 +24,6 @@ namespace JodyApp.Service
         public List<ScheduleRule> GetRules(League league, Season season)
         {
             return ScheduleRule.GetRules(db, league, season);
-        }
-        public ScheduleService(JodyAppContext db) : base(db)
-        {
-            divisionService = new DivisionService(db);
-            teamService = new TeamService(db);
         }
 
         public List<Division> GetDivisionsByLevel(ScheduleRule rule)

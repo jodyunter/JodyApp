@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>JodyApp.Console</RootNamespace>
-    <AssemblyName>JodyApp.Console</AssemblyName>
+    <ProjectGuid>{3A9F404A-0088-4D33-B294-561891F90D3F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JodyApp.ViewModel</RootNamespace>
+    <AssemblyName>JodyApp.ViewModel</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -49,32 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\SeasonView.cs" />
-    <Compile Include="Views\StandingsView.cs" />
+    <Compile Include="SeasonViewModel.cs" />
+    <Compile Include="StandingsRecordViewModel.cs" />
+    <Compile Include="StandingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\JodyApp.Service.Test\JodyApp.Service.Test.csproj">
-      <Project>{8aea7f76-e715-4b2e-80f8-c57f53c8a714}</Project>
-      <Name>JodyApp.Service.Test</Name>
-    </ProjectReference>
     <ProjectReference Include="..\JodyApp.Service\JodyApp.Service.csproj">
       <Project>{064ad040-d294-4b98-b0ca-e4807989ef92}</Project>
       <Name>JodyApp.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\JodyApp.ViewModel\JodyApp.ViewModel.csproj">
-      <Project>{3a9f404a-0088-4d33-b294-561891f90d3f}</Project>
-      <Name>JodyApp.ViewModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\JodyApp\JodyApp.Data.csproj">
       <Project>{b3e35e97-ef50-4357-83de-38d24b553128}</Project>
       <Name>JodyApp.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

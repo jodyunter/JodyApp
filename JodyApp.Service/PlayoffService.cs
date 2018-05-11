@@ -9,15 +9,20 @@ using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Service
 {
-    public class PlayoffService:CompetitionService
+    public class PlayoffService:BaseService
     {
-        DivisionService divisionService;
+        DivisionService divisionService = new DivisionService();
 
+        public PlayoffService() : base() { }
         public PlayoffService(JodyAppContext db):base(db)
         {
             divisionService = new DivisionService(db);
         }
 
+        public override void Initialize()
+        {
+            divisionService.db = db;
+        }
         public Playoff CreateNewPlayoff(Playoff referencePlayoff, int year)
         {
             return CreateNewPlayoff(referencePlayoff, year, false);

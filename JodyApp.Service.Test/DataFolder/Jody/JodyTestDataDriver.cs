@@ -258,11 +258,11 @@ namespace JodyApp.Service.Test.DataFolder.Jody
         public override void UpdateData()
         {
 
-            //DeleteAllData();
-            //InsertData();
-            //RunUpdate1();
-            //RunUpdate2();
-            //RunUpdate3();
+            DeleteAllData();
+            InsertData();
+            RunUpdate1();
+            RunUpdate2();
+            RunUpdate3();
             //RunUpdate4();
             //RunUpdate5();
             //RunUpdate6();                  
