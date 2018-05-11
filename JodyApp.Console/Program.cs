@@ -152,18 +152,9 @@ namespace JodyApp.Console
 
 
 
-            BaseController controller = new LeagueController();
-            controller.View = new LeagueView();
+            BaseController controller = new StartController();
 
-            controller.Display();
-            string input = controller.GetInput();
-            if (controller.Error)
-            {
-                WriteLine("Error!");
-                WriteLine(input);
-            }
-            controller.ProcessInput(input);
-            controller.Display();
+            controller.ParseInput(new List<string> { "Display", "League", "80" }, 0);
 
             System.Console.WriteLine("Press ENTER to end program.");
             System.Console.ReadLine();

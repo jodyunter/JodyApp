@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,44 +9,23 @@ namespace JodyApp.Console.Views
 {
     public class LeagueView : BaseView
     {
-        public string CurrentLeague { get; set; }
-        public override string BuildOptions()
-        {
-            string result = "";
-
-            result += "\n" + BuildOption(1, "Display Leagues");
-            result += "\n" + BuildOption(2, "Create League");           
-
-            return result;
-                        
-        }
-
-        public override string GetStartingView()
-        {
-            string result = "League Menu";
-            result += Options;
-            result += "\nEnter Option: ";
-            return result;
-        }
+        public static string LEAGUE_FORMATTER = "{0,-5}{1,-15}{2,5}{3,10} {4,-15}";        
+        public LeagueViewModel viewModel { get; set; }
         
-        public override void SetViewFromOption()
+        public LeagueView():base()
         {
-            switch(LastOption)
-            {
-                case -1:
-                    CurrentDisplay = GetStartingView();
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                default:
-                    CurrentDisplay = "Bad option when setting the view.";
-                    break;
-
-            }
- 
+            viewModel = new LeagueViewModel();
         }
 
+        public string GetDisplayHeaderString()
+        {
+            return string.Format(LEAGUE_FORMATTER, "Id", "Name", "Year", "Complete", "Next");
+        }
+        public override string GetDisplayString()
+        {            
+            return 
+                GetDisplayHeaderString() + "\n" +
+                String.Format(LEAGUE_FORMATTER, viewModel.Id, viewModel.LeagueName, viewModel.CurrentYear, viewModel.IsComplete, viewModel.CurrentCompetition);
+        }
     }
 }

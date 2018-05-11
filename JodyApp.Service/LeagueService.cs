@@ -68,6 +68,10 @@ namespace JodyApp.Service
             }
         }
             
+        public League GetById(int id)
+        {
+            return db.Leagues.Where(l => l.Id == id).FirstOrDefault();
+        }
         public League GetByName(string name)
         {
             return db.Leagues.Where(l => l.Name == name).FirstOrDefault();

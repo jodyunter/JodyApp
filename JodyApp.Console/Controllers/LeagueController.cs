@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.Console.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,51 +9,25 @@ namespace JodyApp.Console.Controllers
 {
     public class LeagueController:BaseController
     {
+        LeagueView View = new LeagueView();
 
-        public override void ProcessInput(string input)
+        public override void ParseInput(List<string> input, int offset) { throw new NotImplementedException("Parse not implemented in League Controller"); }
+
+        public void DisplayLeagues()
         {
-            switch(View.LastOption)
-            {
-                case -1:
-                    int choice = int.Parse(input);
-                    View.LastOption = choice;                    
-                    break;
-            }
-
+            
         }
-        public override string ValidateInput(string input)
+
+        public void DisplayLeague(string input)
         {
+            int id = int.Parse(input);
 
-            switch (View.LastOption)
-            {
-                case -1:
-                    return ValidateDefaultInput(input);
-                default:
-                    return "Woops";
-            }
+            View.viewModel.SetById(id);
 
+            System.Console.WriteLine(View.GetDisplayString());
+            
 
         }
 
-        public string ValidateDefaultInput(string s)
-        {
-            string message = "";
-
-            try
-            {
-                int.Parse(s);
-            }
-            catch (Exception e)
-            {
-                if (e is ArgumentNullException || e is FormatException)
-                {
-                    message = "Please Input a Number.";
-                    return message;
-                }
-                throw;
-            }
-
-            return message;
-        }
     }
 }

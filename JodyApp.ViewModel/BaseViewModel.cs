@@ -4,6 +4,7 @@ namespace JodyApp.ViewModel
 {
     public class BaseViewModel
     {
+        protected Database.JodyAppContext db = new Database.JodyAppContext(Database.JodyAppContext.CURRENT_DATABASE);
         public bool Error { get; set; }
         public List<string> ErrorMessages { get; set; }
 

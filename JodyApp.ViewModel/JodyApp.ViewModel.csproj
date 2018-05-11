@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="LeagueListViewModel.cs" />
+    <Compile Include="LeagueViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeasonViewModel.cs" />
     <Compile Include="StandingsRecordViewModel.cs" />
