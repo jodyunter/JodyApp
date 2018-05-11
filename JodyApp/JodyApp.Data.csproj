@@ -62,7 +62,6 @@
     <Compile Include="Domain\League.cs" />
     <Compile Include="Domain\Playoffs\Display\PlayoffDisplay.cs" />
     <Compile Include="Domain\Playoffs\Group.cs" />
-    <Compile Include="Domain\Playoffs\Helpers\PlayoffExtensions.cs" />
     <Compile Include="Domain\Playoffs\Playoff.cs" />
     <Compile Include="Domain\Playoffs\GroupRule.cs" />
     <Compile Include="Domain\Playoffs\Series.cs" />

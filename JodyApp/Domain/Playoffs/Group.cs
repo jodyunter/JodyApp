@@ -29,7 +29,6 @@ namespace JodyApp.Domain.Playoffs
         }
 
         #region Validation
-
         public override void CheckForErrors(List<string> errorMessages)
         {
             string formatter = "{0}. GroupRule: {1}.";

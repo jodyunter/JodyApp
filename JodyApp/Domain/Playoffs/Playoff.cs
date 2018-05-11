@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Playoffs
 {
-    public partial class Playoff : DomainObject, Competition
+    public class Playoff : DomainObject, Competition
     {
         public int Year { get; set; }
         public int StartingDay { get; set; }
@@ -101,18 +101,24 @@ namespace JodyApp.Domain.Playoffs
             Groups.ForEach(group =>
             {
                 if (!groupMap.ContainsKey(group.Name)) groupMap.Add(group.Name, new List<Team>());
-                group.GroupRules.ForEach(groupRule =>
-                {
-                    AddTeamsToGroup(groupRule, groupMap[group.Name]);
-                });
-
-                if (group.SortByDivision != null)
-                {
-                    groupMap[group.Name] = groupMap[group.Name].OrderBy(t => group.SortByDivision.GetRank(t)).ToList();
-                }
+                SetupGroupTeamList(group, groupMap[group.Name]);
             });
 
             return groupMap;
+        }
+
+        public void SetupGroupTeamList(Group group, List<Team> teamList)
+        {            
+            
+            group.GroupRules.ForEach(groupRule =>
+            {
+                AddTeamsToGroup(groupRule, teamList);
+            });
+
+            if (group.SortByDivision != null)
+            {
+                teamList = teamList.OrderBy(t => group.SortByDivision.GetRank(t)).ToList();
+            }
         }
 
 
