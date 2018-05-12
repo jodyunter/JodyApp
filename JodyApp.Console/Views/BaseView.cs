@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Console.Views
 {
-    public abstract class View
+    public abstract class BaseView
     {
         public BaseViewModel ViewModel { get; set; }
         public abstract string GetDisplayString();        

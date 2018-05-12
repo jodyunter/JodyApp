@@ -1,4 +1,5 @@
-﻿using JodyApp.ViewModel;
+﻿using JodyApp.Console.Views.Display;
+using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +9,21 @@ using System.Threading.Tasks;
 namespace JodyApp.Console.Views
 {
     public class LeagueView : SingleEntityView
-    {
-        public override string FORMATTER { get { return "{0,-5}{1,-15}{2,5}{3,10} {4,-15}"; } }                
+    {            
        
-
         public LeagueView():base()
         {
             ViewModel = new LeagueViewModel();
         }
 
-        public override object[] GetHeaderStrings()
+        public override string GetHeaderString()
         {
-            return new object[] { "Id", "Name", "Year", "Complete", "Next" };
+            return LeagueDisplay.GetHeaderStringForSingleEntity();
         }
-        public override object[] GetDisplayStrings()
+
+        public override string GetDisplayStringNoHeader()
         {
-            var vm = (LeagueViewModel)ViewModel;
-            return new object[] { vm.Id, vm.LeagueName, vm.CurrentYear, vm.IsComplete, vm.CurrentCompetition };
+            return LeagueDisplay.GetDisplayStringNoHeaderSingleEntity((LeagueViewModel)ViewModel);
         }
     }
 }

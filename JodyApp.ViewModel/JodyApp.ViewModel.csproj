@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseListViewModel.cs" />
     <Compile Include="SingleEntityViewModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="LeagueListViewModel.cs" />

@@ -8,26 +8,17 @@ using static System.Console;
 
 namespace JodyApp.Console.Views
 {
-    public abstract class SingleEntityView:View
+    public abstract class SingleEntityView:BaseView
     {
         public SingleEntityViewModel viewModel { get; set; }
+        
+        public abstract string GetHeaderString();
 
-        public abstract string FORMATTER { get; }
-        public string GetHeaderString()
-        {
-            return string.Format(FORMATTER, GetHeaderStrings());
-        }
         public override string GetDisplayString()
         {
             return GetHeaderString() + "\n" + GetDisplayStringNoHeader();             
         }
-        public string GetDisplayStringNoHeader()
-        {
-            return String.Format(FORMATTER, GetDisplayStrings());
-        }
 
-        public abstract object[] GetHeaderStrings();
-        public abstract object[] GetDisplayStrings();
-        
+        public abstract string GetDisplayStringNoHeader();
     }
 }

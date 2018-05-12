@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Console.Controllers
 {
-    public abstract class Controller
+    public abstract class BaseController
     {
-        public View View { get; set; }
-        public abstract View ParseInput(List<string> input, int offset);
+        public BaseView View { get; set; }
+        public abstract BaseView ParseInput(List<string> input, int offset);
 
     }
 }

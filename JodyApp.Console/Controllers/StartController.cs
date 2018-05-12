@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Console.Controllers
 {
-    public class StartController:Controller
+    public class StartController:BaseController
     {
-        public override View ParseInput(List<string> input, int offset)
+        public override BaseView ParseInput(List<string> input, int offset)
         {
             string variable = input[0 + offset];
             switch(variable)
