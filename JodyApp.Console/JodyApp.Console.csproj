@@ -59,6 +59,7 @@
     <Compile Include="Views\BaseListView.cs" />
     <Compile Include="Views\Display\LeagueDisplay.cs" />
     <Compile Include="Views\Display\SeasonDisplay.cs" />
+    <Compile Include="Views\SeasonListView.cs" />
     <Compile Include="Views\LeagueListView.cs" />
     <Compile Include="Views\SingleEntityView.cs" />
     <Compile Include="Views\LeagueView.cs" />

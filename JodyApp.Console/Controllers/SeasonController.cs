@@ -29,10 +29,13 @@ namespace JodyApp.Console.Controllers
                     }
                     break;
                 case "Seasons":
-                    string leagueName = input[offset + 1];
+                    int leagueId;
                     View = new SeasonListView();
-                    View.LeageName = leagueName
+                    if (input.Count >= offset + 1 + 1)
+                        if (int.TryParse(input[offset + 1], out leagueId))
+                            ((SeasonListViewModel)View.ViewModel).LeagueId = leagueId;                   
                     ((SeasonListViewModel)View.ViewModel).SetData();
+
                     break;
             }
 

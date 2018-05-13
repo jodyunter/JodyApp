@@ -11,6 +11,7 @@ namespace JodyApp.ViewModel
     public class SeasonListViewModel : BaseListViewModel
     {
         SeasonService seasonService;
+        public int? LeagueId { get; set; }
         
         public override string Header { get { return "List of Seasons"; } }
 
@@ -18,12 +19,29 @@ namespace JodyApp.ViewModel
 
         public override BaseViewModel CreateModel(DomainObject domainObject)
         {
-            throw new NotImplementedException();
+            var model = new SeasonViewModel();
+            var season = (Season)domainObject;
+            model.Id = season.Id;
+            model.Name = season.Name;
+            model.Year = season.Year;
+            model.LeagueName = season.League.Name;
+            model.Complete = season.IsComplete();
+
+            return model;
         }
 
         public override List<DomainObject> GetDomainObjects()
-        {
-            seasonService.Get
+        {            
+
+            if (LeagueId != null)
+                return seasonService.GetAll((int)LeagueId).ToList<DomainObject>();
+            else
+                return seasonService.GetAll().ToList<DomainObject>();
+            
+
+
+
+
         }
     }
 }

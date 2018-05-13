@@ -37,6 +37,8 @@ namespace JodyApp.Console
             PlayoffService playoffService = new PlayoffService(db);
             LeagueService leagueService = new LeagueService(db);
 
+            BaseController controller = new StartController();
+
             string LeagueName = "Jody League";
             string RegularSeasonName = "Regular Season";
 
@@ -44,13 +46,13 @@ namespace JodyApp.Console
             int lastGameNumber = 0;
 
             League league = db.Leagues.Where(l => l.Name == LeagueName).First();            
+            
             if (leagueService.IsYearDone(league))
             {
                 league.CurrentYear++;
 
             }
-                        
-            
+                                    
             while (!leagueService.IsYearDone(league))
             {
                 Competition c = leagueService.GetNextCompetition(league);
@@ -133,8 +135,8 @@ namespace JodyApp.Console
             divisionRanks.OrderByDescending(m => m.Key);
 
             string formatter = "{0,3}{1,15}{2,15}{3,15}{4,15}{5,15}{6,15}{7,15}";
-            System.Console.WriteLine("\n");
-            System.Console.WriteLine(String.Format(formatter, "Yr", "Champion", "Runner-Up", "Season", "To Premier", "To D1", "To D1", "To D2"));
+            WriteLine("\n");
+            WriteLine(String.Format(formatter, "Yr", "Champion", "Runner-Up", "Season", "To Premier", "To D1", "To D1", "To D2"));
 
             var qualificationSeries = playoffService.GetSeries("Qualification");
             var qualificationSeries2 = playoffService.GetSeries("D1 Qualification");
@@ -151,10 +153,8 @@ namespace JodyApp.Console
             }
 
 
-
-            BaseController controller = new StartController();
             WriteLine(controller.ParseInput(new List<string> { "Display", "Leagues"}, 0).GetDisplayString());
-            //WriteLine(controller.ParseInput(new List<string> { "Display", "Season", "153" }, 0).GetDisplayString());
+            WriteLine(controller.ParseInput(new List<string> { "Display", "Seasons", "4006" }, 0).GetDisplayString());
             
 
             WriteLine("Press ENTER to end program.");

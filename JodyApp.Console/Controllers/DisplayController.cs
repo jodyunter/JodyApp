@@ -26,8 +26,7 @@ namespace JodyApp.Console.Controllers
                     throw new NotImplementedException(GetType().ToString() + " " + variable + " not implemented yet");
 
             }
-
-            return View;
+            
         }
     }
 }

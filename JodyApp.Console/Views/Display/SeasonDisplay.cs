@@ -11,8 +11,9 @@ namespace JodyApp.Console.Views.Display
     {
         public static string SEASON_SINGLE_FORMATTER = "{0,-5}{1,-15}{2,-15}{3,5} {4,10}";
 
-        public static string GetDisplayStringNoHeaderSingleEntity(SeasonViewModel vm)
+        public static string GetDisplayStringNoHeaderSingleEntity(BaseViewModel viewModel)
         {
+            var vm = (SeasonViewModel)viewModel;
             return String.Format(SEASON_SINGLE_FORMATTER, vm.Id, vm.LeagueName, vm.Name, vm.Year, vm.Complete);
         }
         public static string GetHeaderStringForSingleEntity()
