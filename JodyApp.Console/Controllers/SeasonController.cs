@@ -16,7 +16,7 @@ namespace JodyApp.Console.Controllers
 
             switch (variable)
             {
-                case "Season":
+                case "Get":
                     int id;
                     if (int.TryParse(input[offset + 1], out id))
                     {
@@ -28,7 +28,7 @@ namespace JodyApp.Console.Controllers
                         //how to deal with errors
                     }
                     break;
-                case "Seasons":
+                case "List":
                     int leagueId;
                     View = new SeasonListView();
                     if (input.Count >= offset + 1 + 1)

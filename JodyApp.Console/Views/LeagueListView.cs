@@ -11,11 +11,10 @@ namespace JodyApp.Console.Views
     public class LeagueListView : BaseListView
     {
 
-        public LeagueListView()
+        public override void CreateViewModel()
         {
             ViewModel = new LeagueListViewModel();
         }
-
         public override Func<string> GetHeaderStringForSingleEntity { get { return LeagueDisplay.GetHeaderStringForSingleEntity; } }
 
         public override Func<BaseViewModel, string> GetDisplayStringNoHeaderSingleEntity { get { return LeagueDisplay.GetDisplayStringNoHeaderSingleEntity; } }

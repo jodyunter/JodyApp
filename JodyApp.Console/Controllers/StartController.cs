@@ -14,9 +14,13 @@ namespace JodyApp.Console.Controllers
             string variable = input[0 + offset];
             switch(variable)
             {
-                case "Display":
-                    var displayController = new DisplayController();
-                    View = displayController.ParseInput(input, offset + 1);
+                case "League":
+                    var leagueController = new LeagueController();
+                    View = leagueController.ParseInput(input, offset + 1);
+                    break;
+                case "Season":
+                    var seasonController = new SeasonController();
+                    View = seasonController.ParseInput(input, offset + 1);
                     break;
                 default:
                     throw new NotImplementedException(GetType().ToString() + " " + variable + " not implemented yet");

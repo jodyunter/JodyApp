@@ -153,9 +153,11 @@ namespace JodyApp.Console
             }
 
 
-            WriteLine(controller.ParseInput(new List<string> { "Display", "Leagues"}, 0).GetDisplayString());
-            WriteLine(controller.ParseInput(new List<string> { "Display", "Seasons", "4006" }, 0).GetDisplayString());
-            
+            WriteLine(controller.ParseInput(new List<string> { "League", "Get", "6005"}, 0).GetDisplayString());
+            WriteLine(controller.ParseInput(new List<string> { "Season", "List", "6005" }, 0).GetDisplayString());
+            WriteLine(controller.ParseInput(new List<string> { "Season", "List" }, 0).GetDisplayString());
+            WriteLine(controller.ParseInput(new List<string> { "Season", "Get", "7013" }, 0).GetDisplayString());
+
 
             WriteLine("Press ENTER to end program.");
             ReadLine();

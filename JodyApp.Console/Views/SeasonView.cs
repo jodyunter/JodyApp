@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace JodyApp.Console.Views
 {
     public class SeasonView:SingleEntityView
-    {            
+    {
 
-        public SeasonView()
+        public override void CreateViewModel()
         {
             ViewModel = new SeasonViewModel();
         }

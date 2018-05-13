@@ -11,7 +11,7 @@ namespace JodyApp.Console.Views
     public class SeasonListView : BaseListView
     {
 
-        public SeasonListView()
+        public override void CreateViewModel()
         {
             ViewModel = new SeasonListViewModel();
         }

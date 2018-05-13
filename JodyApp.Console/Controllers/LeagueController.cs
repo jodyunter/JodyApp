@@ -16,7 +16,7 @@ namespace JodyApp.Console.Controllers
             
             switch(variable)
             {
-                case "League":
+                case "Get":
                     int id;
                     if (int.TryParse(input[offset + 1], out id))
                     {
@@ -27,9 +27,14 @@ namespace JodyApp.Console.Controllers
                         //how to deal with errors
                     }
                     break;
-                case "Leagues":
+                case "List":
                     View = new LeagueListView();
                     ((LeagueListViewModel)View.ViewModel).SetData();
+                    break;
+                case "Save":
+                    break;
+                case "Edit":
+                    //is there any point to edit in console mode? Just display it so they can save it
                     break;
             }
 

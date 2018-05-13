@@ -10,6 +10,13 @@ namespace JodyApp.Console.Views
     public abstract class BaseView
     {
         public BaseViewModel ViewModel { get; set; }
-        public abstract string GetDisplayString();        
+        public abstract string GetDisplayString();
+        public abstract void CreateViewModel();
+
+        public BaseView()
+        {
+            CreateViewModel();
+        }
+        
     }
 }
