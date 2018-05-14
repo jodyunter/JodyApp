@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JodyApp.Domain;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Data.Test.Domain.Schedule
 {

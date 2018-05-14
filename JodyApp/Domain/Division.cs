@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Table;
 
 namespace JodyApp.Domain
@@ -18,7 +18,7 @@ namespace JodyApp.Domain
         public string ShortName { get { if (_shortName == null) return Name; else return _shortName; } set { _shortName = value; } }
         virtual public List<Team> Teams { get; set; }
         virtual public Division Parent { get; set; }
-        virtual public List<ScheduleRule> ScheduleRules { get; set; }
+        virtual public List<ConfigScheduleRule> ScheduleRules { get; set; }
         [InverseProperty("Division")]
         virtual public List<SortingRule> SortingRules { get; set; }
         virtual public List<DivisionRank> Rankings { get; set; }

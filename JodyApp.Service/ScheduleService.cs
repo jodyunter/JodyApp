@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Database;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Domain; 
 
 namespace JodyApp.Service
@@ -17,22 +17,22 @@ namespace JodyApp.Service
         public ScheduleService(JodyAppContext db) : base(db) { Initialize(db); }
 
         public override void Initialize(JodyAppContext db) { divisionService.db = db; divisionService.Initialize(db); }
-        public List<ScheduleRule> GetBySeasonReference(Season season)
+        public List<ConfigScheduleRule> GetBySeasonReference(Season season)
         {
             return GetRules(season.League, season);
         }
-        public List<ScheduleRule> GetRules(League league, Season season)
+        public List<ConfigScheduleRule> GetRules(League league, Season season)
         {
-            return ScheduleRule.GetRules(db, league, season);
+            return ConfigScheduleRule.GetRules(db, league, season);
         }
 
-        public List<Division> GetDivisionsByLevel(ScheduleRule rule)
+        public List<Division> GetDivisionsByLevel(ConfigScheduleRule rule)
         {
             return divisionService.GetDivisionsByLevel(rule.DivisionLevel, rule.Season);
         }
 
         //update to get last game number in database for season
-        public List<Game> CreateGamesFromRules(List<ScheduleRule> rules, List<Game> games, int lastGameNumber)
+        public List<Game> CreateGamesFromRules(List<ConfigScheduleRule> rules, List<Game> games, int lastGameNumber)
         {            
             rules.ForEach(rule =>
             {
@@ -42,13 +42,13 @@ namespace JodyApp.Service
             return games;
         }
 
-        public int CreateGamesFromRule(ScheduleRule rule, List<Game> games, int lastGameNumber)
+        public int CreateGamesFromRule(ConfigScheduleRule rule, List<Game> games, int lastGameNumber)
         {        
 
             var homeTeams = new List<Team>();
             var awayTeams = new List<Team>();
 
-            if (rule.HomeType == ScheduleRule.BY_DIVISION_LEVEL)
+            if (rule.HomeType == ConfigScheduleRule.BY_DIVISION_LEVEL)
             {
                 List<Division> divisions;
 
@@ -80,15 +80,15 @@ namespace JodyApp.Service
         {
             switch (ruleType)
             {
-                case ScheduleRule.BY_TEAM:
+                case ConfigScheduleRule.BY_TEAM:
                     teamList.Add(team);
                     break;
-                case ScheduleRule.BY_DIVISION:
+                case ConfigScheduleRule.BY_DIVISION:
                     var list = divisionService.GetAllTeamsInDivision(division);
                     if (reverse) list.Reverse();
                     teamList.AddRange(list);
                     break;
-                case ScheduleRule.NONE:
+                case ConfigScheduleRule.NONE:
                     break;
             }
         }

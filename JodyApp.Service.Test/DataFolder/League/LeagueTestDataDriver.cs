@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using JodyApp.Domain;
 using JodyApp.Database;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
 using System.Data.Entity;
@@ -42,11 +42,11 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
         //todo add league everywhere
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ConfigScheduleRule> rules)
         {
-            ScheduleRule rule1;
+            ConfigScheduleRule rule1;
 
-            rule1 = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", Division1, true, 5,1, false);            
+            rule1 = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", Division1, true, 5,1, false);            
 
             CreateAndAddScheduleRule(rule1, rules);            
 

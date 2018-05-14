@@ -7,13 +7,14 @@ using JodyApp.Domain;
 using JodyApp.Domain.Table;
 using JodyApp.Database;
 
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Service
 {
     public class SeasonService:BaseService
     {
         public DivisionService divisionService = new DivisionService();  
+        public ConfigService configService = new ConfigService();
 
         public SeasonService(JodyAppContext context) : base(context) { Initialize(context); }
 
@@ -29,7 +30,7 @@ namespace JodyApp.Service
             return season.Started;
         }
 
-        public Season CreateNewSeason(Season referenceSeason, int year)
+        public Season CreateNewSeason(ConfigSeason referenceSeason, int year)
         {
             var divisionService = new DivisionService(db);
             var scheduleService = new ScheduleService(db);
@@ -42,7 +43,7 @@ namespace JodyApp.Service
 
             Dictionary<string, Division> seasonDivisions = new Dictionary<string, Division>();
             Dictionary<string, Team> seasonTeams = new Dictionary<string, Team>();
-            Dictionary<string, ScheduleRule> seasonScheduleRules = new Dictionary<string, ScheduleRule>();
+            Dictionary<string, ConfigScheduleRule> seasonScheduleRules = new Dictionary<string, ConfigScheduleRule>();
 
             //loop once to create teams and new season divisions, order means we will not add a parent we haven't created yet
             divisionService.GetByReferenceSeason(referenceSeason).OrderBy(d => d.Level).ToList<Division>().ForEach(division => 
@@ -78,7 +79,7 @@ namespace JodyApp.Service
                 
             }
 
-            foreach (ScheduleRule rule in scheduleService.GetBySeasonReference(referenceSeason).OrderBy(rule => rule.Order)) 
+            foreach (ConfigScheduleRule rule in scheduleService.GetBySeasonReference(referenceSeason).OrderBy(rule => rule.Order)) 
             {
                 Division homeDiv = null;
                 Division awayDiv = null;
@@ -90,7 +91,7 @@ namespace JodyApp.Service
                 if (rule.AwayTeam != null) { awayTeam = seasonTeams[rule.AwayTeam.Name]; }
                 if (rule.HomeTeam != null) { homeTeam = seasonTeams[rule.HomeTeam.Name]; }
 
-                ScheduleRule seasonRule = new ScheduleRule(
+                ConfigScheduleRule seasonRule = new ConfigScheduleRule(
                                                     referenceSeason.League,
                                                     season,
                                                     rule.Name,

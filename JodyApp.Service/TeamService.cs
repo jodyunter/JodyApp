@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
 using JodyApp.Database;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Service
 {
@@ -16,12 +17,6 @@ namespace JodyApp.Service
         public override void Initialize(JodyAppContext db) { divisionService.db = db; divisionService.Initialize(db); }
 
         public TeamService(JodyAppContext context) : base(context) { Initialize(context); }
-
-        public List<Team> GetBaseTeams()
-        {
-
-            return Team.GetBaseTeams(db);
-        }
 
         public Team GetTeamByName(String name)
         {

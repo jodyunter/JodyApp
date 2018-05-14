@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using JodyApp.Domain.Table;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Database;
 
 namespace JodyApp.Domain
@@ -25,7 +25,7 @@ namespace JodyApp.Domain
 
         virtual public List<Division> Divisions { get; set; }
 
-        virtual public List<ScheduleRule> ScheduleRules { get; set; }
+        virtual public List<ConfigScheduleRule> ScheduleRules { get; set; }
 
         virtual public List<Game> Games { get; set; }
 

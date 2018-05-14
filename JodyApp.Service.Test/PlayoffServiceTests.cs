@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JodyApp.Service.Test.DataFolder;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Domain;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using System.Linq;
 using System.Collections.Generic;
 

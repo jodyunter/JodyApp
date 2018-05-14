@@ -52,6 +52,11 @@
     <Compile Include="Domain\ConfigurableDomainObject.cs" />
     <Compile Include="Domain\Competition.cs" />
     <Compile Include="Database\JodyAppContext.cs" />
+    <Compile Include="Domain\Config\BaseConfigItem.cs" />
+    <Compile Include="Domain\Config\ConfigDivision.cs" />
+    <Compile Include="Domain\Config\ConfigSeason.cs" />
+    <Compile Include="Domain\Config\ConfigSortingRule.cs" />
+    <Compile Include="Domain\Config\ConfigTeam.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DivisionRank.cs" />
     <Compile Include="Domain\Helpers\DivisionExtentions.cs" />
@@ -68,7 +73,7 @@
     <Compile Include="Domain\ReferenceCompetition.cs" />
     <Compile Include="Domain\Schedule\Helpers\ScheduleRuleExtensions.cs" />
     <Compile Include="Domain\Schedule\Scheduler.cs" />
-    <Compile Include="Domain\Schedule\ScheduleRule.cs" />
+    <Compile Include="Domain\Config\ConfigScheduleRule.cs" />
     <Compile Include="Domain\Schedule\ScheduleValidator.cs" />
     <Compile Include="Domain\Season.cs" />
     <Compile Include="Domain\Table\Display\RecordTableDisplay.cs" />

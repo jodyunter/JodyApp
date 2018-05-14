@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Service.Test.DataFolder
 {
@@ -28,11 +28,11 @@ namespace JodyApp.Service.Test.DataFolder
             CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "West", null, 1, 3, divs["League"], null, divs);
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ConfigScheduleRule> rules)
         {
             //CreateAndAddRule(leagues[LeagueName], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, 1, rules);
-            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 2", ScheduleRule.BY_DIVISION, null, divs["West"], ScheduleRule.NONE, null, null, false, 10, 0, 2, false, rules);
-            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 3", ScheduleRule.BY_DIVISION, null, divs["East"], ScheduleRule.NONE, null, null, false, 10, 0, 3, false, rules);
+            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 2", ConfigScheduleRule.BY_DIVISION, null, divs["West"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 2, false, rules);
+            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 3", ConfigScheduleRule.BY_DIVISION, null, divs["East"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 3, false, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)

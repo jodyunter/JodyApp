@@ -182,7 +182,7 @@ namespace JodyApp.Domain.Playoffs
 
             if (playoffTeam == null)
             {
-                playoffTeam = new Team(team.Parent != null ? team.Parent : team, this);
+                playoffTeam = new Team(team.Parent, this);
                 this.PlayoffTeams.Add(playoffTeam);
 
             }

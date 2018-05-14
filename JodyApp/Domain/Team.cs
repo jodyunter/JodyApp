@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using JodyApp.Domain.Playoffs;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Domain
 {    
@@ -16,8 +17,8 @@ namespace JodyApp.Domain
         virtual public Division Division { get; set; }
         virtual public TeamStatistics Stats { get; set; }
         virtual public Season Season { get; set; }
-        virtual public Playoff Playoff { get; set; }
-        virtual public Team Parent { get; set; }
+        virtual public Playoff Playoff { get; set; }        
+        virtual public ConfigTeam Parent { get; set; }
         public bool EliminatedFromPlayoff { get; set; }
 
         public Team() { }
@@ -29,7 +30,7 @@ namespace JodyApp.Domain
             if (Division != null) Division.Teams.Add(this);            
         }
                 
-        public Team(Team team, Playoff p):this(team.Name, team.Skill, null, null)
+        public Team(ConfigTeam team, Playoff p):this(team.Name, team.Skill, null, null)
         {
             this.Parent = team;
 
@@ -43,7 +44,7 @@ namespace JodyApp.Domain
             this.Division = division;
         }        
         
-        public Team(Team team, Division division)
+        public Team(ConfigTeam team, Division division)
             : this(team.Name, team.Skill, new TeamStatistics(), division)
         {
             this.Parent = team;

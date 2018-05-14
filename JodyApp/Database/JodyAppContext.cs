@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using JodyApp.Domain;
 
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
 
@@ -52,7 +52,6 @@ namespace JodyApp.Database
         public DbSet<Team> Teams { get; set; }
         public DbSet<League> Leagues { get; set; }          
         public DbSet<Division> Divisions { get; set; }
-        public DbSet<ScheduleRule> ScheduleRules { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<SortingRule> SortingRules { get; set; }
         public DbSet<DivisionRank> DivisionRanks { get; set; }                                
@@ -66,5 +65,9 @@ namespace JodyApp.Database
         public DbSet<GroupRule> GroupRules { get; set; }
         public DbSet<ReferenceCompetition> ReferenceCompetitions { get; set; }
 
+        //configurationItems
+        public DbSet<ConfigTeam> ConfigTeams { get; set; }
+        public DbSet<ConfigDivision> ConfigDivisions { get; set; }
+        public DbSet<ConfigScheduleRule> ScheduleRules { get; set; }
     }
 }

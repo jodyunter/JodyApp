@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Database;
 
-namespace JodyApp.Domain.Schedule
+namespace JodyApp.Domain.Config
 {
-    public partial class ScheduleRule
+    public partial class ConfigScheduleRule
     {
-        public static List<ScheduleRule> GetRules(JodyAppContext db, League league, Season season)
+        public static List<ConfigScheduleRule> GetRules(JodyAppContext db, League league, Season season)
         {
-            if (season == null) return db.ScheduleRules.Where(rule => rule.League.Id == league.Id && rule.Season == null).ToList<ScheduleRule>();
-            else return db.ScheduleRules.Where(rule => rule.League.Id == league.Id && rule.Season.Id == season.Id).ToList<ScheduleRule>();
+            if (season == null) return db.ScheduleRules.Where(rule => rule.League.Id == league.Id && rule.Season == null).ToList<ConfigScheduleRule>();
+            else return db.ScheduleRules.Where(rule => rule.League.Id == league.Id && rule.Season.Id == season.Id).ToList<ConfigScheduleRule>();
         }
     }
 }

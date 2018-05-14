@@ -10,7 +10,7 @@ using JodyApp.Domain.Table;
 using JodyApp.Database;
 using JodyApp.Service.Test.DataFolder;
 
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Service.Test
 {

@@ -4,7 +4,7 @@ using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Domain.Table;
 using JodyApp.Domain;
 using System.Collections.Generic;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Table.Display;
 
 namespace JodyApp.Data.Test.Domain.Table

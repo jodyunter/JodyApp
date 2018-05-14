@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JodyApp.Domain.Schedule
+namespace JodyApp.Domain.Config
 {
     public class Scheduler
     {

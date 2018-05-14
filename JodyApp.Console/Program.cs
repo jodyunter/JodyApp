@@ -9,7 +9,7 @@ using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Service.Test.DataFolder;
 
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Table.Display;
 using JodyApp.Domain.Playoffs;
 using JodyApp.Domain.Playoffs.Display;

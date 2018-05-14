@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using JodyApp.Domain;
 using JodyApp.Database;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
 using System.Data.Entity;
@@ -66,12 +66,12 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
         //todo add league everywhere
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ConfigScheduleRule> rules)
         {
-            ScheduleRule rule1, rule2;
+            ConfigScheduleRule rule1, rule2;
 
-            rule1 = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", Premier, true, 5,1, false);
-            rule2 = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 2", Division1, true, 5, 1, false);
+            rule1 = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", Premier, true, 5,1, false);
+            rule2 = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 2", Division1, true, 5, 1, false);
 
             CreateAndAddScheduleRule(rule1, rules);
             CreateAndAddScheduleRule(rule2, rules);
@@ -154,7 +154,7 @@ namespace JodyApp.Service.Test.DataFolder
             Nashville = teamService.CreateTeam("Nashville", 1, Division2);
 
             //may not be needed if no division specific schedule rules are needed
-            ScheduleRule division2ScheduleRule = ScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 3", Division2, true, 5, 1, false);
+            ConfigScheduleRule division2ScheduleRule = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 3", Division2, true, 5, 1, false);
             db.ScheduleRules.Add(division2ScheduleRule);
 
             //where does it fit in when sorting?  They will be "rest of" if nothing is specified

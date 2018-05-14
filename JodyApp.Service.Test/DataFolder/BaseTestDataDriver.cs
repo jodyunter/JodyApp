@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain;
 using JodyApp.Database;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
 
@@ -37,9 +37,9 @@ namespace JodyApp.Service.Test.DataFolder
             CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "League",null, 0, 1, null, null, divs);
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ScheduleRule> rules)
+        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ConfigScheduleRule> rules)
         {
-            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, 1, false, rules);
+            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 1", ConfigScheduleRule.BY_DIVISION, null, divs["League"], ConfigScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, 1, false, rules);
         }
 
         public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using JodyApp.Domain.Schedule;
+using JodyApp.Domain.Config;
 using System.Collections.Generic;
 using JodyApp.Domain;
 

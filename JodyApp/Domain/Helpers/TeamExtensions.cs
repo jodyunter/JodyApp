@@ -15,10 +15,6 @@ namespace JodyApp.Domain
             return db.Teams.Where(t => t.Name == name && t.Season == season).First();           
         }
 
-        public static List<Team> GetBaseTeams(JodyAppContext db)
-        {
-            return db.Teams.Where(t => t.Parent == null).ToList();
-        }
         public static List<Team> GetTeams(JodyAppContext db, Season season)
         {            
             if (season == null) return db.Teams.Where(t => t.Season == null).ToList<Team>();
