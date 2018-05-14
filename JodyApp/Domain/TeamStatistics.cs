@@ -21,5 +21,15 @@ namespace JodyApp.Domain
         public int GoalDifference {  get { return GoalsFor - GoalsAgainst; } }
         public int Points {  get { return 2 * Wins + Ties; } }
 
+        public TeamStatistics() { }
+        public TeamStatistics(int rank, int wins, int loses, int ties, int goalsFor, int goalsAgainst)
+        {
+            Rank = rank;
+            Wins = wins;
+            Loses = loses;
+            Ties = ties;
+            GoalsFor = goalsFor;
+            GoalsAgainst = goalsAgainst;
+        }
     }
 }

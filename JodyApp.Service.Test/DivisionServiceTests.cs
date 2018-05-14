@@ -34,7 +34,7 @@ namespace JodyApp.Service.Test
             driver.InsertData();
             scheduleService = new ScheduleService(db);
             league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
-            season = league.ReferenceCompetitions.Where(s => s.League.Id == league.Id && s.Season.Name == "My Season").First().Season;
+            //season = league.ReferenceCompetitions.Where(s => s.League.Id == league.Id && s.Season.Name == "My Season").First().Season;
             seasonService = new SeasonService(db);            
 
         }
@@ -42,8 +42,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetSeasonDivisionsByParent()
         {
-            var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
-            season = seasonService.CreateNewSeason(refSeason, 15);
+            var season = db.Seasons.Where(s => s.Name == "My Season").First();            
             Division leagueDiv = service.GetByName("League", league, season);
             List<Division> divisions = service.GetDivisionsByParent(leagueDiv);
 
@@ -57,20 +56,10 @@ namespace JodyApp.Service.Test
         public void ShouldSortByDivision()
         {
 
-            var division = new Division(null, null, "Division 1", null, 1, 0, null);
-            division.Teams.AddRange(new List<Team>()
-            {
-                new Team("Team 1", 0, new TeamStatistics() { Wins = 5 }, division),
-                new Team("Team 5", 0, new TeamStatistics() { Wins = 3, Ties = 0 }, division),
-                new Team("Team 4", 0, new TeamStatistics() { Wins = 3, Ties = 1 }, division),
-                new Team("Team 3", 0, new TeamStatistics() { Wins = 4, Ties = 0 }, division),
-                new Team("Team 2", 0, new TeamStatistics() { Wins = 4, Ties = 1 }, division),
-                new Team("Team 6", 0, new TeamStatistics() { Wins = 2, Ties = 1 }, division),
-            });
+            var division = db.Divisions.Where(d => d.Name == "West").FirstOrDefault();
             
 
-
-            var rank = service.SortByDivision(seasonDivision);
+            var rank = service.SortByDivision(division);
 
             string result = RecordTableDisplay.GetRecordTableRowHeader();
             rank.ForEach(record =>

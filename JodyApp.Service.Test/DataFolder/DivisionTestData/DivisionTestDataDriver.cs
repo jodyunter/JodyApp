@@ -45,15 +45,15 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateTeams()
         {            
-            CreateAndAddTeam("Los Angelas", 5, divisions["Pacific"]);
-            CreateAndAddTeam("Seattle", 5, divisions["Pacific"]);
-            CreateAndAddTeam("Vancouver", 5, divisions["Pacific"]);
-            CreateAndAddTeam("Minnesota", 5, divisions["Central"]);
-            CreateAndAddTeam("Colorado", 5, divisions["Central"]);
+            CreateAndAddTeam("Los Angelas", 5, new TeamStatistics(-1, 18, 32, 14, 156, 186), divisions["Pacific"]);
+            CreateAndAddTeam("Seattle", 5, new TeamStatistics(-1, 23, 34, 7, 165, 179), divisions["Pacific"]);
+            CreateAndAddTeam("Vancouver", 5, new TeamStatistics(-1, 34, 20, 10, 128, 47), divisions["Pacific"]);
+            CreateAndAddTeam("Minnesota", 5, new TeamStatistics(-1, 21, 29, 14, 134, 158), divisions["Central"]);
+            CreateAndAddTeam("Colorado", 5, new TeamStatistics(-1, 30, 26, 8, 168, 184), divisions["Central"]);
             CreateAndAddTeam("Chicago", 5, divisions["Central"]);
-            CreateAndAddTeam("Edmonton", 5, divisions["North West"]);
-            CreateAndAddTeam("Calgary", 5, divisions["North West"]);
-            CreateAndAddTeam("Winnipeg", 5, divisions["North West"]);
+            CreateAndAddTeam("Edmonton", 5, new TeamStatistics(-1, 23, 29, 12, 159, 169), divisions["North West"]);
+            CreateAndAddTeam("Calgary", 5, new TeamStatistics(-1, 26, 23, 15, 162, 169), divisions["North West"]);
+            CreateAndAddTeam("Winnipeg", 5, new TeamStatistics(-1, 29, 23, 12, 161, 160), divisions["North West"]);
             CreateAndAddTeam("Toronto", 5, divisions["North East"]);
             CreateAndAddTeam("Montreal", 5, divisions["North East"]);
             CreateAndAddTeam("Ottawa", 5, divisions["North East"]);
@@ -65,6 +65,7 @@ namespace JodyApp.Service.Test.DataFolder
 
             CreateAndAddTeam("Pittsburgh", 5, divisions["Extra Child"]);
             CreateAndAddTeam("Minneapolis", 5, divisions["Extra Child"]);
+
 
         }
     }

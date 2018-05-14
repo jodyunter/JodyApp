@@ -32,7 +32,7 @@ namespace JodyApp.Service
 
             if (division.Teams != null) teams.AddRange(division.Teams);
 
-            Division.GetDivisionsByParent(db, division).ForEach(div =>
+            GetDivisionsByParent(division).ForEach(div =>
             {
                 teams.AddRange(GetAllTeamsInDivision(div));
             });
@@ -43,7 +43,15 @@ namespace JodyApp.Service
 
         public List<Division> GetDivisionsByParent(Division parent)
         {
-            return Division.GetDivisionsByParent(db, parent);
+            var divisions = new List<Division>();
+
+            db.Divisions.Where(d => d.Parent != null && d.Parent.Id == parent.Id).ToList().ForEach(div =>
+            {
+                divisions.Add(div);
+                divisions.AddRange(GetDivisionsByParent(div));
+            });
+
+            return divisions;
         }
         public List<Division> GetDivisionsBySeason(Season season)
         {
@@ -57,7 +65,7 @@ namespace JodyApp.Service
             RecordTable table = new RecordTable();
             var teams = new List<Team>();
 
-            Division.GetAllTeamsInDivision(db, division).ForEach(team => {
+            GetAllTeamsInDivision(division).ForEach(team => {
                 table.Add(team);                    
             });
 

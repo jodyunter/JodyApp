@@ -172,6 +172,13 @@ namespace JodyApp.Service.Test.DataFolder
             return team;
         }
 
+        public Team CreateAndAddTeam(string name, int skill, TeamStatistics stats, Division division)
+        {
+            Team team = new Team(name, skill, stats, division);
+            teams.Add(team.Name, team);
+            return team;
+        }
+
         public ConfigTeam CreateAndAddConfigTeam(string name, int skill, int? firstYear, int? lastYear, ConfigDivision division)
         {
             ConfigTeam team = new ConfigTeam(name, skill, division, firstYear, lastYear);

@@ -13,7 +13,7 @@ namespace JodyApp.Domain.Config
 
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
-
+        
         public ConfigSeason(League league, string name, int? firstYear, int? lastYear)
         {
             League = league;
