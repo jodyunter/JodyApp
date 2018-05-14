@@ -60,6 +60,7 @@
     <Compile Include="DataFolder\BaseTestDataDriver.cs" />
     <Compile Include="DataFolder\DivisionTestData\DivisionTestDataDriver.cs" />
     <Compile Include="DataFolder\Jody\JodyTestDataDriver.cs" />
+    <Compile Include="DataFolder\League\LeagueTestDataDriver.cs" />
     <Compile Include="DataFolder\ScheduleTestData\ScheduleTestDataDriver.cs" />
     <Compile Include="DataFolder\SeasonTestData\SeasontestDataDriver.cs" />
     <Compile Include="DivisionServiceTests.cs" />

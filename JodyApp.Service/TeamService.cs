@@ -13,9 +13,9 @@ namespace JodyApp.Service
     {
         DivisionService divisionService = new DivisionService();
 
-        public override void Initialize() { divisionService.db = db; }
+        public override void Initialize(JodyAppContext db) { divisionService.db = db; divisionService.Initialize(db); }
 
-        public TeamService(JodyAppContext context) : base(context) { }
+        public TeamService(JodyAppContext context) : base(context) { Initialize(context); }
 
         public List<Team> GetBaseTeams()
         {

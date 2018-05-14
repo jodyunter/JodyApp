@@ -252,7 +252,19 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         [TestMethod]
         public void ShouldGetFromLastPlace()
         {
-            throw new NotImplementedException();
+            Division division = CreateDivision();
+            Group group = new Group("Division Group", playoff, division, new List<GroupRule>());
+            GroupRule rule = GroupRule.CreateFromDivisionBottom(group, "division grp rule 1", division, 2, 5);
+
+            var teamList = new List<Team>();
+            playoff.AddTeamsToGroup(rule, teamList);
+            AreEqual(4, teamList.Count);
+            IsNotNull(teamList.Where(t => t.Name == "Team 29").FirstOrDefault());
+            IsNotNull(teamList.Where(t => t.Name == "Team 28").FirstOrDefault());
+            IsNotNull(teamList.Where(t => t.Name == "Team 27").FirstOrDefault());
+            IsNotNull(teamList.Where(t => t.Name == "Team 21").FirstOrDefault());
+            IsNull(teamList.Where(t => t.Name == "Team 30").FirstOrDefault());
+
         }
         [TestMethod]
         public void ShouldSetSeriesTeamsFromSeriesWinnerAndLoserRule()

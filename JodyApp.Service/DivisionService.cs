@@ -14,13 +14,14 @@ namespace JodyApp.Service
     public class DivisionService:BaseService
     {
 
-        public DivisionService() : base() { }
+        public DivisionService() : base() { Initialize(null); }
 
         public DivisionService(JodyAppContext context):base(context)
-        {                        
+        {
+            Initialize(context);
         }
 
-        public override void Initialize() { }
+        public override void Initialize(JodyAppContext db) { }
 
         public List<Team> GetAllTeamsInDivision(Division division)
         {           

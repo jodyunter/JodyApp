@@ -8,7 +8,7 @@ using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Domain;
 using JodyApp.Domain.Table;
 using JodyApp.Database;
-using JodyApp.Service.Test.DataFolder.SeasonTestData;
+using JodyApp.Service.Test.DataFolder;
 
 using JodyApp.Domain.Schedule;
 

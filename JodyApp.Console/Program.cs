@@ -7,7 +7,7 @@ using JodyApp.Service;
 using JodyApp.Domain.Table;
 using JodyApp.Domain;
 using JodyApp.Database;
-using JodyApp.Service.Test.DataFolder.Jody;
+using JodyApp.Service.Test.DataFolder;
 
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table.Display;

@@ -13,15 +13,16 @@ namespace JodyApp.Service
     {
         DivisionService divisionService = new DivisionService();
 
-        public PlayoffService() : base() { }
+        public PlayoffService() : base() { Initialize(null); }
         public PlayoffService(JodyAppContext db):base(db)
         {
-            divisionService = new DivisionService(db);
+            Initialize(db);
         }
 
-        public override void Initialize()
+        public override void Initialize(JodyAppContext db)
         {
             divisionService.db = db;
+            divisionService.Initialize(db);
         }
         public Playoff CreateNewPlayoff(Playoff referencePlayoff, int year)
         {

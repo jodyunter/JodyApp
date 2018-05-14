@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using JodyApp.Service.Test.DataFolder.ScheduleTestData;
+using JodyApp.Service.Test.DataFolder;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Domain;
 using JodyApp.Domain.Schedule;

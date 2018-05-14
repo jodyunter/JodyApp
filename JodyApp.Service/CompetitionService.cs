@@ -14,13 +14,15 @@ namespace JodyApp.Service
         SeasonService seasonService = new SeasonService();
         PlayoffService playoffService = new PlayoffService();
 
-        public CompetitionService():base(){}
-        public CompetitionService(JodyAppContext db) : base(db) { }
+        public CompetitionService():base(){ Initialize(null); }
+        public CompetitionService(JodyAppContext db) : base(db) { Initialize(db); }
 
-        public override void Initialize()
+        public override void Initialize(JodyAppContext db)
         {
             seasonService.db = db;
+            seasonService.Initialize(db);
             playoffService.db = db;
+            playoffService.Initialize(db);
         }
         public Competition GetReferenceCompetitionByName(League league, string name)
         {
@@ -38,6 +40,21 @@ namespace JodyApp.Service
             else if (reference is Playoff) return playoffService.CreateNewPlayoff((Playoff)reference, year);
 
             return null;
+        }
+        
+        public List<Game> GetNextGames(Competition competition)
+        {
+            //need to get next game number
+            return competition.GetNextGames(0);
+        }
+
+        public void PlayGames(List<Game> games, Competition competition, Random random)
+        {
+            competition.PlayGames(games, random);
+            if (competition is Season)
+            {
+                seasonService.SortAllDivisions((Season)competition);
+            }
         }
     }
 }

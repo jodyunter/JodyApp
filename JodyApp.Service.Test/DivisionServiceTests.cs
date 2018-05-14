@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using JodyApp.Service.Test.DataFolder.DivisionTestData;
+using JodyApp.Service.Test.DataFolder;
 using JodyApp.Domain;
 using JodyApp.Domain.Schedule;
 using JodyApp.Domain.Table.Display;

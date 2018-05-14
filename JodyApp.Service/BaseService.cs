@@ -13,20 +13,20 @@ namespace JodyApp.Service
 
         public JodyAppContext db { get; set;  }
 
-        public abstract void Initialize();
+        public abstract void Initialize(JodyAppContext db);
 
-        public BaseService() { db = null; Initialize();  }
+        public BaseService() { db = null; Initialize(db);  }
 
         public BaseService(JodyAppContext dbContext)
         {
             db = dbContext;
-            Initialize();
+            Initialize(db);
         }
 
         public BaseService(string ConnectionString)
         {
             db = new JodyAppContext(ConnectionString);
-            Initialize();
+            Initialize(db);
         }
 
         public void Rollback()
@@ -50,5 +50,8 @@ namespace JodyApp.Service
                 }
             }
         }
+
+        public void Save() { db.SaveChanges(); }
+
     }
 }

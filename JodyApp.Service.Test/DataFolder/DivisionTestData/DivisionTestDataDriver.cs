@@ -7,7 +7,7 @@ using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Domain.Schedule;
 
-namespace JodyApp.Service.Test.DataFolder.DivisionTestData
+namespace JodyApp.Service.Test.DataFolder
 {
     public class DivisionTestDataDriver:BaseTestDataDriver
     {        

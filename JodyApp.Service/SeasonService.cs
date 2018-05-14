@@ -13,18 +13,15 @@ namespace JodyApp.Service
 {
     public class SeasonService:BaseService
     {
-        public DivisionService divisionService = new DivisionService();        
+        public DivisionService divisionService = new DivisionService();  
 
-        private string connectionString;
+        public SeasonService(JodyAppContext context) : base(context) { Initialize(context); }
 
-        public SeasonService(JodyAppContext context) : base(context) { }
-
-        public SeasonService(string connectionString) : base(connectionString) { }
-
-        public SeasonService() : base() { }
-        public override void Initialize()
+        public SeasonService() : base() { Initialize(null); }
+        public override void Initialize(JodyAppContext db)
         {
-            divisionService = new DivisionService(db);
+            divisionService.db = db;
+            divisionService.Initialize(db);
         }
 
         public bool IsSeasonStarted(Season season)

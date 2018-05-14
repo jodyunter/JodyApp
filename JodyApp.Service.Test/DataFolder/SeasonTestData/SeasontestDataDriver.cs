@@ -7,7 +7,7 @@ using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Domain.Schedule;
 
-namespace JodyApp.Service.Test.DataFolder.SeasonTestData
+namespace JodyApp.Service.Test.DataFolder
 {
     public class SeasontestDataDriver:BaseTestDataDriver
     {       

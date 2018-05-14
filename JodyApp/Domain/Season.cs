@@ -52,10 +52,16 @@ namespace JodyApp.Domain
 
         public void PlayGames(List<Game> games, Random random)
         {
+            if (!Started) throw new ApplicationException("Season not started!");
+
             games.ForEach(g => { PlayGame(g, random); ProcessGame(g); });
+
+
         }
         public void PlayGame(Game g, Random random)
         {
+            if (!Started) throw new ApplicationException("Season not started!");
+
             g.Play(random);            
         }
         public void ProcessGame(Game g)

@@ -11,11 +11,12 @@ namespace JodyApp.Service
 {
     public class LeagueService:BaseService
     {
-        CompetitionService competitionService;
+        CompetitionService competitionService = new CompetitionService();
 
-        public override void Initialize()
+        public override void Initialize(JodyAppContext db)
         {
-             competitionService = new CompetitionService(db);
+            competitionService.db = db;
+            competitionService.Initialize(db);
         }
 
         public LeagueService() : base() { }
@@ -93,10 +94,7 @@ namespace JodyApp.Service
             return db.Leagues.ToList();
         }
 
-        public List<Game> PlayNextGames(Competition competition, Random random)
-        {
-            return null;
-        }
+
 
 
     }
