@@ -1,18 +1,41 @@
 ﻿using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Domain.Playoffs;
-using JodyApp.Domain.Config;
 using JodyApp.Domain.Table;
+using JodyApp.Domain.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace JodyApp.Service.Test.DataFolder
 {
     public abstract class AbstractTestDataDriver
     {
+        protected Dictionary<string, League> leagues;
+        protected Dictionary<string, ConfigSeason> configSeasons;
+        protected Dictionary<string, ConfigPlayoff> configPlayoffs;
+        protected Dictionary<string, ConfigDivision> configDivisions;
+        protected Dictionary<string, ConfigTeam> configTeams;
+        protected Dictionary<string, ConfigSortingRule> configSortingRules;
+        protected Dictionary<string, ConfigGroup> configGroups;
+        protected Dictionary<string, ConfigGroupRule> configGroupRules;
+        protected Dictionary<string, ConfigSeriesRule> configSeriesRules;
+        protected Dictionary<string, ConfigScheduleRule> configScheduleRules;
+
+        protected Dictionary<string, Season> seasons;
+        protected Dictionary<string, Playoff> playoffs;
+        protected Dictionary<string, Division> divisions;
+        protected Dictionary<string, Team> teams;
+        protected Dictionary<string, SortingRule> sortingRules;
+        protected Dictionary<string, Group> groups;
+        protected Dictionary<string, GroupRule> groupRules;
+        protected Dictionary<string, SeriesRule> seriesRules;
+        protected Dictionary<string, Series> series;
+
+
         public JodyAppContext db;        
 
         public AbstractTestDataDriver()
@@ -24,16 +47,26 @@ namespace JodyApp.Service.Test.DataFolder
         {
             this.db = db;
         }
-        abstract public void PrivateCreateTeams( Dictionary<string, Team> teams, Dictionary<string, Division> divs);
-        abstract public void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs);
-        abstract public void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ConfigScheduleRule> rules);
-        abstract public void PrivateCreateLeagues(Dictionary<string, League> leagues);
-        abstract public void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules);
-        abstract public void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups, Dictionary<string, SeriesRule> rules);
-        abstract public void PrivateCreateGroups(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divisions, Dictionary<string, Group> groups);
-        abstract public void PrivateCreateGroupRules(Dictionary<string, Group> groups, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules);
-        abstract public void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, ConfigSeason> seasons);
-        abstract public void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Playoff> playoffs);        
+        abstract public void PrivateCreateTeams();
+        abstract public void PrivateCreateDivisions();
+        abstract public void PrivateCreateScheduleRules();
+        abstract public void PrivateCreateLeagues();
+        abstract public void PrivateCreateSortingRules();
+        abstract public void PrivateCreateSeriesRules();
+        abstract public void PrivateCreateGroups();
+        abstract public void PrivateCreateGroupRules();
+        abstract public void PrivateCreateSeasons();
+        abstract public void PrivateCreatePlayoffs();
+        abstract public void PrivateCreateSeries();
+
+        public abstract void PrivateCreateConfigSeriesRules();
+        public abstract void PrivateCreateConfigGroupRules();
+        public abstract void PrivateCreateConfigGroups();
+        public abstract void PrivateCreateConfigSortingRules();
+        public abstract void PrivateCreateConfigTeams();
+        public abstract void PrivateCreateConfigDivisions();
+        public abstract void PrivateCreateConfigPlayoffs();
+        public abstract void PrivateCreateConfigSeasons();
 
         public void DeleteAllData()
         {
@@ -61,12 +94,31 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
-        public ConfigSeason CreateAndAddSeason(League league, string name, int? firstYear, int? lastYear, Dictionary<string, ConfigSeason> seasons, int order)
+        public Season CreateAndAddSeason(League league, string name, int order, int year, int startingDay)
         {
-            ConfigSeason season = new ConfigSeason(league, name, 0, true, true, 0, firstYear, lastYear);
+            Season season = new Season(league, name, year, true, true, startingDay);
 
             seasons.Add(name, season);
             
+            league.ReferenceCompetitions.Add(new ReferenceCompetition()
+            {
+                League = league,
+                Season = null,
+                Playoff = null,
+                Order = order
+            });
+
+            return season;
+
+        }
+
+
+        public ConfigSeason CreateAndAddConfigSeason(League league, string name, int? firstYear, int? lastYear, int order)
+        {
+            ConfigSeason season = new ConfigSeason(league, name, firstYear, lastYear);
+
+            configSeasons.Add(name, season);
+
             league.ReferenceCompetitions.Add(new ReferenceCompetition()
             {
                 League = league,
@@ -80,7 +132,8 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
 
-        public Playoff CreateAndAddPlayoff(League league, string name, Dictionary<string, Playoff> playoffs, int order, Season season)
+
+        public Playoff CreateAndAddPlayoff(League league, string name, int order, Season season)
         {
             Playoff playoff = new Playoff(league, name, 0, true, true, 0, season);
 
@@ -98,49 +151,62 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
 
-        public Division CreateAndAddDivision(League league, ConfigSeason season, string name, string shortName, int level, int order, ConfigDivision parent, List<SortingRule> sortingRules, Dictionary<string, ConfigDivision> map)
+        public Division CreateAndAddDivision(League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules)
         {
-            ConfigDivision div = new ConfigDivision(league, season, name, shortName, level, order, parent, sortingRules);
-            map.Add(div.Name, div);
+            Division div = new Division(league, season, name, shortName, level, order, parent, sortingRules);
+            divisions.Add(div.Name, div);
             return div;
         }
 
-        public ConfigTeam CreateAndAddTeam(string name, int skill, int? firstYear, int? lastYear, ConfigDivision division, Dictionary<string, ConfigTeam> map)
+        public ConfigDivision CreateAndAddConfigDivision(League league, ConfigSeason season, string name, string shortName, int level, int order, ConfigDivision parent, List<SortingRule> sortingRules, int? firstYear, int? lastYear)
+        {
+            ConfigDivision div = new ConfigDivision(league, season, name, shortName, level, order, parent, firstYear, lastYear);
+            configDivisions.Add(div.Name, div);
+            return div;
+        }
+
+        public Team CreateAndAddTeam(string name, int skill, Division division)
+        {
+            Team team = new Team(name, skill, division);
+            teams.Add(team.Name, team);            
+            return team;
+        }
+
+        public ConfigTeam CreateAndAddConfigTeam(string name, int skill, int? firstYear, int? lastYear, ConfigDivision division)
         {
             ConfigTeam team = new ConfigTeam(name, skill, division, firstYear, lastYear);
-            map.Add(team.Name, team);            
+            configTeams.Add(team.Name, team);
             return team;
-        }        
-        
-        public ConfigScheduleRule CreateAndAddScheduleRule(ConfigScheduleRule newRule, Dictionary<string, ConfigScheduleRule> map)
+        }
+
+        public ConfigScheduleRule CreateAndAddScheduleRule(ConfigScheduleRule newRule)
         {
             ConfigScheduleRule rule = new ConfigScheduleRule(newRule);
-            map.Add(rule.Name, rule);
+            configScheduleRules.Add(rule.Name, rule);
             return rule;
         }
 
         public ConfigScheduleRule CreateAndAddScheduleRule(League league, ConfigSeason season, string name, 
                                 int homeType, ConfigTeam homeTeam, ConfigDivision homeDivision,
                                 int awayType, ConfigTeam awayTeam, ConfigDivision awayDivision,
-                                bool homeAndAway, int rounds, int divisionLevel, int order, bool reverse,
-                                    Dictionary<string, ConfigScheduleRule> map)
+                                bool homeAndAway, int rounds, int divisionLevel, int order, bool reverse)
         {
             ConfigScheduleRule rule = new ConfigScheduleRule(league, season, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel, order, reverse);
-            map.Add(rule.Name, rule);
+            configScheduleRules.Add(rule.Name, rule);
             return rule;
         }
 
         public SeriesRule CreateAndAddSeriesRule(Playoff p, string name, int round, Group homeTeamFromGroup, int homeTeamFromRank,
                                             Group awayTeamFromGroup, int awayTeamFromRank, int seriesType,
-                                            int gamesNeeded, bool canTie, string homeGames, Dictionary<string, SeriesRule> map)
+                                            int gamesNeeded, bool canTie, string homeGames)
         {
             SeriesRule rule = new SeriesRule(p, name, round, homeTeamFromGroup, homeTeamFromRank, awayTeamFromGroup, awayTeamFromRank, seriesType, gamesNeeded, canTie, homeGames);
-            map.Add(rule.Name, rule);
+            seriesRules.Add(rule.Name, rule);
             return rule;
             
         }
 
-        public SortingRule CreateAndAddSortingRule(Division division, String name, int groupNumber, Division divToGetTeamsFrom, string positionsToUse, int divisionLevel, int ruleType, Dictionary<string, SortingRule> map)
+        public SortingRule CreateAndAddSortingRule(Division division, String name, int groupNumber, Division divToGetTeamsFrom, string positionsToUse, int divisionLevel, int ruleType)
         {
             SortingRule rule = new SortingRule()
             {
@@ -153,11 +219,11 @@ namespace JodyApp.Service.Test.DataFolder
                 Type = ruleType
             };
 
-            map.Add(rule.Name, rule);
+            sortingRules.Add(rule.Name, rule);
             return rule;
         }
 
-        public League CreateAndAddLeague(String name, Dictionary<string, League> leagues)
+        public League CreateAndAddLeague(String name)
         {
             League l = new League() { Name = name };
 
@@ -166,150 +232,28 @@ namespace JodyApp.Service.Test.DataFolder
             return l;
         }
 
-        public Group CreateAndAddGroup(Playoff p, string name, Division sortByDivision, Dictionary<string, Group> map)
+        public Group CreateAndAddGroup(Playoff p, string name, Division sortByDivision)
         {
             Group group = new Group(name, p, sortByDivision, new List<GroupRule>());
-            map.Add(name, group);
+            groups.Add(name, group);
             return group;
 
         }
         public GroupRule CreateAndAddGroupRule(Group g, string name, int ruleType, Division fromDivision, 
-                                                String seriesName, int fromStartValue, int fromEndValue, Team fromTeam,  
-                                                Dictionary<string, GroupRule> map)
+                                                String seriesName, int fromStartValue, int fromEndValue, Team fromTeam)
         {
             GroupRule rule = new GroupRule(g, name, ruleType, fromDivision, seriesName, fromStartValue, fromEndValue, fromTeam);
 
-            map.Add(map.Keys.Count.ToString(), rule);            
+            groupRules.Add(groupRules.Keys.Count.ToString(), rule);            
             return rule;
         }
 
-        public GroupRule CreateAndAddGroupRule(GroupRule rule, Dictionary<string, GroupRule> map)
+        public GroupRule CreateAndAddGroupRule(GroupRule rule)
         {
-            map.Add(map.Keys.Count.ToString(), rule);
+            groupRules.Add(groupRules.Keys.Count.ToString(), rule);
 
             return rule;
         }
-
-        public Dictionary<string, League> CreateLeagues()
-        {
-            var leagues = new Dictionary<string, League>();
-            PrivateCreateLeagues(leagues);
-
-            db.Leagues.AddRange(leagues.Values);
-            db.SaveChanges();
-
-            return leagues;
-
-                
-        }
-
-        public Dictionary<string, Season> CreateSeasons(Dictionary<string, League> leagues)
-        {
-            var seasons = new Dictionary<string, Season>();
-            PrivateCreateSeasons(leagues, seasons);
-
-            db.Seasons.AddRange(seasons.Values);
-            db.SaveChanges();
-
-            return seasons;
-        }
-
-
-        public Dictionary<string, Playoff> CreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
-        {
-            var playoffs = new Dictionary<string, Playoff>();
-            PrivateCreatePlayoffs(leagues, seasons, playoffs);
-
-            db.Playoffs.AddRange(playoffs.Values);
-            db.SaveChanges();
-
-            return playoffs;
-        }        
-
-        public Dictionary<string, Division> CreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
-        {
-            var divs = new Dictionary<string, Division>();
-
-            PrivateCreateDivisions(leagues, seasons, divs);
-
-            db.Divisions.AddRange(divs.Values);
-            db.SaveChanges();
-
-            return divs;
-
-        }
-
-
-        public Dictionary<string, Team> CreateTeams(Dictionary<string, Division> divs)
-        {
-            var teams = new Dictionary<string, Team>();
-
-            PrivateCreateTeams(teams, divs);
-
-            db.Teams.AddRange(teams.Values);
-            db.SaveChanges();
-
-            return teams;
-        }
-
-        public Dictionary<string, ConfigScheduleRule> CreateRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams)
-        {
-            var rules = new Dictionary<string, ConfigScheduleRule>();
-
-            PrivateCreateScheduleRules(leagues, seasons, divs, teams, rules);
-            
-            db.ScheduleRules.AddRange(rules.Values);
-            db.SaveChanges();
-            return rules;
-
-        }
-
-        public Dictionary<string, SortingRule> CreateSortingRules(Dictionary<string, Division> divs)
-        {
-            var rules = new Dictionary<string, SortingRule>();
-
-            PrivateCreateSortingRules(divs, rules);
-
-            db.SortingRules.AddRange(rules.Values);
-            db.SaveChanges();
-
-            return rules;
-        }
-
-        public Dictionary<string, SeriesRule> CreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups)
-        {
-            var rules = new Dictionary<string, SeriesRule>();
-
-            PrivateCreateSeriesRules(playoffs, groups, rules);
-
-            db.SeriesRules.AddRange(rules.Values);
-            db.SaveChanges();
-
-            return rules;
-        }
-
-        public Dictionary<string, Group> CreateGroups(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divisions)
-        {
-            var groups = new Dictionary<string, Group>();
-
-            PrivateCreateGroups(playoffs, divisions, groups);
-
-            db.Groups.AddRange(groups.Values);
-            db.SaveChanges();
-
-            return groups;
-        }
-        public Dictionary<string, GroupRule> CreateGroupRules(Dictionary<string, Group> groups, Dictionary<string, Division> divs)
-        {
-            var rules = new Dictionary<string, GroupRule>();
-
-            PrivateCreateGroupRules(groups, divs, rules);
-
-            db.GroupRules.AddRange(rules.Values);
-            db.SaveChanges();
-
-            return rules;
-        }        
 
 
 
@@ -317,18 +261,41 @@ namespace JodyApp.Service.Test.DataFolder
 
         public virtual void InsertData()
         {
-            Dictionary<string, League> leagues = CreateLeagues();
-            Dictionary<string, Season> seasons = CreateSeasons(leagues);
-            Dictionary<string, Playoff> playoffs = CreatePlayoffs(leagues, seasons);
-            Dictionary<string, Division> divs = CreateDivisions(leagues, seasons);
-            Dictionary<string, Team> teams = CreateTeams(divs);
-            Dictionary<string, ConfigScheduleRule> scheduleRules = CreateRules(leagues, seasons, divs, teams);
-            Dictionary<string, SortingRule> sortingRules = CreateSortingRules(divs);
-            Dictionary<string, Group> groups = CreateGroups(playoffs, divs);
-            Dictionary<string, GroupRule> groupRules = CreateGroupRules(groups, divs);
-            Dictionary<string, SeriesRule> seriesRules = CreateSeriesRules(playoffs, groups);
+            leagues = CreateObjects<League>(PrivateCreateLeagues, db.Leagues);
+            configSeasons = CreateObjects<ConfigSeason>(PrivateCreateConfigSeasons, db.ConfigSeasons);
+            configPlayoffs = CreateObjects<ConfigPlayoff>(PrivateCreateConfigPlayoffs, db.ConfigPlayoffs);
+            configDivisions = CreateObjects<ConfigDivision>(PrivateCreateConfigDivisions, db.ConfigDivisions);
+            configTeams = CreateObjects<ConfigTeam>(PrivateCreateConfigTeams, db.ConfigTeams);
+            configSortingRules = CreateObjects<ConfigSortingRule>(PrivateCreateConfigSortingRules, db.ConfigSortingRules); 
+            configGroups = CreateObjects<ConfigGroup>(PrivateCreateConfigGroups, db.ConfigGroups);
+            configGroupRules = CreateObjects<ConfigGroupRule>(PrivateCreateConfigGroupRules, db.ConfigGroupRules);
+            configSeriesRules = CreateObjects<ConfigSeriesRule>(PrivateCreateConfigSeriesRules, db.ConfigSeriesRules);
+            configScheduleRules = CreateObjects<ConfigScheduleRule>(PrivateCreateScheduleRules, db.ScheduleRules);
+
+
+            seasons = CreateObjects<Season>(PrivateCreateSeasons, db.Seasons);
+            playoffs = CreateObjects<Playoff>(PrivateCreatePlayoffs, db.Playoffs);
+            divisions = CreateObjects<Division>(PrivateCreateDivisions, db.Divisions);
+            teams = CreateObjects<Team>(PrivateCreateTeams, db.Teams);
+            sortingRules = CreateObjects<SortingRule>(PrivateCreateSortingRules, db.SortingRules); 
+            groups = CreateObjects<Group>(PrivateCreateGroups, db.Groups);
+            groupRules = CreateObjects<GroupRule>(PrivateCreateGroupRules, db.GroupRules); 
+            seriesRules = CreateObjects<SeriesRule>(PrivateCreateSeriesRules, db.SeriesRules);
+            series = CreateObjects<Series>(PrivateCreateSeries, db.Series);
 
         }
+
+        public Dictionary<string, T> CreateObjects<T>(Action method, DbSet m)
+        {
+            var collection = new Dictionary<string, T>();
+
+            method();
+
+            m.AddRange(collection.Values);
+
+            return collection;
+        }
+
 
         public virtual void UpdateData()
         {

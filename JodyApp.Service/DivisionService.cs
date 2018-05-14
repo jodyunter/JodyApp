@@ -25,9 +25,19 @@ namespace JodyApp.Service
         public override void Initialize(JodyAppContext db) { }
 
         public List<Team> GetAllTeamsInDivision(Division division)
-        {           
+        {
 
-            return Division.GetAllTeamsInDivision(db, division);
+
+            var teams = new List<Team>();
+
+            if (division.Teams != null) teams.AddRange(division.Teams);
+
+            Division.GetDivisionsByParent(db, division).ForEach(div =>
+            {
+                teams.AddRange(GetAllTeamsInDivision(div));
+            });
+
+            return teams;
         }
         
 

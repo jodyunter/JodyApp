@@ -36,6 +36,7 @@ namespace JodyApp.Console
             DivisionService divisionService = new DivisionService(db);
             PlayoffService playoffService = new PlayoffService(db);
             LeagueService leagueService = new LeagueService(db);
+            ConfigService configService = new ConfigService(db);
 
             BaseController controller = new StartController();
 
@@ -102,8 +103,8 @@ namespace JodyApp.Console
             
             var promotionSeries = playoffService.GetSeriesByYear("Qualification", league.CurrentYear);
 
-            Team PromotedD1 = promotionSeries.GetWinner().Parent;
-            Team RelegatedP = promotionSeries.GetLoser().Parent;
+            ConfigTeam PromotedD1 = promotionSeries.GetWinner().Parent;
+            ConfigTeam RelegatedP = promotionSeries.GetLoser().Parent;
 
             teamService.ChangeDivision(PromotedD1, "Premier");
             teamService.ChangeDivision(RelegatedP, "Division1");
@@ -111,8 +112,8 @@ namespace JodyApp.Console
             var d1promotionSeries = playoffService.GetSeriesByYear("D1 Qualification", league.CurrentYear);
             if (d1promotionSeries != null)
             {
-                Team PromotedD2 = d1promotionSeries.GetWinner().Parent;
-                Team RelegatedD1 = d1promotionSeries.GetLoser().Parent;
+                ConfigTeam PromotedD2 = d1promotionSeries.GetWinner().Parent;
+                ConfigTeam RelegatedD1 = d1promotionSeries.GetLoser().Parent;
 
                 teamService.ChangeDivision(PromotedD2, "Division1");
                 teamService.ChangeDivision(RelegatedD1, "Division2");

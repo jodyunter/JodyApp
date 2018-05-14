@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Service
@@ -24,11 +25,11 @@ namespace JodyApp.Service
             divisionService.db = db;
             divisionService.Initialize(db);
         }
-        public Playoff CreateNewPlayoff(Playoff referencePlayoff, int year)
+        public Playoff CreateNewPlayoff(ConfigPlayoff referencePlayoff, int year)
         {
             return CreateNewPlayoff(referencePlayoff, year, false);
         }
-        public Playoff CreateNewPlayoff(Playoff referencePlayoff, int year, bool test)
+        public Playoff CreateNewPlayoff(ConfigPlayoff referencePlayoff, int year, bool test)
         {
             Playoff playoff = new Playoff();
             playoff.League = referencePlayoff.League;
@@ -64,7 +65,7 @@ namespace JodyApp.Service
             db.Groups.AddRange(newGroups);
 
 
-            GetSeriesRulesByReference(referencePlayoff).ForEach(seriesRule =>
+            referencePlayoff.SeriesRules.ForEach(seriesRule =>            
             {
                 SeriesRule newRule = new SeriesRule(playoff, seriesRule.Name, seriesRule.Round,
                     newGroups.Where(ng => ng.Name == seriesRule.HomeTeamFromGroup.Name).First(), seriesRule.HomeTeamFromRank,
@@ -101,17 +102,6 @@ namespace JodyApp.Service
 
         }
 
-        
-        public List<SeriesRule> GetSeriesRulesByReference(Playoff playoff)
-        {
-            return db.SeriesRules.Where(sr => sr.Playoff.Id == playoff.Id).ToList();
-        }
-
-        public List<Group> GetGroupRules(Playoff playoff)
-        {
-            return db.Groups.Where(g => g.Playoff.Id == playoff.Id).ToList();
-
-        }
         public List<Game> PlayRound(Playoff p, Random random)
         {
             var pGames = new List<Game>();

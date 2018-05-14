@@ -67,7 +67,15 @@ namespace JodyApp.Database
 
         //configurationItems
         public DbSet<ConfigTeam> ConfigTeams { get; set; }
+        public DbSet<ConfigSeason> ConfigSeasons { get; set; }
         public DbSet<ConfigDivision> ConfigDivisions { get; set; }
         public DbSet<ConfigScheduleRule> ScheduleRules { get; set; }
+        public DbSet<ConfigPlayoff> ConfigPlayoffs { get; set; }
+        public DbSet<ConfigSeriesRule> ConfigSeriesRules { get; set; }
+        public DbSet<ConfigGroup> ConfigGroups { get; set; }
+        public DbSet<ConfigGroupRule> ConfigGroupRules { get; set; }
+        public DbSet<ConfigSortingRule> ConfigSortingRules { get; set; }
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.Domain.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,7 @@ namespace JodyApp.Domain.Playoffs
         virtual public Team FromTeam { get; set; }        
         public string Name { get; set; }
         public GroupRule() { }
-        public GroupRule(GroupRule rule, Division fromDivision, Team team, Group g) : this(g, rule.FromSeries, rule.RuleType, fromDivision,
+        public GroupRule(ConfigGroupRule rule, Division fromDivision, Team team, Group g) : this(g, rule.FromSeries, rule.RuleType, fromDivision,
                                                                                                         rule.FromSeries, rule.FromStartValue, rule.FromEndValue, team)
         { }
 
@@ -135,16 +136,16 @@ namespace JodyApp.Domain.Playoffs
         }
         #endregion
 
-        #region Static Creates
-        public static GroupRule CreateFromDivision(Group g, string name,Division fromDivision, int highestRank, int lowestRank)
-        {            
-            var rule =  new GroupRule(g, name, GroupRule.FROM_DIVISION, fromDivision, null, highestRank, lowestRank, null);
+        #region Static Creates Which mirrors ConfigGroupRule
+        public static GroupRule CreateFromDivision(Group g, string name, Division fromDivision, int highestRank, int lowestRank)
+        {
+            var rule = new GroupRule(g, name, GroupRule.FROM_DIVISION, fromDivision, null, highestRank, lowestRank, null);
             g.GroupRules.Add(rule);
             return rule;
         }
 
         public static GroupRule CreateFromDivisionBottom(Group g, string name, Division fromDivision, int highestRank, int lowestRank)
-        {            
+        {
             var rule = new GroupRule(g, name, GroupRule.FROM_DIVISION_BOTTOM, fromDivision, null, highestRank, lowestRank, null);
             g.GroupRules.Add(rule);
             return rule;
@@ -171,6 +172,5 @@ namespace JodyApp.Domain.Playoffs
             return rule;
         }
         #endregion
-
     }
 }

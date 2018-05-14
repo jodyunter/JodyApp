@@ -57,24 +57,18 @@ namespace JodyApp.Service.Test
         public void ShouldSortByDivision()
         {
 
-            var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
-            Season season = seasonService.CreateNewSeason(refSeason, 2);            
-            Random random = new Random(15);
-
-            season.SetupStandings();
-
-            List<Game> scheduleGames = season.Games;
-
-            scheduleGames.ForEach(game =>
+            var division = new Division(null, null, "Division 1", null, 1, 0, null);
+            division.Teams.AddRange(new List<Team>()
             {
-                game.Play(random);
-                season.Standings.ProcessGame(game);
+                new Team("Team 1", 0, new TeamStatistics() { Wins = 5 }, division),
+                new Team("Team 5", 0, new TeamStatistics() { Wins = 3, Ties = 0 }, division),
+                new Team("Team 4", 0, new TeamStatistics() { Wins = 3, Ties = 1 }, division),
+                new Team("Team 3", 0, new TeamStatistics() { Wins = 4, Ties = 0 }, division),
+                new Team("Team 2", 0, new TeamStatistics() { Wins = 4, Ties = 1 }, division),
+                new Team("Team 6", 0, new TeamStatistics() { Wins = 2, Ties = 1 }, division),
             });
+            
 
-            db.SaveChanges();
-
-
-            Division seasonDivision = service.GetByName("West", league, season);
 
             var rank = service.SortByDivision(seasonDivision);
 

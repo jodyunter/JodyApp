@@ -54,7 +54,11 @@
     <Compile Include="Database\JodyAppContext.cs" />
     <Compile Include="Domain\Config\BaseConfigItem.cs" />
     <Compile Include="Domain\Config\ConfigDivision.cs" />
+    <Compile Include="Domain\Config\ConfigGroup.cs" />
+    <Compile Include="Domain\Config\ConfigGroupRule.cs" />
+    <Compile Include="Domain\Config\ConfigPlayoff.cs" />
     <Compile Include="Domain\Config\ConfigSeason.cs" />
+    <Compile Include="Domain\Config\ConfigSeriesRule.cs" />
     <Compile Include="Domain\Config\ConfigSortingRule.cs" />
     <Compile Include="Domain\Config\ConfigTeam.cs" />
     <Compile Include="Domain\Division.cs" />
