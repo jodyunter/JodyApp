@@ -118,23 +118,5 @@ namespace JodyApp.Domain
 
         }
         
-        public Division CreateDivisionForSeason(Season season)
-        {
-            Division newDivision = new Division()
-            {
-                Season = season,
-                Name = this.Name,
-                ShortName = this.ShortName,
-                Level = this.Level,
-                Order = this.Order,
-                League = season.League,
-                Teams = new List<Team>(),
-                Rankings = new List<DivisionRank>()
-                //sorting rules must be handled seperately
-                //parent must be handled seperately
-            };
-
-            return newDivision;
-        }
     }
 }

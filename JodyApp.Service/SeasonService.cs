@@ -45,72 +45,26 @@ namespace JodyApp.Service
             Dictionary<string, Team> seasonTeams = new Dictionary<string, Team>();
             Dictionary<string, ConfigScheduleRule> seasonScheduleRules = new Dictionary<string, ConfigScheduleRule>();
 
+            var configDivisions = configService.GetDivisions(referenceSeason, year);
             //loop once to create teams and new season divisions, order means we will not add a parent we haven't created yet
-            divisionService.GetByReferenceSeason(referenceSeason).OrderBy(d => d.Level).ToList<Division>().ForEach(division => 
+            configDivisions.OrderBy(d => d.Level).ToList().ForEach(configDivision =>            
             {
-                Division seasonDiv = division.CreateDivisionForSeason(season);
-                if (division.Parent != null) seasonDiv.Parent = seasonDivisions[division.Parent.Name];
+                Division seasonDiv = season.CreateDivisionForSeason(configDivision);
+                if (configDivision.Parent != null) seasonDiv.Parent = seasonDivisions[configDivision.Parent.Name];
                 seasonDivisions.Add(seasonDiv.Name, seasonDiv);
 
             });
 
-            //now add new season related teams.
-            foreach (Division d in divisionService.GetByReferenceSeason(referenceSeason))
-            {
-                d.Teams.ForEach(dt => {
-                    Team seasonTeam = new Team(dt, seasonDivisions[d.Name]);
-                    seasonDivisions[d.Name].Teams.Add(seasonTeam);
+            configDivisions.ForEach(configDivision =>
+                configDivision.Teams.ForEach(dt =>
+                {
+                    Team seasonTeam = new Team(dt, seasonDivisions[configDivision.Name]);
+                    seasonDivisions[configDivision.Name].Teams.Add(seasonTeam);
                     db.Teams.Add(seasonTeam);
                     seasonTeams.Add(seasonTeam.Name, seasonTeam);
-                });
-            }
-
-            //loop to process the sorting rules, this requires the divisions be created first
-            foreach (Division d in divisionService.GetByReferenceSeason(referenceSeason))
-            {
-                Division seasonDiv = seasonDivisions[d.Name];
-                seasonDiv.SortingRules = new List<SortingRule>();
-
-                d.SortingRules.ForEach(rule =>
-                {
-                    SortingRule newRule = new SortingRule(seasonDivisions[rule.Division.Name], seasonDivisions[rule.DivisionToGetTeamsFrom.Name], rule);
-                    db.SortingRules.Add(newRule);
-                });                
-                
-            }
-
-            foreach (ConfigScheduleRule rule in scheduleService.GetBySeasonReference(referenceSeason).OrderBy(rule => rule.Order)) 
-            {
-                Division homeDiv = null;
-                Division awayDiv = null;
-                Team homeTeam = null;
-                Team awayTeam = null;
-
-                if (rule.HomeDivision != null) { homeDiv = seasonDivisions[rule.HomeDivision.Name]; }
-                if (rule.AwayDivision != null) { awayDiv = seasonDivisions[rule.AwayDivision.Name]; }
-                if (rule.AwayTeam != null) { awayTeam = seasonTeams[rule.AwayTeam.Name]; }
-                if (rule.HomeTeam != null) { homeTeam = seasonTeams[rule.HomeTeam.Name]; }
-
-                ConfigScheduleRule seasonRule = new ConfigScheduleRule(
-                                                    referenceSeason.League,
-                                                    season,
-                                                    rule.Name,
-                                                    rule.HomeType,
-                                                    homeTeam,
-                                                    homeDiv,
-                                                    rule.AwayType,
-                                                    awayTeam,
-                                                    awayDiv,
-                                                    rule.PlayHomeAway,
-                                                    rule.Rounds,
-                                                    rule.DivisionLevel,
-                                                    rule.Order,
-                                                    rule.Reverse
-                                                    );
-                db.ScheduleRules.Add(seasonRule);
-                seasonScheduleRules.Add(seasonRule.Name, seasonRule);
-                
-            }            
+                })
+            );
+            
 
 
             //need to change season rules too
@@ -127,8 +81,10 @@ namespace JodyApp.Service
                 db.DivisionRanks.AddRange(seasonDiv.Rankings);
             });
 
+            var configRules = scheduleService.GetRules(referenceSeason, year);
+
             season.Games = new List<Game>();
-            scheduleService.CreateGamesFromRules(season.ScheduleRules, season.Games, 0);
+            scheduleService.CreateGamesFromRules(configRules, seasonTeams, seasonDivisions, season.Games, 0);
             db.Games.AddRange(season.Games);
 
             season.SetupStandings();
@@ -149,11 +105,6 @@ namespace JodyApp.Service
 
         }
 
-        public Competition GetReferenceByName(League league, string name, DivisionService divisionService)
-        {
-            return db.Seasons.Where(s => s.League.Id == league.Id && s.Year == 0 && s.Name == name).FirstOrDefault();
-        }
-     
         public List<Team> GetTeamsInDivisionByRank(Division division)
         {
 

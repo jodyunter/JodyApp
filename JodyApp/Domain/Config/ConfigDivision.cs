@@ -16,13 +16,31 @@ namespace JodyApp.Domain.Config
         virtual public ConfigDivision Parent { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
+        public List<ConfigTeam> Teams { get; set; }
         public List<ConfigScheduleRule> ScheduleRules { get; set; } 
         public List<ConfigSortingRule> SortingRules { get; set; }
         public ConfigSeason Season { get; set; }
 
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
-        
+
+        public ConfigDivision(League league, ConfigSeason season, string name, string shortName, int level, int order, ConfigDivision parent, int? firstYear, int? lastYear)
+        {
+            this.Name = name;
+            this.ShortName = shortName;
+            this.Level = level;
+            this.Order = order;
+            this.Parent = parent;
+            this.League = league;
+            this.Season = season;
+            Teams = new List<ConfigTeam>();            
+            SortingRules = new List<ConfigSortingRule>();
+            FirstYear = firstYear;
+            LastYear = lastYear;
+
+
+        }
+
 
     }
 }

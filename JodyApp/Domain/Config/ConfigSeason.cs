@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigSeason
+    public class ConfigSeason:DomainObject, BaseConfigItem
     {
         public League League { get; set; }
         public string Name { get; set; }  //may not be unique, name + year should be unique
@@ -14,5 +14,20 @@ namespace JodyApp.Domain.Config
         public bool Started { get; set; }
         public bool Complete { get; set; }
         public int StartingDay { get; set; }
+
+        public int? FirstYear { get; set; }
+        public int? LastYear { get; set; }
+
+        public ConfigSeason(League league, string name, int year, bool started, bool complete, int startingDay, int? firstYear, int? lastYear)
+        {
+            League = league;
+            Name = name;
+            Year = year;
+            Started = started;
+            Complete = complete;
+            StartingDay = startingDay;
+            FirstYear = firstYear;
+            LastYear = lastYear;
+        }
     }
 }

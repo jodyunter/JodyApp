@@ -15,7 +15,7 @@ namespace JodyApp.Domain.Config
     //group 3: Play a play off series
     //group 4: Setup new division based on series winners and play more games
     //group 5: Setup final round of playoff series and games
-    public partial class ConfigScheduleRule:DomainObject
+    public class ConfigScheduleRule:DomainObject, BaseConfigItem
     {
         //rules with opponents implied
         public const int BY_DIVISION_LEVEL = 2;  //use this to first sort all teams by division level, then they all play games against each other
@@ -24,14 +24,14 @@ namespace JodyApp.Domain.Config
         public const int NONE = -1; //use this to ignore the away team
         
         public int HomeType { get; set; } //By Division, By Team              
-        public Team HomeTeam { get; set; }        
-        public Division HomeDivision { get; set; }
+        public ConfigTeam HomeTeam { get; set; }        
+        public ConfigDivision HomeDivision { get; set; }
 
         //should probably remove this
         public League League { get; set; }
         public int AwayType { get; set; }                     
-        public Team AwayTeam { get; set; }        
-        public Division AwayDivision { get; set; }
+        public ConfigTeam AwayTeam { get; set; }        
+        public ConfigDivision AwayDivision { get; set; }
 
         public Boolean PlayHomeAway { get; set; } //if home and away teams are the same we need special rules
 
@@ -46,9 +46,12 @@ namespace JodyApp.Domain.Config
         //when creating a new season, we need to translate these into the season rules.
         //since this would be done only at the beginning, we can use it to find the parent teams for the current season
 
-        public Season Season { get; set; }
+        public ConfigSeason Season { get; set; }
 
         public bool Reverse { get; set; } //reverse default order
+
+        public int? FirstYear { get; set; }
+        public int? LastYear { get; set; }
         public ConfigScheduleRule() { }
 
         public ConfigScheduleRule(ConfigScheduleRule rule) : this(rule.League, rule.Season, rule.Name, rule.HomeType, rule.HomeTeam, rule.HomeDivision,
@@ -58,12 +61,12 @@ namespace JodyApp.Domain.Config
 
         }
 
-        public ConfigScheduleRule(Season season, ConfigScheduleRule rule) : this(rule)
+        public ConfigScheduleRule(ConfigSeason season, ConfigScheduleRule rule) : this(rule)
         {
             Season = season;
         }
-        public ConfigScheduleRule(League league, Season season, String name, int homeType, Team homeTeam, Division homeDivision,
-                int awayType, Team awayTeam, Division awayDivision, bool playHomeAway, int rounds, int divisionLevel, int order, bool reverse)
+        public ConfigScheduleRule(League league, ConfigSeason season, String name, int homeType, ConfigTeam homeTeam, ConfigDivision homeDivision,
+                int awayType, ConfigTeam awayTeam, ConfigDivision awayDivision, bool playHomeAway, int rounds, int divisionLevel, int order, bool reverse)
         {
             this.League = league;
             this.Season = season;
@@ -81,7 +84,7 @@ namespace JodyApp.Domain.Config
             this.Reverse = reverse;
         }
 
-        public static ConfigScheduleRule CreateByDivisionVsSelf(League league, Season season, String name, Division division, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByDivisionVsSelf(League league, ConfigSeason season, String name, ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse)
         {
             return new ConfigScheduleRule()
             {
@@ -98,7 +101,7 @@ namespace JodyApp.Domain.Config
 
             };
         }
-        public static ConfigScheduleRule CreateByDivisionVsDivision(League league, Season season, String name, Division homeDivision, Division awayDivision, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByDivisionVsDivision(League league, ConfigSeason season, String name, ConfigDivision homeDivision, ConfigDivision awayDivision, bool playHomeAway, int rounds, int order, bool reverse)
         {
         return new ConfigScheduleRule()
         {
@@ -114,7 +117,7 @@ namespace JodyApp.Domain.Config
             Reverse = reverse
             };
         }
-        public static ConfigScheduleRule CreateByTeamVsTeam(League league, Season season, String name, Team homeTeam, Team awayTeam, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByTeamVsTeam(League league, ConfigSeason season, String name, ConfigTeam homeTeam, ConfigTeam awayTeam, bool playHomeAway, int rounds, int order, bool reverse)
         {
             return new ConfigScheduleRule(league,
                 season,
@@ -132,7 +135,7 @@ namespace JodyApp.Domain.Config
                 reverse);
 
         }
-        public static ConfigScheduleRule CreateByTeamVsDivision(League league, Season season, string name, Team team, Division division, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByTeamVsDivision(League league, ConfigSeason season, string name, ConfigTeam team, ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse)
         {
             return new ConfigScheduleRule(
                 league,
@@ -151,7 +154,7 @@ namespace JodyApp.Domain.Config
                 reverse
                 );
         }
-        public static ConfigScheduleRule CreateByDivisionVsTeam(League league, Season season, string name, Division division, Team team, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByDivisionVsTeam(League league, ConfigSeason season, string name, ConfigDivision division, ConfigTeam team, bool playHomeAway, int rounds, int order, bool reverse)
         {
             return new ConfigScheduleRule(
                 league,
@@ -169,7 +172,7 @@ namespace JodyApp.Domain.Config
                 order, 
                 reverse);
         }
-        public static ConfigScheduleRule CreateByDivisionLevel(League league, Season season, string name, int divisionLevel, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByDivisionLevel(League league, ConfigSeason season, string name, int divisionLevel, bool playHomeAway, int rounds, int order, bool reverse)
         {
             return new ConfigScheduleRule(
                 league,

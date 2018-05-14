@@ -17,32 +17,34 @@ namespace JodyApp.Service
         public ScheduleService(JodyAppContext db) : base(db) { Initialize(db); }
 
         public override void Initialize(JodyAppContext db) { divisionService.db = db; divisionService.Initialize(db); }
-        public List<ConfigScheduleRule> GetBySeasonReference(Season season)
-        {
-            return GetRules(season.League, season);
-        }
-        public List<ConfigScheduleRule> GetRules(League league, Season season)
-        {
-            return ConfigScheduleRule.GetRules(db, league, season);
-        }
 
-        public List<Division> GetDivisionsByLevel(ConfigScheduleRule rule)
+        public List<ConfigScheduleRule> GetRules(ConfigSeason season, int currentYear)
         {
-            return divisionService.GetDivisionsByLevel(rule.DivisionLevel, rule.Season);
+            return db.ScheduleRules.Where(rule =>
+                rule.FirstYear != null &&
+                rule.FirstYear <= currentYear &&
+                (rule.LastYear == null || rule.LastYear >= currentYear)).ToList();
+            
         }
 
         //update to get last game number in database for season
-        public List<Game> CreateGamesFromRules(List<ConfigScheduleRule> rules, List<Game> games, int lastGameNumber)
-        {            
+        public List<Game> CreateGamesFromRules(List<ConfigScheduleRule> rules, 
+                    Dictionary<string, Team> teams, 
+                    Dictionary<string, Division> divisions,
+                    List<Game> games, int lastGameNumber)
+        {                        
             rules.ForEach(rule =>
             {
-                lastGameNumber = CreateGamesFromRule(rule, games, lastGameNumber);
+                lastGameNumber = CreateGamesFromRule(rule, teams, divisions, games, lastGameNumber);
             });
 
             return games;
         }
 
-        public int CreateGamesFromRule(ConfigScheduleRule rule, List<Game> games, int lastGameNumber)
+        public int CreateGamesFromRule(ConfigScheduleRule rule, 
+            Dictionary<string, Team> seasonTeams,
+            Dictionary<string, Division> seasonDivisions,
+            List<Game> games, int lastGameNumber)
         {        
 
             var homeTeams = new List<Team>();
@@ -52,7 +54,7 @@ namespace JodyApp.Service
             {
                 List<Division> divisions;
 
-                divisions = this.GetDivisionsByLevel(rule);
+                divisions = seasonDivisions.Values.ToList().Where(d => d.Level == rule.DivisionLevel).ToList();
 
                 divisions.ForEach(d =>
                 {
@@ -67,8 +69,8 @@ namespace JodyApp.Service
             }
             else
             {
-                AddTeamsToListFromRule(homeTeams, rule.HomeType, rule.HomeTeam, rule.HomeDivision, rule.Reverse);
-                AddTeamsToListFromRule(awayTeams, rule.AwayType, rule.AwayTeam, rule.AwayDivision, rule.Reverse);
+                AddTeamsToListFromRule(homeTeams, rule.HomeType, seasonTeams[rule.HomeTeam.Name], seasonDivisions[rule.HomeDivision.Name], rule.Reverse);
+                AddTeamsToListFromRule(awayTeams, rule.AwayType, seasonTeams[rule.AwayTeam.Name], seasonDivisions[rule.AwayDivision.Name], rule.Reverse);
 
                 lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds);
 
