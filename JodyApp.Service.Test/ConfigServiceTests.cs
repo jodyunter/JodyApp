@@ -34,7 +34,35 @@ namespace JodyApp.Service.Test
             getTeam = configService.CreateTeam("Test Team", 5, null, null, null, null);
             configService.Save();
         }
-        
+        #region Competition
+        [TestMethod]
+        public void ShouldCreateCompetitionNoReference()
+        {
+            var newComp = configService.CreateCompetition(league, "First Comp", ConfigCompetition.SEASON, null, 1, 15);
+
+            configService.Save();
+
+            var comp = configService.GetCompetitionByName("First Comp");
+
+            AreEqual(comp, newComp);
+
+        }
+
+        [TestMethod]
+        public void ShouldCreateCompetitionWithReference()
+        {
+            var seasonComp = configService.CreateCompetition(league, "First Comp", ConfigCompetition.SEASON, null, 1, 15);
+            var playoffComp = configService.CreateCompetition(league, "Second Comp", ConfigCompetition.SEASON, seasonComp, 1, 15);
+
+            configService.Save();
+
+            var comp = configService.GetCompetitionById((int)playoffComp.Id);
+
+            AreEqual(comp, playoffComp);
+            AreEqual(comp.Reference, seasonComp);
+        }
+        #endregion
+        #region Team
         [TestMethod]
         public void ShouldGetTeamByName()
         {
@@ -63,7 +91,7 @@ namespace JodyApp.Service.Test
             AreEqual(newTeam, team);
 
         }
+        #endregion
 
-        
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,23 +28,37 @@ namespace JodyApp.Domain.Config
             LastYear = lastYear;
         }
 
-        public override bool Equals(object obj)
-        {
-            var that = (ConfigTeam)obj;
 
-            return this.Id == that.Id &&
-                this.Name.Equals(that.Name) &&
-                this.League.AreTheSame(that.League) &&
-                this.Skill.Equals(that.Skill) &&
-                this.FirstYear.Equals(that.FirstYear) &&
-                this.LastYear.Equals(that.LastYear);
-        }
 
         public override bool AreTheSame(DomainObject obj)
         {
             var that = (ConfigTeam)obj;
 
             return this.Name.Equals(that.Name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var team = obj as ConfigTeam;
+            return team != null &&
+                   EqualityComparer<League>.Default.Equals(League, team.League) &&
+                   Name == team.Name &&
+                   Skill == team.Skill &&
+                   EqualityComparer<ConfigDivision>.Default.Equals(Division, team.Division) &&
+                   EqualityComparer<int?>.Default.Equals(FirstYear, team.FirstYear) &&
+                   EqualityComparer<int?>.Default.Equals(LastYear, team.LastYear);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 904675178;
+            hashCode = hashCode * -1521134295 + EqualityComparer<League>.Default.GetHashCode(League);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + Skill.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigDivision>.Default.GetHashCode(Division);
+            hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(FirstYear);
+            hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(LastYear);
+            return hashCode;
         }
     }
 }
