@@ -124,11 +124,6 @@ namespace JodyApp.Service.Test.DataFolder
             return;
         }
 
-        public override void PrivateCreateConfigSeasons()
-        {
-            return;
-        }
-
         public override void PrivateCreateDivisions()
         {
             return;
@@ -145,6 +140,11 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
         public override void PrivateCreateGroupRules()
+        {
+            return;
+        }
+
+        public override void PrivateCreateSeasons()
         {
             return;
         }

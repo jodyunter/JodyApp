@@ -34,11 +34,6 @@ namespace JodyApp.Service.Test.DataFolder
             return;
         }
 
-        public override void PrivateCreateConfigSeasons()
-        {
-            return;
-        }
-
         public override void PrivateCreateConfigSeriesRules()
         {
             return;
@@ -82,6 +77,11 @@ namespace JodyApp.Service.Test.DataFolder
         public override void PrivateCreateScheduleRules()
         {
             return;
+        }
+
+        public override void PrivateCreateSeasons()
+        {
+            throw new NotImplementedException();
         }
 
         public override void PrivateCreateSeries()

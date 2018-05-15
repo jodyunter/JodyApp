@@ -80,9 +80,9 @@ namespace JodyApp.Domain.Table
             TeamStats.GoalsAgainst += GoalsAgainst;
         }
 
-        public Dictionary<Division,List<Team>> SortIntoDivisions()
+        public Dictionary<string,List<Team>> SortIntoDivisions()
         {
-            var result = new Dictionary<Division, List<Team>>();
+            var result = new Dictionary<string, List<Team>>();
 
             foreach(KeyValuePair<string, Team> entry in Standings)
             {
@@ -92,9 +92,9 @@ namespace JodyApp.Domain.Table
 
                 while (division != null)
                 {
-                    if (!result.ContainsKey(division)) result.Add(division, new List<Team>());
-                    result[division].Add(team);
-                    division = (Division)division.Parent;
+                    if (!result.ContainsKey(division.Name)) result.Add(division.Name, new List<Team>());
+                    result[division.Name].Add(team);
+                    division = division.Parent;
                 }
             }
 

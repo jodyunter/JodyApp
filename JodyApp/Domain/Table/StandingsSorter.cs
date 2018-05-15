@@ -71,11 +71,11 @@ namespace JodyApp.Domain.Table
         }
 
         //todo we need to remove this method because we need service calls to properly sort the divisions
-        public static List<Team> SortByRules(Dictionary<Division,List<Team>> teamsByDivision, Division division)
+        public static List<Team> SortByRules(Dictionary<string,List<Team>> teamsByDivision, Division division)
         {
             var result = new List<Team>();
             var editableTeams = new List<Team>();
-            editableTeams.AddRange(teamsByDivision[division]);
+            editableTeams.AddRange(teamsByDivision[division.Name]);
 
             var ruleGroupings = new SortedDictionary<int, List<Team>>();
 

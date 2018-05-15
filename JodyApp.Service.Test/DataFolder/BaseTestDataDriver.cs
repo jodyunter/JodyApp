@@ -115,7 +115,8 @@ namespace JodyApp.Service.Test.DataFolder
             return;
         }
 
-        public override void PrivateCreateConfigSeasons()
+
+        public override void PrivateCreateSeasons()
         {
             return;
         }

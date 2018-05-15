@@ -56,6 +56,7 @@ namespace JodyApp.Service.Test.DataFolder
         abstract public void PrivateCreateGroupRules();
         abstract public void PrivateCreateConfigCompetitions();
         abstract public void PrivateCreatePlayoffs();
+        abstract public void PrivateCreateSeasons();
         abstract public void PrivateCreateSeries();
 
         public abstract void PrivateCreateConfigSeriesRules();
@@ -64,8 +65,7 @@ namespace JodyApp.Service.Test.DataFolder
         public abstract void PrivateCreateConfigSortingRules();
         public abstract void PrivateCreateConfigTeams();
         public abstract void PrivateCreateConfigDivisions();
-        public abstract void PrivateCreateConfigPlayoffs();
-        public abstract void PrivateCreateConfigSeasons();
+        public abstract void PrivateCreateConfigPlayoffs();        
 
         public void Setup()
         {
@@ -111,13 +111,6 @@ namespace JodyApp.Service.Test.DataFolder
             Season season = new Season(league, name, year, true, true, startingDay);
 
             seasons.Add(name, season);
-
-            league.ReferenceCompetitions.Add(new ReferenceCompetition()
-            {
-                League = league,
-                Competition = null,
-                Order = order
-            });
 
             return season;
 
@@ -315,44 +308,43 @@ namespace JodyApp.Service.Test.DataFolder
 
         public virtual void InsertData()
         {
-            leagues = CreateObjects<League>(PrivateCreateLeagues);
-            configCompetitions = CreateObjects<ConfigCompetition>(PrivateCreateConfigSeasons);            
-            configDivisions = CreateObjects<ConfigDivision>(PrivateCreateConfigDivisions);
-            configTeams = CreateObjects<ConfigTeam>(PrivateCreateConfigTeams);
-            configSortingRules = CreateObjects<ConfigSortingRule>(PrivateCreateConfigSortingRules); 
-            configGroups = CreateObjects<ConfigGroup>(PrivateCreateConfigGroups);
-            configGroupRules = CreateObjects<ConfigGroupRule>(PrivateCreateConfigGroupRules);
-            configSeriesRules = CreateObjects<ConfigSeriesRule>(PrivateCreateConfigSeriesRules);
-            configScheduleRules = CreateObjects<ConfigScheduleRule>(PrivateCreateScheduleRules);
+            CreateObjects(PrivateCreateLeagues, leagues);
+            CreateObjects(PrivateCreateConfigCompetitions, db.ConfigCompetitions, seasons);                   
+            CreateObjects(PrivateCreateConfigDivisions, configDivisions);
+            CreateObjects(PrivateCreateConfigTeams, configTeams);
+            CreateObjects(PrivateCreateConfigSortingRules, configSortingRules); 
+            CreateObjects(PrivateCreateConfigGroups, configGroups);
+            CreateObjects(PrivateCreateConfigGroupRules, configGroupRules);
+            CreateObjects(PrivateCreateConfigSeriesRules, configSeriesRules);
+            CreateObjects(PrivateCreateScheduleRules, configScheduleRules);
 
 
-            seasons = CreateObjects<Season>(PrivateCreateConfigCompetitions, db.Seasons);
-            playoffs = CreateObjects<Playoff>(PrivateCreatePlayoffs, db.Playoffs);
-            divisions = CreateObjects<Division>(PrivateCreateDivisions, db.Divisions);
-            teams = CreateObjects<Team>(PrivateCreateTeams, db.Teams);
-            sortingRules = CreateObjects<SortingRule>(PrivateCreateSortingRules, db.SortingRules); 
-            groups = CreateObjects<Group>(PrivateCreateGroups, db.Groups);
-            groupRules = CreateObjects<GroupRule>(PrivateCreateGroupRules, db.GroupRules); 
-            seriesRules = CreateObjects<SeriesRule>(PrivateCreateSeriesRules, db.SeriesRules);
-            series = CreateObjects<Series>(PrivateCreateSeries, db.Series);
+
+            CreateObjects(PrivateCreateSeasons, db.Seasons, seasons);
+            CreateObjects(PrivateCreatePlayoffs, db.Playoffs, playoffs);
+            CreateObjects(PrivateCreateDivisions, db.Divisions, divisions);
+            CreateObjects(PrivateCreateTeams, db.Teams, teams);
+            CreateObjects(PrivateCreateSortingRules, db.SortingRules, sortingRules); 
+            CreateObjects(PrivateCreateGroups, db.Groups, groups);
+            CreateObjects(PrivateCreateGroupRules, db.GroupRules, groupRules); 
+            CreateObjects(PrivateCreateSeriesRules, db.SeriesRules, seriesRules);
+            CreateObjects(PrivateCreateSeries, db.Series, series);
+
+            db.SaveChanges();
 
         }
 
-        public Dictionary<string, T> CreateObjects<T>(Action method, DbSet m)
-        {
-            var collection = new Dictionary<string, T>();
-
+        public void CreateObjects<T>(Action method, DbSet m, Dictionary<string, T> collection)
+        {            
             method();
 
             if (m != null)
-                m.AddRange(collection.Values);
-
-            return collection;
+                m.AddRange(collection.Values);                        
         }
 
-        public Dictionary<string, T> CreateObjects<T>(Action method)
+        public void CreateObjects<T>(Action method, Dictionary<string, T> collection)
         {
-            return CreateObjects<T>(method, null);
+            CreateObjects<T>(method, null, collection);
         }
 
 

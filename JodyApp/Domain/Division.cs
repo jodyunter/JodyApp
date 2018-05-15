@@ -10,7 +10,7 @@ using JodyApp.Domain.Table;
 namespace JodyApp.Domain
 {
     [Table("Divisions")]
-    public class Division : DomainObject, IEquatable<Division>, IComparable<Division>
+    public class Division : DomainObject, IComparable<Division>
     {
         private string _shortName;
 
@@ -46,20 +46,6 @@ namespace JodyApp.Domain
             if (sortingRules == null) sortingRules = new List<SortingRule>();
             SortingRules = sortingRules;
         }
-        public Division(Division division, Season season)
-        {
-
-            this.Season = season;
-            this.Name = division.Name;
-            this.ShortName = division.ShortName;
-            this.Level = division.Level;
-            this.Order = division.Order;
-            this.League = division.League;
-            this.Teams = new List<Team>();
-            this.Rankings = new List<DivisionRank>();
-            //sorting rules must be handled seperately
-            //parent must be handled seperately
-        }
 
         public int CompareTo(Division other)
         {
@@ -71,12 +57,6 @@ namespace JodyApp.Domain
                 return Level.CompareTo(other.Level);
             }
         }
-
-        public bool Equals(Division other)
-        {
-            return base.Equals(other);
-        }
-
         public void SetRank(int rank, Team team)
         {
             if (Rankings == null) Rankings = new List<DivisionRank>();
@@ -116,6 +96,33 @@ namespace JodyApp.Domain
             return ArbitraryRankForTeamNotInDivisionOrRanked;
 
         }
-        
+
+        public override bool Equals(object obj)
+        {
+            var division = obj as Division;
+            return division != null &&
+                   _shortName == division._shortName &&
+                   Name == division.Name &&
+                   ShortName == division.ShortName &&
+                   EqualityComparer<Division>.Default.Equals(Parent, division.Parent) &&
+                   Level == division.Level &&
+                   Order == division.Order &&
+                   EqualityComparer<Season>.Default.Equals(Season, division.Season) &&
+                   EqualityComparer<League>.Default.Equals(League, division.League);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1501689248;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(_shortName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ShortName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Division>.Default.GetHashCode(Parent);
+            hashCode = hashCode * -1521134295 + Level.GetHashCode();
+            hashCode = hashCode * -1521134295 + Order.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<Season>.Default.GetHashCode(Season);
+            hashCode = hashCode * -1521134295 + EqualityComparer<League>.Default.GetHashCode(League);
+            return hashCode;
+        }
     }
 }

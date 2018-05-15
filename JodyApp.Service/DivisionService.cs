@@ -37,16 +37,20 @@ namespace JodyApp.Service
 
             return teams;
         }
-        
 
         public List<Division> GetDivisionsByParent(Division parent)
+        {            
+            return db.Divisions.Where(d => d.Parent != null && d.Parent.Id == parent.Id).ToList();            
+        }
+
+        public List<Division> GetAllDivisionsByParent(Division parent)
         {
             var divisions = new List<Division>();
 
             db.Divisions.Where(d => d.Parent != null && d.Parent.Id == parent.Id).ToList().ForEach(div =>
             {
                 divisions.Add(div);
-                divisions.AddRange(GetDivisionsByParent(div));
+                divisions.AddRange(GetAllDivisionsByParent(div));
             });
 
             return divisions;
@@ -93,6 +97,18 @@ namespace JodyApp.Service
         public Division GetByLeagueAndSeasonAndName(League league, Season season, string name)
         {
             return db.Divisions.Where(d => d.League.Id == league.Id && d.Season.Id == season.Id && d.Name == name).FirstOrDefault();
+        }
+
+        public Division CreateDivision(League league, Season season, string name, string shortName, int level, int order, Division parent)
+        {
+            var division = new Division(league, season, name, shortName, level, order, parent);
+            db.Divisions.Add(division);
+            return division;
+        }
+
+        public Division GetById(int id)
+        {
+            return db.Divisions.Where(d => d.Id == id).FirstOrDefault();
         }
         
     }

@@ -107,10 +107,6 @@ namespace JodyApp.Service.Test.DataFolder
             RegularSeason = CreateAndAddConfigCompetition(MyLeague, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, null);
             Playoffs = CreateAndAddConfigCompetition(MyLeague, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeason, 2, 1, null);
         }
-        public override void PrivateCreateConfigSeasons()
-        {
-            return;
-        }
 
         public override void PrivateCreateConfigPlayoffs()
         {
@@ -314,6 +310,11 @@ namespace JodyApp.Service.Test.DataFolder
         public override void PrivateCreateSeries()
         {
             return;
+        }
+
+        public override void PrivateCreateSeasons()
+        {
+            throw new NotImplementedException();
         }
     }
 }

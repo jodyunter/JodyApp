@@ -24,8 +24,7 @@ namespace JodyApp.Service.Test
         {
             db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
             driver = new LeagueTestDataDriver();
-            driver.DeleteAllData();
-            driver.InsertData();
+            driver.Setup();
             service = new LeagueService(db);
             competitionService = new CompetitionService(db);
 

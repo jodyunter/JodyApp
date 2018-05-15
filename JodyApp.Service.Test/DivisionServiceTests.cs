@@ -20,8 +20,9 @@ namespace JodyApp.Service.Test
         DivisionTestDataDriver driver;
         SeasonService seasonService;
         ScheduleService scheduleService;
-        Season season;
+        LeagueService leagueService;
         League league;
+        Season season;
 
         [TestInitialize]
         public void Setup()
@@ -32,17 +33,16 @@ namespace JodyApp.Service.Test
             
             driver.DeleteAllData();
             driver.InsertData();
-            scheduleService = new ScheduleService(db);
-            league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
-            //season = league.ReferenceCompetitions.Where(s => s.League.Id == league.Id && s.Season.Name == "My Season").First().Season;
-            seasonService = new SeasonService(db);            
-
+            scheduleService = new ScheduleService(db);                        
+            seasonService = new SeasonService(db);
+            leagueService = new LeagueService(db);
+            league = leagueService.GetByName(driver.LeagueName);
+            season = seasonService.GetSeason(league, "My Season", 1);
         }
  
         [TestMethod]
         public void ShouldGetSeasonDivisionsByParent()
         {
-            var season = db.Seasons.Where(s => s.Name == "My Season").First();            
             Division leagueDiv = service.GetByName("League", league, season);
             List<Division> divisions = service.GetDivisionsByParent(leagueDiv);
 
@@ -72,10 +72,38 @@ namespace JodyApp.Service.Test
             AreEqual(SHOULDSORTBYDIVISION_EXPECTED, result);              
 
         }
+        [TestMethod]
+        public void ShouldGetAllTeamsInDivision()
+        {
+            var extraLeague = leagueService.GetByName("Extra");
+            var extraSeason = seasonService.GetSeason(extraLeague, "Extra Season", 1);
+            var leagueDiv = service.GetByName("League", league, season);
+            var east = service.GetByName("East", league, season);
+            var west = service.GetByName("West", league, season);
+            var pacific = service.GetByName("Pacific", league, season);
+            var central = service.GetByName("Central", league, season);
+            var northWest = service.GetByName("North West", league, season);
+            var northEast = service.GetByName("North East", league, season);
+            var atlantic = service.GetByName("Atlantic", league, season);
+            var extraTop = service.GetByName("Extra Top", extraLeague, extraSeason);
+            var extraChild = service.GetByName("Extra Child", extraLeague, extraSeason);
 
+
+            AreEqual(2, service.GetAllTeamsInDivision(extraTop).Count);
+            AreEqual(2, service.GetAllTeamsInDivision(extraChild).Count);
+            AreEqual(17, service.GetAllTeamsInDivision(leagueDiv).Count);
+            AreEqual(8, service.GetAllTeamsInDivision(east).Count);
+            AreEqual(9, service.GetAllTeamsInDivision(west).Count);
+            AreEqual(3, service.GetAllTeamsInDivision(pacific).Count);
+            AreEqual(3, service.GetAllTeamsInDivision(central).Count);
+            AreEqual(3, service.GetAllTeamsInDivision(northWest).Count);
+            AreEqual(4, service.GetAllTeamsInDivision(northEast).Count);
+            AreEqual(4, service.GetAllTeamsInDivision(atlantic).Count);
+
+        }
         [TestMethod]
         public void ShouldGetDivisionsByLeague()
-        {
+        {            
             var divisions = service.GetByLeague(league);
 
             divisions.ForEach(div =>
@@ -109,7 +137,9 @@ namespace JodyApp.Service.Test
             AreEqual(2, service.GetDivisionsByParent(service.GetByName("League", league, season)).Count);
             AreEqual(3, service.GetDivisionsByParent(service.GetByName("West", league, season)).Count);
             AreEqual(2, service.GetDivisionsByParent(service.GetByName("East", league, season)).Count);
-            AreEqual(1, service.GetDivisionsByParent(service.GetByName("Extra Top", db.Leagues.Where(l => l.Name.Equals("Extra")).First(), season)).Count);            
+            var extraLeague = leagueService.GetByName("Extra");
+            var extraSeason = seasonService.GetSeason(extraLeague, "Extra Season", 1);
+            AreEqual(1, service.GetDivisionsByParent(service.GetByName("Extra Top", extraLeague, extraSeason)).Count);            
         }
 
         [TestMethod]
@@ -139,22 +169,28 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetDivisionsByLevel()
         {
-            AreEqual(2, service.GetDivisionsByLevel(0, season).Count);
-            AreEqual(3, service.GetDivisionsByLevel(1, season).Count);
+            AreEqual(1, service.GetDivisionsByLevel(0, season).Count);
+            AreEqual(2, service.GetDivisionsByLevel(1, season).Count);
             AreEqual(5, service.GetDivisionsByLevel(2, season).Count);
         }
 
         [TestMethod]
-        public void ShouldCreateDivision()
-        {
-            throw new NotImplementedException();
+        public void ShouldCreateDivisionNoParent()
+        {           
+            var newDivision = service.CreateDivision(null, null, "Division 1", "Div 1", 1, 1, null);
+            service.Save();
+
+            var division = service.GetById((int)newDivision.Id);
+
+            AreEqual(division, newDivision);
+            
         }
 
         private static string SHOULDSORTBYDIVISION_EXPECTED =
 @"R    Name               W    L    T  Pts   GP   GF   GA   GD            Div
-1    Chicago           34   20   10   78   64  175  128   47        Central
-2    Vancouver         29   23   12   70   64  161  160    1        Pacific
-3    Winnipeg          30   25    9   69   64  159  139   20     North West
+1    Chicago           34   20   10   78   64  178   47  131        Central
+2    Vancouver         30   20   10   70   60  175  128   47        Pacific
+3    Winnipeg          29   23   12   70   64  161  160    1     North West
 4    Colorado          30   26    8   68   64  168  184  -16        Central
 5    Calgary           26   23   15   67   64  162  169   -7     North West
 6    Edmonton          23   29   12   58   64  159  169  -10     North West

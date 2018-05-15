@@ -9,62 +9,66 @@ using JodyApp.Domain.Config;
 
 namespace JodyApp.Service.Test.DataFolder
 {
-    public class DivisionTestDataDriver:BaseTestDataDriver
-    {        
+    public class DivisionTestDataDriver:SimpleTestDataDriver
+    {
+        public string LeagueName = "Division Test Data League";
 
+        League MyLeague, ExtraLeague;
+        Season Season, ExtraSeason;
         public DivisionTestDataDriver() : base() { }
+
+        public override void PrivateCreateSeasons()
+        {
+            Season = CreateAndAddSeason(MyLeague, "My Season", 0, 1, 0);
+            ExtraSeason = CreateAndAddSeason(ExtraLeague, "Extra Season", 0, 1, 0);
+        }
 
 
         public override void PrivateCreateLeagues()
         {            
 
-            CreateAndAddLeague(this.LeagueName);
-            CreateAndAddLeague("Extra");
+            MyLeague = CreateAndAddLeague(this.LeagueName);
+            ExtraLeague = CreateAndAddLeague("Extra");
         }
         public override void PrivateCreateDivisions()
         {            
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "League", null, 0, 1, null, null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "West", null, 1, 2, divisions["League"], null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "East", null, 1, 2, divisions["League"], null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "Pacific", null, 2, 1, divisions["West"], null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "Central", null, 2, 2, divisions["West"], null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "North West", null, 2, 3, divisions["West"], null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "North East", null, 2, 4, divisions["East"], null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "Atlantic", null, 2, 4, divisions["East"], null);
+            CreateAndAddDivision(MyLeague, Season, "League", null, 0, 1, null, null);
+            CreateAndAddDivision(MyLeague, Season, "West", null, 1, 2, divisions["League"], null);
+            CreateAndAddDivision(MyLeague, Season, "East", null, 1, 2, divisions["League"], null);
+            CreateAndAddDivision(MyLeague, Season, "Pacific", null, 2, 1, divisions["West"], null);
+            CreateAndAddDivision(MyLeague, Season, "Central", null, 2, 2, divisions["West"], null);
+            CreateAndAddDivision(MyLeague, Season, "North West", null, 2, 3, divisions["West"], null);
+            CreateAndAddDivision(MyLeague, Season, "North East", null, 2, 4, divisions["East"], null);
+            CreateAndAddDivision(MyLeague, Season, "Atlantic", null, 2, 4, divisions["East"], null);
 
-            CreateAndAddDivision(leagues["Extra"], seasons["My Season"], "Extra Top", null, 0, 1, null, null);
-            CreateAndAddDivision(leagues["Extra"], seasons["My Season"], "Extra Child", null, 1, 2, divisions["Extra Top"], null);
+            CreateAndAddDivision(ExtraLeague, ExtraSeason, "Extra Top", null, 0, 1, null, null);
+            CreateAndAddDivision(ExtraLeague, ExtraSeason, "Extra Child", null, 1, 2, divisions["Extra Top"], null);
 
 
-        }
-
-        public override void PrivateCreateScheduleRules()
-        {
-            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 1", ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], false, 2, 0, 1, false);
         }
 
         public override void PrivateCreateTeams()
         {            
             CreateAndAddTeam("Los Angelas", 5, new TeamStatistics(-1, 18, 32, 14, 156, 186), divisions["Pacific"]);
             CreateAndAddTeam("Seattle", 5, new TeamStatistics(-1, 23, 34, 7, 165, 179), divisions["Pacific"]);
-            CreateAndAddTeam("Vancouver", 5, new TeamStatistics(-1, 34, 20, 10, 128, 47), divisions["Pacific"]);
+            CreateAndAddTeam("Vancouver", 5, new TeamStatistics(-1, 30, 20, 10, 175, 128), divisions["Pacific"]);
             CreateAndAddTeam("Minnesota", 5, new TeamStatistics(-1, 21, 29, 14, 134, 158), divisions["Central"]);
             CreateAndAddTeam("Colorado", 5, new TeamStatistics(-1, 30, 26, 8, 168, 184), divisions["Central"]);
-            CreateAndAddTeam("Chicago", 5, divisions["Central"]);
+            CreateAndAddTeam("Chicago", 5, new TeamStatistics(-1, 34, 20, 10, 178, 47), divisions["Central"]);
             CreateAndAddTeam("Edmonton", 5, new TeamStatistics(-1, 23, 29, 12, 159, 169), divisions["North West"]);
             CreateAndAddTeam("Calgary", 5, new TeamStatistics(-1, 26, 23, 15, 162, 169), divisions["North West"]);
             CreateAndAddTeam("Winnipeg", 5, new TeamStatistics(-1, 29, 23, 12, 161, 160), divisions["North West"]);
-            CreateAndAddTeam("Toronto", 5, divisions["North East"]);
-            CreateAndAddTeam("Montreal", 5, divisions["North East"]);
-            CreateAndAddTeam("Ottawa", 5, divisions["North East"]);
-            CreateAndAddTeam("Quebec City", 5, divisions["North East"]);
-            CreateAndAddTeam("Boston", 5, divisions["Atlantic"]);
-            CreateAndAddTeam("New York", 5, divisions["Atlantic"]);
-            CreateAndAddTeam("Philadelphia", 5, divisions["Atlantic"]);
-            CreateAndAddTeam("Detroit", 5, divisions["Atlantic"]);
+            CreateAndAddTeam("Toronto", 5, new TeamStatistics(), divisions["North East"]);
+            CreateAndAddTeam("Montreal", 5, new TeamStatistics(), divisions["North East"]);
+            CreateAndAddTeam("Ottawa", 5, new TeamStatistics(), divisions["North East"]);
+            CreateAndAddTeam("Quebec City", 5, new TeamStatistics(), divisions["North East"]);
+            CreateAndAddTeam("Boston", 5, new TeamStatistics(), divisions["Atlantic"]);
+            CreateAndAddTeam("New York", 5, new TeamStatistics(), divisions["Atlantic"]);
+            CreateAndAddTeam("Philadelphia", 5, new TeamStatistics(), divisions["Atlantic"]);
+            CreateAndAddTeam("Detroit", 5, new TeamStatistics(), divisions["Atlantic"]);
 
-            CreateAndAddTeam("Pittsburgh", 5, divisions["Extra Child"]);
-            CreateAndAddTeam("Minneapolis", 5, divisions["Extra Child"]);
+            CreateAndAddTeam("Pittsburgh", 5, new TeamStatistics(), divisions["Extra Child"]);
+            CreateAndAddTeam("Minneapolis", 5, new TeamStatistics(), divisions["Extra Child"]);
 
 
         }
