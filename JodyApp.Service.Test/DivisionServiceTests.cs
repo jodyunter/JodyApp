@@ -144,6 +144,12 @@ namespace JodyApp.Service.Test
             AreEqual(5, service.GetDivisionsByLevel(2, season).Count);
         }
 
+        [TestMethod]
+        public void ShouldCreateDivision()
+        {
+            throw new NotImplementedException();
+        }
+
         private static string SHOULDSORTBYDIVISION_EXPECTED =
 @"R    Name               W    L    T  Pts   GP   GF   GA   GD            Div
 1    Chicago           34   20   10   78   64  175  128   47        Central

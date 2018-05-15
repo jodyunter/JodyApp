@@ -81,7 +81,7 @@ namespace JodyApp.Service
                 db.DivisionRanks.AddRange(seasonDiv.Rankings);
             });
 
-            var configRules = scheduleService.GetRules(referenceSeason, year);
+            var configRules = configService.GetScheduleRulesByCompetition(referenceSeason);
 
             season.Games = new List<Game>();
             scheduleService.CreateGamesFromRules(configRules, seasonTeams, seasonDivisions, season.Games, 0);

@@ -18,15 +18,6 @@ namespace JodyApp.Service
 
         public override void Initialize(JodyAppContext db) { divisionService.db = db; divisionService.Initialize(db); }
 
-        public List<ConfigScheduleRule> GetRules(ConfigCompetition season, int currentYear)
-        {
-            return db.ScheduleRules.Where(rule =>
-                rule.FirstYear != null &&
-                rule.FirstYear <= currentYear &&
-                (rule.LastYear == null || rule.LastYear >= currentYear)).ToList();
-            
-        }
-
         //update to get last game number in database for season
         public List<Game> CreateGamesFromRules(List<ConfigScheduleRule> rules, 
                     Dictionary<string, Team> teams, 

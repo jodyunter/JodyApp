@@ -37,9 +37,9 @@ namespace JodyApp.Service
             return newComp;
         }
 
-        public ConfigCompetition GetCompetitionByName(string name)
+        public ConfigCompetition GetCompetitionByName(League league, string name)
         {
-            return db.ConfigCompetitions.Where(c => c.Name == name).FirstOrDefault();
+            return db.ConfigCompetitions.Where(c => c.League.Id == league.Id && c.Name == name).FirstOrDefault();
         }
 
         public ConfigCompetition GetCompetitionById(int id)
@@ -90,6 +90,179 @@ namespace JodyApp.Service
         public ConfigTeam GetTeamByName(string name)
         {
             return db.ConfigTeams.Where(t => t.Name == name).FirstOrDefault();
+        }
+        #endregion
+        #region Divisions
+        public ConfigDivision CreateDivision(League league, ConfigCompetition competition, string name,
+                                            string shortName, int level, int order, ConfigDivision parent,
+                                            int? firstYear, int? lastYear)
+        {
+            var division = new ConfigDivision(league, competition, name, shortName, level, order, parent, firstYear, lastYear);
+            db.ConfigDivisions.Add(division);
+
+            return division;
+        }
+
+        public ConfigDivision GetDivisionByName(League league, string name)
+        {
+            return db.ConfigDivisions.Where(d => d.League.Id == league.Id && d.Name == name).FirstOrDefault();
+        }
+
+        public ConfigDivision GetDivisionById(int id)
+        {
+            return db.ConfigDivisions.Where(d => d.Id == id).FirstOrDefault();
+        }
+        #endregion
+        #region Schedule Rules
+
+        public List<ConfigScheduleRule> GetScheduleRulesByCompetition(ConfigCompetition competition)
+        {
+            return db.ScheduleRules.Where(sr => sr.Season.Id == competition.Id).ToList();
+        }
+        public ConfigScheduleRule GetScheduleRuleById(int id)
+        {
+            return db.ScheduleRules.Where(sr => sr.Id == id).FirstOrDefault();
+        }
+
+        public ConfigScheduleRule GetScheduleRuleByName(League league, ConfigCompetition competition, string name)
+        {
+            return db.ScheduleRules.Where(sr => sr.League.Id == league.Id && sr.Season.Id == competition.Id).FirstOrDefault();
+        }
+        public ConfigScheduleRule CreateScheduleRuleByDivisionLevel(League league, ConfigCompetition competition, string name, int divisionLevel,
+                                            bool playHomeAway, int rounds, int order, bool reverse)
+        {
+            var rule = ConfigScheduleRule.CreateByDivisionLevel(league, competition, name, divisionLevel, playHomeAway, rounds, order, reverse);
+            db.ScheduleRules.Add(rule);
+
+            return rule;
+        }
+        public ConfigScheduleRule CreateScheduleRuleByDivisionVsDivision(League league, ConfigCompetition competition, string name, 
+                                    ConfigDivision homeDivision, ConfigDivision awayDivision,
+                                    bool playHomeAway, int rounds, int order, bool reverse)
+        {
+            var rule = ConfigScheduleRule.CreateByDivisionVsDivision(league, competition, name, homeDivision, awayDivision, playHomeAway, rounds, order, reverse);
+            db.ScheduleRules.Add(rule);
+
+            return rule;            
+        }
+        public ConfigScheduleRule CreateScheduleRuleByDivisionVsSelf(League league, ConfigCompetition competition, string name,
+                            ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse)
+        {
+            var rule = ConfigScheduleRule.CreateByDivisionVsSelf(league, competition, name, division, playHomeAway, rounds, order, reverse);
+            db.ScheduleRules.Add(rule);
+
+            return rule;
+        }
+        public ConfigScheduleRule CreateScheduleRuleByDivisionVsTeam(League league, ConfigCompetition competition, string name,
+                    ConfigDivision division, ConfigTeam team, bool playHomeAway, int rounds, int order, bool reverse)
+        {
+            var rule = ConfigScheduleRule.CreateByDivisionVsTeam(league, competition, name, division, team, playHomeAway, rounds, order, reverse);
+            db.ScheduleRules.Add(rule);
+
+            return rule;            
+        }
+        public ConfigScheduleRule CreateScheduleRuleByTeamVsDivision(League league, ConfigCompetition competition, string name,
+                             ConfigTeam team, ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse)
+        {
+            var rule = ConfigScheduleRule.CreateByTeamVsDivision(league, competition, name, team, division, playHomeAway, rounds, order, reverse);
+            db.ScheduleRules.Add(rule);
+
+            return rule;                        
+        }
+        public ConfigScheduleRule CreateScheduleRuleByTeamVsTeam(League league, ConfigCompetition competition, string name,
+                        ConfigTeam homeTeam, ConfigTeam awayTeam, bool playHomeAway, int rounds, int order, bool reverse)
+        {
+            var rule = ConfigScheduleRule.CreateByTeamVsTeam(league, competition, name, homeTeam, awayTeam, playHomeAway, rounds, order, reverse);
+            db.ScheduleRules.Add(rule);
+
+            return rule;         
+        }
+        #endregion
+        #region Sorting Rules
+        public ConfigSortingRule CreateSortingRule(string name, int groupNumber, ConfigDivision division, ConfigDivision divisionToGetTeamsFrom,
+                                    string positionsToUse, int divisionLevel, int type, int? firstYear, int? lastYear)
+        {
+            var rule = new ConfigSortingRule(name, groupNumber, division, divisionToGetTeamsFrom, positionsToUse, divisionLevel, type, firstYear, lastYear);
+            db.ConfigSortingRules.Add(rule);
+            return rule;
+        }      
+        
+        public ConfigSortingRule GetSortingRuleById(int id)
+        {
+            return db.ConfigSortingRules.Where(r => r.Id == id).FirstOrDefault();
+        }
+
+        #endregion
+        #region Groups
+        public ConfigGroup CreateGroup(string name, ConfigCompetition playoff, List<ConfigGroupRule> groupRules, 
+                            ConfigDivision sortByDivision, int? firstYear, int? lastYear)
+        {
+            var group = new ConfigGroup("Group 1", playoff, groupRules, sortByDivision, firstYear, lastYear);
+            db.ConfigGroups.Add(group);
+            return group;
+
+        }
+
+        public ConfigGroup GetGroupById(int id)
+        {
+            return db.ConfigGroups.Where(g => g.Id == id).FirstOrDefault();
+        }
+        #endregion
+        #region Group Rules
+        public ConfigGroupRule CreateGroupRuleFromDivision(ConfigGroup group, string name, ConfigDivision fromDivision, int highestRank, int lowestRank, int? firstYear, int? lastYear)
+        {
+            var groupRule = ConfigGroupRule.CreateFromDivision(group, name, fromDivision, highestRank, lowestRank, firstYear, lastYear);
+            db.ConfigGroupRules.Add(groupRule);
+            return groupRule;
+        }
+        public ConfigGroupRule CreateGroupRuleFromDivisionBottom(ConfigGroup group, string name, ConfigDivision fromDivision, int highestRank, int lowestRank, int? firstYear, int? lastYear)
+        {
+            var groupRule = ConfigGroupRule.CreateFromDivisionBottom(group, name, fromDivision, highestRank, lowestRank, firstYear, lastYear);
+            db.ConfigGroupRules.Add(groupRule);
+            return groupRule;
+        }
+        public ConfigGroupRule CreateGroupRuleFromSeriesLoser(ConfigGroup group, string name, string seriesName, int? firstYear, int? lastYear)
+        {
+            var groupRule = ConfigGroupRule.CreateFromSeriesLoser(group, name, seriesName, firstYear, lastYear);
+            db.ConfigGroupRules.Add(groupRule);
+            return groupRule;            
+        }
+        public ConfigGroupRule CreateGroupRuleFromSeriesWinner(ConfigGroup group, string name, string seriesName, int? firstYear, int? lastYear)
+        {
+            var groupRule = ConfigGroupRule.CreateFromSeriesWinner(group, name, seriesName, firstYear, lastYear);
+            db.ConfigGroupRules.Add(groupRule);
+            return groupRule;
+            //ConfigGroupRule.CreateFromTeam();
+        }
+        public ConfigGroupRule CreateGroupRuleFromTeam(ConfigGroup group, string name, ConfigTeam team, int? firstYear, int? lastYear)
+        {
+            var groupRule = ConfigGroupRule.CreateFromTeam(group, name, team, firstYear, lastYear);
+            db.ConfigGroupRules.Add(groupRule);
+            return groupRule;            
+        }
+
+        public ConfigGroupRule GetGroupRuleById(int id)
+        {
+            return db.ConfigGroupRules.Where(gr => gr.Id == id).FirstOrDefault();
+        }
+        #endregion
+        #region Series Rules
+        public ConfigSeriesRule CreateSeriesRule(ConfigCompetition playoff, string name, int round,
+                                ConfigGroup homeTeamFromGroup, int homeTeamFromRank,
+                                ConfigGroup awayTeamFromGroup, int awayTeamFromRank,
+                                int seriesType, int gamesNeeded, bool canTie, string homeGames, int? firstYear, int? lastYear)
+        {
+            var rule = new ConfigSeriesRule(playoff, name, round, homeTeamFromGroup, homeTeamFromRank,
+                                    awayTeamFromGroup, awayTeamFromRank, seriesType, gamesNeeded,
+                                    canTie, homeGames, firstYear, lastYear);
+
+            db.ConfigSeriesRules.Add(rule);
+            return rule;
+        }
+
+        public ConfigSeriesRule GetSeriesRuleById(int id)
+        {
+            return db.ConfigSeriesRules.Where(s => s.Id == id).FirstOrDefault();
         }
         #endregion
     }

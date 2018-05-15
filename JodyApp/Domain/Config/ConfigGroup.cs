@@ -27,5 +27,27 @@ namespace JodyApp.Domain.Config
             FirstYear = firstYear;
             LastYear = lastYear;
         }
+
+        public override bool Equals(object obj)
+        {
+            var group = obj as ConfigGroup;
+            return group != null &&
+                   Name == group.Name &&
+                   EqualityComparer<ConfigCompetition>.Default.Equals(Playoff, group.Playoff) &&
+                   EqualityComparer<ConfigDivision>.Default.Equals(SortByDivision, group.SortByDivision) &&
+                   EqualityComparer<int?>.Default.Equals(FirstYear, group.FirstYear) &&
+                   EqualityComparer<int?>.Default.Equals(LastYear, group.LastYear);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 765020825;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigCompetition>.Default.GetHashCode(Playoff);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigDivision>.Default.GetHashCode(SortByDivision);
+            hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(FirstYear);
+            hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(LastYear);
+            return hashCode;
+        }
     }
 }

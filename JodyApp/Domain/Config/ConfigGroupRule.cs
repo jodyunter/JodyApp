@@ -39,8 +39,6 @@ namespace JodyApp.Domain.Config
             FromTeam = fromTeam;
         }
 
-
-
         #region Static Creates
         public static ConfigGroupRule CreateFromDivision(ConfigGroup g, string name, ConfigDivision fromDivision, int highestRank, int lowestRank, int? firstYear, int? lastYear)
         {
@@ -77,5 +75,39 @@ namespace JodyApp.Domain.Config
             return rule;
         }
         #endregion
+
+
+        public override bool Equals(object obj)
+        {
+            var rule = obj as ConfigGroupRule;
+            return rule != null &&
+                   EqualityComparer<ConfigGroup>.Default.Equals(Group, rule.Group) &&
+                   Name == rule.Name &&
+                   RuleType == rule.RuleType &&
+                   EqualityComparer<ConfigDivision>.Default.Equals(FromDivision, rule.FromDivision) &&
+                   FromSeries == rule.FromSeries &&
+                   FromStartValue == rule.FromStartValue &&
+                   FromEndValue == rule.FromEndValue &&
+                   EqualityComparer<ConfigTeam>.Default.Equals(FromTeam, rule.FromTeam) &&
+                   EqualityComparer<int?>.Default.Equals(FirstYear, rule.FirstYear) &&
+                   EqualityComparer<int?>.Default.Equals(LastYear, rule.LastYear);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1858369198;
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigGroup>.Default.GetHashCode(Group);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + RuleType.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigDivision>.Default.GetHashCode(FromDivision);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FromSeries);
+            hashCode = hashCode * -1521134295 + FromStartValue.GetHashCode();
+            hashCode = hashCode * -1521134295 + FromEndValue.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigTeam>.Default.GetHashCode(FromTeam);
+            hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(FirstYear);
+            hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(LastYear);
+            return hashCode;
+        }
+
     }
 }

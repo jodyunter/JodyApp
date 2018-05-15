@@ -14,25 +14,25 @@ namespace JodyApp.Service.Test.DataFolder
 {
     public abstract class AbstractTestDataDriver
     {
-        protected Dictionary<string, League> leagues;
-        protected Dictionary<string, ConfigCompetition> configCompetitions;        
-        protected Dictionary<string, ConfigDivision> configDivisions;
-        protected Dictionary<string, ConfigTeam> configTeams;
-        protected Dictionary<string, ConfigSortingRule> configSortingRules;
-        protected Dictionary<string, ConfigGroup> configGroups;
-        protected Dictionary<string, ConfigGroupRule> configGroupRules;
-        protected Dictionary<string, ConfigSeriesRule> configSeriesRules;
-        protected Dictionary<string, ConfigScheduleRule> configScheduleRules;
+        protected Dictionary<string, League> leagues = new Dictionary<string, League>();
+        protected Dictionary<string, ConfigCompetition> configCompetitions = new Dictionary<string, ConfigCompetition>();
+        protected Dictionary<string, ConfigDivision> configDivisions = new Dictionary<string, ConfigDivision>();
+        protected Dictionary<string, ConfigTeam> configTeams = new Dictionary<string, ConfigTeam>();
+        protected Dictionary<string, ConfigSortingRule> configSortingRules = new Dictionary<string, ConfigSortingRule>();
+        protected Dictionary<string, ConfigGroup> configGroups = new Dictionary<string, ConfigGroup>();
+        protected Dictionary<string, ConfigGroupRule> configGroupRules = new Dictionary<string, ConfigGroupRule>();
+        protected Dictionary<string, ConfigSeriesRule> configSeriesRules = new Dictionary<string, ConfigSeriesRule>();
+        protected Dictionary<string, ConfigScheduleRule> configScheduleRules = new Dictionary<string, ConfigScheduleRule>();
 
-        protected Dictionary<string, Season> seasons;
-        protected Dictionary<string, Playoff> playoffs;
-        protected Dictionary<string, Division> divisions;
-        protected Dictionary<string, Team> teams;
-        protected Dictionary<string, SortingRule> sortingRules;
-        protected Dictionary<string, Group> groups;
-        protected Dictionary<string, GroupRule> groupRules;
-        protected Dictionary<string, SeriesRule> seriesRules;
-        protected Dictionary<string, Series> series;
+        protected Dictionary<string, Season> seasons = new Dictionary<string, Season>();
+        protected Dictionary<string, Playoff> playoffs = new Dictionary<string, Playoff>();
+        protected Dictionary<string, Division> divisions = new Dictionary<string, Division>();
+        protected Dictionary<string, Team> teams = new Dictionary<string, Team>();
+        protected Dictionary<string, SortingRule> sortingRules = new Dictionary<string, SortingRule>();
+        protected Dictionary<string, Group> groups = new Dictionary<string, Group>();
+        protected Dictionary<string, GroupRule> groupRules = new Dictionary<string, GroupRule>();
+        protected Dictionary<string, SeriesRule> seriesRules = new Dictionary<string, SeriesRule>();
+        protected Dictionary<string, Series> series = new Dictionary<string, Series>();
 
 
         public JodyAppContext db;        
@@ -315,15 +315,15 @@ namespace JodyApp.Service.Test.DataFolder
 
         public virtual void InsertData()
         {
-            leagues = CreateObjects<League>(PrivateCreateLeagues, db.Leagues);
-            configCompetitions = CreateObjects<ConfigCompetition>(PrivateCreateConfigSeasons, db.ConfigCompetitions);            
-            configDivisions = CreateObjects<ConfigDivision>(PrivateCreateConfigDivisions, db.ConfigDivisions);
-            configTeams = CreateObjects<ConfigTeam>(PrivateCreateConfigTeams, db.ConfigTeams);
-            configSortingRules = CreateObjects<ConfigSortingRule>(PrivateCreateConfigSortingRules, db.ConfigSortingRules); 
-            configGroups = CreateObjects<ConfigGroup>(PrivateCreateConfigGroups, db.ConfigGroups);
-            configGroupRules = CreateObjects<ConfigGroupRule>(PrivateCreateConfigGroupRules, db.ConfigGroupRules);
-            configSeriesRules = CreateObjects<ConfigSeriesRule>(PrivateCreateConfigSeriesRules, db.ConfigSeriesRules);
-            configScheduleRules = CreateObjects<ConfigScheduleRule>(PrivateCreateScheduleRules, db.ScheduleRules);
+            leagues = CreateObjects<League>(PrivateCreateLeagues);
+            configCompetitions = CreateObjects<ConfigCompetition>(PrivateCreateConfigSeasons);            
+            configDivisions = CreateObjects<ConfigDivision>(PrivateCreateConfigDivisions);
+            configTeams = CreateObjects<ConfigTeam>(PrivateCreateConfigTeams);
+            configSortingRules = CreateObjects<ConfigSortingRule>(PrivateCreateConfigSortingRules); 
+            configGroups = CreateObjects<ConfigGroup>(PrivateCreateConfigGroups);
+            configGroupRules = CreateObjects<ConfigGroupRule>(PrivateCreateConfigGroupRules);
+            configSeriesRules = CreateObjects<ConfigSeriesRule>(PrivateCreateConfigSeriesRules);
+            configScheduleRules = CreateObjects<ConfigScheduleRule>(PrivateCreateScheduleRules);
 
 
             seasons = CreateObjects<Season>(PrivateCreateConfigCompetitions, db.Seasons);
@@ -344,9 +344,15 @@ namespace JodyApp.Service.Test.DataFolder
 
             method();
 
-            m.AddRange(collection.Values);
+            if (m != null)
+                m.AddRange(collection.Values);
 
             return collection;
+        }
+
+        public Dictionary<string, T> CreateObjects<T>(Action method)
+        {
+            return CreateObjects<T>(method, null);
         }
 
 

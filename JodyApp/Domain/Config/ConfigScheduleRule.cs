@@ -191,6 +191,48 @@ namespace JodyApp.Domain.Config
                 reverse);
         }
 
+        public override bool Equals(object obj)
+        {
+            var rule = obj as ConfigScheduleRule;
+            return rule != null &&
+                   HomeType == rule.HomeType &&
+                   EqualityComparer<ConfigTeam>.Default.Equals(HomeTeam, rule.HomeTeam) &&
+                   EqualityComparer<ConfigDivision>.Default.Equals(HomeDivision, rule.HomeDivision) &&
+                   EqualityComparer<League>.Default.Equals(League, rule.League) &&
+                   AwayType == rule.AwayType &&
+                   EqualityComparer<ConfigTeam>.Default.Equals(AwayTeam, rule.AwayTeam) &&
+                   EqualityComparer<ConfigDivision>.Default.Equals(AwayDivision, rule.AwayDivision) &&
+                   PlayHomeAway == rule.PlayHomeAway &&
+                   Rounds == rule.Rounds &&
+                   DivisionLevel == rule.DivisionLevel &&
+                   Order == rule.Order &&
+                   Name == rule.Name &&
+                   EqualityComparer<ConfigCompetition>.Default.Equals(Season, rule.Season) &&
+                   Reverse == rule.Reverse &&
+                   EqualityComparer<int?>.Default.Equals(FirstYear, rule.FirstYear) &&
+                   EqualityComparer<int?>.Default.Equals(LastYear, rule.LastYear);
+        }
 
+        public override int GetHashCode()
+        {
+            var hashCode = -435751921;
+            hashCode = hashCode * -1521134295 + HomeType.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigTeam>.Default.GetHashCode(HomeTeam);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigDivision>.Default.GetHashCode(HomeDivision);
+            hashCode = hashCode * -1521134295 + EqualityComparer<League>.Default.GetHashCode(League);
+            hashCode = hashCode * -1521134295 + AwayType.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigTeam>.Default.GetHashCode(AwayTeam);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigDivision>.Default.GetHashCode(AwayDivision);
+            hashCode = hashCode * -1521134295 + PlayHomeAway.GetHashCode();
+            hashCode = hashCode * -1521134295 + Rounds.GetHashCode();
+            hashCode = hashCode * -1521134295 + DivisionLevel.GetHashCode();
+            hashCode = hashCode * -1521134295 + Order.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigCompetition>.Default.GetHashCode(Season);
+            hashCode = hashCode * -1521134295 + Reverse.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(FirstYear);
+            hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(LastYear);
+            return hashCode;
+        }
     }
 }
