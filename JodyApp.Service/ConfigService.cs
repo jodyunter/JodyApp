@@ -117,22 +117,22 @@ namespace JodyApp.Service
 
         public List<ConfigScheduleRule> GetScheduleRulesByCompetition(ConfigCompetition competition)
         {
-            return db.ScheduleRules.Where(sr => sr.Season.Id == competition.Id).ToList();
+            return db.ConfigScheduleRules.Where(sr => sr.Season.Id == competition.Id).ToList();
         }
         public ConfigScheduleRule GetScheduleRuleById(int id)
         {
-            return db.ScheduleRules.Where(sr => sr.Id == id).FirstOrDefault();
+            return db.ConfigScheduleRules.Where(sr => sr.Id == id).FirstOrDefault();
         }
 
         public ConfigScheduleRule GetScheduleRuleByName(League league, ConfigCompetition competition, string name)
         {
-            return db.ScheduleRules.Where(sr => sr.League.Id == league.Id && sr.Season.Id == competition.Id).FirstOrDefault();
+            return db.ConfigScheduleRules.Where(sr => sr.League.Id == league.Id && sr.Season.Id == competition.Id).FirstOrDefault();
         }
         public ConfigScheduleRule CreateScheduleRuleByDivisionLevel(League league, ConfigCompetition competition, string name, int divisionLevel,
                                             bool playHomeAway, int rounds, int order, bool reverse)
         {
             var rule = ConfigScheduleRule.CreateByDivisionLevel(league, competition, name, divisionLevel, playHomeAway, rounds, order, reverse);
-            db.ScheduleRules.Add(rule);
+            db.ConfigScheduleRules.Add(rule);
 
             return rule;
         }
@@ -141,7 +141,7 @@ namespace JodyApp.Service
                                     bool playHomeAway, int rounds, int order, bool reverse)
         {
             var rule = ConfigScheduleRule.CreateByDivisionVsDivision(league, competition, name, homeDivision, awayDivision, playHomeAway, rounds, order, reverse);
-            db.ScheduleRules.Add(rule);
+            db.ConfigScheduleRules.Add(rule);
 
             return rule;            
         }
@@ -149,7 +149,7 @@ namespace JodyApp.Service
                             ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse)
         {
             var rule = ConfigScheduleRule.CreateByDivisionVsSelf(league, competition, name, division, playHomeAway, rounds, order, reverse);
-            db.ScheduleRules.Add(rule);
+            db.ConfigScheduleRules.Add(rule);
 
             return rule;
         }
@@ -157,7 +157,7 @@ namespace JodyApp.Service
                     ConfigDivision division, ConfigTeam team, bool playHomeAway, int rounds, int order, bool reverse)
         {
             var rule = ConfigScheduleRule.CreateByDivisionVsTeam(league, competition, name, division, team, playHomeAway, rounds, order, reverse);
-            db.ScheduleRules.Add(rule);
+            db.ConfigScheduleRules.Add(rule);
 
             return rule;            
         }
@@ -165,7 +165,7 @@ namespace JodyApp.Service
                              ConfigTeam team, ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse)
         {
             var rule = ConfigScheduleRule.CreateByTeamVsDivision(league, competition, name, team, division, playHomeAway, rounds, order, reverse);
-            db.ScheduleRules.Add(rule);
+            db.ConfigScheduleRules.Add(rule);
 
             return rule;                        
         }
@@ -173,7 +173,7 @@ namespace JodyApp.Service
                         ConfigTeam homeTeam, ConfigTeam awayTeam, bool playHomeAway, int rounds, int order, bool reverse)
         {
             var rule = ConfigScheduleRule.CreateByTeamVsTeam(league, competition, name, homeTeam, awayTeam, playHomeAway, rounds, order, reverse);
-            db.ScheduleRules.Add(rule);
+            db.ConfigScheduleRules.Add(rule);
 
             return rule;         
         }

@@ -24,14 +24,14 @@ namespace JodyApp.Domain.Config
         public const int NONE = -1; //use this to ignore the away team
         
         public int HomeType { get; set; } //By Division, By Team              
-        public ConfigTeam HomeTeam { get; set; }        
-        public ConfigDivision HomeDivision { get; set; }
+        virtual public ConfigTeam HomeTeam { get; set; }
+        virtual public ConfigDivision HomeDivision { get; set; }
 
         //should probably remove this
-        public League League { get; set; }
-        public int AwayType { get; set; }                     
-        public ConfigTeam AwayTeam { get; set; }        
-        public ConfigDivision AwayDivision { get; set; }
+        virtual public League League { get; set; }
+        virtual public int AwayType { get; set; }
+        virtual public ConfigTeam AwayTeam { get; set; }
+        virtual public ConfigDivision AwayDivision { get; set; }
 
         public Boolean PlayHomeAway { get; set; } //if home and away teams are the same we need special rules
 

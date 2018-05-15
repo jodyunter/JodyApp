@@ -34,7 +34,7 @@ namespace JodyApp.Service
             else
             {
                 //get all the possible competitions for this league
-                var referenceComps = db.ReferenceCompetitions.Where(rc => rc.League.Id == league.Id).OrderBy(rc => rc.Order).ToList();
+                var referenceComps = league.ReferenceCompetitions.OrderBy(m => m.Order).ToList();
 
                 Competition currentComp = null;                
                                 
@@ -59,9 +59,11 @@ namespace JodyApp.Service
                     }
                     
                     //if there is no competition for this one, create one and return it
-                    if (currentComp == null) return competitionService.CreateCompetition(rc.Competition, league.CurrentYear);
+                    if (currentComp == null)
+                        return competitionService.CreateCompetition(rc.Competition, league.CurrentYear);
                     //if there is a current competition, and it is not complete, return it
-                    else if (!currentComp.Complete) return currentComp;
+                    else if (!currentComp.Complete)
+                        return currentComp;
 
                 }
 
@@ -79,7 +81,9 @@ namespace JodyApp.Service
         }
 
         public bool IsYearDone(League league)
-        {            
+        {
+            if (league.CurrentYear == 0) return true;
+
             var completeCompetitions = new List<Competition>();
 
             completeCompetitions.AddRange(db.Seasons.Where(s => s.Year == league.CurrentYear && s.Complete).ToList());

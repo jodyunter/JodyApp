@@ -80,9 +80,7 @@ namespace JodyApp.Service.Test.DataFolder
                 "ConfigSeriesRules",
                 "ConfigGroups",
                 "ConfigScheduleRules",
-                "ConfigTeams",
-                "ConfigDivisions",
-                "ConfigCompetitions",
+                "ReferenceCompetitions",
                 "GroupRules",
                 "SortingRules",
                 "DivisionRanks",
@@ -91,9 +89,11 @@ namespace JodyApp.Service.Test.DataFolder
                 "SeriesRules",
                 "Groups",                
                 "Teams",
+                "ConfigTeams",
+                "ConfigDivisions",                
+                "ConfigCompetitions",
                 "TeamStatistics",           
-                "Divisions",
-                "ReferenceCompetitions",
+                "Divisions",                
                 "Playoffs",
                 "Seasons",
                 "Leagues" };
@@ -308,17 +308,17 @@ namespace JodyApp.Service.Test.DataFolder
 
         public virtual void InsertData()
         {
-            CreateObjects(PrivateCreateLeagues, leagues);
+            CreateObjects(PrivateCreateLeagues, db.Leagues, leagues);
             CreateObjects(PrivateCreateConfigCompetitions, db.ConfigCompetitions, seasons);                   
-            CreateObjects(PrivateCreateConfigDivisions, configDivisions);
-            CreateObjects(PrivateCreateConfigTeams, configTeams);
-            CreateObjects(PrivateCreateConfigSortingRules, configSortingRules); 
-            CreateObjects(PrivateCreateConfigGroups, configGroups);
-            CreateObjects(PrivateCreateConfigGroupRules, configGroupRules);
-            CreateObjects(PrivateCreateConfigSeriesRules, configSeriesRules);
-            CreateObjects(PrivateCreateScheduleRules, configScheduleRules);
+            CreateObjects(PrivateCreateConfigDivisions, db.ConfigDivisions, configDivisions);
+            CreateObjects(PrivateCreateConfigTeams, db.ConfigTeams, configTeams);
+            CreateObjects(PrivateCreateConfigSortingRules, db.ConfigSortingRules, configSortingRules); 
+            CreateObjects(PrivateCreateConfigGroups, db.ConfigGroups, configGroups);
+            CreateObjects(PrivateCreateConfigGroupRules, db.ConfigGroupRules, configGroupRules);
+            CreateObjects(PrivateCreateConfigSeriesRules, db.ConfigSeriesRules, configSeriesRules);
+            CreateObjects(PrivateCreateScheduleRules, db.ConfigScheduleRules, configScheduleRules);
 
-
+            db.SaveChanges();
 
             CreateObjects(PrivateCreateSeasons, db.Seasons, seasons);
             CreateObjects(PrivateCreatePlayoffs, db.Playoffs, playoffs);
@@ -339,7 +339,8 @@ namespace JodyApp.Service.Test.DataFolder
             method();
 
             if (m != null)
-                m.AddRange(collection.Values);                        
+                m.AddRange(collection.Values);
+            
         }
 
         public void CreateObjects<T>(Action method, Dictionary<string, T> collection)

@@ -133,6 +133,7 @@ namespace JodyApp.Service.Test
             AreEqual(1, nextCompetition.Year);
             AreEqual(LeagueTestDataDriver.RegularSeasonName, nextCompetition.Name);
         }
+
         [TestMethod]
         public void ShouldGetNextCompetitionCompetitionStartedButNotComplete()
         {

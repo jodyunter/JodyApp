@@ -60,8 +60,13 @@ namespace JodyApp.Service
             }
             else
             {
-                AddTeamsToListFromRule(homeTeams, rule.HomeType, seasonTeams[rule.HomeTeam.Name], seasonDivisions[rule.HomeDivision.Name], rule.Reverse);
-                AddTeamsToListFromRule(awayTeams, rule.AwayType, seasonTeams[rule.AwayTeam.Name], seasonDivisions[rule.AwayDivision.Name], rule.Reverse);
+                var homeTeam = rule.HomeTeam == null ? null : seasonTeams[rule.HomeTeam.Name];
+                var homeDivision = rule.HomeDivision == null ? null : seasonDivisions[rule.HomeDivision.Name];
+                var awayTeam = rule.AwayTeam == null ? null : seasonTeams[rule.AwayTeam.Name];
+                var awayDivision = rule.AwayDivision == null ? null : seasonDivisions[rule.AwayDivision.Name];
+
+                AddTeamsToListFromRule(homeTeams, rule.HomeType, homeTeam, homeDivision, rule.Reverse);
+                AddTeamsToListFromRule(awayTeams, rule.AwayType, awayTeam, awayDivision, rule.Reverse);
 
                 lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds);
 

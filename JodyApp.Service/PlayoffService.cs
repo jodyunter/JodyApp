@@ -67,7 +67,7 @@ namespace JodyApp.Service
             db.Groups.AddRange(newGroups);
 
 
-            var configSeriesRules = db.SeriesRules.Where(series => series.Playoff.Id == referencePlayoff.Id).ToList();
+            var configSeriesRules = db.ConfigSeriesRules.Where(series => series.Playoff.Id == referencePlayoff.Id).ToList();
 
             configSeriesRules.ForEach(seriesRule =>            
             {

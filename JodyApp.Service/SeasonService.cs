@@ -23,6 +23,8 @@ namespace JodyApp.Service
         {
             divisionService.db = db;
             divisionService.Initialize(db);
+            configService.db = db;
+            configService.Initialize(db);
         }
 
         public bool IsSeasonStarted(Season season)
@@ -68,7 +70,7 @@ namespace JodyApp.Service
 
 
             //need to change season rules too
-            season.TeamData = seasonTeams.Values.ToList<Team>();
+            season.TeamData = seasonTeams.Values.ToList();
 
             db.Seasons.Add(season);
             db.Divisions.AddRange(seasonDivisions.Values);            

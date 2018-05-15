@@ -33,7 +33,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateGamesFromRuleNoAwayTeam()
         {
-            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 2").FirstOrDefault();
+            var rule = db.ConfigScheduleRules.Where(r => r.Name == "Rule 2").FirstOrDefault();
 
             var games = new List<Game>();
             service.CreateGamesFromRule(rule, db.Teams.ToDictionary(t => t.Name, t=> t), db.Divisions.ToDictionary(s => s.Name, s=> s), games, 0);
@@ -43,7 +43,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateGamesFromRuleHomeTeamVsDivision()
         {
-            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 1").FirstOrDefault();
+            var rule = db.ConfigScheduleRules.Where(r => r.Name == "Rule 1").FirstOrDefault();
 
             var games = new List<Game>();
             service.CreateGamesFromRule(rule, db.Teams.ToDictionary(t => t.Name, t => t), db.Divisions.ToDictionary(s => s.Name, s => s), games, 0);
@@ -58,7 +58,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateGamesFromRuleHomeTeamVsAwayTeam()
         {
-            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 3").FirstOrDefault();
+            var rule = db.ConfigScheduleRules.Where(r => r.Name == "Rule 3").FirstOrDefault();
 
             var games = new List<Game>();
             service.CreateGamesFromRule(rule, db.Teams.ToDictionary(t => t.Name, t => t), db.Divisions.ToDictionary(s => s.Name, s => s), games, 0);
@@ -70,7 +70,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateGamesFromRuleHomeAndAwayDivs()
         {
-            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 4").FirstOrDefault();
+            var rule = db.ConfigScheduleRules.Where(r => r.Name == "Rule 4").FirstOrDefault();
 
             var games = new List<Game>();
             service.CreateGamesFromRule(rule, db.Teams.ToDictionary(t => t.Name, t => t), db.Divisions.ToDictionary(s => s.Name, s => s), games, 5);
@@ -84,7 +84,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateGamesFromRuleByDivisionLevel0()
         {
-            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 5").FirstOrDefault();
+            var rule = db.ConfigScheduleRules.Where(r => r.Name == "Rule 5").FirstOrDefault();
 
             var games = new List<Game>();
             service.CreateGamesFromRule(rule, db.Teams.ToDictionary(t => t.Name, t => t), db.Divisions.ToDictionary(s => s.Name, s => s), games, 0);
@@ -98,7 +98,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateGamesFromRuleByDivisionLevel1()
         {
-            var rule = db.ScheduleRules.Where(r => r.Name == "Rule 6").FirstOrDefault();
+            var rule = db.ConfigScheduleRules.Where(r => r.Name == "Rule 6").FirstOrDefault();
 
             var games = new List<Game>();
             service.CreateGamesFromRule(rule, db.Teams.ToDictionary(t => t.Name, t => t), db.Divisions.ToDictionary(s => s.Name, s => s), games, 0);

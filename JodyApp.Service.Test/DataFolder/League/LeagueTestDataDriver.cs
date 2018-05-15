@@ -52,26 +52,27 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
-        public override void PrivateCreateTeams()
+        public override void PrivateCreateConfigTeams()
         {                                                                                 
             Team1 = CreateAndAddConfigTeam("Team 1", 5, Division1, MyLeague, 1, null);
             Team2 = CreateAndAddConfigTeam("Team 2", 5, Division1, MyLeague, 1, null);
             Team3 = CreateAndAddConfigTeam("Team 3", 5, Division1, MyLeague, 1, null);
         }
 
-        public override void PrivateCreateSortingRules()
+        public override void PrivateCreateConfigSortingRules()
         {
             //CreateAndAddSortingRule(League, "Sorting Rule 1", 0, Premier,  null, 0, -1, rules);            
         }
         public override void PrivateCreateLeagues()
         {
             MyLeague = CreateAndAddLeague(LeagueName);
+            
         }
 
         public override void PrivateCreateConfigCompetitions()
         {
-            RegularSeason = CreateAndAddConfigCompetition(MyLeague, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, 0);
-            Playoffs = CreateAndAddConfigCompetition(MyLeague, PlayoffName, ConfigCompetition.SEASON, RegularSeason, 1, 1, 0);
+            RegularSeason = CreateAndAddConfigCompetition(MyLeague, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, null);
+            Playoffs = CreateAndAddConfigCompetition(MyLeague, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeason, 2, 1, null);
         }
 
         public override void PrivateCreatePlayoffs()
@@ -109,16 +110,6 @@ namespace JodyApp.Service.Test.DataFolder
             return;
         }
 
-        public override void PrivateCreateConfigSortingRules()
-        {
-            return;
-        }
-
-        public override void PrivateCreateConfigTeams()
-        {
-            return;
-        }
-
         public override void PrivateCreateConfigPlayoffs()
         {
             return;
@@ -147,6 +138,14 @@ namespace JodyApp.Service.Test.DataFolder
         public override void PrivateCreateSeasons()
         {
             return;
+        }
+
+        public override void PrivateCreateTeams()
+        {            
+        }
+
+        public override void PrivateCreateSortingRules()
+        {         
         }
     }
 }
