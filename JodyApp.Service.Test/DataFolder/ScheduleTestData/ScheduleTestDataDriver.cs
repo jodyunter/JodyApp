@@ -45,6 +45,16 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
+        public override void PrivateCreateConfigDivisions()
+        {
+            base.PrivateCreateConfigDivisions();
+        }
+
+        public override void PrivateCreateConfigTeams()
+        {
+            base.PrivateCreateConfigTeams();
+        }
+
     }
 }
 
