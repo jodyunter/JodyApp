@@ -62,8 +62,6 @@
     <Compile Include="Domain\Config\ConfigTeam.cs" />
     <Compile Include="Domain\Division.cs" />
     <Compile Include="Domain\DivisionRank.cs" />
-    <Compile Include="Domain\Helpers\DivisionExtentions.cs" />
-    <Compile Include="Domain\Helpers\TeamExtensions.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\League.cs" />
@@ -84,57 +82,13 @@
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatistics.cs" />
-    <Compile Include="Migrations\201805041650577_First.cs" />
-    <Compile Include="Migrations\201805041650577_First.Designer.cs">
-      <DependentUpon>201805041650577_First.cs</DependentUpon>
+    <Compile Include="Migrations\201805151240465_First.cs" />
+    <Compile Include="Migrations\201805151240465_First.Designer.cs">
+      <DependentUpon>201805151240465_First.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805041915120_SeriesName.cs" />
-    <Compile Include="Migrations\201805041915120_SeriesName.Designer.cs">
-      <DependentUpon>201805041915120_SeriesName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805050139598_Next.cs" />
-    <Compile Include="Migrations\201805050139598_Next.Designer.cs">
-      <DependentUpon>201805050139598_Next.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805051520214_NewLeagueStuff.cs" />
-    <Compile Include="Migrations\201805051520214_NewLeagueStuff.Designer.cs">
-      <DependentUpon>201805051520214_NewLeagueStuff.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805060002370_LeagueReferences.cs" />
-    <Compile Include="Migrations\201805060002370_LeagueReferences.Designer.cs">
-      <DependentUpon>201805060002370_LeagueReferences.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805060110168_PlayoffLeagueReferences.cs" />
-    <Compile Include="Migrations\201805060110168_PlayoffLeagueReferences.Designer.cs">
-      <DependentUpon>201805060110168_PlayoffLeagueReferences.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805072010495_next01.cs" />
-    <Compile Include="Migrations\201805072010495_next01.Designer.cs">
-      <DependentUpon>201805072010495_next01.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805081820153_seasonforplayoffs.cs" />
-    <Compile Include="Migrations\201805081820153_seasonforplayoffs.Designer.cs">
-      <DependentUpon>201805081820153_seasonforplayoffs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805091407099_GroupRuleName.cs" />
-    <Compile Include="Migrations\201805091407099_GroupRuleName.Designer.cs">
-      <DependentUpon>201805091407099_GroupRuleName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805100204458_GroupChange01.cs" />
-    <Compile Include="Migrations\201805100204458_GroupChange01.Designer.cs">
-      <DependentUpon>201805100204458_GroupChange01.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805100211575_SeriesGroupInsteadofString.cs" />
-    <Compile Include="Migrations\201805100211575_SeriesGroupInsteadofString.Designer.cs">
-      <DependentUpon>201805100211575_SeriesGroupInsteadofString.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805101441380_whatisgoingon.cs" />
-    <Compile Include="Migrations\201805101441380_whatisgoingon.Designer.cs">
-      <DependentUpon>201805101441380_whatisgoingon.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805101818302_GroupRulevalidation01.cs" />
-    <Compile Include="Migrations\201805101818302_GroupRulevalidation01.Designer.cs">
-      <DependentUpon>201805101818302_GroupRulevalidation01.cs</DependentUpon>
+    <Compile Include="Migrations\201805151321438_RemovedSeasonPlayoffNameFromLeague.cs" />
+    <Compile Include="Migrations\201805151321438_RemovedSeasonPlayoffNameFromLeague.Designer.cs">
+      <DependentUpon>201805151321438_RemovedSeasonPlayoffNameFromLeague.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,44 +98,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805041650577_First.resx">
-      <DependentUpon>201805041650577_First.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805151240465_First.resx">
+      <DependentUpon>201805151240465_First.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805041915120_SeriesName.resx">
-      <DependentUpon>201805041915120_SeriesName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805050139598_Next.resx">
-      <DependentUpon>201805050139598_Next.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805051520214_NewLeagueStuff.resx">
-      <DependentUpon>201805051520214_NewLeagueStuff.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805060002370_LeagueReferences.resx">
-      <DependentUpon>201805060002370_LeagueReferences.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805060110168_PlayoffLeagueReferences.resx">
-      <DependentUpon>201805060110168_PlayoffLeagueReferences.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805072010495_next01.resx">
-      <DependentUpon>201805072010495_next01.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805081820153_seasonforplayoffs.resx">
-      <DependentUpon>201805081820153_seasonforplayoffs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805091407099_GroupRuleName.resx">
-      <DependentUpon>201805091407099_GroupRuleName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805100204458_GroupChange01.resx">
-      <DependentUpon>201805100204458_GroupChange01.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805100211575_SeriesGroupInsteadofString.resx">
-      <DependentUpon>201805100211575_SeriesGroupInsteadofString.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805101441380_whatisgoingon.resx">
-      <DependentUpon>201805101441380_whatisgoingon.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805101818302_GroupRulevalidation01.resx">
-      <DependentUpon>201805101818302_GroupRulevalidation01.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805151321438_RemovedSeasonPlayoffNameFromLeague.resx">
+      <DependentUpon>201805151321438_RemovedSeasonPlayoffNameFromLeague.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

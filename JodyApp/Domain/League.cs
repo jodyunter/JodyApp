@@ -10,10 +10,21 @@ namespace JodyApp.Domain
     {
         public string Name { get; set; }
         public int CurrentYear { get; set; }
-        public string SeasonName { get; set; }
-        public string PlayoffName { get; set; }
         virtual public List<ReferenceCompetition> ReferenceCompetitions { get; set; }
 
+        public League(string name)
+        {
+            this.Name = name;
+            CurrentYear = 0;
+            ReferenceCompetitions = new List<ReferenceCompetition>();
+        }
         public League() { ReferenceCompetitions = new List<ReferenceCompetition>(); }
+
+        public override bool AreTheSame(DomainObject obj)
+        {
+            var that = (League)obj;
+
+            return this.Name.Equals(that.Name);
+        }
     }
 }

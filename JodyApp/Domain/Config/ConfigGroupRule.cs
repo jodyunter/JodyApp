@@ -26,6 +26,7 @@ namespace JodyApp.Domain.Config
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
 
+        public ConfigGroupRule() { }
         public ConfigGroupRule(ConfigGroup group, string name, int ruleType, ConfigDivision fromDivision, string fromSeries, int fromStartValue, int fromEndValue, ConfigTeam fromTeam, int? firstYear, int? lastYear)
         {
             Group = group;

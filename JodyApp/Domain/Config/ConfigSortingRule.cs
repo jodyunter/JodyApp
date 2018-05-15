@@ -17,5 +17,7 @@ namespace JodyApp.Domain.Config
         public int Type { get; set; }
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
+
+        public ConfigSortingRule() { }
     }
 }

@@ -67,17 +67,29 @@ namespace JodyApp.Service.Test.DataFolder
         public abstract void PrivateCreateConfigPlayoffs();
         public abstract void PrivateCreateConfigSeasons();
 
+        public void Setup()
+        {
+            DeleteAllData();
+            InsertData();
+        }
         public void DeleteAllData()
         {
             string[] tables = {
+                "ConfigGroupRules",
+                "ConfigSOrtingRules",
+                "ConfigSeriesRules",
+                "ConfigGroups",
+                "ConfigScheduleRules",
+                "ConfigTeams",
+                "ConfigDivisions",
+                "ConfigCompetitions",
                 "GroupRules",
                 "SortingRules",
                 "DivisionRanks",
                 "Games",
                 "Series",
                 "SeriesRules",
-                "Groups",
-                "ScheduleRules",
+                "Groups",                
                 "Teams",
                 "TeamStatistics",           
                 "Divisions",
@@ -172,9 +184,9 @@ namespace JodyApp.Service.Test.DataFolder
             return team;
         }
 
-        public ConfigTeam CreateAndAddConfigTeam(string name, int skill, ConfigDivision division, int? firstYear, int? lastYear)
+        public ConfigTeam CreateAndAddConfigTeam(string name, int skill, ConfigDivision division, League league, int? firstYear, int? lastYear)
         {
-            ConfigTeam team = new ConfigTeam(name, skill, division, firstYear, lastYear);
+            ConfigTeam team = new ConfigTeam(name, skill, division, league, firstYear, lastYear);
             configTeams.Add(team.Name, team);
             return team;
         }

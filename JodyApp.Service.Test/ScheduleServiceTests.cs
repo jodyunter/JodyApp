@@ -14,8 +14,7 @@ namespace JodyApp.Service.Test
     {
         Database.JodyAppContext db;
         ScheduleService service;
-        DivisionService divisionService;
-        TeamService teamService;
+        DivisionService divisionService;        
         ScheduleTestDataDriver driver;
         
         [TestInitialize]
@@ -23,8 +22,7 @@ namespace JodyApp.Service.Test
         {
             driver = new ScheduleTestDataDriver();
             db = driver.db;
-            service = new ScheduleService(db);
-            teamService = new TeamService(db);
+            service = new ScheduleService(db);            
             divisionService = new DivisionService(db);
 
             

@@ -55,7 +55,7 @@ namespace JodyApp.Service
         }
         public List<Division> GetDivisionsBySeason(Season season)
         {
-            return Division.GetDivisionsBySeason(db, season);
+            return db.Divisions.Where(d => d.Season.Id == season.Id).ToList();
         }
 
         //this will return the list of teams, but more importantly will setup the division rankings
@@ -78,23 +78,23 @@ namespace JodyApp.Service
         }
 
         public Division GetByName(String name, League league, Season season)
-        {            
-            return Division.GetByName(db, name, league, season);
+        {
+            return db.Divisions.Where(d => (d.Name == name) && (d.League.Id == league.Id) && (d.Season.Id == season.Id)).FirstOrDefault();
         }
 
         public List<Division> GetByLeague(League league)
-        {            
-            return Division.GetByLeague(db, league);
+        {
+            return db.Divisions.Where(d => d.League.Id == league.Id && d.Season == null).ToList();
         }
 
         public List<Division> GetDivisionsByLevel(int level, Season season)
         {
-            return Division.GetDivisionsByLevel(db, level, season);
+            return db.Divisions.Where(d => d.Level == level && (d.Season.Id == season.Id)).ToList();
         }
 
         public Division GetByLeagueAndSeasonAndName(League league, Season season, string name)
         {
-            return Division.GetByLeagueAndSeasonAndName(db, league, season, name);
+            return db.Divisions.Where(d => d.League.Id == league.Id && d.Season.Id == season.Id && d.Name == name).FirstOrDefault();
         }
         
     }

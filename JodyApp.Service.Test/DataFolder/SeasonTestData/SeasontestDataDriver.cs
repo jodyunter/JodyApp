@@ -37,12 +37,12 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateTeams()
         {
-            CreateAndAddConfigTeam("Los Angelas", 5, configDivisions["West"], 1, null);
-            CreateAndAddConfigTeam("Seattle", 5, configDivisions["West"], 1, null);
-            CreateAndAddConfigTeam("Vancouver", 5, configDivisions["West"], 1, null);
-            CreateAndAddConfigTeam("Minnesota", 5, configDivisions["West"], 1, null);
-            CreateAndAddConfigTeam("Toronto", 5, configDivisions["East"], 1, null);
-            CreateAndAddConfigTeam("Montreal", 5, configDivisions["East"], 1, null);
+            CreateAndAddConfigTeam("Los Angelas", 5, configDivisions["West"], leagues[LeagueName], 1, null);
+            CreateAndAddConfigTeam("Seattle", 5, configDivisions["West"], leagues[LeagueName], 1, null);
+            CreateAndAddConfigTeam("Vancouver", 5, configDivisions["West"], leagues[LeagueName], 1, null);
+            CreateAndAddConfigTeam("Minnesota", 5, configDivisions["West"], leagues[LeagueName], 1, null);
+            CreateAndAddConfigTeam("Toronto", 5, configDivisions["East"], leagues[LeagueName], 1, null);
+            CreateAndAddConfigTeam("Montreal", 5, configDivisions["East"], leagues[LeagueName], 1, null);
         }
     }
 }

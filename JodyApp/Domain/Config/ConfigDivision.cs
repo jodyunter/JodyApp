@@ -54,5 +54,8 @@ namespace JodyApp.Domain.Config
             LastYear = lastYear;
         }
 
+        public ConfigDivision()
+        {
+        }
     }
 }

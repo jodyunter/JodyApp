@@ -10,15 +10,14 @@ using JodyApp.Domain.Table;
 namespace JodyApp.Domain
 {
     [Table("Divisions")]
-    public partial class Division : DomainObject, IEquatable<Division>, IComparable<Division>
+    public class Division : DomainObject, IEquatable<Division>, IComparable<Division>
     {
         private string _shortName;
 
         public string Name { get; set; }
         public string ShortName { get { if (_shortName == null) return Name; else return _shortName; } set { _shortName = value; } }
         virtual public List<Team> Teams { get; set; }
-        virtual public Division Parent { get; set; }
-        virtual public List<ConfigScheduleRule> ScheduleRules { get; set; }
+        virtual public Division Parent { get; set; }        
         [InverseProperty("Division")]
         virtual public List<SortingRule> SortingRules { get; set; }
         virtual public List<DivisionRank> Rankings { get; set; }

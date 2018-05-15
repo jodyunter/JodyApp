@@ -34,7 +34,8 @@ namespace JodyApp.Service
             return db.ConfigDivisions.Where(division =>
             division.FirstYear != null &&
             division.FirstYear <= currentYear &&
-            (division.LastYear == null || division.LastYear >= currentYear)
+            (division.LastYear == null || division.LastYear >= currentYear) &&
+            division.Competition.Id == season.Id
             ).ToList();
         }
 
@@ -56,6 +57,22 @@ namespace JodyApp.Service
             team.Division = db.ConfigDivisions.Where(d => d.Name == newDivisionName).FirstOrDefault();
 
             db.SaveChanges();
+        }
+
+        public ConfigTeam CreateTeam(string name, int skill, ConfigDivision division, League league, int? firstYear, int? lastYear)
+        {
+            var newTeam = new ConfigTeam(name, skill, division, league, firstYear, lastYear);
+            db.ConfigTeams.Add(newTeam);
+            return newTeam;
+        }
+
+        public ConfigTeam GetTeamById(int id)
+        {
+            return db.ConfigTeams.Where(t => t.Id == id).FirstOrDefault();
+        }
+        public ConfigTeam GetTeamByName(string name)
+        {
+            return db.ConfigTeams.Where(t => t.Name == name).FirstOrDefault();
         }
     }
 }

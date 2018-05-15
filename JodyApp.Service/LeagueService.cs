@@ -89,6 +89,14 @@ namespace JodyApp.Service
             
         }
 
+        public League CreateLeague(string name)
+        {
+            var league = new League(name);
+
+            db.Leagues.Add(league);
+
+            return league;
+        }
         public List<League> GetAll()
         {
             return db.Leagues.ToList();

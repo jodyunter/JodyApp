@@ -28,9 +28,7 @@ namespace JodyApp.Console
             JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
             driver.UpdateData();
-            
-
-            TeamService teamService = new TeamService(db);
+                        
             SeasonService seasonService = new SeasonService(db);
             ScheduleService scheduleService = new ScheduleService(db);
             DivisionService divisionService = new DivisionService(db);
@@ -99,15 +97,15 @@ namespace JodyApp.Console
 
 
 
-            teamService.SetNewSkills(random);
+            configService.SetNewSkills(league, random);
             
             var promotionSeries = playoffService.GetSeriesByYear("Qualification", league.CurrentYear);
 
             ConfigTeam PromotedD1 = promotionSeries.GetWinner().Parent;
             ConfigTeam RelegatedP = promotionSeries.GetLoser().Parent;
 
-            teamService.ChangeDivision(PromotedD1, "Premier");
-            teamService.ChangeDivision(RelegatedP, "Division1");
+            configService.ChangeDivision(PromotedD1, "Premier");
+            configService.ChangeDivision(RelegatedP, "Division1");
 
             var d1promotionSeries = playoffService.GetSeriesByYear("D1 Qualification", league.CurrentYear);
             if (d1promotionSeries != null)
@@ -115,8 +113,8 @@ namespace JodyApp.Console
                 ConfigTeam PromotedD2 = d1promotionSeries.GetWinner().Parent;
                 ConfigTeam RelegatedD1 = d1promotionSeries.GetLoser().Parent;
 
-                teamService.ChangeDivision(PromotedD2, "Division1");
-                teamService.ChangeDivision(RelegatedD1, "Division2");
+                configService.ChangeDivision(PromotedD2, "Division1");
+                configService.ChangeDivision(RelegatedD1, "Division2");
             }
             
             db.SaveChanges();

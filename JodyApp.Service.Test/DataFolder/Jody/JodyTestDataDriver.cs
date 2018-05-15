@@ -18,14 +18,12 @@ namespace JodyApp.Service.Test.DataFolder
         String LeagueName = "Jody League";
         String PlayoffName = "Playoffs";
         String RegularSeasonName = "Regular Season";
-
-        TeamService teamService;
+        
         DivisionService divisionService;
         CompetitionService competitionService;
         public JodyTestDataDriver() : base() { }
         public JodyTestDataDriver(JodyAppContext db) : base(db)
-        {
-            teamService = new TeamService(db);
+        {            
             divisionService = new DivisionService(db);
             competitionService = new CompetitionService(db);
         }
@@ -80,18 +78,18 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateConfigTeams()
         {
-            Boston = CreateAndAddConfigTeam("Boston", 5, Premier, 1, null);                
-            Calgary = CreateAndAddConfigTeam("Calgary", 5, Division1, 1, null);
-            Chicago = CreateAndAddConfigTeam("Chicago", 5, Premier, 1, null);
-            Edmonton = CreateAndAddConfigTeam("Edmonton", 5, Division1, 1, null);
-            Montreal = CreateAndAddConfigTeam("Montreal", 5, Premier, 1, null);
-            Minnesota = CreateAndAddConfigTeam("Minnesota", 5, Division1, 1, null);
-            NewYork = CreateAndAddConfigTeam("New York", 5, Premier, 1, null);
-            Ottawa = CreateAndAddConfigTeam("Ottawa", 5, Division1, 1, null);
-            QuebecCity = CreateAndAddConfigTeam("Quebec City", 5, Division1, 1, null);
-            Toronto = CreateAndAddConfigTeam("Toronto", 5, Premier, 1, null);
-            Vancouver = CreateAndAddConfigTeam("Vancouver", 5, Division1, 1, null);
-            Winnipeg = CreateAndAddConfigTeam("Winnipeg", 5, Premier, 1, null);
+            Boston = CreateAndAddConfigTeam("Boston", 5, Premier, MyLeague, 1, null);                
+            Calgary = CreateAndAddConfigTeam("Calgary", 5, Division1, MyLeague, 1, null);
+            Chicago = CreateAndAddConfigTeam("Chicago", 5, Premier, MyLeague, 1, null);
+            Edmonton = CreateAndAddConfigTeam("Edmonton", 5, Division1, MyLeague, 1, null);
+            Montreal = CreateAndAddConfigTeam("Montreal", 5, Premier, MyLeague, 1, null);
+            Minnesota = CreateAndAddConfigTeam("Minnesota", 5, Division1, MyLeague, 1, null);
+            NewYork = CreateAndAddConfigTeam("New York", 5, Premier, MyLeague, 1, null);
+            Ottawa = CreateAndAddConfigTeam("Ottawa", 5, Division1, MyLeague, 1, null);
+            QuebecCity = CreateAndAddConfigTeam("Quebec City", 5, Division1, MyLeague, 1, null);
+            Toronto = CreateAndAddConfigTeam("Toronto", 5, Premier, MyLeague, 1, null);
+            Vancouver = CreateAndAddConfigTeam("Vancouver", 5, Division1, MyLeague, 1, null);
+            Winnipeg = CreateAndAddConfigTeam("Winnipeg", 5, Premier, MyLeague, 1, null);
         }
 
         public override void PrivateCreateConfigSortingRules()

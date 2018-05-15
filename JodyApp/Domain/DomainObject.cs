@@ -18,5 +18,7 @@ namespace JodyApp.Domain
             return this.Id.Equals(other.Id);
         }
 
+        public virtual bool AreTheSame(DomainObject obj) { return false; }
+
     }
 }

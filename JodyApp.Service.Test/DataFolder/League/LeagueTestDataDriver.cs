@@ -54,9 +54,9 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateTeams()
         {                                                                                 
-            Team1 = CreateAndAddConfigTeam("Team 1", 5, Division1, 1, null);
-            Team2 = CreateAndAddConfigTeam("Team 2", 5, Division1, 1, null);
-            Team3 = CreateAndAddConfigTeam("Team 3", 5, Division1, 1, null);
+            Team1 = CreateAndAddConfigTeam("Team 1", 5, Division1, MyLeague, 1, null);
+            Team2 = CreateAndAddConfigTeam("Team 2", 5, Division1, MyLeague, 1, null);
+            Team3 = CreateAndAddConfigTeam("Team 3", 5, Division1, MyLeague, 1, null);
         }
 
         public override void PrivateCreateSortingRules()
