@@ -18,7 +18,7 @@ namespace JodyApp.Service
 
         public override void Initialize(JodyAppContext db) { divisionService.db = db; divisionService.Initialize(db); }
 
-        public List<ConfigScheduleRule> GetRules(ConfigSeason season, int currentYear)
+        public List<ConfigScheduleRule> GetRules(ConfigCompetition season, int currentYear)
         {
             return db.ScheduleRules.Where(rule =>
                 rule.FirstYear != null &&

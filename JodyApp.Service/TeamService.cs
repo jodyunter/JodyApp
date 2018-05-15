@@ -13,8 +13,13 @@ namespace JodyApp.Service
     public class TeamService:BaseService
     {
         DivisionService divisionService = new DivisionService();
+        ConfigService configService = new ConfigService();
 
-        public override void Initialize(JodyAppContext db) { divisionService.db = db; divisionService.Initialize(db); }
+        public override void Initialize(JodyAppContext db)
+        {
+            divisionService.db = db; divisionService.Initialize(db);
+            configService.db = db; configService.Initialize(db);
+        }
 
         public TeamService(JodyAppContext context) : base(context) { Initialize(context); }
 
@@ -30,35 +35,16 @@ namespace JodyApp.Service
             return Team.GetTeams(db, season);
         }
 
-        public void SetNewSkills(Random random)
-        {
-            GetBaseTeams().ForEach(team =>
-            {
-                int num = random.Next(0, 9);
-                if (num < 2) team.Skill -= 1;
-                if (num > 7) team.Skill += 1;
-                if (team.Skill > 10) team.Skill = 10;
-                if (team.Skill < 1) team.Skill = 1;
-            });
-        }
-
 
         public Team GetByName(string name)
         {
             return db.Teams.Where(t => t.Parent == null && t.Name == name).FirstOrDefault();
         }
 
-        public Team CreateTeam(string name, int skill, string divisionName)
+        //this will allow us to create a team from any 
+        public Team CreateTeam(ConfigTeam configTeam, Division div)
         {
-            var team = CreateTeam(name, skill, (Division)null);
-            ChangeDivision(team, divisionName);
-
-            return team;
-        }
-
-        public Team CreateTeam(string name, int skill, Division div)
-        {
-            var team = new Team(name, skill, div);
+            var team = new Team(configTeam, div);
             db.Teams.Add(team);
             return team;
         }

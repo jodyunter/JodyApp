@@ -12,9 +12,8 @@ namespace JodyApp.Domain
     public class ReferenceCompetition:DomainObject
     {
         virtual public League League { get; set; }
-        virtual public ConfigSeason Season { get; set; }
-        public int Order { get; set; }
-        virtual public Playoff Playoff { get; set; }
+        virtual public ConfigCompetition Competition { get; set; }
+        public int Order { get; set; }        
 
     }
 }

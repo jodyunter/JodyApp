@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigGroupRule
+    public class ConfigGroupRule:DomainObject, BaseConfigItem
     {
 
         virtual public ConfigGroup Group { get; set; }
@@ -23,7 +23,10 @@ namespace JodyApp.Domain.Config
         public int FromEndValue { get; set; } //division rankings 1, 10        
         virtual public ConfigTeam FromTeam { get; set; }
 
-        public ConfigGroupRule(ConfigGroup group, string name, int ruleType, ConfigDivision fromDivision, string fromSeries, int fromStartValue, int fromEndValue, ConfigTeam fromTeam)
+        public int? FirstYear { get; set; }
+        public int? LastYear { get; set; }
+
+        public ConfigGroupRule(ConfigGroup group, string name, int ruleType, ConfigDivision fromDivision, string fromSeries, int fromStartValue, int fromEndValue, ConfigTeam fromTeam, int? firstYear, int? lastYear)
         {
             Group = group;
             Name = name;
@@ -38,37 +41,37 @@ namespace JodyApp.Domain.Config
 
 
         #region Static Creates
-        public static ConfigGroupRule CreateFromDivision(ConfigGroup g, string name, ConfigDivision fromDivision, int highestRank, int lowestRank)
+        public static ConfigGroupRule CreateFromDivision(ConfigGroup g, string name, ConfigDivision fromDivision, int highestRank, int lowestRank, int? firstYear, int? lastYear)
         {
-            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_DIVISION, fromDivision, null, highestRank, lowestRank, null);
+            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_DIVISION, fromDivision, null, highestRank, lowestRank, null, firstYear, lastYear);
             g.GroupRules.Add(rule);
             return rule;
         }
 
-        public static ConfigGroupRule CreateFromDivisionBottom(ConfigGroup g, string name, ConfigDivision fromDivision, int highestRank, int lowestRank)
+        public static ConfigGroupRule CreateFromDivisionBottom(ConfigGroup g, string name, ConfigDivision fromDivision, int highestRank, int lowestRank, int? firstYear, int? lastYear)
         {
-            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_DIVISION_BOTTOM, fromDivision, null, highestRank, lowestRank, null);
+            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_DIVISION_BOTTOM, fromDivision, null, highestRank, lowestRank, null, firstYear, lastYear);
             g.GroupRules.Add(rule);
             return rule;
         }
 
-        public static ConfigGroupRule CreateFromSeriesWinner(ConfigGroup g, string name, string seriesName)
+        public static ConfigGroupRule CreateFromSeriesWinner(ConfigGroup g, string name, string seriesName, int? firstYear, int? lastYear)
         {
-            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_SERIES, null, seriesName, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null);
+            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_SERIES, null, seriesName, GroupRule.SERIES_WINNER, GroupRule.SERIES_WINNER, null, firstYear, lastYear);
             g.GroupRules.Add(rule);
             return rule;
         }
 
-        public static ConfigGroupRule CreateFromSeriesLoser(ConfigGroup g, string name, string seriesName)
+        public static ConfigGroupRule CreateFromSeriesLoser(ConfigGroup g, string name, string seriesName, int? firstYear, int? lastYear)
         {
-            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_SERIES, null, seriesName, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null);
+            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_SERIES, null, seriesName, GroupRule.SERIES_LOSER, GroupRule.SERIES_LOSER, null, firstYear, lastYear);
             g.GroupRules.Add(rule);
             return rule;
         }
 
-        public static ConfigGroupRule CreateFromTeam(ConfigGroup g, string name, ConfigTeam team)
+        public static ConfigGroupRule CreateFromTeam(ConfigGroup g, string name, ConfigTeam team, int? firstYear, int? lastYear)
         {
-            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_TEAM, null, null, 1, 1, team);
+            var rule = new ConfigGroupRule(g, name, GroupRule.FROM_TEAM, null, null, 1, 1, team, firstYear, lastYear);
             g.GroupRules.Add(rule);
             return rule;
         }

@@ -27,7 +27,7 @@ namespace JodyApp.Service.Test.DataFolder
         
         }
 
-        public override void PrivateCreateSeasons()
+        public override void PrivateCreateConfigCompetitions()
         {
             CreateAndAddSeason(leagues[LeagueName], "My Season", 0, 1, 0);
         }
@@ -39,7 +39,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateScheduleRules()
         {
-            CreateAndAddScheduleRule(leagues[LeagueName], configSeasons["My Season"], "Rule 1", ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], false, 10, 0, 1, false);
+            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 1", ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], false, 10, 0, 1, false);
         }
 
         public override void PrivateCreateTeams()

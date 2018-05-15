@@ -40,7 +40,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateScheduleRules()
         {
-            CreateAndAddScheduleRule(leagues[LeagueName], configSeasons["My Season"], "Rule 1", ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], false, 2, 0, 1, false);
+            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 1", ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], ConfigScheduleRule.BY_DIVISION, null, configDivisions["League"], false, 2, 0, 1, false);
         }
 
         public override void PrivateCreateTeams()

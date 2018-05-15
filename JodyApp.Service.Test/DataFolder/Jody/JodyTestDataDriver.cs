@@ -30,112 +30,117 @@ namespace JodyApp.Service.Test.DataFolder
             competitionService = new CompetitionService(db);
         }
 
-        Division League, Premier, Division1;
-        Division Division2;
+        ConfigDivision League, Premier, Division1;
+        ConfigDivision Division2;
 
-        Team Toronto, Montreal, Ottawa, NewYork, Boston, QuebecCity;
-        Team Vancouver, Edmonton, Calgary;
-        Team Winnipeg, Minnesota, Chicago;
-        Team Colorado, Pittsburgh, Philadelphia, NewJersey, Hamilton, Nashville;
-        Team Washington, Victoria, Columbus, Seattle, SanJose, LosAngelas;
+        ConfigTeam Toronto, Montreal, Ottawa, NewYork, Boston, QuebecCity;
+        ConfigTeam Vancouver, Edmonton, Calgary;
+        ConfigTeam Winnipeg, Minnesota, Chicago;
+        ConfigTeam Colorado, Pittsburgh, Philadelphia, NewJersey, Hamilton, Nashville;
+        ConfigTeam Washington, Victoria, Columbus, Seattle, SanJose, LosAngelas;
 
-        Group PremierQualificationGroup;
-        Group ChampionshipGroup;
-        Group Division1QualificationGroup;
-        Group SemiFinalGroup;
+        ConfigGroup PremierQualificationGroup;
+        ConfigGroup ChampionshipGroup;
+        ConfigGroup Division1QualificationGroup;
+        ConfigGroup SemiFinalGroup;
         string ChampionshipGroupName = "ChampionshipGroup";
         string SemiFinalGroupName = "SemiFinalGroup";
 
-        Season RegularSeason;
+        ConfigCompetition RegularSeason;
 
         League MyLeague;
-        Playoff Playoffs;
-                
-        SeriesRule PremierQualificationSeriesRule, ChampionshipSeriesRule;
-        SeriesRule Division1QualificationSeriesRule;
-        SeriesRule SemiFinal1Rule, SemiFinal2Rule;
+        ConfigCompetition Playoffs;
+
+        ConfigSeriesRule PremierQualificationSeriesRule, ChampionshipSeriesRule;
+        ConfigSeriesRule Division1QualificationSeriesRule;
+        ConfigSeriesRule SemiFinal1Rule, SemiFinal2Rule;
         string ChampionshipSeriesName = "Final";
         string SemiFinal1SeriesName = "Semi Final 1";
         string SemiFinal2SeriesName = "Semi Final 2";
 
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
+        public override void PrivateCreateConfigDivisions()
         {
-            League = CreateAndAddDivision(MyLeague, RegularSeason, "League", null, 0, 1, null, null, divs);
-            Premier = CreateAndAddDivision(MyLeague, RegularSeason, "Premier", null, 1, 1, League, null, divs);
-            Division1 = CreateAndAddDivision(MyLeague, RegularSeason, "Division1", null, 1, 2, League, null, divs);            
+            League = CreateAndAddConfigDivision(MyLeague, RegularSeason, "League", null, 0, 1, null, null, 1, null);
+            Premier = CreateAndAddConfigDivision(MyLeague, RegularSeason, "Premier", null, 1, 1, League, null, 1, null);
+            Division1 = CreateAndAddConfigDivision(MyLeague, RegularSeason, "Division1", null, 1, 2, League, null, 1, null);            
         }
 
         //todo add league everywhere
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ConfigScheduleRule> rules)
+        public override void PrivateCreateScheduleRules()
         {
             ConfigScheduleRule rule1, rule2;
 
             rule1 = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", Premier, true, 5,1, false);
             rule2 = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 2", Division1, true, 5, 1, false);
 
-            CreateAndAddScheduleRule(rule1, rules);
-            CreateAndAddScheduleRule(rule2, rules);
+            CreateAndAddScheduleRule(rule1);
+            CreateAndAddScheduleRule(rule2);
 
         }
 
-        public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)
-        {                                                                                 
-            Boston = CreateAndAddTeam("Boston", 5, Premier, teams);
-            Calgary = CreateAndAddTeam("Calgary", 5, Division1, teams);
-            Chicago = CreateAndAddTeam("Chicago", 5, Premier, teams);
-            Edmonton = CreateAndAddTeam("Edmonton", 5, Division1, teams);
-            Montreal = CreateAndAddTeam("Montreal", 5, Premier, teams);
-            Minnesota = CreateAndAddTeam("Minnesota", 5, Division1, teams);
-            NewYork = CreateAndAddTeam("New York", 5, Premier, teams);
-            Ottawa = CreateAndAddTeam("Ottawa", 5, Division1, teams);
-            QuebecCity = CreateAndAddTeam("Quebec City", 5, Division1, teams);
-            Toronto = CreateAndAddTeam("Toronto", 5, Premier, teams);
-            Vancouver = CreateAndAddTeam("Vancouver", 5, Division1, teams);
-            Winnipeg = CreateAndAddTeam("Winnipeg", 5, Premier, teams);
-        }
-
-        public override void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules)
+        public override void PrivateCreateConfigTeams()
         {
-            CreateAndAddSortingRule(League, "Sorting Rule 1", 0, Premier,  null, 0, -1, rules);
-            CreateAndAddSortingRule(League, "Sorting Rule 2", 1, Division1, null, 0, -1, rules);
-        }
-        public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
-        {
-            MyLeague = CreateAndAddLeague(LeagueName, leagues);
-        }
-
-        public override void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
-        {
-            RegularSeason = CreateAndAddSeason(MyLeague, RegularSeasonName, seasons, 1);
-        }
-
-        public override void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Playoff> playoffs)
-        {
-            Playoffs = CreateAndAddPlayoff(MyLeague, PlayoffName, playoffs, 2, RegularSeason);
+            Boston = CreateAndAddConfigTeam("Boston", 5, Premier, 1, null);                
+            Calgary = CreateAndAddConfigTeam("Calgary", 5, Division1, 1, null);
+            Chicago = CreateAndAddConfigTeam("Chicago", 5, Premier, 1, null);
+            Edmonton = CreateAndAddConfigTeam("Edmonton", 5, Division1, 1, null);
+            Montreal = CreateAndAddConfigTeam("Montreal", 5, Premier, 1, null);
+            Minnesota = CreateAndAddConfigTeam("Minnesota", 5, Division1, 1, null);
+            NewYork = CreateAndAddConfigTeam("New York", 5, Premier, 1, null);
+            Ottawa = CreateAndAddConfigTeam("Ottawa", 5, Division1, 1, null);
+            QuebecCity = CreateAndAddConfigTeam("Quebec City", 5, Division1, 1, null);
+            Toronto = CreateAndAddConfigTeam("Toronto", 5, Premier, 1, null);
+            Vancouver = CreateAndAddConfigTeam("Vancouver", 5, Division1, 1, null);
+            Winnipeg = CreateAndAddConfigTeam("Winnipeg", 5, Premier, 1, null);
         }
 
-        public override void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups, Dictionary<string, SeriesRule> rules)
+        public override void PrivateCreateConfigSortingRules()
         {
-            PremierQualificationSeriesRule = CreateAndAddSeriesRule(Playoffs, "Qualification", 1, PremierQualificationGroup, 1, PremierQualificationGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, rules);
-            ChampionshipSeriesRule = CreateAndAddSeriesRule(Playoffs, ChampionshipSeriesName, 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false,SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, rules);
+            CreateAndAddConfigSortingRule(League, "Sorting Rule 1", 0, Premier,  null, 0, -1, 1, null);
+            CreateAndAddConfigSortingRule(League, "Sorting Rule 2", 1, Division1, null, 0,-1, 1, null);
+        }
+        public override void PrivateCreateLeagues()
+        {
+            MyLeague = CreateAndAddLeague(LeagueName);
+        }
+
+        public override void PrivateCreateConfigCompetitions()
+        {
+            RegularSeason = CreateAndAddConfigCompetition(MyLeague, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, null);
+            Playoffs = CreateAndAddConfigCompetition(MyLeague, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeason, 2, 1, null);
+        }
+        public override void PrivateCreateConfigSeasons()
+        {
+            return;
+        }
+
+        public override void PrivateCreateConfigPlayoffs()
+        {
+            return;
+        }
+
+        public override void PrivateCreateConfigSeriesRules()
+        {
+            PremierQualificationSeriesRule = CreateAndAddConfigSeriesRule(Playoffs, "Qualification", 1, PremierQualificationGroup, 1, PremierQualificationGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false, SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, 1, null);
+            ChampionshipSeriesRule = CreateAndAddConfigSeriesRule(Playoffs, ChampionshipSeriesName, 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 4, false,SeriesRule.SEVEN_GAME_SERIES_HOME_GAMES, 1, null);
 
             
         }
 
-        public override void PrivateCreateGroups(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, Group> groups)
+        public override void PrivateCreateConfigGroups()
         {
-            PremierQualificationGroup = CreateAndAddGroup(Playoffs, "Premier Qualification Group", League, groups);
-            ChampionshipGroup = CreateAndAddGroup(Playoffs, ChampionshipGroupName, Premier, groups);
+            PremierQualificationGroup = CreateAndAddConfigGroup(Playoffs, "Premier Qualification Group", League, 1, null);
+            ChampionshipGroup = CreateAndAddConfigGroup(Playoffs, ChampionshipGroupName, Premier, 1, null);
         }
 
-        public override void PrivateCreateGroupRules(Dictionary<string, Group> groups, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
+        public override void PrivateCreateConfigGroupRules()
         {
-            CreateAndAddGroupRule(GroupRule.CreateFromDivisionBottom(PremierQualificationGroup, "Group Rule 1", Premier, 1, 1), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(PremierQualificationGroup, "Group Rule 2", Division1, 1, 1), rules);
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(ChampionshipGroup, "Group Rule 3", Premier, 1, 2), rules);
+            CreateAndAddConfigGroupRule(ConfigGroupRule.CreateFromDivisionBottom(PremierQualificationGroup, "Group Rule 1", Premier, 1, 1, 1, null));
+            CreateAndAddConfigGroupRule(ConfigGroupRule.CreateFromDivision(PremierQualificationGroup, "Group Rule 2", Division1, 1, 1, 1, null));
+            CreateAndAddConfigGroupRule(ConfigGroupRule.CreateFromDivision(ChampionshipGroup, "Group Rule 3", Premier, 1, 2, 1, null));
 
         }
-
+        /*
         //how to add a new division
         public void RunUpdate1()
         {
@@ -255,6 +260,7 @@ namespace JodyApp.Service.Test.DataFolder
 
 
         }
+        */
         public override void UpdateData()
         {
 
@@ -272,10 +278,45 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
+        public override void PrivateCreateTeams()
+        {
+            return;
+        }
 
+        public override void PrivateCreateDivisions()
+        {
+            return;
+        }
 
+        public override void PrivateCreateSortingRules()
+        {
+            return;
+        }
 
+        public override void PrivateCreateSeriesRules()
+        {
+            return;
+        }
 
+        public override void PrivateCreateGroups()
+        {
+            return;
+        }
+
+        public override void PrivateCreateGroupRules()
+        {
+            return;
+        }
+
+        public override void PrivateCreatePlayoffs()
+        {
+            return;
+        }
+
+        public override void PrivateCreateSeries()
+        {
+            return;
+        }
     }
 }
 

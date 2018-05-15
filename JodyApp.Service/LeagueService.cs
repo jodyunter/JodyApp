@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JodyApp.Domain.Config;
 
 namespace JodyApp.Service
 {
@@ -32,35 +33,34 @@ namespace JodyApp.Service
             }
             else
             {
-
-                //step one find any outstanding competitions
+                //get all the possible competitions for this league
                 var referenceComps = db.ReferenceCompetitions.Where(rc => rc.League.Id == league.Id).OrderBy(rc => rc.Order).ToList();
 
-                Competition currentComp = null;
-                bool found = false;
-
-                for (int i = 0; i < referenceComps.Count && !found; i++)
+                Competition currentComp = null;                
+                                
+                for (int i = 0; i < referenceComps.Count; i++)
                 {
                     //does the current year version exist?                
                     //if yes, is it complete?
                     //if yes, move on, we alreayd know at least one is not complete
                     //if no return it
                     //if no return it
-                    ReferenceCompetition rc = referenceComps[i];
-                    Competition competitionReference = null;
+                    ReferenceCompetition rc = referenceComps[i];                    
+                    
+                    switch(rc.Competition.Type)
+                    { 
+                        case ConfigCompetition.SEASON:
+                            currentComp = db.Seasons.Where(s => s.Year == league.CurrentYear && s.Name == rc.Competition.Name).FirstOrDefault();                            
+                            break;
+                        case ConfigCompetition.PLAYOFF:
+                            currentComp = db.Playoffs.Where(s => s.Year == league.CurrentYear && s.Name == rc.Competition.Name).FirstOrDefault();                            
+                            break;
 
-                    if (rc.Season != null)
-                    {
-                        currentComp = db.Seasons.Where(s => s.Year == league.CurrentYear && s.Name == rc.Season.Name).FirstOrDefault();
-                        competitionReference = rc.Season;
                     }
-                    else if (rc.Playoff != null)
-                    {
-                        currentComp = db.Playoffs.Where(s => s.Year == league.CurrentYear && s.Name == rc.Playoff.Name).FirstOrDefault();
-                        competitionReference = rc.Playoff;
-                    }
-
-                    if (currentComp == null) return competitionService.CreateCompetition(competitionReference, league.CurrentYear);
+                    
+                    //if there is no competition for this one, create one and return it
+                    if (currentComp == null) return competitionService.CreateCompetition(rc.Competition, league.CurrentYear);
+                    //if there is a current competition, and it is not complete, return it
                     else if (!currentComp.Complete) return currentComp;
 
                 }

@@ -12,6 +12,7 @@ namespace JodyApp.Service
     public class ConfigService : BaseService
     {
 
+        public ConfigService():base() { Initialize(null); }
         public ConfigService(JodyAppContext db) : base(db) { Initialize(db); }
         public override void Initialize(JodyAppContext db)
         {
@@ -28,13 +29,25 @@ namespace JodyApp.Service
             ).ToList();
         }
 
-        public List<ConfigDivision> GetDivisions(ConfigSeason season, int currentYear)
+        public List<ConfigDivision> GetDivisions(ConfigCompetition season, int currentYear)
         {
             return db.ConfigDivisions.Where(division =>
             division.FirstYear != null &&
             division.FirstYear <= currentYear &&
             (division.LastYear == null || division.LastYear >= currentYear)
             ).ToList();
+        }
+
+        public void SetNewSkills(League league, Random random)
+        {
+            GetTeams(league, league.CurrentYear).ForEach(team =>
+            {
+                int num = random.Next(0, 9);
+                if (num < 2) team.Skill -= 1;
+                if (num > 7) team.Skill += 1;
+                if (team.Skill > 10) team.Skill = 10;
+                if (team.Skill < 1) team.Skill = 1;
+            });
         }
 
         public void ChangeDivision(ConfigTeam team, string newDivisionName)

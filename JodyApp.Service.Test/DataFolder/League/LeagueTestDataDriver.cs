@@ -22,77 +22,78 @@ namespace JodyApp.Service.Test.DataFolder
         public LeagueTestDataDriver() : base() { }
         public LeagueTestDataDriver(JodyAppContext db) : base(db) { }
 
-        Division Division1;       
+        ConfigDivision Division1;       
 
-        Team Team1, Team2, Team3;
+        ConfigTeam Team1, Team2, Team3;
         
-        Group ChampionshipGroup;
+        ConfigGroup ChampionshipGroup;
         string ChampionshipGroupName = "ChampionshipGroup";        
 
-        Season RegularSeason;
+        ConfigCompetition RegularSeason;
         League MyLeague;
-        Playoff Playoffs;
+        ConfigCompetition Playoffs;
                 
-        SeriesRule ChampionshipSeriesRule;
+        ConfigSeriesRule ChampionshipSeriesRule;
         string ChampionshipSeriesName = "Final";
 
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
+        public override void PrivateCreateConfigDivisions()
         {
-            Division1 = CreateAndAddDivision(MyLeague, RegularSeason, "Division1", null, 0, 1, null, null, divs);            
+            Division1 = CreateAndAddConfigDivision(MyLeague, RegularSeason, "Division1", null, 0, 1, null, null, 1, null);            
         }
 
         //todo add league everywhere
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ConfigScheduleRule> rules)
+        public override void PrivateCreateScheduleRules()
         {
             ConfigScheduleRule rule1;
 
             rule1 = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", Division1, true, 5,1, false);            
 
-            CreateAndAddScheduleRule(rule1, rules);            
+            CreateAndAddScheduleRule(rule1);            
 
         }
 
-        public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)
+        public override void PrivateCreateTeams()
         {                                                                                 
-            Team1 = CreateAndAddTeam("Team 1", 5, Division1, teams);
-            Team2 = CreateAndAddTeam("Team 2", 5, Division1, teams);
-            Team3 = CreateAndAddTeam("Team 3", 5, Division1, teams);
+            Team1 = CreateAndAddConfigTeam("Team 1", 5, Division1, 1, null);
+            Team2 = CreateAndAddConfigTeam("Team 2", 5, Division1, 1, null);
+            Team3 = CreateAndAddConfigTeam("Team 3", 5, Division1, 1, null);
         }
 
-        public override void PrivateCreateSortingRules(Dictionary<string, Division> divs, Dictionary<string, SortingRule> rules)
+        public override void PrivateCreateSortingRules()
         {
             //CreateAndAddSortingRule(League, "Sorting Rule 1", 0, Premier,  null, 0, -1, rules);            
         }
-        public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
+        public override void PrivateCreateLeagues()
         {
-            MyLeague = CreateAndAddLeague(LeagueName, leagues);
+            MyLeague = CreateAndAddLeague(LeagueName);
         }
 
-        public override void PrivateCreateSeasons(Dictionary<string, League> leagues, Dictionary<string, Season> seasons)
+        public override void PrivateCreateConfigCompetitions()
         {
-            RegularSeason = CreateAndAddSeason(MyLeague, RegularSeasonName, seasons, 1);
+            RegularSeason = CreateAndAddConfigCompetition(MyLeague, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, 0);
+            Playoffs = CreateAndAddConfigCompetition(MyLeague, PlayoffName, ConfigCompetition.SEASON, RegularSeason, 1, 1, 0);
         }
 
-        public override void PrivateCreatePlayoffs(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Playoff> playoffs)
+        public override void PrivateCreatePlayoffs()
         {
-            Playoffs = CreateAndAddPlayoff(MyLeague, PlayoffName, playoffs, 2, RegularSeason);
+            return;
         }
 
-        public override void PrivateCreateSeriesRules(Dictionary<string, Playoff> playoffs, Dictionary<string, Group> groups, Dictionary<string, SeriesRule> rules)
+        public override void PrivateCreateConfigSeriesRules()
         {            
-            ChampionshipSeriesRule = CreateAndAddSeriesRule(Playoffs, ChampionshipSeriesName, 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 5, false,null, rules);
+            ChampionshipSeriesRule = CreateAndAddConfigSeriesRule(Playoffs, ChampionshipSeriesName, 2, ChampionshipGroup, 1, ChampionshipGroup, 2, SeriesRule.TYPE_BEST_OF, 5, false,null, 1, null);
 
             
         }
 
-        public override void PrivateCreateGroups(Dictionary<string, Playoff> playoffs, Dictionary<string, Division> divs, Dictionary<string, Group> groups)
+        public override void PrivateCreateConfigGroups()
         {            
-            ChampionshipGroup = CreateAndAddGroup(Playoffs, ChampionshipGroupName, Division1, groups);
+            ChampionshipGroup = CreateAndAddConfigGroup(Playoffs, ChampionshipGroupName, Division1, 1, null);
         }
 
-        public override void PrivateCreateGroupRules(Dictionary<string, Group> groups, Dictionary<string, Division> divs, Dictionary<string, GroupRule> rules)
+        public override void PrivateCreateConfigGroupRules()
         {
-            CreateAndAddGroupRule(GroupRule.CreateFromDivision(ChampionshipGroup, "Group Rule 1", Division1, 1, 2), rules);
+            CreateAndAddConfigGroupRule(ConfigGroupRule.CreateFromDivision(ChampionshipGroup, "Group Rule 1", Division1, 1, 2, 1, null));
 
         }
 
@@ -103,10 +104,50 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
+        public override void PrivateCreateSeries()
+        {
+            return;
+        }
 
+        public override void PrivateCreateConfigSortingRules()
+        {
+            return;
+        }
 
+        public override void PrivateCreateConfigTeams()
+        {
+            return;
+        }
 
+        public override void PrivateCreateConfigPlayoffs()
+        {
+            return;
+        }
 
+        public override void PrivateCreateConfigSeasons()
+        {
+            return;
+        }
+
+        public override void PrivateCreateDivisions()
+        {
+            return;
+        }
+
+        public override void PrivateCreateSeriesRules()
+        {
+            return;
+        }
+
+        public override void PrivateCreateGroups()
+        {
+            return;
+        }
+
+        public override void PrivateCreateGroupRules()
+        {
+            return;
+        }
     }
 }
 

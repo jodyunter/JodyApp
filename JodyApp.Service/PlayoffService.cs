@@ -25,11 +25,11 @@ namespace JodyApp.Service
             divisionService.db = db;
             divisionService.Initialize(db);
         }
-        public Playoff CreateNewPlayoff(ConfigPlayoff referencePlayoff, int year)
+        public Playoff CreateNewPlayoff(ConfigCompetition referencePlayoff, int year)
         {
             return CreateNewPlayoff(referencePlayoff, year, false);
         }
-        public Playoff CreateNewPlayoff(ConfigPlayoff referencePlayoff, int year, bool test)
+        public Playoff CreateNewPlayoff(ConfigCompetition referencePlayoff, int year, bool test)
         {
             Playoff playoff = new Playoff();
             playoff.League = referencePlayoff.League;
@@ -37,14 +37,16 @@ namespace JodyApp.Service
             playoff.Name = referencePlayoff.Name;
 
             //change to a service call
-            Season season = db.Seasons.Where(s => s.Year == year && referencePlayoff.Season.Name == s.Name).FirstOrDefault();
+            Season season = db.Seasons.Where(s => s.Year == year && referencePlayoff.Reference.Name == s.Name).FirstOrDefault();
             playoff.Season = season;
 
             List<SeriesRule> newSeriesRules = new List<SeriesRule>();
             List<Group> newGroups = new List<Group>();            
             List<Series> newSeries = new List<Series>();
 
-            referencePlayoff.Groups.ForEach(group =>            
+            var configGroups = db.ConfigGroups.Where(groups => groups.Playoff.Id == referencePlayoff.Id).ToList();
+
+            configGroups.ForEach(group =>            
             {
                 Group newGroup = new Group(group.Name, playoff,
                     group.SortByDivision != null ? season.Divisions.Where(d => d.Name == group.SortByDivision.Name).FirstOrDefault() : null,
@@ -65,7 +67,9 @@ namespace JodyApp.Service
             db.Groups.AddRange(newGroups);
 
 
-            referencePlayoff.SeriesRules.ForEach(seriesRule =>            
+            var configSeriesRules = db.SeriesRules.Where(series => series.Playoff.Id == referencePlayoff.Id).ToList();
+
+            configSeriesRules.ForEach(seriesRule =>            
             {
                 SeriesRule newRule = new SeriesRule(playoff, seriesRule.Name, seriesRule.Round,
                     newGroups.Where(ng => ng.Name == seriesRule.HomeTeamFromGroup.Name).First(), seriesRule.HomeTeamFromRank,

@@ -13,7 +13,7 @@ namespace JodyApp.Service.Test.DataFolder
     {       
         public SeasontestDataDriver() : base() { }
 
-        public override void PrivateCreateLeagues(Dictionary<string, League> leagues)
+        public override void PrivateCreateLeagues()
         {
             League l = new League() { Name = LeagueName };
             leagues.Add(l.Name, l);
@@ -21,28 +21,28 @@ namespace JodyApp.Service.Test.DataFolder
         
         }
 
-        public override void PrivateCreateDivisions(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs)
+        public override void PrivateCreateDivisions()
         {
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "League", null, 0, 1, null, null, divs);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "East", null, 1, 2, divs["League"], null, divs);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "West", null, 1, 3, divs["League"], null, divs);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "League", null, 0, 1, null, null);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "East", null, 1, 2, divisions["League"], null);
+            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "West", null, 1, 3, divisions["League"], null);
         }
 
-        public override void PrivateCreateScheduleRules(Dictionary<string, League> leagues, Dictionary<string, Season> seasons, Dictionary<string, Division> divs, Dictionary<string, Team> teams, Dictionary<string, ConfigScheduleRule> rules)
+        public override void PrivateCreateScheduleRules()
         {
             //CreateAndAddRule(leagues[LeagueName], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, 1, rules);
-            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 2", ConfigScheduleRule.BY_DIVISION, null, divs["West"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 2, false, rules);
-            CreateAndAddScheduleRule(leagues[LeagueName], seasons["My Season"], "Rule 3", ConfigScheduleRule.BY_DIVISION, null, divs["East"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 3, false, rules);
+            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 2", ConfigScheduleRule.BY_DIVISION, null, configDivisions["West"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 2, false);
+            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 3", ConfigScheduleRule.BY_DIVISION, null, configDivisions["East"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 3, false);
         }
 
-        public override void PrivateCreateTeams(Dictionary<string, Team> teams, Dictionary<string, Division> divs)
+        public override void PrivateCreateTeams()
         {
-            CreateAndAddTeam("Los Angelas", 5, divs["West"], teams);
-            CreateAndAddTeam("Seattle", 5, divs["West"], teams);
-            CreateAndAddTeam("Vancouver", 5, divs["West"], teams);
-            CreateAndAddTeam("Minnesota", 5, divs["West"], teams);
-            CreateAndAddTeam("Toronto", 5, divs["East"], teams);
-            CreateAndAddTeam("Montreal", 5, divs["East"], teams);
+            CreateAndAddConfigTeam("Los Angelas", 5, configDivisions["West"], 1, null);
+            CreateAndAddConfigTeam("Seattle", 5, configDivisions["West"], 1, null);
+            CreateAndAddConfigTeam("Vancouver", 5, configDivisions["West"], 1, null);
+            CreateAndAddConfigTeam("Minnesota", 5, configDivisions["West"], 1, null);
+            CreateAndAddConfigTeam("Toronto", 5, configDivisions["East"], 1, null);
+            CreateAndAddConfigTeam("Montreal", 5, configDivisions["East"], 1, null);
         }
     }
 }

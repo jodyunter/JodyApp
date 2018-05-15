@@ -1,5 +1,6 @@
 ﻿using JodyApp.Database;
 using JodyApp.Domain;
+using JodyApp.Domain.Config;
 using JodyApp.Domain.Playoffs;
 using System;
 using System.Collections.Generic;
@@ -24,21 +25,16 @@ namespace JodyApp.Service
             playoffService.db = db;
             playoffService.Initialize(db);
         }
-        public Competition GetReferenceCompetitionByName(League league, string name)
+
+        public Competition CreateCompetition(ConfigCompetition reference, int year)
         {
-            var list = new List<Competition>();
-
-            list.AddRange(league.ReferenceCompetitions.Where(rc => rc.Playoff != null).Select(rc => rc.Playoff));
-            list.AddRange(league.ReferenceCompetitions.Where(rc => rc.Season != null).Select(rc => rc.Season));
-
-            return list.Where(comp => comp.Name == name).FirstOrDefault();
-        }
-
-        public Competition CreateCompetition(Competition reference, int year)
-        {
-            if (reference is Season) return seasonService.CreateNewSeason((Season)reference, year);
-            else if (reference is Playoff) return playoffService.CreateNewPlayoff((Playoff)reference, year);
-
+            switch(reference.Type)
+            {
+                case ConfigCompetition.SEASON:
+                    return seasonService.CreateNewSeason(reference, year);                    
+                case ConfigCompetition.PLAYOFF:
+                    return playoffService.CreateNewPlayoff(reference, year);                    
+            }
             return null;
         }
         

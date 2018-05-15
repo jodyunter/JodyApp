@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigSortingRule
+    public class ConfigSortingRule:DomainObject, BaseConfigItem
     {
         public string Name { get; set; }
         public int GroupNumber { get; set; }
@@ -15,5 +15,7 @@ namespace JodyApp.Domain.Config
         public string PositionsToUse { get; set; }
         public int DivisionLevel { get; set; }
         public int Type { get; set; }
+        public int? FirstYear { get; set; }
+        public int? LastYear { get; set; }
     }
 }

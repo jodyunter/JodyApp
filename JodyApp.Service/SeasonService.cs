@@ -30,7 +30,7 @@ namespace JodyApp.Service
             return season.Started;
         }
 
-        public Season CreateNewSeason(ConfigSeason referenceSeason, int year)
+        public Season CreateNewSeason(ConfigCompetition referenceSeason, int year)
         {
             var divisionService = new DivisionService(db);
             var scheduleService = new ScheduleService(db);

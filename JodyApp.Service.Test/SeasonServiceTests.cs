@@ -23,6 +23,7 @@ namespace JodyApp.Service.Test
         ScheduleService scheduleService;        
         SeasontestDataDriver driver;
         TeamService teamService;
+        ConfigService configService;
         League league;
 
         [TestInitialize]
@@ -34,6 +35,7 @@ namespace JodyApp.Service.Test
             scheduleService = new ScheduleService(db);
             
             teamService = new TeamService(db);
+            configService = new ConfigService(db);
             driver.DeleteAllData();
             driver.InsertData();
             league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();
@@ -42,7 +44,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateSecondSeason()
         {
-            var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
+            var refSeason = db.ConfigCompetitions.Where(s => s.Name == "My Season").First();
             Season season = service.CreateNewSeason(refSeason, 1);
             Random random = new Random(55555);
 
@@ -68,7 +70,7 @@ namespace JodyApp.Service.Test
             AreEqual(6, teamService.GetTeamsBySeason(season).Count);
             AreEqual(6, teamService.GetTeamsBySeason(season2).Count);
             AreEqual(18, db.Teams.Count());
-            AreEqual(6, teamService.GetBaseTeams().Count);
+            AreEqual(6, configService.GetTeams(season2.League, season2.League.CurrentYear).Count);
 
             db.SaveChanges();
         }
@@ -76,7 +78,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldScheduleInOrder()
         {
-            var refSeason = db.Seasons.Where(s => s.Name == "My Season").First();
+            var refSeason = db.ConfigCompetitions.Where(s => s.Name == "My Season").First();
             Season season = service.CreateNewSeason(refSeason, 1);
             Random random = new Random(55555);
 

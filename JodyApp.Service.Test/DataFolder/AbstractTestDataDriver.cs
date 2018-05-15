@@ -15,8 +15,7 @@ namespace JodyApp.Service.Test.DataFolder
     public abstract class AbstractTestDataDriver
     {
         protected Dictionary<string, League> leagues;
-        protected Dictionary<string, ConfigSeason> configSeasons;
-        protected Dictionary<string, ConfigPlayoff> configPlayoffs;
+        protected Dictionary<string, ConfigCompetition> configCompetitions;        
         protected Dictionary<string, ConfigDivision> configDivisions;
         protected Dictionary<string, ConfigTeam> configTeams;
         protected Dictionary<string, ConfigSortingRule> configSortingRules;
@@ -55,7 +54,7 @@ namespace JodyApp.Service.Test.DataFolder
         abstract public void PrivateCreateSeriesRules();
         abstract public void PrivateCreateGroups();
         abstract public void PrivateCreateGroupRules();
-        abstract public void PrivateCreateSeasons();
+        abstract public void PrivateCreateConfigCompetitions();
         abstract public void PrivateCreatePlayoffs();
         abstract public void PrivateCreateSeries();
 
@@ -94,45 +93,41 @@ namespace JodyApp.Service.Test.DataFolder
 
         }
 
+
         public Season CreateAndAddSeason(League league, string name, int order, int year, int startingDay)
         {
             Season season = new Season(league, name, year, true, true, startingDay);
 
             seasons.Add(name, season);
-            
+
             league.ReferenceCompetitions.Add(new ReferenceCompetition()
             {
                 League = league,
-                Season = null,
-                Playoff = null,
+                Competition = null,
                 Order = order
             });
 
             return season;
 
         }
-
-
-        public ConfigSeason CreateAndAddConfigSeason(League league, string name, int? firstYear, int? lastYear, int order)
+        
+        public ConfigCompetition CreateAndAddConfigCompetition(League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
         {
-            ConfigSeason season = new ConfigSeason(league, name, firstYear, lastYear);
+            ConfigCompetition competition = new ConfigCompetition(league, name, type, reference, firstYear, lastYear);
 
-            configSeasons.Add(name, season);
+            configCompetitions.Add(name, competition);
 
             league.ReferenceCompetitions.Add(new ReferenceCompetition()
             {
                 League = league,
-                Season = season,
-                Playoff = null,
+                Competition = competition,
                 Order = order
             });
 
-            return season;
+            return competition;
 
         }
-
-
-
+        
         public Playoff CreateAndAddPlayoff(League league, string name, int order, Season season)
         {
             Playoff playoff = new Playoff(league, name, 0, true, true, 0, season);
@@ -142,14 +137,12 @@ namespace JodyApp.Service.Test.DataFolder
             league.ReferenceCompetitions.Add(new ReferenceCompetition()
             {
                 League = league,
-                Season = null,
-                Playoff = playoff,
+                Competition = null,
                 Order = order
             });
 
             return playoff;
         }
-
 
         public Division CreateAndAddDivision(League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules)
         {
@@ -158,7 +151,7 @@ namespace JodyApp.Service.Test.DataFolder
             return div;
         }
 
-        public ConfigDivision CreateAndAddConfigDivision(League league, ConfigSeason season, string name, string shortName, int level, int order, ConfigDivision parent, List<SortingRule> sortingRules, int? firstYear, int? lastYear)
+        public ConfigDivision CreateAndAddConfigDivision(League league, ConfigCompetition season, string name, string shortName, int level, int order, ConfigDivision parent, List<SortingRule> sortingRules, int? firstYear, int? lastYear)
         {
             ConfigDivision div = new ConfigDivision(league, season, name, shortName, level, order, parent, firstYear, lastYear);
             configDivisions.Add(div.Name, div);
@@ -179,7 +172,7 @@ namespace JodyApp.Service.Test.DataFolder
             return team;
         }
 
-        public ConfigTeam CreateAndAddConfigTeam(string name, int skill, int? firstYear, int? lastYear, ConfigDivision division)
+        public ConfigTeam CreateAndAddConfigTeam(string name, int skill, ConfigDivision division, int? firstYear, int? lastYear)
         {
             ConfigTeam team = new ConfigTeam(name, skill, division, firstYear, lastYear);
             configTeams.Add(team.Name, team);
@@ -193,7 +186,7 @@ namespace JodyApp.Service.Test.DataFolder
             return rule;
         }
 
-        public ConfigScheduleRule CreateAndAddScheduleRule(League league, ConfigSeason season, string name, 
+        public ConfigScheduleRule CreateAndAddScheduleRule(League league, ConfigCompetition season, string name, 
                                 int homeType, ConfigTeam homeTeam, ConfigDivision homeDivision,
                                 int awayType, ConfigTeam awayTeam, ConfigDivision awayDivision,
                                 bool homeAndAway, int rounds, int divisionLevel, int order, bool reverse)
@@ -213,6 +206,16 @@ namespace JodyApp.Service.Test.DataFolder
             
         }
 
+        public ConfigSeriesRule CreateAndAddConfigSeriesRule(ConfigCompetition p, string name, int round, ConfigGroup homeTeamFromGroup, int homeTeamFromRank,
+                                    ConfigGroup awayTeamFromGroup, int awayTeamFromRank, int seriesType,
+                                    int gamesNeeded, bool canTie, string homeGames, int? firstYear, int? lastYear)
+        {
+            ConfigSeriesRule rule = new ConfigSeriesRule(p, name, round, homeTeamFromGroup, homeTeamFromRank, awayTeamFromGroup, awayTeamFromRank, seriesType, gamesNeeded, canTie, homeGames, firstYear, lastYear);
+            configSeriesRules.Add(rule.Name, rule);
+            return rule;
+
+        }
+
         public SortingRule CreateAndAddSortingRule(Division division, String name, int groupNumber, Division divToGetTeamsFrom, string positionsToUse, int divisionLevel, int ruleType)
         {
             SortingRule rule = new SortingRule()
@@ -227,6 +230,25 @@ namespace JodyApp.Service.Test.DataFolder
             };
 
             sortingRules.Add(rule.Name, rule);
+            return rule;
+        }
+
+        public ConfigSortingRule CreateAndAddConfigSortingRule(ConfigDivision division, String name, int groupNumber, ConfigDivision divToGetTeamsFrom, string positionsToUse, int divisionLevel, int ruleType, int? firstYear, int? lastYear)
+        {
+            ConfigSortingRule rule = new ConfigSortingRule()
+            {
+                Division = division,
+                Name = name,
+                GroupNumber = groupNumber,
+                DivisionToGetTeamsFrom = divToGetTeamsFrom,
+                PositionsToUse = positionsToUse,
+                DivisionLevel = divisionLevel,
+                Type = ruleType,                
+                FirstYear = firstYear,
+                LastYear = lastYear
+            };
+
+            configSortingRules.Add(rule.Name, rule);
             return rule;
         }
 
@@ -246,6 +268,14 @@ namespace JodyApp.Service.Test.DataFolder
             return group;
 
         }
+
+        public ConfigGroup CreateAndAddConfigGroup(ConfigCompetition p, string name, ConfigDivision sortByDivision, int? firstYear, int? lastYear)
+        {
+            ConfigGroup group = new ConfigGroup(name, p, new List<ConfigGroupRule>(), sortByDivision, firstYear, lastYear);
+            configGroups.Add(name, group);
+            return group;
+
+        }
         public GroupRule CreateAndAddGroupRule(Group g, string name, int ruleType, Division fromDivision, 
                                                 String seriesName, int fromStartValue, int fromEndValue, Team fromTeam)
         {
@@ -262,15 +292,19 @@ namespace JodyApp.Service.Test.DataFolder
             return rule;
         }
 
+        public ConfigGroupRule CreateAndAddConfigGroupRule(ConfigGroupRule rule)
+        {
+            configGroupRules.Add(groupRules.Keys.Count.ToString(), rule);
 
+            return rule;
+        }
 
         //public GroupRule(League league, Playoff playoff, int ruleType, Division sortByDivision, Division fromDivision, String seriesName, int fromStartValue, int fromEndValue, Team fromTeam, bool isHomeTeam, string groupIdentifier)
 
         public virtual void InsertData()
         {
             leagues = CreateObjects<League>(PrivateCreateLeagues, db.Leagues);
-            configSeasons = CreateObjects<ConfigSeason>(PrivateCreateConfigSeasons, db.ConfigSeasons);
-            configPlayoffs = CreateObjects<ConfigPlayoff>(PrivateCreateConfigPlayoffs, db.ConfigPlayoffs);
+            configCompetitions = CreateObjects<ConfigCompetition>(PrivateCreateConfigSeasons, db.ConfigCompetitions);            
             configDivisions = CreateObjects<ConfigDivision>(PrivateCreateConfigDivisions, db.ConfigDivisions);
             configTeams = CreateObjects<ConfigTeam>(PrivateCreateConfigTeams, db.ConfigTeams);
             configSortingRules = CreateObjects<ConfigSortingRule>(PrivateCreateConfigSortingRules, db.ConfigSortingRules); 
@@ -280,7 +314,7 @@ namespace JodyApp.Service.Test.DataFolder
             configScheduleRules = CreateObjects<ConfigScheduleRule>(PrivateCreateScheduleRules, db.ScheduleRules);
 
 
-            seasons = CreateObjects<Season>(PrivateCreateSeasons, db.Seasons);
+            seasons = CreateObjects<Season>(PrivateCreateConfigCompetitions, db.Seasons);
             playoffs = CreateObjects<Playoff>(PrivateCreatePlayoffs, db.Playoffs);
             divisions = CreateObjects<Division>(PrivateCreateDivisions, db.Divisions);
             teams = CreateObjects<Team>(PrivateCreateTeams, db.Teams);
