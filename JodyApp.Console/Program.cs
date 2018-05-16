@@ -100,6 +100,10 @@ namespace JodyApp.Console
             configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 2", CDCentral, true, 5, 1, false, 1, null);
             configService.CreateScheduleRuleByDivisionVsDivision(League, CCSeason, "Schedule Rule 3", CDWest, CDEast, true, 5, 1, false, 1, null);
 
+            configService.CreateSortingRule("Division Leaders 1", 1, CDLeague, CDEast, "1", 0, SortingRule.SINGLE_DIVISION, 1, null);
+            configService.CreateSortingRule("Division Leaders 2", 1, CDLeague, CDWest, "1", 0, SortingRule.SINGLE_DIVISION, 1, null);
+            configService.CreateSortingRule("Division Leaders 3", 1, CDLeague, CDCentral, "1", 0, SortingRule.SINGLE_DIVISION, 1, null);
+
             configService.Save();
             
         }
@@ -138,17 +142,17 @@ namespace JodyApp.Console
             ConfigService configService = new ConfigService(db);
             PlayoffService playoffService = new PlayoffService(db);
 
-            //SetupConfig(db, configService, leagueService);
+            SetupConfig(db, configService, leagueService);
 
-            //SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 4, null, configService, leagueService);
+            SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 4, null, configService, leagueService);
 
-            //AddTeam("Minnesota", 2, EastDivisionName, 6, null, configService, leagueService);
-            //AddTeam("Victoria", 2, WestDivisionName, 8, null, configService, leagueService);
-            //AddTeam("Seattle", 1, WestDivisionName, 9, null, configService, leagueService);
-            //AddTeam("Saskatoon", 1, CentralDivisionName, 10, null, configService, leagueService);
-            //AddTeam("Toronto", 1, EastDivisionName, 11, null, configService, leagueService);
+            AddTeam("Minnesota", 2, EastDivisionName, 6, null, configService, leagueService);
+            AddTeam("Victoria", 2, WestDivisionName, 8, null, configService, leagueService);
+            AddTeam("Seattle", 1, WestDivisionName, 9, null, configService, leagueService);
+            AddTeam("Saskatoon", 1, CentralDivisionName, 10, null, configService, leagueService);
+            AddTeam("Toronto", 1, EastDivisionName, 11, null, configService, leagueService);
 
-            //UpdateScheuleRules(LeagueName, RegularSeasonName, null, 5, configService, leagueService);
+            UpdateScheuleRules(LeagueName, RegularSeasonName, null, 5, configService, leagueService);
 
             var League = leagueService.GetByName(LeagueName);
             Random random = new Random();                        

@@ -102,6 +102,12 @@ namespace JodyApp.Domain.Playoffs
             {
                 if (!groupMap.ContainsKey(group.Name)) groupMap.Add(group.Name, new List<Team>());
                 SetupGroupTeamList(group, groupMap[group.Name]);
+
+                if (group.SortByDivision != null)
+                {
+                    var newList = groupMap[group.Name].OrderBy(team => group.SortByDivision.GetRank(team)).ToList();
+                    groupMap[group.Name] = newList;
+                }
             });
             
             return groupMap;
@@ -114,12 +120,6 @@ namespace JodyApp.Domain.Playoffs
             {
                 AddTeamsToGroup(groupRule, teamList);
             });
-
-            if (group.SortByDivision != null)
-            {
-                teamList = teamList.OrderBy(t => group.SortByDivision.GetRank(t)).ToList();                
-            }
-
         }
 
 
