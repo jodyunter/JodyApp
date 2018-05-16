@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigSeriesRule:DomainObject, BaseConfigItem
+    public class ConfigSeriesRule:BaseConfigItem
     {
         //Series rules determine which Playoff Groupings to get the teams from
         //and the rules for creating the games, how many are needed etc
@@ -33,9 +33,6 @@ namespace JodyApp.Domain.Config
 
         public bool CanTie { get; set; } //can games be tied?  
         public string HomeGames { get; set; } //sets which games are home, if there is not, then alternate 1,1,0,0,1,0,1 is standard exmaple.  1 = "Home Team" gets first home game        
-
-        public int? FirstYear { get; set; }
-        public int? LastYear { get; set; }
 
         public ConfigSeriesRule() { }
 

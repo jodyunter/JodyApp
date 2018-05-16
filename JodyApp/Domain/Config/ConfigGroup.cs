@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigGroup:DomainObject, BaseConfigItem
+    public class ConfigGroup:BaseConfigItem
     {
         public string Name { get; set; }
         virtual public ConfigCompetition Playoff { get; set; }
         virtual public List<ConfigGroupRule> GroupRules { get; set; }
         virtual public ConfigDivision SortByDivision { get; set; }
-
-        public int? FirstYear { get; set; }
-        public int? LastYear { get; set; }
 
         public ConfigGroup() { }
 

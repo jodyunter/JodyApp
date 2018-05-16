@@ -108,8 +108,8 @@ namespace JodyApp.Domain.Playoffs
         }
 
         public void SetupGroupTeamList(Group group, List<Team> teamList)
-        {            
-            
+        {
+
             group.GroupRules.ForEach(groupRule =>
             {
                 AddTeamsToGroup(groupRule, teamList);
@@ -119,6 +119,7 @@ namespace JodyApp.Domain.Playoffs
             {
                 teamList = teamList.OrderBy(t => group.SortByDivision.GetRank(t)).ToList();
             }
+
         }
 
 

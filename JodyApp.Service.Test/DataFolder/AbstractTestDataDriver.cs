@@ -88,11 +88,11 @@ namespace JodyApp.Service.Test.DataFolder
                 "SeriesRules",
                 "Groups",                
                 "Teams",
-                "ConfigTeams",
-                "ConfigDivisions",                
-                "ConfigCompetitions",
                 "TeamStatistics",           
-                "Divisions",                
+                "Divisions",
+                "ConfigTeams",
+                "ConfigDivisions",
+                "ConfigCompetitions",
                 "Playoffs",
                 "Seasons",
                 "Leagues" };
@@ -181,9 +181,9 @@ namespace JodyApp.Service.Test.DataFolder
         public ConfigScheduleRule CreateAndAddScheduleRule(League league, ConfigCompetition season, string name, 
                                 int homeType, ConfigTeam homeTeam, ConfigDivision homeDivision,
                                 int awayType, ConfigTeam awayTeam, ConfigDivision awayDivision,
-                                bool homeAndAway, int rounds, int divisionLevel, int order, bool reverse)
+                                bool homeAndAway, int rounds, int divisionLevel, int order, bool reverse, int? firstYear, int? lastYear)
         {
-            ConfigScheduleRule rule = new ConfigScheduleRule(league, season, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel, order, reverse);
+            ConfigScheduleRule rule = new ConfigScheduleRule(league, season, name, homeType, homeTeam, homeDivision, awayType, awayTeam, awayDivision, homeAndAway, rounds, divisionLevel, order, reverse, firstYear, lastYear);
             configScheduleRules.Add(rule.Name, rule);
             return rule;
         }

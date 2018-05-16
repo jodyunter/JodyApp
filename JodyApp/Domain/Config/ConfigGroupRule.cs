@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigGroupRule:DomainObject, BaseConfigItem
+    public class ConfigGroupRule:BaseConfigItem
     {
 
         virtual public ConfigGroup Group { get; set; }
@@ -23,11 +23,8 @@ namespace JodyApp.Domain.Config
         public int FromEndValue { get; set; } //division rankings 1, 10        
         virtual public ConfigTeam FromTeam { get; set; }
 
-        public int? FirstYear { get; set; }
-        public int? LastYear { get; set; }
-
         public ConfigGroupRule() { }
-        public ConfigGroupRule(ConfigGroup group, string name, int ruleType, ConfigDivision fromDivision, string fromSeries, int fromStartValue, int fromEndValue, ConfigTeam fromTeam, int? firstYear, int? lastYear)
+        public ConfigGroupRule(ConfigGroup group, string name, int ruleType, ConfigDivision fromDivision, string fromSeries, int fromStartValue, int fromEndValue, ConfigTeam fromTeam, int? firstYear, int? lastYear):base(firstYear, lastYear)
         {
             Group = group;
             Name = name;

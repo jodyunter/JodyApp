@@ -47,9 +47,9 @@ namespace JodyApp.Service
             Dictionary<string, Team> seasonTeams = new Dictionary<string, Team>();
             Dictionary<string, ConfigScheduleRule> seasonScheduleRules = new Dictionary<string, ConfigScheduleRule>();
 
-            var configDivisions = configService.GetDivisions(referenceSeason, year);
+            var activeConfigDivisions = configService.GetDivisions(referenceSeason).Where(cd => cd.IsActive(year)).ToList();
             //loop once to create teams and new season divisions, order means we will not add a parent we haven't created yet
-            configDivisions.OrderBy(d => d.Level).ToList().ForEach(configDivision =>            
+            activeConfigDivisions.OrderBy(d => d.Level).ToList().ForEach(configDivision =>            
             {
                 Division seasonDiv = season.CreateDivisionForSeason(configDivision);
                 if (configDivision.Parent != null) seasonDiv.Parent = seasonDivisions[configDivision.Parent.Name];
@@ -57,8 +57,8 @@ namespace JodyApp.Service
 
             });
 
-            configDivisions.ForEach(configDivision =>
-                configDivision.Teams.ForEach(dt =>
+            activeConfigDivisions.ForEach(configDivision =>
+                configDivision.Teams.Where(t => t.IsActive(year)).ToList().ForEach(dt =>
                 {
                     Team seasonTeam = new Team(dt, seasonDivisions[configDivision.Name]);
                     seasonDivisions[configDivision.Name].Teams.Add(seasonTeam);
@@ -83,7 +83,7 @@ namespace JodyApp.Service
                 db.DivisionRanks.AddRange(seasonDiv.Rankings);
             });
 
-            var configRules = configService.GetScheduleRulesByCompetition(referenceSeason);
+            var configRules = configService.GetScheduleRulesByCompetition(referenceSeason).Where(rule => rule.IsActive(year)).ToList();
 
             season.Games = new List<Game>();
             scheduleService.CreateGamesFromRules(configRules, seasonTeams, seasonDivisions, season.Games, 0);

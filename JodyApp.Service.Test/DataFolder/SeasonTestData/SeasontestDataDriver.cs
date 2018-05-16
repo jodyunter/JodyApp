@@ -31,8 +31,8 @@ namespace JodyApp.Service.Test.DataFolder
         public override void PrivateCreateScheduleRules()
         {
             //CreateAndAddRule(leagues[LeagueName], "Rule 1", ScheduleRule.BY_DIVISION, null, divs["League"], ScheduleRule.BY_DIVISION, null, divs["League"], false, 10, 0, 1, rules);
-            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 2", ConfigScheduleRule.BY_DIVISION, null, configDivisions["West"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 2, false);
-            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 3", ConfigScheduleRule.BY_DIVISION, null, configDivisions["East"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 3, false);
+            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 2", ConfigScheduleRule.BY_DIVISION, null, configDivisions["West"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 2, false, 1, null);
+            CreateAndAddScheduleRule(leagues[LeagueName], configCompetitions["My Season"], "Rule 3", ConfigScheduleRule.BY_DIVISION, null, configDivisions["East"], ConfigScheduleRule.NONE, null, null, false, 10, 0, 3, false, 1, null);
         }
 
         public override void PrivateCreateTeams()

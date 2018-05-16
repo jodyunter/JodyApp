@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigTeam:DomainObject, BaseConfigItem
+    public class ConfigTeam:BaseConfigItem
     {
         public League League { get; set; }
         public string Name { get; set; }
 
         public int Skill { get; set; }
         virtual public ConfigDivision Division { get; set; }
-        public int? FirstYear { get; set; }
-        public int? LastYear { get; set; }
 
         public ConfigTeam() { }
         public ConfigTeam(string name, int skill, ConfigDivision division, League league, int? firstYear, int? lastYear)

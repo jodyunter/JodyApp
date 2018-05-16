@@ -81,21 +81,9 @@
     <Compile Include="Domain\Table\StandingsSorter.cs" />
     <Compile Include="Domain\Team.cs" />
     <Compile Include="Domain\TeamStatistics.cs" />
-    <Compile Include="Migrations\201805151240465_First.cs" />
-    <Compile Include="Migrations\201805151240465_First.Designer.cs">
-      <DependentUpon>201805151240465_First.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805151321438_RemovedSeasonPlayoffNameFromLeague.cs" />
-    <Compile Include="Migrations\201805151321438_RemovedSeasonPlayoffNameFromLeague.Designer.cs">
-      <DependentUpon>201805151321438_RemovedSeasonPlayoffNameFromLeague.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805161438089_Removed Reference Competition Class.cs" />
-    <Compile Include="Migrations\201805161438089_Removed Reference Competition Class.Designer.cs">
-      <DependentUpon>201805161438089_Removed Reference Competition Class.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805161503530_AddedConfigDivisionToDivision.cs" />
-    <Compile Include="Migrations\201805161503530_AddedConfigDivisionToDivision.Designer.cs">
-      <DependentUpon>201805161503530_AddedConfigDivisionToDivision.cs</DependentUpon>
+    <Compile Include="Migrations\201805161821426_first.cs" />
+    <Compile Include="Migrations\201805161821426_first.Designer.cs">
+      <DependentUpon>201805161821426_first.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,17 +93,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805151240465_First.resx">
-      <DependentUpon>201805151240465_First.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805151321438_RemovedSeasonPlayoffNameFromLeague.resx">
-      <DependentUpon>201805151321438_RemovedSeasonPlayoffNameFromLeague.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805161438089_Removed Reference Competition Class.resx">
-      <DependentUpon>201805161438089_Removed Reference Competition Class.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805161503530_AddedConfigDivisionToDivision.resx">
-      <DependentUpon>201805161503530_AddedConfigDivisionToDivision.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805161821426_first.resx">
+      <DependentUpon>201805161821426_first.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -35,12 +35,12 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateScheduleRules()
         {            
-            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByTeamVsDivision(leagues[LeagueName], configCompetitions["My Season"], "Rule 1", configTeams["Team 1"], configDivisions["Div 2"], false, 1, 1, false));                        
-            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], configCompetitions["My Season"], "Rule 2", configDivisions["Div 2"], true, 1, 1, false));
-            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByTeamVsTeam(leagues[LeagueName], configCompetitions["My Season"], "Rule 3", configTeams["Team 4"], configTeams["Team 2"], false, 1, 1, false));            
-            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByDivisionVsDivision(leagues[LeagueName], configCompetitions["My Season"], "Rule 4", configDivisions["Div 1"], configDivisions["Div 2"], true, 1, 1, false));
-            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByDivisionLevel(leagues[LeagueName], configCompetitions["My Season"], "Rule 5", 0, true, 2, 1, false));
-            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByDivisionLevel(leagues[LeagueName], configCompetitions["My Season"], "Rule 6", 1, true, 2, 1, false));
+            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByTeamVsDivision(leagues[LeagueName], configCompetitions["My Season"], "Rule 1", configTeams["Team 1"], configDivisions["Div 2"], false, 1, 1, false, 1, null));                        
+            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByDivisionVsSelf(leagues[LeagueName], configCompetitions["My Season"], "Rule 2", configDivisions["Div 2"], true, 1, 1, false, 1, null));
+            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByTeamVsTeam(leagues[LeagueName], configCompetitions["My Season"], "Rule 3", configTeams["Team 4"], configTeams["Team 2"], false, 1, 1, false, 1, null));            
+            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByDivisionVsDivision(leagues[LeagueName], configCompetitions["My Season"], "Rule 4", configDivisions["Div 1"], configDivisions["Div 2"], true, 1, 1, false, 1, null));
+            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByDivisionLevel(leagues[LeagueName], configCompetitions["My Season"], "Rule 5", 0, true, 2, 1, false, 1, null));
+            CreateAndAddScheduleRule(ConfigScheduleRule.CreateByDivisionLevel(leagues[LeagueName], configCompetitions["My Season"], "Rule 6", 1, true, 2, 1, false, 1, null));
 
 
         }

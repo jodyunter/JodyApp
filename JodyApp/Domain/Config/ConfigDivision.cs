@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigDivision:DomainObject, BaseConfigItem
+    public class ConfigDivision:BaseConfigItem
     {
         private string _shortName;
 
@@ -20,9 +20,6 @@ namespace JodyApp.Domain.Config
         virtual public List<ConfigScheduleRule> ScheduleRules { get; set; } 
         virtual public List<ConfigSortingRule> SortingRules { get; set; }
         virtual public ConfigCompetition Competition { get; set; }
-
-        public int? FirstYear { get; set; }
-        public int? LastYear { get; set; }
 
         public ConfigDivision(League league, ConfigCompetition competition, string name, string shortName, int level, int order, ConfigDivision parent, int? firstYear, int? lastYear)
         {

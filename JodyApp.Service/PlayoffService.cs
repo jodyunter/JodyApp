@@ -13,6 +13,7 @@ namespace JodyApp.Service
     public class PlayoffService:BaseService
     {
         DivisionService divisionService = new DivisionService();
+        ConfigService configService = new ConfigService();
 
         public PlayoffService() : base() { Initialize(null); }
         public PlayoffService(JodyAppContext db):base(db)
@@ -21,9 +22,9 @@ namespace JodyApp.Service
         }
 
         public override void Initialize(JodyAppContext db)
-        {
-            divisionService.db = db;
-            divisionService.Initialize(db);
+        {            
+            divisionService.Initialize(db);            
+            configService.Initialize(db);
         }
         public Playoff CreateNewPlayoff(ConfigCompetition referencePlayoff, int year)
         {
@@ -36,7 +37,7 @@ namespace JodyApp.Service
             playoff.Year = year;
             playoff.Name = referencePlayoff.Name;
 
-            //change to a service call
+            //change to a service call, we currently assume it is always a season
             Season season = db.Seasons.Where(s => s.Year == year && referencePlayoff.Reference.Name == s.Name).FirstOrDefault();
             playoff.Season = season;
 
@@ -44,15 +45,15 @@ namespace JodyApp.Service
             List<Group> newGroups = new List<Group>();            
             List<Series> newSeries = new List<Series>();
 
-            var configGroups = db.ConfigGroups.Where(groups => groups.Playoff.Id == referencePlayoff.Id).ToList();
+            var activeConfigGroups = configService.GetGroups(referencePlayoff).Where(grp => grp.IsActive(year)).ToList();                                
 
-            configGroups.ForEach(group =>            
+            activeConfigGroups.ForEach(group =>            
             {
                 Group newGroup = new Group(group.Name, playoff,
                     group.SortByDivision != null ? season.Divisions.Where(d => d.Name == group.SortByDivision.Name).FirstOrDefault() : null,
                     new List<GroupRule>());
                 
-                group.GroupRules.ForEach(groupRule =>
+                group.GroupRules.Where(gr => gr.IsActive(year)).ToList().ForEach(groupRule =>
                 {
                     GroupRule newGroupRule = new GroupRule(groupRule,
                         groupRule.FromDivision != null ? season.Divisions.Where(d => d.Name == groupRule.FromDivision.Name).FirstOrDefault() : null,
@@ -67,9 +68,9 @@ namespace JodyApp.Service
             db.Groups.AddRange(newGroups);
 
 
-            var configSeriesRules = db.ConfigSeriesRules.Where(series => series.Playoff.Id == referencePlayoff.Id).ToList();
+            var activeConfigSeriesRules = configService.GetSeriesRules(referencePlayoff).Where(series => series.IsActive(year)).ToList();
 
-            configSeriesRules.ForEach(seriesRule =>            
+            activeConfigSeriesRules.ForEach(seriesRule =>            
             {
                 SeriesRule newRule = new SeriesRule(playoff, seriesRule.Name, seriesRule.Round,
                     newGroups.Where(ng => ng.Name == seriesRule.HomeTeamFromGroup.Name).First(), seriesRule.HomeTeamFromRank,

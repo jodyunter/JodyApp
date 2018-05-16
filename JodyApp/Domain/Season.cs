@@ -79,7 +79,7 @@ namespace JodyApp.Domain
 
             complete = GetNextGames(-1).Count == 0;
 
-            Complete = complete;
+            Complete = complete;            
 
             return complete;
         }

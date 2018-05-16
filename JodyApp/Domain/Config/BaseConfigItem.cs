@@ -6,10 +6,28 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public interface BaseConfigItem
-    {        
+    public abstract class BaseConfigItem:DomainObject
+    {
+        public BaseConfigItem() { }
+        public BaseConfigItem(int? firstYear, int? lastYear)
+        {
+            this.FirstYear = firstYear;
+            this.LastYear = lastYear;
+        }
         //can be null so we can plan ahead
-        int? FirstYear { get; set; }
-        int? LastYear { get; set; }
+        public int? FirstYear { get; set; }
+        public int? LastYear { get; set; }
+
+        public bool IsActive(int currentYear)
+        {
+            if (FirstYear == null) return false;
+            else
+            {
+                if (FirstYear > currentYear) return false;
+                if (LastYear == null) return true;
+                if (LastYear < currentYear) return false;
+                else return true;
+            }
+        }
     }
 }

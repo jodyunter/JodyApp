@@ -3,7 +3,7 @@ namespace JodyApp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class First : DbMigration
+    public partial class first : DbMigration
     {
         public override void Up()
         {
@@ -14,6 +14,7 @@ namespace JodyApp.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         Type = c.Int(nullable: false),
+                        Order = c.Int(nullable: false),
                         FirstYear = c.Int(),
                         LastYear = c.Int(),
                         League_Id = c.Int(),
@@ -32,25 +33,8 @@ namespace JodyApp.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         CurrentYear = c.Int(nullable: false),
-                        SeasonName = c.String(),
-                        PlayoffName = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.ReferenceCompetitions",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Order = c.Int(nullable: false),
-                        Competition_Id = c.Int(),
-                        League_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ConfigCompetitions", t => t.Competition_Id)
-                .ForeignKey("dbo.Leagues", t => t.League_Id)
-                .Index(t => t.Competition_Id)
-                .Index(t => t.League_Id);
             
             CreateTable(
                 "dbo.ConfigDivisions",
@@ -92,30 +76,30 @@ namespace JodyApp.Migrations
                         LastYear = c.Int(),
                         AwayDivision_Id = c.Int(),
                         AwayTeam_Id = c.Int(),
+                        Competition_Id = c.Int(),
                         HomeDivision_Id = c.Int(),
                         HomeTeam_Id = c.Int(),
                         League_Id = c.Int(),
-                        Season_Id = c.Int(),
                         ConfigDivision_Id = c.Int(),
-                        Season_Id1 = c.Int(),
+                        Season_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.ConfigDivisions", t => t.AwayDivision_Id)
                 .ForeignKey("dbo.ConfigTeams", t => t.AwayTeam_Id)
+                .ForeignKey("dbo.ConfigCompetitions", t => t.Competition_Id)
                 .ForeignKey("dbo.ConfigDivisions", t => t.HomeDivision_Id)
                 .ForeignKey("dbo.ConfigTeams", t => t.HomeTeam_Id)
                 .ForeignKey("dbo.Leagues", t => t.League_Id)
-                .ForeignKey("dbo.ConfigCompetitions", t => t.Season_Id)
                 .ForeignKey("dbo.ConfigDivisions", t => t.ConfigDivision_Id)
-                .ForeignKey("dbo.Seasons", t => t.Season_Id1)
+                .ForeignKey("dbo.Seasons", t => t.Season_Id)
                 .Index(t => t.AwayDivision_Id)
                 .Index(t => t.AwayTeam_Id)
+                .Index(t => t.Competition_Id)
                 .Index(t => t.HomeDivision_Id)
                 .Index(t => t.HomeTeam_Id)
                 .Index(t => t.League_Id)
-                .Index(t => t.Season_Id)
                 .Index(t => t.ConfigDivision_Id)
-                .Index(t => t.Season_Id1);
+                .Index(t => t.Season_Id);
             
             CreateTable(
                 "dbo.ConfigTeams",
@@ -251,14 +235,17 @@ namespace JodyApp.Migrations
                         ShortName = c.String(),
                         Level = c.Int(nullable: false),
                         Order = c.Int(nullable: false),
+                        ConfigDivision_Id = c.Int(),
                         League_Id = c.Int(),
                         Parent_Id = c.Int(),
                         Season_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ConfigDivisions", t => t.ConfigDivision_Id)
                 .ForeignKey("dbo.Leagues", t => t.League_Id)
                 .ForeignKey("dbo.Divisions", t => t.Parent_Id)
                 .ForeignKey("dbo.Seasons", t => t.Season_Id)
+                .Index(t => t.ConfigDivision_Id)
                 .Index(t => t.League_Id)
                 .Index(t => t.Parent_Id)
                 .Index(t => t.Season_Id);
@@ -479,7 +466,7 @@ namespace JodyApp.Migrations
             DropForeignKey("dbo.SortingRules", "Division_Id", "dbo.Divisions");
             DropForeignKey("dbo.SortingRules", "DivisionToGetTeamsFrom_Id", "dbo.Divisions");
             DropForeignKey("dbo.Teams", "Season_Id", "dbo.Seasons");
-            DropForeignKey("dbo.ConfigScheduleRules", "Season_Id1", "dbo.Seasons");
+            DropForeignKey("dbo.ConfigScheduleRules", "Season_Id", "dbo.Seasons");
             DropForeignKey("dbo.Seasons", "League_Id", "dbo.Leagues");
             DropForeignKey("dbo.Games", "Season_Id", "dbo.Seasons");
             DropForeignKey("dbo.Games", "HomeTeam_Id", "dbo.Teams");
@@ -507,6 +494,7 @@ namespace JodyApp.Migrations
             DropForeignKey("dbo.DivisionRanks", "Division_Id", "dbo.Divisions");
             DropForeignKey("dbo.Divisions", "Parent_Id", "dbo.Divisions");
             DropForeignKey("dbo.Divisions", "League_Id", "dbo.Leagues");
+            DropForeignKey("dbo.Divisions", "ConfigDivision_Id", "dbo.ConfigDivisions");
             DropForeignKey("dbo.ConfigSeriesRules", "Playoff_Id", "dbo.ConfigCompetitions");
             DropForeignKey("dbo.ConfigSeriesRules", "HomeTeamFromGroup_Id", "dbo.ConfigGroups");
             DropForeignKey("dbo.ConfigSeriesRules", "AwayTeamFromGroup_Id", "dbo.ConfigGroups");
@@ -519,10 +507,10 @@ namespace JodyApp.Migrations
             DropForeignKey("dbo.ConfigSortingRules", "DivisionToGetTeamsFrom_Id", "dbo.ConfigDivisions");
             DropForeignKey("dbo.ConfigSortingRules", "Division_Id", "dbo.ConfigDivisions");
             DropForeignKey("dbo.ConfigScheduleRules", "ConfigDivision_Id", "dbo.ConfigDivisions");
-            DropForeignKey("dbo.ConfigScheduleRules", "Season_Id", "dbo.ConfigCompetitions");
             DropForeignKey("dbo.ConfigScheduleRules", "League_Id", "dbo.Leagues");
             DropForeignKey("dbo.ConfigScheduleRules", "HomeTeam_Id", "dbo.ConfigTeams");
             DropForeignKey("dbo.ConfigScheduleRules", "HomeDivision_Id", "dbo.ConfigDivisions");
+            DropForeignKey("dbo.ConfigScheduleRules", "Competition_Id", "dbo.ConfigCompetitions");
             DropForeignKey("dbo.ConfigScheduleRules", "AwayTeam_Id", "dbo.ConfigTeams");
             DropForeignKey("dbo.ConfigTeams", "League_Id", "dbo.Leagues");
             DropForeignKey("dbo.ConfigTeams", "Division_Id", "dbo.ConfigDivisions");
@@ -532,8 +520,6 @@ namespace JodyApp.Migrations
             DropForeignKey("dbo.ConfigDivisions", "Competition_Id", "dbo.ConfigCompetitions");
             DropForeignKey("dbo.ConfigCompetitions", "Reference_Id", "dbo.ConfigCompetitions");
             DropForeignKey("dbo.ConfigCompetitions", "League_Id", "dbo.Leagues");
-            DropForeignKey("dbo.ReferenceCompetitions", "League_Id", "dbo.Leagues");
-            DropForeignKey("dbo.ReferenceCompetitions", "Competition_Id", "dbo.ConfigCompetitions");
             DropIndex("dbo.SortingRules", new[] { "Division_Id" });
             DropIndex("dbo.SortingRules", new[] { "DivisionToGetTeamsFrom_Id" });
             DropIndex("dbo.SeriesRules", new[] { "Playoff_Id" });
@@ -563,6 +549,7 @@ namespace JodyApp.Migrations
             DropIndex("dbo.Divisions", new[] { "Season_Id" });
             DropIndex("dbo.Divisions", new[] { "Parent_Id" });
             DropIndex("dbo.Divisions", new[] { "League_Id" });
+            DropIndex("dbo.Divisions", new[] { "ConfigDivision_Id" });
             DropIndex("dbo.DivisionRanks", new[] { "Team_Id" });
             DropIndex("dbo.DivisionRanks", new[] { "Division_Id" });
             DropIndex("dbo.ConfigSeriesRules", new[] { "Playoff_Id" });
@@ -578,19 +565,17 @@ namespace JodyApp.Migrations
             DropIndex("dbo.ConfigSortingRules", new[] { "Division_Id" });
             DropIndex("dbo.ConfigTeams", new[] { "League_Id" });
             DropIndex("dbo.ConfigTeams", new[] { "Division_Id" });
-            DropIndex("dbo.ConfigScheduleRules", new[] { "Season_Id1" });
-            DropIndex("dbo.ConfigScheduleRules", new[] { "ConfigDivision_Id" });
             DropIndex("dbo.ConfigScheduleRules", new[] { "Season_Id" });
+            DropIndex("dbo.ConfigScheduleRules", new[] { "ConfigDivision_Id" });
             DropIndex("dbo.ConfigScheduleRules", new[] { "League_Id" });
             DropIndex("dbo.ConfigScheduleRules", new[] { "HomeTeam_Id" });
             DropIndex("dbo.ConfigScheduleRules", new[] { "HomeDivision_Id" });
+            DropIndex("dbo.ConfigScheduleRules", new[] { "Competition_Id" });
             DropIndex("dbo.ConfigScheduleRules", new[] { "AwayTeam_Id" });
             DropIndex("dbo.ConfigScheduleRules", new[] { "AwayDivision_Id" });
             DropIndex("dbo.ConfigDivisions", new[] { "Parent_Id" });
             DropIndex("dbo.ConfigDivisions", new[] { "League_Id" });
             DropIndex("dbo.ConfigDivisions", new[] { "Competition_Id" });
-            DropIndex("dbo.ReferenceCompetitions", new[] { "League_Id" });
-            DropIndex("dbo.ReferenceCompetitions", new[] { "Competition_Id" });
             DropIndex("dbo.ConfigCompetitions", new[] { "Reference_Id" });
             DropIndex("dbo.ConfigCompetitions", new[] { "League_Id" });
             DropTable("dbo.SortingRules");
@@ -612,7 +597,6 @@ namespace JodyApp.Migrations
             DropTable("dbo.ConfigTeams");
             DropTable("dbo.ConfigScheduleRules");
             DropTable("dbo.ConfigDivisions");
-            DropTable("dbo.ReferenceCompetitions");
             DropTable("dbo.Leagues");
             DropTable("dbo.ConfigCompetitions");
         }

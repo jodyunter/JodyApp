@@ -236,5 +236,12 @@ namespace JodyApp.Service.Test
 
             IsTrue(onlyUnfinishedGames);
         }
+
+        [TestMethod]
+        public void ShouldProperlyUseCompetitionsSetupInTheFuture()
+        {
+            //also do things like schedule rules and series rules for the future
+            throw new NotImplementedException();
+        }
     }
 }

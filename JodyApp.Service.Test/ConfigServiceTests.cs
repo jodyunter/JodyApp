@@ -133,7 +133,7 @@ namespace JodyApp.Service.Test
             var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, 1, null);
             var division = configService.CreateDivision(league, season, "Division 1", "Div 1", 0, 0, null, 1, null);
             var team = configService.CreateTeam("Team 1", 5, division, league, 1, null);
-            var newRule = configService.CreateScheduleRuleByDivisionVsTeam(league, season, "Rule 1", division, team, true, 1, 1, false);
+            var newRule = configService.CreateScheduleRuleByDivisionVsTeam(league, season, "Rule 1", division, team, true, 1, 1, false, 1, null);
 
             configService.Save();
             var rule = configService.GetScheduleRuleById((int)newRule.Id);
@@ -146,7 +146,7 @@ namespace JodyApp.Service.Test
             var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, 1, null);
             var division = configService.CreateDivision(league, season, "Division 1", "Div 1", 0, 0, null, 1, null);
             var team = configService.CreateTeam("Team 1", 5, division, league, 1, null);
-            var newRule = configService.CreateScheduleRuleByDivisionVsTeam(league, season, "Rule 1", division, team, true, 1, 1, false);
+            var newRule = configService.CreateScheduleRuleByDivisionVsTeam(league, season, "Rule 1", division, team, true, 1, 1, false, 1, null);
 
             configService.Save();
             var rule = configService.GetScheduleRuleByName(league, season, "Rule 1");
@@ -161,15 +161,15 @@ namespace JodyApp.Service.Test
             var division1 = configService.CreateDivision(league, season1, "Division 1", "Div 1", 0, 0, null, 1, null);
             var division2 = configService.CreateDivision(league, season2, "Division 2", "Div 2", 0, 0, null, 1, null);
 
-            var rule1A = configService.CreateScheduleRuleByDivisionVsSelf(league, season1, "Test 1a", division1, false, 1, 1, false);
-            var rule2A = configService.CreateScheduleRuleByDivisionVsSelf(league, season1, "Test 2a", division1, false, 1, 1, false);
-            var rule3A = configService.CreateScheduleRuleByDivisionVsSelf(league, season1, "Test 3a", division1, false, 1, 1, false);
-            var rule4A = configService.CreateScheduleRuleByDivisionVsSelf(league, season1, "Test 4a", division1, false, 1, 1, false);
+            var rule1A = configService.CreateScheduleRuleByDivisionVsSelf(league, season1, "Test 1a", division1, false, 1, 1, false, 1, null);
+            var rule2A = configService.CreateScheduleRuleByDivisionVsSelf(league, season1, "Test 2a", division1, false, 1, 1, false, 1, null);
+            var rule3A = configService.CreateScheduleRuleByDivisionVsSelf(league, season1, "Test 3a", division1, false, 1, 1, false, 1, null);
+            var rule4A = configService.CreateScheduleRuleByDivisionVsSelf(league, season1, "Test 4a", division1, false, 1, 1, false, 1, null);
 
-            var rule1B = configService.CreateScheduleRuleByDivisionVsSelf(league, season2, "Test 1b", division1, false, 1, 1, false);
-            var rule2B = configService.CreateScheduleRuleByDivisionVsSelf(league, season2, "Test 2b", division1, false, 1, 1, false);
-            var rule3B = configService.CreateScheduleRuleByDivisionVsSelf(league, season2, "Test 3b", division1, false, 1, 1, false);
-            var rule4B = configService.CreateScheduleRuleByDivisionVsSelf(league, season2, "Test 4b", division1, false, 1, 1, false);
+            var rule1B = configService.CreateScheduleRuleByDivisionVsSelf(league, season2, "Test 1b", division1, false, 1, 1, false, 1, null);
+            var rule2B = configService.CreateScheduleRuleByDivisionVsSelf(league, season2, "Test 2b", division1, false, 1, 1, false, 1, null);
+            var rule3B = configService.CreateScheduleRuleByDivisionVsSelf(league, season2, "Test 3b", division1, false, 1, 1, false, 1, null);
+            var rule4B = configService.CreateScheduleRuleByDivisionVsSelf(league, season2, "Test 4b", division1, false, 1, 1, false, 1, null);
 
             configService.Save();
 

@@ -46,7 +46,7 @@ namespace JodyApp.Service.Test.DataFolder
         {
             ConfigScheduleRule rule1;
 
-            rule1 = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", Division1, true, 5,1, false);            
+            rule1 = ConfigScheduleRule.CreateByDivisionVsSelf(MyLeague, RegularSeason, "Rule 1", Division1, true, 5,1, false, 1, null);            
 
             CreateAndAddScheduleRule(rule1);            
 

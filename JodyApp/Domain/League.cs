@@ -27,5 +27,10 @@ namespace JodyApp.Domain
 
             return this.Name.Equals(that.Name);
         }
+
+        public List<ConfigCompetition> GetActiveConfigCompetitions()
+        {
+            return ReferenceCompetitions.Where(rc => rc.IsActive(CurrentYear)).ToList();
+        }
     }
 }

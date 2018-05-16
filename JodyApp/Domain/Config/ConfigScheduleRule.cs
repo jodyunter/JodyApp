@@ -15,7 +15,7 @@ namespace JodyApp.Domain.Config
     //group 3: Play a play off series
     //group 4: Setup new division based on series winners and play more games
     //group 5: Setup final round of playoff series and games
-    public class ConfigScheduleRule:DomainObject, BaseConfigItem
+    public class ConfigScheduleRule:BaseConfigItem
     {
         //rules with opponents implied
         public const int BY_DIVISION_LEVEL = 2;  //use this to first sort all teams by division level, then they all play games against each other
@@ -46,30 +46,28 @@ namespace JodyApp.Domain.Config
         //when creating a new season, we need to translate these into the season rules.
         //since this would be done only at the beginning, we can use it to find the parent teams for the current season
 
-        public ConfigCompetition Season { get; set; }
+        public ConfigCompetition Competition { get; set; }
 
         public bool Reverse { get; set; } //reverse default order
 
-        public int? FirstYear { get; set; }
-        public int? LastYear { get; set; }
         public ConfigScheduleRule() { }
 
-        public ConfigScheduleRule(ConfigScheduleRule rule) : this(rule.League, rule.Season, rule.Name, rule.HomeType, rule.HomeTeam, rule.HomeDivision,
+        public ConfigScheduleRule(ConfigScheduleRule rule) : this(rule.League, rule.Competition, rule.Name, rule.HomeType, rule.HomeTeam, rule.HomeDivision,
      rule.AwayType, rule.AwayTeam, rule.AwayDivision,
-     rule.PlayHomeAway, rule.Rounds, rule.DivisionLevel, rule.Order, rule.Reverse)
+     rule.PlayHomeAway, rule.Rounds, rule.DivisionLevel, rule.Order, rule.Reverse, rule.FirstYear, rule.LastYear)
         {
 
         }
 
         public ConfigScheduleRule(ConfigCompetition season, ConfigScheduleRule rule) : this(rule)
         {
-            Season = season;
+            Competition = season;
         }
         public ConfigScheduleRule(League league, ConfigCompetition season, String name, int homeType, ConfigTeam homeTeam, ConfigDivision homeDivision,
-                int awayType, ConfigTeam awayTeam, ConfigDivision awayDivision, bool playHomeAway, int rounds, int divisionLevel, int order, bool reverse)
+                int awayType, ConfigTeam awayTeam, ConfigDivision awayDivision, bool playHomeAway, int rounds, int divisionLevel, int order, bool reverse, int? firstYear, int? lastYear)
         {
             this.League = league;
-            this.Season = season;
+            this.Competition = season;
             this.Name = name;
             this.HomeType = homeType;
             this.HomeTeam = homeTeam;
@@ -84,7 +82,7 @@ namespace JodyApp.Domain.Config
             this.Reverse = reverse;
         }
 
-        public static ConfigScheduleRule CreateByDivisionVsSelf(League league, ConfigCompetition season, String name, ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByDivisionVsSelf(League league, ConfigCompetition season, String name, ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse, int? firstYear, int? lastYear)
         {
             return new ConfigScheduleRule()
             {
@@ -96,28 +94,32 @@ namespace JodyApp.Domain.Config
                 Rounds = rounds,
                 League = league,
                 Order = order,
-                Season = season,
-                Reverse = reverse
+                Competition = season,
+                Reverse = reverse,
+                FirstYear = firstYear,
+                LastYear = lastYear
 
             };
         }
-        public static ConfigScheduleRule CreateByDivisionVsDivision(League league, ConfigCompetition season, String name, ConfigDivision homeDivision, ConfigDivision awayDivision, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByDivisionVsDivision(League league, ConfigCompetition season, String name, ConfigDivision homeDivision, ConfigDivision awayDivision, bool playHomeAway, int rounds, int order, bool reverse, int? firstYear, int? lastYear)
         {
         return new ConfigScheduleRule()
         {
             Name = name,
-            HomeType = ConfigScheduleRule.BY_DIVISION,
+            HomeType = BY_DIVISION,
             HomeDivision = homeDivision,
-            AwayType = ConfigScheduleRule.BY_DIVISION,
+            AwayType = BY_DIVISION,
             AwayDivision = awayDivision,
             PlayHomeAway = playHomeAway,
             Rounds = rounds,
             League = league,
-            Season = season,
-            Reverse = reverse
-            };
+            Competition = season,
+            Reverse = reverse,
+            FirstYear = firstYear,
+            LastYear = lastYear
+        };
         }
-        public static ConfigScheduleRule CreateByTeamVsTeam(League league, ConfigCompetition season, String name, ConfigTeam homeTeam, ConfigTeam awayTeam, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByTeamVsTeam(League league, ConfigCompetition season, String name, ConfigTeam homeTeam, ConfigTeam awayTeam, bool playHomeAway, int rounds, int order, bool reverse, int? firstYear, int? lastYear)
         {
             return new ConfigScheduleRule(league,
                 season,
@@ -132,10 +134,11 @@ namespace JodyApp.Domain.Config
                 rounds,
                 -1,
                 order,
-                reverse);
+                reverse,
+                firstYear, lastYear);
 
         }
-        public static ConfigScheduleRule CreateByTeamVsDivision(League league, ConfigCompetition season, string name, ConfigTeam team, ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByTeamVsDivision(League league, ConfigCompetition season, string name, ConfigTeam team, ConfigDivision division, bool playHomeAway, int rounds, int order, bool reverse, int? firstYear, int? lastYear)
         {
             return new ConfigScheduleRule(
                 league,
@@ -151,10 +154,10 @@ namespace JodyApp.Domain.Config
                 rounds,
                 -1,
                 order,
-                reverse
+                reverse, firstYear, lastYear
                 );
         }
-        public static ConfigScheduleRule CreateByDivisionVsTeam(League league, ConfigCompetition season, string name, ConfigDivision division, ConfigTeam team, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByDivisionVsTeam(League league, ConfigCompetition season, string name, ConfigDivision division, ConfigTeam team, bool playHomeAway, int rounds, int order, bool reverse, int? firstYear, int? lastYear)
         {
             return new ConfigScheduleRule(
                 league,
@@ -170,9 +173,9 @@ namespace JodyApp.Domain.Config
                 rounds,
                 -1,
                 order, 
-                reverse);
+                reverse, firstYear, lastYear);
         }
-        public static ConfigScheduleRule CreateByDivisionLevel(League league, ConfigCompetition season, string name, int divisionLevel, bool playHomeAway, int rounds, int order, bool reverse)
+        public static ConfigScheduleRule CreateByDivisionLevel(League league, ConfigCompetition season, string name, int divisionLevel, bool playHomeAway, int rounds, int order, bool reverse, int? firstYear, int? lastYear)
         {
             return new ConfigScheduleRule(
                 league,
@@ -188,7 +191,7 @@ namespace JodyApp.Domain.Config
                 rounds,
                 divisionLevel,
                 order,
-                reverse);
+                reverse, firstYear, lastYear);
         }
 
         public override bool Equals(object obj)
@@ -207,7 +210,7 @@ namespace JodyApp.Domain.Config
                    DivisionLevel == rule.DivisionLevel &&
                    Order == rule.Order &&
                    Name == rule.Name &&
-                   EqualityComparer<ConfigCompetition>.Default.Equals(Season, rule.Season) &&
+                   EqualityComparer<ConfigCompetition>.Default.Equals(Competition, rule.Competition) &&
                    Reverse == rule.Reverse &&
                    EqualityComparer<int?>.Default.Equals(FirstYear, rule.FirstYear) &&
                    EqualityComparer<int?>.Default.Equals(LastYear, rule.LastYear);
@@ -228,7 +231,7 @@ namespace JodyApp.Domain.Config
             hashCode = hashCode * -1521134295 + DivisionLevel.GetHashCode();
             hashCode = hashCode * -1521134295 + Order.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigCompetition>.Default.GetHashCode(Season);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ConfigCompetition>.Default.GetHashCode(Competition);
             hashCode = hashCode * -1521134295 + Reverse.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(FirstYear);
             hashCode = hashCode * -1521134295 + EqualityComparer<int?>.Default.GetHashCode(LastYear);

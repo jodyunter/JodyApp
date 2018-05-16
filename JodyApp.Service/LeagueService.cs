@@ -34,7 +34,7 @@ namespace JodyApp.Service
             else
             {
                 //get all the possible competitions for this league
-                var referenceComps = league.ReferenceCompetitions.OrderBy(m => m.Order).ToList();
+                var referenceComps = league.GetActiveConfigCompetitions();
 
                 Competition currentComp = null;                
                                 
@@ -84,12 +84,26 @@ namespace JodyApp.Service
         {
             if (league.CurrentYear == 0) return true;
 
-            var completeCompetitions = new List<Competition>();
+            bool done = true;
 
-            completeCompetitions.AddRange(db.Seasons.Where(s => s.Year == league.CurrentYear && s.Complete).ToList());
-            completeCompetitions.AddRange(db.Playoffs.Where(p => p.Year == league.CurrentYear && p.Complete).ToList());
+            league.GetActiveConfigCompetitions().ForEach(rc =>
+            {
+                Competition comp = null;
+                switch (rc.Type)
+                {
+                    case ConfigCompetition.SEASON:
+                        comp = db.Seasons.Where(s => s.Year == league.CurrentYear && s.Name == rc.Name).FirstOrDefault();
+                        break;
+                    case ConfigCompetition.PLAYOFF:
+                        comp = db.Playoffs.Where(s => s.Year == league.CurrentYear && s.Name == rc.Name).FirstOrDefault();
+                        break;
+                }
 
-            return completeCompetitions.Count == league.ReferenceCompetitions.Count;
+                done = done && comp != null && comp.IsComplete();
+            }
+            );
+
+            return done;
             
         }
 

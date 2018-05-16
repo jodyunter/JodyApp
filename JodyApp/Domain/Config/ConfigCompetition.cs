@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigCompetition:DomainObject, BaseConfigItem
+    public class ConfigCompetition:BaseConfigItem
     {
         public const int SEASON = 0;
         public const int PLAYOFF = 1;
@@ -17,8 +17,6 @@ namespace JodyApp.Domain.Config
         //this is the competition it will use to set things up.  Like a season for a playoff
         virtual public ConfigCompetition Reference { get; set; }
         public int Order { get; set; }
-        public int? FirstYear { get; set; }
-        public int? LastYear { get; set; }
 
         public ConfigCompetition() { }
         public ConfigCompetition(League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
@@ -31,6 +29,7 @@ namespace JodyApp.Domain.Config
             FirstYear = firstYear;
             LastYear = lastYear;
         }
+
 
         public override bool Equals(object obj)
         {
