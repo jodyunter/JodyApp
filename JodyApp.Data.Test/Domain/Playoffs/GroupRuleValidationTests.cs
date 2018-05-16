@@ -18,7 +18,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var expected = "Name Cannot be Null. Type: From Division Top. Name: .";
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            Division fromDivision = new Division(null, null, "Test Me", null, 1, 1, null);
+            Division fromDivision = new Division(null, null, null, "Test Me", null, 1, 1, null);
             fromDivision.Teams.Add(new Team("Temp Team", 0, fromDivision));
             fromDivision.Teams.Add(new Team("Temp Team 2", 0, fromDivision));
             fromDivision.Teams.Add(new Team("Temp Team 3", 0, fromDivision));
@@ -81,7 +81,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
             var expected = "From Division does not have enough teams, expecting: 3, found: 2. Type: From Division Top. Name: Name1.";
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            Division fromDivision = new Division(null, null, "Test Me", null, 1, 1, null);
+            Division fromDivision = new Division(null, null, null, "Test Me", null, 1, 1, null);
             fromDivision.Teams.Add(new Team("Temp Team", 0, fromDivision));
             GroupRule rule = new GroupRule(group, "Name1", GroupRule.FROM_DIVISION, fromDivision, "", 1, 3, null);
 
@@ -97,7 +97,7 @@ namespace JodyApp.Data.Test.Domain.Playoffs
         {            
             Playoff p = new Playoff(null, "Test", 1, false, false, 0, null);
             Group group = new Group("Group 1", p, null, new List<GroupRule>());
-            Division fromDivision = new Division(null, null, "Test Me", null, 1, 1, null);
+            Division fromDivision = new Division(null, null, null, "Test Me", null, 1, 1, null);
             fromDivision.Teams.Add(new Team("Temp Team", 0, fromDivision));
             fromDivision.Teams.Add(new Team("Temp Team 2", 0, fromDivision));
             fromDivision.Teams.Add(new Team("Temp Team 3", 0, fromDivision));

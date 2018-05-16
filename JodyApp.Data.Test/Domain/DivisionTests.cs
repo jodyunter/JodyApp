@@ -11,14 +11,14 @@ namespace JodyApp.Data.Test.Domain
         [TestMethod]
         public void ShouldGetShortNameWhenNull()
         {
-            Division d = new Division(null, null, "Name", null, 0, 0, null,null);
+            Division d = new Division(null, null, null, "Name", null, 0, 0, null,null);
 
             AreEqual(d.Name, d.ShortName);
         }
         [TestMethod]
         public void ShouldGetShortNameWhenNotNull()
         {
-            Division d = new Division(null, null, "Name", "SHORT", 0, 0, null, null);
+            Division d = new Division(null, null, null, "Name", "SHORT", 0, 0, null, null);
 
             AreNotEqual(d.Name, d.ShortName);
             AreEqual("SHORT", d.ShortName);

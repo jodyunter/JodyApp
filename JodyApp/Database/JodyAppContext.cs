@@ -25,7 +25,7 @@ namespace JodyApp.Database
         public const int WORK_PROD = 2;
         public const int WORK_TEST = 3;
 
-        public static int CURRENT_DATABASE = HOME_TEST;
+        public static int CURRENT_DATABASE = WORK_TEST;
 
         public static string GetDataSource(int location) 
         {
@@ -62,8 +62,7 @@ namespace JodyApp.Database
         public DbSet<Series> Series { get; set; }
         public DbSet<Playoff> Playoffs { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupRule> GroupRules { get; set; }
-        public DbSet<ReferenceCompetition> ReferenceCompetitions { get; set; }
+        public DbSet<GroupRule> GroupRules { get; set; }        
 
         //configurationItems
         public DbSet<ConfigTeam> ConfigTeams { get; set; }

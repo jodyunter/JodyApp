@@ -45,22 +45,22 @@ namespace JodyApp.Service
                     //if yes, move on, we alreayd know at least one is not complete
                     //if no return it
                     //if no return it
-                    ReferenceCompetition rc = referenceComps[i];                    
+                    ConfigCompetition rc = referenceComps[i];                    
                     
-                    switch(rc.Competition.Type)
+                    switch(rc.Type)
                     { 
                         case ConfigCompetition.SEASON:
-                            currentComp = db.Seasons.Where(s => s.Year == league.CurrentYear && s.Name == rc.Competition.Name).FirstOrDefault();                            
+                            currentComp = db.Seasons.Where(s => s.Year == league.CurrentYear && s.Name == rc.Name).FirstOrDefault();                            
                             break;
                         case ConfigCompetition.PLAYOFF:
-                            currentComp = db.Playoffs.Where(s => s.Year == league.CurrentYear && s.Name == rc.Competition.Name).FirstOrDefault();                            
+                            currentComp = db.Playoffs.Where(s => s.Year == league.CurrentYear && s.Name == rc.Name).FirstOrDefault();                            
                             break;
 
                     }
                     
                     //if there is no competition for this one, create one and return it
                     if (currentComp == null)
-                        return competitionService.CreateCompetition(rc.Competition, league.CurrentYear);
+                        return competitionService.CreateCompetition(rc, league.CurrentYear);
                     //if there is a current competition, and it is not complete, return it
                     else if (!currentComp.Complete)
                         return currentComp;

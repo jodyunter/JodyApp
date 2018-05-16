@@ -19,8 +19,8 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateSeasons()
         {
-            Season = CreateAndAddSeason(MyLeague, "My Season", 0, 1, 0);
-            ExtraSeason = CreateAndAddSeason(ExtraLeague, "Extra Season", 0, 1, 0);
+            Season = CreateAndAddSeason(MyLeague, "My Season", 1, 0);
+            ExtraSeason = CreateAndAddSeason(ExtraLeague, "Extra Season", 1, 0);
         }
 
 
@@ -32,17 +32,17 @@ namespace JodyApp.Service.Test.DataFolder
         }
         public override void PrivateCreateDivisions()
         {            
-            CreateAndAddDivision(MyLeague, Season, "League", null, 0, 1, null, null);
-            CreateAndAddDivision(MyLeague, Season, "West", null, 1, 2, divisions["League"], null);
-            CreateAndAddDivision(MyLeague, Season, "East", null, 1, 2, divisions["League"], null);
-            CreateAndAddDivision(MyLeague, Season, "Pacific", null, 2, 1, divisions["West"], null);
-            CreateAndAddDivision(MyLeague, Season, "Central", null, 2, 2, divisions["West"], null);
-            CreateAndAddDivision(MyLeague, Season, "North West", null, 2, 3, divisions["West"], null);
-            CreateAndAddDivision(MyLeague, Season, "North East", null, 2, 4, divisions["East"], null);
-            CreateAndAddDivision(MyLeague, Season, "Atlantic", null, 2, 4, divisions["East"], null);
+            CreateAndAddDivision(GetConfigDivision("League"), MyLeague, Season, "League", null, 0, 1, null, null);
+            CreateAndAddDivision(GetConfigDivision("West"), MyLeague, Season, "West", null, 1, 2, divisions["League"], null);
+            CreateAndAddDivision(GetConfigDivision("East"), MyLeague, Season, "East", null, 1, 2, divisions["League"], null);
+            CreateAndAddDivision(GetConfigDivision("Pacific"), MyLeague, Season, "Pacific", null, 2, 1, divisions["West"], null);
+            CreateAndAddDivision(GetConfigDivision("Central"), MyLeague, Season, "Central", null, 2, 2, divisions["West"], null);
+            CreateAndAddDivision(GetConfigDivision("North West"), MyLeague, Season, "North West", null, 2, 3, divisions["West"], null);
+            CreateAndAddDivision(GetConfigDivision("North East"), MyLeague, Season, "North East", null, 2, 4, divisions["East"], null);
+            CreateAndAddDivision(GetConfigDivision("Atlantic"), MyLeague, Season, "Atlantic", null, 2, 4, divisions["East"], null);
 
-            CreateAndAddDivision(ExtraLeague, ExtraSeason, "Extra Top", null, 0, 1, null, null);
-            CreateAndAddDivision(ExtraLeague, ExtraSeason, "Extra Child", null, 1, 2, divisions["Extra Top"], null);
+            CreateAndAddDivision(GetConfigDivision("Extra Top"), ExtraLeague, ExtraSeason, "Extra Top", null, 0, 1, null, null);
+            CreateAndAddDivision(GetConfigDivision("Extra Child"), ExtraLeague, ExtraSeason, "Extra Child", null, 1, 2, divisions["Extra Top"], null);
 
 
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.Domain.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,15 +11,15 @@ namespace JodyApp.Domain
     {
         public string Name { get; set; }
         public int CurrentYear { get; set; }
-        virtual public List<ReferenceCompetition> ReferenceCompetitions { get; set; }
+        virtual public List<ConfigCompetition> ReferenceCompetitions { get; set; }
 
         public League(string name)
         {
             this.Name = name;
             CurrentYear = 0;
-            ReferenceCompetitions = new List<ReferenceCompetition>();
+            ReferenceCompetitions = new List<ConfigCompetition>();
         }
-        public League() { ReferenceCompetitions = new List<ReferenceCompetition>(); }
+        public League() { ReferenceCompetitions = new List<ConfigCompetition>(); }
 
         public override bool AreTheSame(DomainObject obj)
         {

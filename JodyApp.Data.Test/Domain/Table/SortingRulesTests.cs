@@ -19,18 +19,18 @@ namespace JodyApp.Data.Test.Domain.Table
         [TestInitialize]
         public void Setup()
         {
-            var league = new Division(null, null, "League", "League", 0, 0, null, new List<SortingRule>());
+            var league = new Division(null, null, null, "League", "League", 0, 0, null, new List<SortingRule>());
 
             divisions.Add("League", league);
 
             for (int i = 0; i < 2; i++)
             {
-                divisions.Add("Conference " + i, new Division(null, null, "Conference " + i, null, 1, i + 1, league, new List<SortingRule>()));
+                divisions.Add("Conference " + i, new Division(null, null, null, "Conference " + i, null, 1, i + 1, league, new List<SortingRule>()));
             }
 
             for (int i = 0; i < 6; i++)
             {
-                divisions.Add("Division " + i, new Division(null, null, "Division " + i, null, 2, i + 1, divisions["Conference " + (i % 2)], new List<SortingRule>()));
+                divisions.Add("Division " + i, new Division(null, null, null, "Division " + i, null, 2, i + 1, divisions["Conference " + (i % 2)], new List<SortingRule>()));
             }
 
             for (int i = 0; i < 30; i++)

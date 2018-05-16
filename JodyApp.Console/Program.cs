@@ -22,8 +22,122 @@ namespace JodyApp.Console
 {
     class Program
     {
+        static string LeagueName = "Jody's League";
 
+        static void UpdateTeams(JodyAppContext db, League league, Random random)
+        {
+            ConfigService configService = new ConfigService(db);
+            configService.SetNewSkills(league, random);
+            configService.Save();
+        }
+        static void SetupConfig(JodyAppContext db)
+        {
+            League League;
+            ConfigCompetition CCSeason, CCPlayoff;
+            ConfigTeam CTEdmonton, CTCalgary, CTVancouver;
+            ConfigDivision CDLeague, CDWest;
+            
+            SimpleTestDataDriver driver = new SimpleTestDataDriver();
+
+            driver.DeleteAllData();
+
+            LeagueService leagueService = new LeagueService(db);
+            ConfigService configService = new ConfigService(db);
+            League = leagueService.CreateLeague(LeagueName);
+            CCSeason = configService.CreateCompetition(League, "Regular Season", ConfigCompetition.SEASON, null, 1, 1, null);
+            //CCPlayoff = configService.CreateCompetition(League, "Playoffs", ConfigCompetition.PLAYOFF, CCSeason, 2, 1, null);
+
+
+
+            CTEdmonton = configService.CreateTeam("Edmonton", 5, null, League, 1, null);
+            CTCalgary = configService.CreateTeam("Calgary", 5, null, League, 1, null);
+            CTVancouver = configService.CreateTeam("Vancouver", 5, null, League, 1, null);
+
+            CDLeague = configService.CreateDivision(League, CCSeason, "League", null, 1, 1, null, 1, null);
+            CDWest = configService.CreateDivision(League, CCSeason, "Western Conference", "W. Conf", 2, 2, CDLeague, 1, null);
+
+            CDWest.Teams.Add(CTEdmonton);
+            CDWest.Teams.Add(CTCalgary);
+            CDWest.Teams.Add(CTVancouver);
+
+            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 1", CDWest, true, 5, 1, false);
+
+            configService.Save();
+        }
+        
+        static void AddTeam(string name, int skill, string divisionName, int? startYear, int? lastYear, ConfigService configService, LeagueService leagueService)
+        {
+            var League = leagueService.GetByName(LeagueName);
+            var CDDivision = configService.GetDivisionByName(League, divisionName);
+            var CTNewTeam = configService.CreateTeam("Winnipeg", 5, CDDivision, League, startYear, lastYear);                       
+
+            configService.Save();           
+
+        }
         static void Main(string[] args)
+        {            
+            
+            JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
+            LeagueService leagueService = new LeagueService(db);
+            CompetitionService competitionService = new CompetitionService(db);
+            SeasonService seasonService = new SeasonService(db);
+            DivisionService divisionService = new DivisionService(db);
+            ConfigService configService = new ConfigService(db);
+
+            //SetupConfig(db, LeagueName);
+            //AddTeam("Winnipeg", 3, "Western Conference", 1, null, configService, leagueService);     
+
+            var League = leagueService.GetByName(LeagueName);
+
+            var nextCompetition = leagueService.GetNextCompetition(League);
+
+            if (nextCompetition == null)
+            {
+                League.CurrentYear++;
+                nextCompetition = leagueService.GetNextCompetition(League);                
+            }
+
+            Random random = new Random();
+            if (!nextCompetition.Started) nextCompetition.StartCompetition();
+            competitionService.PlayGames(competitionService.GetNextGames(nextCompetition), nextCompetition, random);
+            if (nextCompetition.IsComplete())
+            {
+                if (nextCompetition is Season) PrintSeason(seasonService, (Season)nextCompetition, League, divisionService.GetByName("League", League, (Season)nextCompetition), "Western Conference");
+            }
+            
+            leagueService.Save();
+
+            UpdateTeams(db, League, random);
+            
+            var div = configService.GetDivisionByName(League, "League");
+            var format = "{0,-5}.{1,15}";
+            WriteLine(div.Name + " Champions");
+            divisionService.GetListOfDivisionWinners(null, null, div).OrderByDescending(dr => dr.Division.Season.Year).ToList().ForEach(dr =>
+            {
+                WriteLine(string.Format(format, dr.Division.Season.Year, dr.Team.Name));
+            });
+            WriteLine("Press Enter to End the Program");
+            ReadLine();
+
+
+        }
+
+        public static void PrintSeason(SeasonService seasonService, Season season, League league, Division divisionToDisplay, params string[] divisionNamesToShow)
+        {
+            seasonService.SortAllDivisions(season);
+
+            var teams = seasonService.GetTeamsInDivisionByRank(divisionToDisplay);
+            teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
+
+            StandingsView standingsView = new StandingsView();
+            StandingsViewModel standingsViewModel = new StandingsViewModel(seasonService.db);
+            standingsView.viewModel = standingsViewModel;
+            standingsViewModel.SetStandingsCurrentYear(league.Name, season.Name , divisionNamesToShow);
+            WriteLine(standingsView.GetDisplayString());
+
+
+        }
+/*        static void Main(string[] args)
         {
             JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
             JodyTestDataDriver driver = new JodyTestDataDriver(db);
@@ -166,4 +280,7 @@ namespace JodyApp.Console
         }
 
     }
-}
+    */
+
+    }
+    }

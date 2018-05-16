@@ -99,9 +99,9 @@ namespace JodyApp.Service
             return db.Divisions.Where(d => d.League.Id == league.Id && d.Season.Id == season.Id && d.Name == name).FirstOrDefault();
         }
 
-        public Division CreateDivision(League league, Season season, string name, string shortName, int level, int order, Division parent)
+        public Division CreateDivision(ConfigDivision configDivision, League league, Season season, string name, string shortName, int level, int order, Division parent)
         {
-            var division = new Division(league, season, name, shortName, level, order, parent);
+            var division = new Division(configDivision, league, season, name, shortName, level, order, parent);
             db.Divisions.Add(division);
             return division;
         }
@@ -109,6 +109,19 @@ namespace JodyApp.Service
         public Division GetById(int id)
         {
             return db.Divisions.Where(d => d.Id == id).FirstOrDefault();
+        }
+
+        public List<DivisionRank> GetListOfDivisionWinners(int? startYear, int? lastYear, ConfigDivision division)
+        {
+            int start = startYear == null ? 0 : (int)startYear;
+            int last = lastYear == null ? int.MaxValue : (int)lastYear;
+
+            return db.DivisionRanks.Where(dr =>
+            dr.Division.ConfigDivision.Id == division.Id &&
+            dr.Rank == 1 &&
+            dr.Division.Season.Year >= start &&
+            dr.Division.Season.Year <= last).ToList();        
+         
         }
         
     }

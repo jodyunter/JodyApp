@@ -177,7 +177,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateDivisionNoParent()
         {           
-            var newDivision = service.CreateDivision(null, null, "Division 1", "Div 1", 1, 1, null);
+            var newDivision = service.CreateDivision(null, null, null, "Division 1", "Div 1", 1, 1, null);
             service.Save();
 
             var division = service.GetById((int)newDivision.Id);

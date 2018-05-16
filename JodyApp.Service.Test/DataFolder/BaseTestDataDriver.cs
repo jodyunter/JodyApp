@@ -29,12 +29,12 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateConfigCompetitions()
         {
-            CreateAndAddSeason(leagues[LeagueName], "My Season", 0, 1, 0);
+            CreateAndAddSeason(leagues[LeagueName], "My Season", 1, 0);
         }
 
         public override void PrivateCreateDivisions()
         {
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "League",null, 0, 1, null, null);
+            CreateAndAddDivision(GetConfigDivision("League"), leagues[LeagueName], seasons["My Season"], "League",null, 0, 1, null, null);
         }
 
         public override void PrivateCreateScheduleRules()

@@ -24,11 +24,13 @@ namespace JodyApp.Domain
         public int Level { get; set; }
         public int Order { get; set; }
         virtual public Season Season { get; set; }
+        virtual public ConfigDivision ConfigDivision { get; set; }
 
         virtual public League League { get; set; }
         public Division() { }
-        public Division(League league, Season season, string name, string shortName, int level, int order, Division parent)
+        public Division(ConfigDivision configDivision, League league, Season season, string name, string shortName, int level, int order, Division parent)
         {
+            ConfigDivision = configDivision;
             this.Name = name;
             this.ShortName = shortName;
             this.Level = level;
@@ -41,7 +43,7 @@ namespace JodyApp.Domain
             SortingRules = new List<SortingRule>();
                  
         }
-        public Division(League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : this(league, season, name, shortName, level, order, parent)
+        public Division(ConfigDivision configDivision, League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules) : this(configDivision,league, season, name, shortName, level, order, parent)
         {
             if (sortingRules == null) sortingRules = new List<SortingRule>();
             SortingRules = sortingRules;

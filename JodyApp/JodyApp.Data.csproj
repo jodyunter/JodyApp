@@ -71,7 +71,6 @@
     <Compile Include="Domain\Playoffs\GroupRule.cs" />
     <Compile Include="Domain\Playoffs\Series.cs" />
     <Compile Include="Domain\Playoffs\SeriesRule.cs" />
-    <Compile Include="Domain\ReferenceCompetition.cs" />
     <Compile Include="Domain\Schedule\Scheduler.cs" />
     <Compile Include="Domain\Config\ConfigScheduleRule.cs" />
     <Compile Include="Domain\Schedule\ScheduleValidator.cs" />
@@ -90,6 +89,14 @@
     <Compile Include="Migrations\201805151321438_RemovedSeasonPlayoffNameFromLeague.Designer.cs">
       <DependentUpon>201805151321438_RemovedSeasonPlayoffNameFromLeague.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805161438089_Removed Reference Competition Class.cs" />
+    <Compile Include="Migrations\201805161438089_Removed Reference Competition Class.Designer.cs">
+      <DependentUpon>201805161438089_Removed Reference Competition Class.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805161503530_AddedConfigDivisionToDivision.cs" />
+    <Compile Include="Migrations\201805161503530_AddedConfigDivisionToDivision.Designer.cs">
+      <DependentUpon>201805161503530_AddedConfigDivisionToDivision.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -103,6 +110,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805151321438_RemovedSeasonPlayoffNameFromLeague.resx">
       <DependentUpon>201805151321438_RemovedSeasonPlayoffNameFromLeague.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805161438089_Removed Reference Competition Class.resx">
+      <DependentUpon>201805161438089_Removed Reference Competition Class.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805161503530_AddedConfigDivisionToDivision.resx">
+      <DependentUpon>201805161503530_AddedConfigDivisionToDivision.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

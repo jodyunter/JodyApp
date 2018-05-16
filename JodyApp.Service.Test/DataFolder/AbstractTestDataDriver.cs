@@ -79,8 +79,7 @@ namespace JodyApp.Service.Test.DataFolder
                 "ConfigSOrtingRules",
                 "ConfigSeriesRules",
                 "ConfigGroups",
-                "ConfigScheduleRules",
-                "ReferenceCompetitions",
+                "ConfigScheduleRules",                
                 "GroupRules",
                 "SortingRules",
                 "DivisionRanks",
@@ -106,7 +105,7 @@ namespace JodyApp.Service.Test.DataFolder
         }
 
 
-        public Season CreateAndAddSeason(League league, string name, int order, int year, int startingDay)
+        public Season CreateAndAddSeason(League league, string name, int year, int startingDay)
         {
             Season season = new Season(league, name, year, true, true, startingDay);
 
@@ -118,40 +117,28 @@ namespace JodyApp.Service.Test.DataFolder
         
         public ConfigCompetition CreateAndAddConfigCompetition(League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
         {
-            ConfigCompetition competition = new ConfigCompetition(league, name, type, reference, firstYear, lastYear);
+            ConfigCompetition competition = new ConfigCompetition(league, name, type, reference, order, firstYear, lastYear);
 
             configCompetitions.Add(name, competition);
 
-            league.ReferenceCompetitions.Add(new ReferenceCompetition()
-            {
-                League = league,
-                Competition = competition,
-                Order = order
-            });
+            league.ReferenceCompetitions.Add(competition);
 
             return competition;
 
         }
         
-        public Playoff CreateAndAddPlayoff(League league, string name, int order, Season season)
+        public Playoff CreateAndAddPlayoff(League league, string name, Season season)
         {
             Playoff playoff = new Playoff(league, name, 0, true, true, 0, season);
 
             playoffs.Add(name, playoff);
 
-            league.ReferenceCompetitions.Add(new ReferenceCompetition()
-            {
-                League = league,
-                Competition = null,
-                Order = order
-            });
-
             return playoff;
         }
 
-        public Division CreateAndAddDivision(League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules)
+        public Division CreateAndAddDivision(ConfigDivision configDivision, League league, Season season, string name, string shortName, int level, int order, Division parent, List<SortingRule> sortingRules)
         {
-            Division div = new Division(league, season, name, shortName, level, order, parent, sortingRules);
+            Division div = new Division(configDivision, league, season, name, shortName, level, order, parent, sortingRules);
             divisions.Add(div.Name, div);
             return div;
         }
@@ -348,6 +335,10 @@ namespace JodyApp.Service.Test.DataFolder
             CreateObjects<T>(method, null, collection);
         }
 
+        public ConfigDivision GetConfigDivision(string name)
+        {
+            return configDivisions.ContainsKey(name) ? configDivisions[name] : null;
+        }
 
         public virtual void UpdateData()
         {

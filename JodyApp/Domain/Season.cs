@@ -91,19 +91,9 @@ namespace JodyApp.Domain
 
         public Division CreateDivisionForSeason(ConfigDivision configDivision)
         {
-            Division newDivision = new Division()
-            {
-                Season = this,
-                Name = configDivision.Name,
-                ShortName = configDivision.ShortName,
-                Level = configDivision.Level,
-                Order = configDivision.Order,
-                League = this.League,
-                Teams = new List<Team>(),
-                Rankings = new List<DivisionRank>()
-                //sorting rules must be handled seperately
-                //parent must be handled seperately
-            };
+            Division newDivision = new Division(configDivision, League, this, configDivision.Name, configDivision.ShortName, configDivision.Level, configDivision.Order, null);
+            //parent is set later
+
 
             return newDivision;
         }

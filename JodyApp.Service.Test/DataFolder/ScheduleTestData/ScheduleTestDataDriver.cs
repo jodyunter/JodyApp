@@ -16,9 +16,9 @@ namespace JodyApp.Service.Test.DataFolder
         public override void PrivateCreateDivisions()
         {            
 
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "League", null, 0, 1, null, null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "Div 1", null, 1, 1, divisions["League"], null);
-            CreateAndAddDivision(leagues[LeagueName], seasons["My Season"], "Div 2", null, 1, 2, divisions["League"], null);
+            CreateAndAddDivision(GetConfigDivision("League"), leagues[LeagueName], seasons["My Season"], "League", null, 0, 1, null, null);
+            CreateAndAddDivision(GetConfigDivision("Div 1"), leagues[LeagueName], seasons["My Season"], "Div 1", null, 1, 1, divisions["League"], null);
+            CreateAndAddDivision(GetConfigDivision("Div 2"), leagues[LeagueName], seasons["My Season"], "Div 2", null, 1, 2, divisions["League"], null);
             
         }
 

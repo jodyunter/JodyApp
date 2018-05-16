@@ -28,10 +28,14 @@ namespace JodyApp.Service
             ).ToList();
         }
 
-        #region competition
-        public ConfigCompetition CreateCompetition(League league, string name, int type, ConfigCompetition reference, int? firstYear, int? lastYear)
+        public List<BaseConfigItem> GetActiveItems(List<BaseConfigItem> items, int currentYear)
         {
-            var newComp = new ConfigCompetition(league, name, type, reference, firstYear, lastYear);
+            return items.Where(i => i.FirstYear <= currentYear && (i.LastYear == null || i.LastYear >= currentYear)).ToList();
+        }
+        #region competition
+        public ConfigCompetition CreateCompetition(League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
+        {
+            var newComp = new ConfigCompetition(league, name, type, reference, order, firstYear, lastYear);
             db.ConfigCompetitions.Add(newComp);
 
             return newComp;
@@ -45,6 +49,14 @@ namespace JodyApp.Service
         public ConfigCompetition GetCompetitionById(int id)
         {
             return db.ConfigCompetitions.Where(c => c.Id == id).FirstOrDefault();
+        }
+
+        public List<ConfigCompetition> GetCompetitionsByLeague(League league, int year)
+        {
+            return db.ConfigCompetitions.Where(c =>
+                    c.League.Id == league.Id &&
+                    c.FirstYear != null && c.FirstYear <= year &&
+                    (c.LastYear == null || c.LastYear >= year)).ToList();
         }
         #endregion
         #region Teams  

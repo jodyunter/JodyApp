@@ -39,13 +39,14 @@ namespace JodyApp.Service.Test
         public void ShouldCreateCompetitionNoReference()
         {
             //also tests getby name
-            var newComp = configService.CreateCompetition(league, "First Comp", ConfigCompetition.SEASON, null, 1, 15);
+            var newComp = configService.CreateCompetition(league, "First Comp", ConfigCompetition.SEASON, null, 1, 1, 15);
 
             configService.Save();
 
             var comp = configService.GetCompetitionByName(league, "First Comp");
 
             AreEqual(comp, newComp);
+            AreEqual(1, league.ReferenceCompetitions.Count);
 
         }
 
@@ -53,8 +54,8 @@ namespace JodyApp.Service.Test
         public void ShouldCreateCompetitionWithReference()
         {
             //also tests get by id
-            var seasonComp = configService.CreateCompetition(league, "First Comp", ConfigCompetition.SEASON, null, 1, 15);
-            var playoffComp = configService.CreateCompetition(league, "Second Comp", ConfigCompetition.SEASON, seasonComp, 1, 15);
+            var seasonComp = configService.CreateCompetition(league, "First Comp", ConfigCompetition.SEASON, null, 1, 1, 15);
+            var playoffComp = configService.CreateCompetition(league, "Second Comp", ConfigCompetition.SEASON, seasonComp, 2, 1, 15);
 
             configService.Save();
 
@@ -62,6 +63,7 @@ namespace JodyApp.Service.Test
 
             AreEqual(comp, playoffComp);
             AreEqual(comp.Reference, seasonComp);
+            AreEqual(2, league.ReferenceCompetitions.Count);
         }
         #endregion
         #region Team
@@ -98,7 +100,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateDivisionNoParent()
         {
-            var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, null);
+            var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, 1, null);
             var newDivision = configService.CreateDivision(league, season, "Division 1", "Div 1", 1, 1, null, 1, null);
 
             configService.Save();
@@ -110,7 +112,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateDivisionWithParent()
         {
-            var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, null);
+            var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, 1, null);
             var parentDivision = configService.CreateDivision(league, season, "Parent", "P 1", 1, 1, null, 1, null);
             var newDivision = configService.CreateDivision(league, season, "Division 1", "Div 1", 1, 1, parentDivision, 1, null);
 
@@ -128,7 +130,7 @@ namespace JodyApp.Service.Test
         public void ShouldCreateScheduleRule()
         {
             //also tests get by Id
-            var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, null);
+            var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, 1, null);
             var division = configService.CreateDivision(league, season, "Division 1", "Div 1", 0, 0, null, 1, null);
             var team = configService.CreateTeam("Team 1", 5, division, league, 1, null);
             var newRule = configService.CreateScheduleRuleByDivisionVsTeam(league, season, "Rule 1", division, team, true, 1, 1, false);
@@ -141,7 +143,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetScheduleRuleByName()
         {
-            var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, null);
+            var season = configService.CreateCompetition(league, "Season", ConfigCompetition.SEASON, null, 1, 1, null);
             var division = configService.CreateDivision(league, season, "Division 1", "Div 1", 0, 0, null, 1, null);
             var team = configService.CreateTeam("Team 1", 5, division, league, 1, null);
             var newRule = configService.CreateScheduleRuleByDivisionVsTeam(league, season, "Rule 1", division, team, true, 1, 1, false);
@@ -154,8 +156,8 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldGetScheduleRulesByCompetition()
         {
-            var season1 = configService.CreateCompetition(league, "Season1", ConfigCompetition.SEASON, null, 1, null);
-            var season2 = configService.CreateCompetition(league, "Season2", ConfigCompetition.SEASON, null, 1, null);
+            var season1 = configService.CreateCompetition(league, "Season1", ConfigCompetition.SEASON, null, 1, 1, null);
+            var season2 = configService.CreateCompetition(league, "Season2", ConfigCompetition.SEASON, null, 2, 1, null);
             var division1 = configService.CreateDivision(league, season1, "Division 1", "Div 1", 0, 0, null, 1, null);
             var division2 = configService.CreateDivision(league, season2, "Division 2", "Div 2", 0, 0, null, 1, null);
 
@@ -201,7 +203,7 @@ namespace JodyApp.Service.Test
         public void ShouldCreateSortingRule()
         {
             //also tests get by id
-            var competition = configService.CreateCompetition(league, "Comp 1", ConfigCompetition.SEASON, null, 1, null);
+            var competition = configService.CreateCompetition(league, "Comp 1", ConfigCompetition.SEASON, null, 1, 1, null);
             var division = configService.CreateDivision(league, competition, "Division 1", "Div 1", 1, 1, null, 1, null);
             var newRule = configService.CreateSortingRule("Sorting RUle 1", 1, division, division, "1,2,3", 0, 0, 1, null);
 
@@ -216,7 +218,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateGroup()
         {
-            var playoff = configService.CreateCompetition(league, "Playoffs", ConfigCompetition.PLAYOFF, null, 1, null);
+            var playoff = configService.CreateCompetition(league, "Playoffs", ConfigCompetition.PLAYOFF, null, 1, 1, null);
             var sortByDivision = configService.CreateDivision(league, playoff, "Division 1", "Div 1", 1, 1, null, 1, null);
             var newGroup = configService.CreateGroup("Group 1", playoff, new List<ConfigGroupRule>(), sortByDivision, 1, null);
 
@@ -230,7 +232,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateGroupRule()
         {
-            var playoff = configService.CreateCompetition(league, "Playoffs", ConfigCompetition.PLAYOFF, null, 1, null);
+            var playoff = configService.CreateCompetition(league, "Playoffs", ConfigCompetition.PLAYOFF, null, 1, 1, null);
             var sortByDivision = configService.CreateDivision(league, playoff, "Division 1", "Div 1", 1, 1, null, 1, null);
             var group = configService.CreateGroup("Group 1", playoff, new List<ConfigGroupRule>(), sortByDivision, 1, null);
             var team = configService.CreateTeam("Team 1", 5, sortByDivision, league, 1, null);
@@ -247,7 +249,7 @@ namespace JodyApp.Service.Test
         [TestMethod]
         public void ShouldCreateSeriesRule()
         {
-            var playoff = configService.CreateCompetition(league, "Playoffs", ConfigCompetition.PLAYOFF, null, 1, null);
+            var playoff = configService.CreateCompetition(league, "Playoffs", ConfigCompetition.PLAYOFF, null, 1, 1, null);
             var sortByDivision = configService.CreateDivision(league, playoff, "Division 1", "Div 1", 1, 1, null, 1, null);
             var homeTeamFromGroup = configService.CreateGroup("Group 1", playoff, new List<ConfigGroupRule>(), sortByDivision, 1, null);
             var awayTeamFromGroup = configService.CreateGroup("Group 2", playoff, new List<ConfigGroupRule>(), sortByDivision, 1, null);
