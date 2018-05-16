@@ -103,7 +103,7 @@ namespace JodyApp.Domain.Playoffs
                 if (!groupMap.ContainsKey(group.Name)) groupMap.Add(group.Name, new List<Team>());
                 SetupGroupTeamList(group, groupMap[group.Name]);
             });
-
+            
             return groupMap;
         }
 
@@ -117,7 +117,7 @@ namespace JodyApp.Domain.Playoffs
 
             if (group.SortByDivision != null)
             {
-                teamList = teamList.OrderBy(t => group.SortByDivision.GetRank(t)).ToList();
+                teamList = teamList.OrderBy(t => group.SortByDivision.GetRank(t)).ToList();                
             }
 
         }
@@ -168,7 +168,7 @@ namespace JodyApp.Domain.Playoffs
             SeriesRule seriesRule = series.Rule;
             var homeTeamList = groupings[seriesRule.HomeTeamFromGroup.Name];
             var awayTeamList = groupings[seriesRule.AwayTeamFromGroup.Name];
-
+            
             var homeTeam = GetOrSetupPlayoffTeam(homeTeamList[seriesRule.HomeTeamFromRank - 1]);
             var awayTeam = GetOrSetupPlayoffTeam(awayTeamList[seriesRule.AwayTeamFromRank - 1]);            
             
