@@ -25,6 +25,9 @@ namespace JodyApp.Domain
         public int MaxOverTimePeriods { get; set; }
         //todo: implement Golden Goal or full OT Periods
 
+        private int[] goals = { 50, 150, 300, 550, 800, 950, 1030, 1080, 1100, 1110, 1115 };
+        private int[] change = { 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100 };
+
         public Game() { }
 
         public Game(Season season, Series series, Team homeTeam, Team awayTeam, int day, int gameNumber, int homeScore, int awayScore, bool canTie, int maxOverTimePeriods, bool complete)
@@ -73,7 +76,7 @@ namespace JodyApp.Domain
 
         public int GetScore(Team team, Team opponent, Random random)
         {
-            return random.Next(BASE_GAME_SCORE + (team.Skill - opponent.Skill) / 2);
+            return (int)random.NextDouble() * 1000 % (BASE_GAME_SCORE + (team.Skill - opponent.Skill) / 5);
         }
 
         public bool IsOTPeriodRequired(int currentOtPeriod)

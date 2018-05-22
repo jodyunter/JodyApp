@@ -13,9 +13,9 @@ namespace JodyApp.Console.Views.League
         {
             ViewModel = new LeagueListViewModel();
         }
-        public override Func<string> GetHeaderStringForSingleEntity { get { return LeagueDisplay.GetHeaderStringForSingleEntity; } }
+        public override Func<string> GetHeaderStringForSingleEntity { get { return null; } }
 
-        public override Func<BaseViewModel, string> GetDisplayStringNoHeaderSingleEntity { get { return LeagueDisplay.GetDisplayStringNoHeaderSingleEntity; } }
+        public override Func<BaseViewModel, string> GetDisplayStringNoHeaderSingleEntity { get { return null; } }
 
     }
 }
