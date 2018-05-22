@@ -182,39 +182,37 @@ namespace JodyApp.Console
             ConfigService configService = new ConfigService(db);
             PlayoffService playoffService = new PlayoffService(db);
 
-            //SetupConfig(db, configService, leagueService);
+            SetupConfig(db, configService, leagueService);
 
-            //SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null, configService, leagueService);
+            SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null, configService, leagueService);
 
             var League = leagueService.GetByName(LeagueName);
             Random random = new Random();
-            for (int i = 0; i < 50; i++)
+            if (leagueService.IsYearDone(League)) League.CurrentYear++;
+
+            while (!leagueService.IsYearDone(League))
             {
-                if (leagueService.IsYearDone(League)) League.CurrentYear++;
 
-                while (!leagueService.IsYearDone(League))
+                var nextCompetition = leagueService.GetNextCompetition(League);
+
+                if (!nextCompetition.Started) nextCompetition.StartCompetition();
+                competitionService.PlayGames(competitionService.GetNextGames(nextCompetition), nextCompetition, random);
+
+                if (nextCompetition.IsComplete())
                 {
-
-                    var nextCompetition = leagueService.GetNextCompetition(League);
-
-                    if (!nextCompetition.Started) nextCompetition.StartCompetition();
-                    competitionService.PlayGames(competitionService.GetNextGames(nextCompetition), nextCompetition, random);
-
-                    if (nextCompetition.IsComplete())
+                    if (nextCompetition is Season)
                     {
-                        if (nextCompetition is Season)
-                        {
-                            PrintSeason(seasonService, (Season)nextCompetition, League, divisionService.GetByName("League", League, (Season)nextCompetition), "League");
-                            seasonService.SortAllDivisions((Season)nextCompetition);
-                        }
-                        else if (nextCompetition is Playoff) PrintPlayoff((Playoff)nextCompetition);
+                        PrintSeason(seasonService, (Season)nextCompetition, League, divisionService.GetByName("League", League, (Season)nextCompetition), "League");
+                        seasonService.SortAllDivisions((Season)nextCompetition);
                     }
-
-                    leagueService.Save();
-
+                    else if (nextCompetition is Playoff) PrintPlayoff((Playoff)nextCompetition);
                 }
-                UpdateTeams(db, League, random);
+
+                leagueService.Save();
+
             }
+            UpdateTeams(db, League, random);
+            
             var div = configService.GetDivisionByName(League, "League");
             var divisionFormat = "{0,5}. {1,15}";
             WriteLine(div.Name + " Champions");
@@ -232,6 +230,7 @@ namespace JodyApp.Console
                 WriteLine(string.Format(playoffFormat, s.Playoff.Year, s.GetWinner().Name, s.GetTeamWins(s.GetWinner()), s.GetTeamWins(s.GetLoser()), s.GetLoser().Name));
             });
      
+
             WriteLine("Press Enter to End the Program");
             ReadLine();
 
