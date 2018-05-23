@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class StandingsRecordViewModel:SingleEntityViewModel
+    public class StandingsRecordViewModel:BaseViewModel
     {
         public string Name { get; set; }
         public int Rank { get; set; }
@@ -33,9 +33,6 @@ namespace JodyApp.ViewModel
             GoalDifference = goalDifference;
         }
 
-        public override void SetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

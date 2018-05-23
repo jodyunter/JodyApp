@@ -13,6 +13,6 @@ namespace JodyApp.ViewModel
             Error = true;
             ErrorMessages.Add(message);
         }
-
+        
     }
 }

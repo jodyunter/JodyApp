@@ -10,6 +10,10 @@ namespace JodyApp.ViewModel
 {
     public class SeasonViewModel : SingleEntityViewModel
     {
+        public static string SEASON_NAME = "Name";
+        public static string YEAR = "Year";
+        public static string LEAGUE_NAME = "League Name";
+        
         public int? Id { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
@@ -29,5 +33,21 @@ namespace JodyApp.ViewModel
             LeagueName = season.League.Name;
             Complete = season.IsComplete();
         }
+
+        public override string[] GetInputFields()
+        {
+            return new string[]
+            {
+               SEASON_NAME, YEAR, LEAGUE_NAME
+            };
+        }
+        public override void CreateModelFromInput(Dictionary<string, string> inputs)
+        {            
+            Name = inputs[SEASON_NAME];
+            Year = int.Parse(inputs[YEAR]);
+            LeagueName = inputs[LEAGUE_NAME];                  
+        }
+
+        
     }
 }

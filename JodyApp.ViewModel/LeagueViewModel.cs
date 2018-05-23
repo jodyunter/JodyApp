@@ -10,6 +10,9 @@ namespace JodyApp.ViewModel
 {
     public class LeagueViewModel:SingleEntityViewModel
     {
+        public static string LEAGUE_NAME = "League Name";
+        public static string CURRENT_YEAR = "Current Year";
+                
         LeagueService leagueService;
 
         public int? Id { get; set; }
@@ -27,7 +30,22 @@ namespace JodyApp.ViewModel
             CurrentYear = currentYear;
             IsComplete = isComplete;
             CurrentCompetition = currentCompetition;
-        }        
+        }
+
+
+        public override string[] GetInputFields()
+        {
+            return new string[]
+            {
+                LEAGUE_NAME, CURRENT_YEAR
+            };
+        }
+
+        public override void CreateModelFromInput(Dictionary<string, string> inputs)
+        {
+            LeagueName = inputs[LEAGUE_NAME];
+            CurrentYear = int.Parse(inputs[CURRENT_YEAR]);            
+        }
 
         public override void SetById(int id)
         {
@@ -45,7 +63,6 @@ namespace JodyApp.ViewModel
             }
 
         }
-    
 
     }
 }

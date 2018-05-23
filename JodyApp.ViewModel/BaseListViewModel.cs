@@ -23,5 +23,6 @@ namespace JodyApp.ViewModel
                 BaseViewModels.Add(model);
             });
         }
+
     }
 }

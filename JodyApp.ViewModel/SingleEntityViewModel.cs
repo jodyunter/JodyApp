@@ -10,5 +10,10 @@ namespace JodyApp.ViewModel
     {
 
         public abstract void SetById(int id);
+
+
+        public abstract string[] GetInputFields();
+        public abstract void CreateModelFromInput(Dictionary<string, string> inputs);
+
     }
 }

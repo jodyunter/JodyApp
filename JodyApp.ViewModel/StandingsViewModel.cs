@@ -120,7 +120,7 @@ namespace JodyApp.ViewModel
             StandingsName = league.Name;
 
         }
-
+        
 
     }
 }

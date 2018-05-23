@@ -55,6 +55,7 @@
     <Compile Include="Controllers\LeagueController.cs" />
     <Compile Include="Controllers\SeasonController.cs" />
     <Compile Include="Controllers\StartController.cs" />
+    <Compile Include="Flow\GatherInput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\BaseListView.cs" />
