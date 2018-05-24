@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseListViewModel.cs" />
+    <Compile Include="League\LeagueUpdateModel.cs" />
     <Compile Include="SingleEntityViewModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="LeagueListViewModel.cs" />

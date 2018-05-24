@@ -9,7 +9,7 @@ namespace JodyApp.Console.Flow
 {
     public class GatherInput
     {
-        public Dictionary<string, string> GetInput(string[] fields)
+        public static Dictionary<string, string> GetInput(string[] fields)
         {
             var results = new Dictionary<string, string>();
 
@@ -22,7 +22,7 @@ namespace JodyApp.Console.Flow
 
         }
 
-        public string ReadInput(string text, bool textOnNewLine)
+        public static string ReadInput(string text, bool textOnNewLine)
         {
             if (textOnNewLine)
                 WriteLine(text + ":");
