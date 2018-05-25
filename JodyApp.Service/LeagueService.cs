@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain.Config;
+using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
@@ -70,11 +71,7 @@ namespace JodyApp.Service
                 return currentComp;
             }
         }
-            
-        public League GetById(int id)
-        {
-            return db.Leagues.Where(l => l.Id == id).FirstOrDefault();
-        }
+
         public League GetByName(string name)
         {
             return db.Leagues.Where(l => l.Name == name).FirstOrDefault();
@@ -107,6 +104,10 @@ namespace JodyApp.Service
             
         }
 
+        public League GetById(int id)
+        {
+            return db.Leagues.Where(l => l.Id == id).FirstOrDefault();
+        }
         public League CreateLeague(string name)
         {
             var league = new League(name);
@@ -115,13 +116,29 @@ namespace JodyApp.Service
 
             return league;
         }
-        public List<League> GetAll()
+        
+        public LeagueListViewModel GetAll()
         {
-            return db.Leagues.ToList();
+            var result = new LeagueListViewModel(new List<LeagueViewModel>());
+
+            db.Leagues.ToList().ForEach(l =>
+            {
+                result.Items.Add(DomainToDTO(l));
+            });
+
+            return result;
         }
 
+        public LeagueViewModel DomainToDTO(League league)
+        {
+            var viewModel = new LeagueViewModel(league.Id, league.Name, league.CurrentYear, null);
 
+            var nextComp = GetNextCompetition(league);
+            viewModel.CurrentCompetition = nextComp == null ? "" : nextComp.Name;
 
+            return viewModel;
+        }
 
+        
     }
 }

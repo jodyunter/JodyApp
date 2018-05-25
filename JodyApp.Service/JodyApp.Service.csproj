@@ -59,6 +59,10 @@
     <Compile Include="TeamService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JodyApp.ViewModel\JodyApp.ViewModel.csproj">
+      <Project>{3a9f404a-0088-4d33-b294-561891f90d3f}</Project>
+      <Name>JodyApp.ViewModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JodyApp\JodyApp.Data.csproj">
       <Project>{b3e35e97-ef50-4357-83de-38d24b553128}</Project>
       <Name>JodyApp.Data</Name>

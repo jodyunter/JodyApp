@@ -1,289 +1,380 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using JodyApp.Service;
-using JodyApp.Domain.Table;
-using JodyApp.Domain;
 using JodyApp.Database;
-using JodyApp.Service.Test.DataFolder;
 
-using JodyApp.Domain.Config;
-using JodyApp.Domain.Table.Display;
-using JodyApp.Domain.Playoffs;
-using JodyApp.Domain.Playoffs.Display;
-using JodyApp.Console.Views;
-using JodyApp.ViewModel;
-using JodyApp.Console.Controllers;
-using static System.Console;
-
-namespace JodyApp.Console
+namespace JodyApp.ConsoleApp
 {
     class Program
     {
-        static string LeagueName = "Jody's League";
-        static string RegularSeasonName = "Regular Season";
-        static string PlayoffName = "Playoffs";
-        static string CentralDivisionName = "Central Division";
-        static string WestDivisionName = "West Division";
-        static string EastDivisionName = "East Division";
-        static string AtlanticDivisionName = "Atlantic Division";
-        static string SouthDivisionName = "South Division";
-        static string ChampionshipSeriesName = "Championship Series";        
+        const string _readPrompt = "SportsApp> ";
+        const string _commandNamespace = "JodyApp.ConsoleApp.Commands";
+        public static Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> _commandLibraries;
 
-        static void UpdateTeams(JodyAppContext db, League league, Random random)
-        {
-            ConfigService configService = new ConfigService(db);
-            configService.SetNewSkills(league, random);
-            configService.Save();
-        }
-        
-        static void SetupPlayoff(string leagueName, string name, int type, string referenceName, int order, int? firstYear, int? lastYear, ConfigService configService, LeagueService leagueService)
-        {
-            var League = leagueService.GetByName(leagueName);
-            var CCReference = configService.GetCompetitionByName(League, referenceName);
-            var CCPlayoff = configService.CreateCompetition(League, name, type, CCReference, order, firstYear, lastYear);
-
-            var CDLeague = configService.GetDivisionByName(League, "League");
-            var CDCentral = configService.GetDivisionByName(League, CentralDivisionName);
-            var CDWest = configService.GetDivisionByName(League, WestDivisionName);
-            var CDEast = configService.GetDivisionByName(League, EastDivisionName);
-            var CDSouth = configService.GetDivisionByName(League, SouthDivisionName);
-
-            var GPool = configService.CreateGroup("Playoff Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
-            configService.CreateGroupRuleFromDivision(GPool, "Playoff Pool Rule 1", CDLeague, 1, 12, firstYear, lastYear);
-
-            var SRQ1 = configService.CreateSeriesRule(CCPlayoff, "Q-1", 1, GPool, 5, GPool, 12, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQ2 = configService.CreateSeriesRule(CCPlayoff, "Q-2", 1, GPool, 6, GPool, 11, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQ3 = configService.CreateSeriesRule(CCPlayoff, "Q-3", 1, GPool, 7, GPool, 10, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQ4 = configService.CreateSeriesRule(CCPlayoff, "Q-4", 1, GPool, 8, GPool, 9, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-
-            var GRound1Winners = configService.CreateGroup("Round 1 Winners", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 1", "Q-1", firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 2", "Q-2", firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 3", "Q-3", firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 4", "Q-4", firstYear, lastYear);
-
-            var SRQF1 = configService.CreateSeriesRule(CCPlayoff, "QF-1", 2, GPool, 1, GRound1Winners, 4, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQF2 = configService.CreateSeriesRule(CCPlayoff, "QF-2", 2, GPool, 2, GRound1Winners, 3, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQF3 = configService.CreateSeriesRule(CCPlayoff, "QF-3", 2, GPool, 3, GRound1Winners, 2, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQF4 = configService.CreateSeriesRule(CCPlayoff, "QF-4", 2, GPool, 4, GRound1Winners, 1, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-
-            var SemiFinalPool = configService.CreateGroup("Semi Final Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP1", SRQF1.Name, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP2", SRQF2.Name, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP3", SRQF3.Name, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP4", SRQF4.Name, firstYear, lastYear);
-
-            var SRSF1 = configService.CreateSeriesRule(CCPlayoff, "SF-1", 3, SemiFinalPool, 1, SemiFinalPool, 4, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRSF2 = configService.CreateSeriesRule(CCPlayoff, "SF-2", 3, SemiFinalPool, 2, SemiFinalPool, 3, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-
-            var FinalPool = configService.CreateGroup("Final Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(FinalPool, "Final Pool 1", SRSF1.Name, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(FinalPool, "Final Pool 2", SRSF2.Name, firstYear, lastYear);
-
-            var SRFinal = configService.CreateSeriesRule(CCPlayoff, ChampionshipSeriesName, 4, FinalPool, 1, FinalPool, 2, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-
-            configService.Save();
-
-        }
-        
-        static void SetupConfig(JodyAppContext db, ConfigService configService, LeagueService leagueService)
-        {
-            League League;
-            ConfigCompetition CCSeason;
-            ConfigTeam CTEdmonton, CTCalgary, CTVancouver, CTVictoria, CTSeattle;
-            ConfigTeam CTWinnipeg, CTSaskatoon, CTMinnesota, CTColorado, CTChicago;
-            ConfigTeam CTDetroit, CTToronto, CTHamilton, CTOttawa, CTMontreal;
-            ConfigTeam CTWashington, CTPittsburgh, CTPhiladelphia, CTNewYork, CTQuebecCity;
-            ConfigTeam CTTampaBay, CTAtlanta, CTDallas, CTColumbus, CTNashville;
-            ConfigDivision CDLeague, CDWest, CDEast, CDCentral, CDAtlantic, CDSouth;
-
-
-            SimpleTestDataDriver driver = new SimpleTestDataDriver();
-
-            driver.DeleteAllData();
-            
-            League = leagueService.CreateLeague(LeagueName);
-            CCSeason = configService.CreateCompetition(League, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, null);            
-
-            CTEdmonton = configService.CreateTeam("Edmonton", 5, null, League, 1, null);
-            CTCalgary = configService.CreateTeam("Calgary", 5, null, League, 1, null);
-            CTVancouver = configService.CreateTeam("Vancouver", 5, null, League, 1, null);
-            CTVictoria = configService.CreateTeam("Victoria", 5, null, League, 1, null);
-            CTSeattle = configService.CreateTeam("Seattle", 5, null, League, 1, null);
-            CTWinnipeg = configService.CreateTeam("Winnipeg", 5, null, League, 1, null);
-            CTSaskatoon = configService.CreateTeam("Saskatoon", 5, null, League, 1, null);
-            CTMinnesota = configService.CreateTeam("Minnesota", 5, null, League, 1, null);
-            CTColorado = configService.CreateTeam("Colorado", 5, null, League, 1, null);
-            CTChicago = configService.CreateTeam("Chicago", 5, null, League, 1, null);
-            CTDetroit = configService.CreateTeam("Detroit", 5, null, League, 1, null);
-            CTToronto = configService.CreateTeam("Toronto", 5, null, League, 1, null);
-            CTHamilton = configService.CreateTeam("Hamilton", 5, null, League, 1, null);
-            CTMontreal = configService.CreateTeam("Montreal", 5, null, League, 1, null);
-            CTOttawa = configService.CreateTeam("Ottawa", 5, null, League, 1, null);
-            CTWashington = configService.CreateTeam("Washington", 5, null, League, 1, null);
-            CTPittsburgh = configService.CreateTeam("Pittsburgh", 5, null, League, 1, null);
-            CTPhiladelphia = configService.CreateTeam("Philadelphia", 5, null, League, 1, null);
-            CTQuebecCity = configService.CreateTeam("Quebec City", 5, null, League, 1, null);
-            CTNewYork = configService.CreateTeam("New York", 5, null, League, 1, null);
-            CTTampaBay = configService.CreateTeam("Tampa Bay", 5, null, League, 1, null);
-            CTAtlanta = configService.CreateTeam("Atlanta", 5, null, League, 1, null);
-            CTDallas = configService.CreateTeam("Dallas", 5, null, League, 1, null);
-            CTColumbus = configService.CreateTeam("Columbus", 5, null, League, 1, null);
-            CTNashville = configService.CreateTeam("Nashville", 5, null, League, 1, null);
-
-            var WestTeams = new List<ConfigTeam>() { CTEdmonton, CTCalgary, CTVancouver, CTVictoria, CTSeattle };
-            var CentralTeams = new List<ConfigTeam>() { CTWinnipeg, CTSaskatoon, CTMinnesota, CTColorado, CTChicago };
-            var EastTeams = new List<ConfigTeam>() { CTDetroit, CTToronto, CTHamilton, CTOttawa, CTMontreal };
-            var AtlanticTeams = new List<ConfigTeam>() { CTWashington, CTPittsburgh, CTPhiladelphia, CTNewYork, CTQuebecCity };
-            var SouthTeams = new List<ConfigTeam>() { CTAtlanta, CTDallas, CTNashville, CTColumbus, CTTampaBay };
-
-            CDLeague = configService.CreateDivision(League, CCSeason, "League", null, 1, 1, null, 1, null);
-            CDWest = configService.CreateDivision(League, CCSeason, WestDivisionName, "West", 2, 2, CDLeague, 1, null);
-            CDCentral = configService.CreateDivision(League, CCSeason, CentralDivisionName, "Central", 2, 3, CDLeague, 1, null);
-            CDEast = configService.CreateDivision(League, CCSeason, EastDivisionName, "East", 2, 3, CDLeague, 1, null);
-            CDAtlantic = configService.CreateDivision(League, CCSeason, AtlanticDivisionName, "Atlantic", 2, 4, CDLeague, 1, null);
-            CDSouth = configService.CreateDivision(League, CCSeason, SouthDivisionName, "South", 2, 5, CDLeague, 1, null);
-
-            CDCentral.Teams.AddRange(CentralTeams);
-            CDWest.Teams.AddRange(WestTeams);
-            CDEast.Teams.AddRange(EastTeams);
-            CDAtlantic.Teams.AddRange(AtlanticTeams);
-            CDSouth.Teams.AddRange(SouthTeams);
-
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 1", CDLeague, true, 1, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 2", CDEast, true, 2, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 3", CDWest, true, 2, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 4", CDAtlantic, true, 2, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 5", CDCentral, true, 2, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 6", CDSouth, true, 2, 1, false, 1, null);
-
-
-            configService.CreateSortingRule("Division Leaders 1", 1, CDLeague, CDEast, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-            configService.CreateSortingRule("Division Leaders 2", 1, CDLeague, CDWest, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-            configService.CreateSortingRule("Division Leaders 3", 1, CDLeague, CDCentral, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-            configService.CreateSortingRule("Division Leaders 4", 1, CDLeague, CDAtlantic, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-            configService.CreateSortingRule("Division Leaders 5", 1, CDLeague, CDSouth, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-
-            configService.Save();
-            
-        }
-
-        static void UpdateScheuleRules(string leagueName, string competitionName, int? firstYear, int? lastYear,ConfigService configService, LeagueService leagueService)
-        {
-            var League = leagueService.GetByName(leagueName);
-            var CCSeason = configService.GetCompetitionByName(League, competitionName);
-            var rule1 = configService.GetScheduleRuleByName(League, CCSeason, "Schedule Rule 1");
-            var rule2 = configService.GetScheduleRuleByName(League, CCSeason, "Schedule Rule 2");
-            var rule3 = configService.GetScheduleRuleByName(League, CCSeason, "Schedule Rule 3");
-
-            rule2.LastYear = lastYear;
-            rule3.LastYear = lastYear;
-
-            configService.Save();
-        }
-        static void AddTeam(string name, int skill, string divisionName, int? startYear, int? lastYear, ConfigService configService, LeagueService leagueService)
-        {
-            var League = leagueService.GetByName(LeagueName);
-            var CDDivision = configService.GetDivisionByName(League, divisionName);
-            var CTNewTeam = configService.CreateTeam(name, skill, CDDivision, League, startYear, lastYear);                       
-
-            configService.Save();           
-
-        }
-        
         static void Main(string[] args)
-        {            
-            
-            JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
-            LeagueService leagueService = new LeagueService(db);
-            CompetitionService competitionService = new CompetitionService(db);
-            SeasonService seasonService = new SeasonService(db);
-            DivisionService divisionService = new DivisionService(db);
-            ConfigService configService = new ConfigService(db);
-            PlayoffService playoffService = new PlayoffService(db);
+        {
+            Console.Title = "Jody's App";
 
-            //SetupConfig(db, configService, leagueService);
+            // Any static classes containing commands for use from the 
+            // console are located in the Commands namespace. Load 
+            // references to each type in that namespace via reflection:
+            _commandLibraries = new Dictionary<string, Dictionary<string,
+                    IEnumerable<ParameterInfo>>>();
 
-            //SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null, configService, leagueService);
+            // Use reflection to load all of the classes in the Commands namespace:
+            var q = from t in Assembly.GetExecutingAssembly().GetTypes()
+                    where t.IsClass && t.Namespace == _commandNamespace
+                    select t;
+            var commandClasses = q.ToList();
 
-            var League = leagueService.GetByName(LeagueName);
-            Random random = new Random();
-            if (leagueService.IsYearDone(League)) League.CurrentYear++;
-
-            while (!leagueService.IsYearDone(League))
+            foreach (var commandClass in commandClasses)
             {
-
-                var nextCompetition = leagueService.GetNextCompetition(League);
-
-                if (!nextCompetition.Started) nextCompetition.StartCompetition();
-                competitionService.PlayGames(competitionService.GetNextGames(nextCompetition), nextCompetition, random);
-
-                if (nextCompetition.IsComplete())
+                // Load the method info from each class into a dictionary:
+                var methods = commandClass.GetMethods(BindingFlags.Static | BindingFlags.Public);
+                var methodDictionary = new Dictionary<string, IEnumerable<ParameterInfo>>();
+                foreach (var method in methods)
                 {
-                    if (nextCompetition is Season)
-                    {
-                        PrintSeason(seasonService, (Season)nextCompetition, League, divisionService.GetByName("League", League, (Season)nextCompetition), "League");
-                        seasonService.SortAllDivisions((Season)nextCompetition);
-                    }
-                    else if (nextCompetition is Playoff) PrintPlayoff((Playoff)nextCompetition);
+                    string commandName = method.Name;
+                    methodDictionary.Add(commandName, method.GetParameters());
                 }
 
-                leagueService.Save();
+                // Add the dictionary of methods for the current class into a dictionary of command classes:
+                _commandLibraries.Add(commandClass.Name, methodDictionary);
+            }
+
+            JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
+            Run(db);
+        }
+
+        static void Run(JodyAppContext db)
+        {
+            while (true)
+            {
+                var consoleInput = ReadFromConsole();
+                if (string.IsNullOrWhiteSpace(consoleInput)) continue;
+                try
+                {
+                    // Create a ConsoleCommand instance:
+                    var cmd = new ConsoleCommand(consoleInput);
+                    
+                    // Execute the command:
+                    string result = Execute(cmd);
+
+                    // Write out the result:
+                    WriteToConsole(result);
+                }
+                catch (Exception ex)
+                {
+                    // OOPS! Something went wrong - Write out the problem:
+                    WriteToConsole(ex.Message);
+                }
+            }
+
+        }
+
+
+        static string Execute(ConsoleCommand command)
+        {
+            var badCommandMessage_NoClassName = string.Format("No commands found for {0}.", command.LibraryClassName);
+            var badCommandMessage_NoMethodName = string.Format("No command {0} exists in {1}", command.Name, command.LibraryClassName);
+
+            if (!_commandLibraries.ContainsKey(command.LibraryClassName))
+            {
+                return badCommandMessage_NoClassName;
 
             }
-            UpdateTeams(db, League, random);
+            var methodDictionary = _commandLibraries[command.LibraryClassName];
+            if (!methodDictionary.ContainsKey(command.Name))
+            {
+                return badCommandMessage_NoMethodName;
+            }
+
+            // Make sure the corret number of required arguments are provided:
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            var methodParameterValueList = new List<object>();
+            IEnumerable<ParameterInfo> paramInfoList = methodDictionary[command.Name].ToList();
+
+            // Validate proper # of required arguments provided. Some may be optional:
+            var requiredParams = paramInfoList.Where(p => p.IsOptional == false);
+            var optionalParams = paramInfoList.Where(p => p.IsOptional == true);
+            int requiredCount = requiredParams.Count();
+            int optionalCount = optionalParams.Count();
+            int providedCount = command.Arguments.Count();
+
+            if (requiredCount > providedCount)
+            {
+                return string.Format(
+                    "Missing required argument. {0} required, {1} optional, {2} provided",
+                    requiredCount, optionalCount, providedCount);
+            }
+
+            // Make sure all arguments are coerced to the proper type, and that there is a 
+            // value for every emthod parameter. The InvokeMember method fails if the number 
+            // of arguments provided does not match the number of parameters in the 
+            // method signature, even if some are optional:
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            if (paramInfoList.Count() > 0)
+            {
+                // Populate the list with default values:
+                foreach (var param in paramInfoList)
+                {
+                    // This will either add a null object reference if the param is required 
+                    // by the method, or will set a default value for optional parameters. in 
+                    // any case, there will be a value or null for each method argument 
+                    // in the method signature:
+                    methodParameterValueList.Add(param.DefaultValue);
+                }
+
+                // Now walk through all the arguments passed from the console and assign 
+                // accordingly. Any optional arguments not provided have already been set to 
+                // the default specified by the method signature:
+                for (int i = 0; i < command.Arguments.Count(); i++)
+                {
+                    var methodParam = paramInfoList.ElementAt(i);
+                    var typeRequired = methodParam.ParameterType;
+                    object value = null;
+                    try
+                    {
+                        // Coming from the Console, all of our arguments are passed in as 
+                        // strings. Coerce to the type to match the method paramter:
+                        value = CoerceArgument(typeRequired, command.Arguments.ElementAt(i));
+                        methodParameterValueList.RemoveAt(i);
+                        methodParameterValueList.Insert(i, value);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        string argumentName = methodParam.Name;
+                        string argumentTypeName = typeRequired.Name;
+                        string message =
+                            string.Format(""
+                            + "The value passed for argument '{0}' cannot be parsed to type '{1}'",
+                            argumentName, argumentTypeName);
+                        throw new ArgumentException(message);
+                    }
+                }
+            }
             
-            var div = configService.GetDivisionByName(League, "League");
-            var divisionFormat = "{0,5}. {1,15}";
-            WriteLine(div.Name + " Champions");
-            divisionService.GetListOfDivisionWinners(null, null, div).OrderByDescending(dr => dr.Division.Season.Year).ToList().ForEach(dr =>
+            // Set up to invoke the method using reflection:
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            Assembly current = typeof(Program).Assembly;
+
+            // Need the full Namespace for this:
+            Type commandLibaryClass =
+                current.GetType(_commandNamespace + "." + command.LibraryClassName);
+
+            object[] inputArgs = null;
+            if (methodParameterValueList.Count > 0)
             {
-                WriteLine(string.Format(divisionFormat, dr.Division.Season.Year, dr.Team.Name));
-            });
+                inputArgs = methodParameterValueList.ToArray();
+            }
 
-            var series = playoffService.GetSeries(ChampionshipSeriesName);
+            var typeInfo = commandLibaryClass;
 
-            WriteLine("Championship Results");
-            var playoffFormat = "{0,5}. {1,15} - {2,3}:{3,3} - {4,15}";
-            series.OrderByDescending(s => s.Playoff.Year).ToList().ForEach(s =>
+            // This will throw if the number of arguments provided does not match the number 
+            // required by the method signature, even if some are optional:
+            try
             {
-                WriteLine(string.Format(playoffFormat, s.Playoff.Year, s.GetWinner().Name, s.GetTeamWins(s.GetWinner()), s.GetTeamWins(s.GetLoser()), s.GetLoser().Name));
-            });
-     
-
-            WriteLine("Press Enter to End the Program");
-            ReadLine();
-
+                var result = typeInfo.InvokeMember(
+                    command.Name,
+                    BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public,
+                    null, null, inputArgs);
+                return result.ToString();
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
 
         }
 
-        public static void PrintSeason(SeasonService seasonService, Season season, League league, Division divisionToDisplay, params string[] divisionNamesToShow)
+        static void RunExitRoutine()
         {
-            seasonService.SortAllDivisions(season);
-
-            var teams = seasonService.GetTeamsInDivisionByRank(divisionToDisplay);
-            teams.Sort((a, b) => a.Stats.Rank.CompareTo(b.Stats.Rank));
-
-            StandingsView standingsView = new StandingsView();
-            StandingsViewModel standingsViewModel = new StandingsViewModel(seasonService.db);
-            standingsView.viewModel = standingsViewModel;
-            standingsViewModel.SetStandingsCurrentYear(league.Name, season.Name , divisionNamesToShow);
-            WriteLine(standingsView.GetDisplayString());
-
-
+            WriteToConsole("Exiting Program, press enter to close the windoer");
+            Console.ReadLine();
+            Environment.Exit(0);
         }
-
-        public static void PrintPlayoff(Playoff playoff)
-        {
-            for (int i = 1; i <= playoff.CurrentRound; i++)
+        public static void WriteToConsole(string message = "")
+        {            
+            
+            if (message.Length > 0)
             {
-                WriteLine("Round " + i + ":");
-                playoff.GetSeriesForRound(i).ForEach(series => WriteLine(PlayoffDisplay.PrintSeriesSummary(series)));
+                Console.WriteLine(message);
             }
         }
 
+
+        public static string ReadFromConsole(string promptMessage = "")
+        {
+            // Show a prompt, and get input:
+            Console.Write(_readPrompt + promptMessage);
+            return Console.ReadLine();
+        }
+
+        static object CoerceArgument(Type requiredType, string inputValue)
+        {
+            var requiredTypeCode = Type.GetTypeCode(requiredType);
+            string exceptionMessage =
+                string.Format("Cannnot coerce the input argument {0} to required type {1}",
+                inputValue, requiredType.Name);
+
+            object result = null;
+            switch (requiredTypeCode)
+            {
+                case TypeCode.String:
+                    result = inputValue;
+                    break;
+                case TypeCode.Int16:
+                    short number16;
+                    if (Int16.TryParse(inputValue, out number16))
+                    {
+                        result = number16;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.Int32:
+                    int number32;
+                    if (Int32.TryParse(inputValue, out number32))
+                    {
+                        result = number32;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.Int64:
+                    long number64;
+                    if (Int64.TryParse(inputValue, out number64))
+                    {
+                        result = number64;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.Boolean:
+                    bool trueFalse;
+                    if (bool.TryParse(inputValue, out trueFalse))
+                    {
+                        result = trueFalse;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.Byte:
+                    byte byteValue;
+                    if (byte.TryParse(inputValue, out byteValue))
+                    {
+                        result = byteValue;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.Char:
+                    char charValue;
+                    if (char.TryParse(inputValue, out charValue))
+                    {
+                        result = charValue;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.DateTime:
+                    DateTime dateValue;
+                    if (DateTime.TryParse(inputValue, out dateValue))
+                    {
+                        result = dateValue;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.Decimal:
+                    Decimal decimalValue;
+                    if (Decimal.TryParse(inputValue, out decimalValue))
+                    {
+                        result = decimalValue;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.Double:
+                    Double doubleValue;
+                    if (Double.TryParse(inputValue, out doubleValue))
+                    {
+                        result = doubleValue;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.Single:
+                    Single singleValue;
+                    if (Single.TryParse(inputValue, out singleValue))
+                    {
+                        result = singleValue;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.UInt16:
+                    UInt16 uInt16Value;
+                    if (UInt16.TryParse(inputValue, out uInt16Value))
+                    {
+                        result = uInt16Value;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.UInt32:
+                    UInt32 uInt32Value;
+                    if (UInt32.TryParse(inputValue, out uInt32Value))
+                    {
+                        result = uInt32Value;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                case TypeCode.UInt64:
+                    UInt64 uInt64Value;
+                    if (UInt64.TryParse(inputValue, out uInt64Value))
+                    {
+                        result = uInt64Value;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                    break;
+                default:
+                    throw new ArgumentException(exceptionMessage);
+            }
+            return result;
+        }
     }
-    }
+}

@@ -4,11 +4,27 @@ using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
+using System;
 
 namespace JodyApp.Database
 {
     public class JodyAppContext:DbContext
-    {        
+    {
+
+        private static JodyAppContext instance;
+        
+
+        public static JodyAppContext Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new JodyAppContext(CURRENT_DATABASE);
+                }
+                return instance;
+            }
+        }
 
         public const string HOME_PROD_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True";
         public const string HOME_TEST_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jodytest;Integrated Security=True";
@@ -28,7 +44,7 @@ namespace JodyApp.Database
         public static int CURRENT_DATABASE = WORK_TEST;
 
         public static string GetDataSource(int location) 
-        {
+        {            
             switch(location)
             {
                 case HOME_PROD:

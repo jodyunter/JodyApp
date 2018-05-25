@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain;
 
-namespace JodyApp.Console
+namespace JodyApp.ConsoleApp
 {
     public class ApplicationContext
     {

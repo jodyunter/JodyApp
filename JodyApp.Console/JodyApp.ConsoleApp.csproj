@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{72FD31AD-3720-43E7-ABA7-B91ABA5EC61E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>JodyApp.Console</RootNamespace>
-    <AssemblyName>JodyApp.Console</AssemblyName>
+    <RootNamespace>JodyApp.ConsoleApp</RootNamespace>
+    <AssemblyName>JodyApp.ConsoleApp</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -51,24 +51,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\LeagueController.cs" />
-    <Compile Include="Controllers\SeasonController.cs" />
-    <Compile Include="Controllers\StartController.cs" />
-    <Compile Include="Flow\GatherInput.cs" />
+    <Compile Include="Commands\DefaultCommands.cs" />
+    <Compile Include="Commands\HelpCommands.cs" />
+    <Compile Include="Commands\LeagueCommands.cs" />
+    <Compile Include="Commands\TeamCommands.cs" />
+    <Compile Include="ConsoleCommand.cs" />
+    <Compile Include="ProgramBackup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\BaseListView.cs" />
-    <Compile Include="Views\Display\LeagueDisplay.cs" />
-    <Compile Include="Views\Display\SeasonDisplay.cs" />
-    <Compile Include="Views\League\List.cs" />
-    <Compile Include="Views\SeasonListView.cs" />
-    <Compile Include="Views\LeagueListView.cs" />
-    <Compile Include="Views\SingleEntityView.cs" />
-    <Compile Include="Views\LeagueView.cs" />
-    <Compile Include="Views\SeasonView.cs" />
-    <Compile Include="Views\StandingsView.cs" />
     <Compile Include="Views\BaseView.cs" />
+    <Compile Include="Views\League\LeagueListView.cs" />
+    <Compile Include="Views\League\LeagueView.cs" />
+    <Compile Include="Views\Team\TeamListView.cs" />
+    <Compile Include="Views\Team\TeamView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
