@@ -44,7 +44,7 @@ namespace JodyApp.Service.Test
 
             while (!(service.IsYearDone(league)))
             {
-                var competition = service.GetNextCompetition(league);
+                var competition = competitionService.GetNextCompetition(league);
                 if (!competition.Started) competition.StartCompetition();
 
                 var games = competitionService.GetNextGames(competition);
@@ -62,7 +62,7 @@ namespace JodyApp.Service.Test
 
             while (!(service.IsYearDone(league)))
             {
-                var competition = service.GetNextCompetition(league);
+                var competition = competitionService.GetNextCompetition(league);
                 if (!competition.Started) competition.StartCompetition();
 
                 var games = competitionService.GetNextGames(competition);
@@ -89,6 +89,7 @@ namespace JodyApp.Service.Test
         }
         */
             
+            //move to competition service tests
         [TestMethod]
         public void ShouldGetNextCompetitionNewYear()
         {
@@ -97,13 +98,13 @@ namespace JodyApp.Service.Test
             AreEqual(league.Name, LeagueTestDataDriver.LeagueName);
             AreEqual(2, league.ReferenceCompetitions.Count);
 
-            var nextCompetition = service.GetNextCompetition(league);
+            var nextCompetition = competitionService.GetNextCompetition(league);
 
             IsNull(nextCompetition);
 
             league.CurrentYear++;
 
-            nextCompetition = service.GetNextCompetition(league);
+            nextCompetition = competitionService.GetNextCompetition(league);
 
             IsNotNull(nextCompetition);
             IsTrue(nextCompetition is Season);
@@ -118,7 +119,7 @@ namespace JodyApp.Service.Test
             var leagueA = service.GetByName(LeagueTestDataDriver.LeagueName);
             leagueA.CurrentYear++;
 
-            var nextCompetitionA = service.GetNextCompetition(leagueA);
+            var nextCompetitionA = competitionService.GetNextCompetition(leagueA);
 
             service.Save();
 
@@ -126,7 +127,7 @@ namespace JodyApp.Service.Test
 
             AreEqual(1, league.CurrentYear);
 
-            var nextCompetition = service.GetNextCompetition(league);
+            var nextCompetition =competitionService.GetNextCompetition(league);
 
             IsNotNull(nextCompetition);
             IsTrue(nextCompetition is Season);
@@ -142,7 +143,7 @@ namespace JodyApp.Service.Test
             var leagueA = service.GetByName(LeagueTestDataDriver.LeagueName);
             leagueA.CurrentYear++;
             
-            var nextCompetitionA = service.GetNextCompetition(leagueA);
+            var nextCompetitionA = competitionService.GetNextCompetition(leagueA);
             nextCompetitionA.StartCompetition();
 
             var gamesListA = competitionService.GetNextGames(nextCompetitionA);
@@ -153,7 +154,7 @@ namespace JodyApp.Service.Test
             service.Save();
 
             var league = service.GetByName(LeagueTestDataDriver.LeagueName);
-            var nextCompetition = service.GetNextCompetition(league);
+            var nextCompetition = competitionService.GetNextCompetition(league);
             IsTrue(nextCompetition.Started);
             IsFalse(nextCompetition.IsComplete());
 
@@ -169,7 +170,7 @@ namespace JodyApp.Service.Test
             var leagueA = service.GetByName(LeagueTestDataDriver.LeagueName);
             leagueA.CurrentYear++;
 
-            var nextCompetitionA = service.GetNextCompetition(leagueA);
+            var nextCompetitionA = competitionService.GetNextCompetition(leagueA);
             nextCompetitionA.StartCompetition();
 
             var gamesListA = competitionService.GetNextGames(nextCompetitionA);
@@ -181,7 +182,7 @@ namespace JodyApp.Service.Test
 
             var league = service.GetByName(LeagueTestDataDriver.LeagueName);
 
-            var nextCompetition = service.GetNextCompetition(league);
+            var nextCompetition = competitionService.GetNextCompetition(league);
 
             IsTrue(nextCompetition is Playoff);
 
@@ -195,7 +196,7 @@ namespace JodyApp.Service.Test
             var leagueA = service.GetByName(LeagueTestDataDriver.LeagueName);
             leagueA.CurrentYear++;
 
-            var nextCompetitionA = service.GetNextCompetition(leagueA);
+            var nextCompetitionA = competitionService.GetNextCompetition(leagueA);
             nextCompetitionA.StartCompetition();
 
             var gamesListA = competitionService.GetNextGames(nextCompetitionA);
@@ -206,7 +207,7 @@ namespace JodyApp.Service.Test
 
             service.Save();            
 
-            var nextCompetitionB = service.GetNextCompetition(leagueA);
+            var nextCompetitionB = competitionService.GetNextCompetition(leagueA);
 
             nextCompetitionB.StartCompetition();
 
@@ -218,7 +219,7 @@ namespace JodyApp.Service.Test
 
             var league = service.GetByName(LeagueTestDataDriver.LeagueName);
 
-            var nextCompetition = service.GetNextCompetition(league);
+            var nextCompetition = competitionService.GetNextCompetition(league);
 
             AreEqual(LeagueTestDataDriver.PlayoffName, nextCompetition.Name);
             AreEqual(1, nextCompetition.Year);

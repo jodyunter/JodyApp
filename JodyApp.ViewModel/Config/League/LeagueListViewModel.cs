@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class LeagueListViewModel
-    {
-        public List<LeagueViewModel> Items {get; set;}
-        public LeagueListViewModel(List<LeagueViewModel> items)
-        {
-            Items = items;
+    public class LeagueListViewModel:ListViewModel
+    {        
+        public LeagueListViewModel(List<BaseViewModel> items):base(items)
+        {            
         }
 
     }

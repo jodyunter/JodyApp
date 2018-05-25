@@ -213,7 +213,7 @@ namespace JodyApp.ConsoleApp
             while (!leagueService.IsYearDone(League))
             {
 
-                var nextCompetition = leagueService.GetNextCompetition(League);
+                var nextCompetition = competitionService.GetNextCompetition(League);
 
                 if (!nextCompetition.Started) nextCompetition.StartCompetition();
                 competitionService.PlayGames(competitionService.GetNextGames(nextCompetition), nextCompetition, random);

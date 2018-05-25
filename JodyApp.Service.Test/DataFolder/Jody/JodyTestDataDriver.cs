@@ -20,12 +20,16 @@ namespace JodyApp.Service.Test.DataFolder
         String RegularSeasonName = "Regular Season";
         
         DivisionService divisionService;
+        LeagueService leagueService;
         CompetitionService competitionService;
+        ConfigService configService;
         public JodyTestDataDriver() : base() { }
         public JodyTestDataDriver(JodyAppContext db) : base(db)
         {            
             divisionService = new DivisionService(db);
-            competitionService = new CompetitionService(db);
+            leagueService = new LeagueService(db);
+            configService = new ConfigService(db, leagueService);
+            competitionService = new CompetitionService(db, configService);
         }
 
         ConfigDivision League, Premier, Division1;

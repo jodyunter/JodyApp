@@ -7,30 +7,25 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Views
 {
-    public class TeamListView:BaseView
-    {
-        public string Header { get; set; }
-        public ConfigTeamListViewModel Model { get; set; }
+    public class TeamListView:BaseListView
+    {       
+
+        public override string Formatter { get { return "{0,-5} {1,-15} {2,5} {3, 15} {4,15}"; } }
+
+        public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Skill", "League", "Division" }; } }
+
+        public override ListViewModel Model { get; set; }
 
         public TeamListView(ConfigTeamListViewModel model)
         {
-            this.Model = model;
+            Model = model;
         }
-        public override string GetView()
+
+        public override List<object> GetRowFromModel(BaseViewModel model)
         {
-            var formatter = "{0,-5} {1,-15} {2,5} {3, 15} {4,15}";
+            var t = (ConfigTeamViewModel)model;
 
-            var result = "";
-            if (!string.IsNullOrEmpty(Header)) result += Header + "\n";
-
-            result += string.Format(formatter, "Id", "Name", "Skill", "League", "Division");
-
-            Model.Items.ForEach(item =>
-            {
-                result += "\n" + string.Format(formatter, item.Id, item.Name, item.Skill, item.League, item.Division);
-            });
-
-            return result;
+            return new List<object> { t.Id, t.Name, t.Skill, t.League, t.Division };
         }
     }
 }

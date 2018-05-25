@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class LeagueViewModel
+    public class LeagueViewModel:BaseViewModel
     {
         public int? Id { get; set; }
         public string Name { get; set; }
@@ -18,5 +18,6 @@ namespace JodyApp.ViewModel
             this.Name = name;            
             this.CurrentYear = currentYear;
         }
+        
     }
 }

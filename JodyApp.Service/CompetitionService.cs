@@ -11,17 +11,33 @@ using System.Threading.Tasks;
 namespace JodyApp.Service
 {
     public class CompetitionService : BaseService
-    {
+    {        
+
         SeasonService SeasonService { get; set; }
         PlayoffService PlayoffService { get; set; }
         LeagueService LeagueService { get; set; }
 
         public CompetitionService():base(){  }
+
+        public CompetitionService(JodyAppContext db, ConfigService configService) : base(db)
+        {
+            LeagueService = new LeagueService(db);
+            SeasonService = new SeasonService(db, LeagueService, configService);
+            PlayoffService = new PlayoffService(db, configService);
+        }
+
         public CompetitionService(JodyAppContext db, LeagueService leagueService, SeasonService seasonService, PlayoffService playoffService) : base(db)
         {
             LeagueService = leagueService;
             SeasonService = seasonService;
             PlayoffService = playoffService;
+        }
+
+        public CompetitionService(JodyAppContext db):base(db)
+        {
+            LeagueService = new LeagueService(db);
+            SeasonService = new SeasonService(db);
+            PlayoffService = new PlayoffService(db);
         }
 
         public Competition GetNextCompetition(League league)

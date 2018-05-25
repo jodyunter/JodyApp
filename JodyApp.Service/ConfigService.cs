@@ -21,6 +21,11 @@ namespace JodyApp.Service
             LeagueService = leagueService;
         }
 
+        public ConfigService(JodyAppContext db) : base(db)
+        {
+            LeagueService = new LeagueService(db);
+        }
+
         public List<ConfigDivision> GetDivisions(ConfigCompetition season)
         {
             return db.ConfigDivisions.Where(division => division.Competition.Id == season.Id).ToList();

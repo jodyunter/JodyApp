@@ -39,10 +39,10 @@ namespace JodyApp.Service.Test
             driver.InsertData();
             leagueService = new LeagueService(db);
             divisionService = new DivisionService(db);
-            configService = new ConfigService(db, leagueService);            
-            competitionService = new CompetitionService(db, leagueService, seasonService, playoffService);
+            configService = new ConfigService(db, leagueService);
             scheduleService = new ScheduleService(db, divisionService);
             seasonService = new SeasonService(db, configService, divisionService, scheduleService);
+            competitionService = new CompetitionService(db, leagueService, seasonService, playoffService);                       
             
             league = leagueService.GetByName(driver.LeagueName);
             season = seasonService.GetSeason(league, "My Season", 1);

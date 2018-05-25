@@ -30,10 +30,12 @@ namespace JodyApp.Service.Test
         {
             driver = new SeasontestDataDriver();
             db = driver.db;
-            service = new SeasonService(db);
-            scheduleService = new ScheduleService(db);
+            var leagueService = new LeagueService(db);
+            var divisionService = new DivisionService(db);
                         
-            configService = new ConfigService(db);
+            configService = new ConfigService(db, leagueService);
+            service = new SeasonService(db, leagueService, configService);
+            scheduleService = new ScheduleService(db, divisionService);
             driver.DeleteAllData();
             driver.InsertData();
             league = db.Leagues.Where(l => l.Name == driver.LeagueName).First();

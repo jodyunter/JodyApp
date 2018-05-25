@@ -20,6 +20,10 @@ namespace JodyApp.Service
             ConfigService = configService;
         }
 
+        public PlayoffService(JodyAppContext db) :base(db)
+        {
+            ConfigService = new ConfigService(db);
+        }
 
         public Playoff CreateNewPlayoff(ConfigCompetition referencePlayoff, int year)
         {

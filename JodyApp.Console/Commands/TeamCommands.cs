@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Commands
 {
-    public class TeamConfigCommands
+    public class TeamCommands
     {
         //probably want to switch these out to config commands            
         public static string View(int id)
@@ -55,5 +55,6 @@ namespace JodyApp.ConsoleApp.Commands
 
             return view.GetView();
         }
+
     }
 }

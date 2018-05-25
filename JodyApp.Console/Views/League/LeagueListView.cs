@@ -8,29 +8,22 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Views
 {
-    public class LeagueListView:BaseView
-    {        
-        public LeagueListViewModel Model { get; set; }
+    public class LeagueListView:BaseListView
+    {                
+        public override string Formatter { get { return "{0,-5} {1,-15} {2,5}"; } }
+        public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Year" }; } }
+        public override ListViewModel Model { get; set; }
 
         public LeagueListView(LeagueListViewModel model)
         {
-            Model = model;
+            Model = model;            
         }
 
-        public override string GetView()
+        public override List<object> GetRowFromModel(BaseViewModel model)
         {
-            var header = "{0,-5} {1,-15} {2,5}";
+            var m = (LeagueViewModel)model;
 
-            var result = string.Format(header, "Id", "Name", "Year");
-
-            Model.Items.ForEach(item =>
-            {
-                result += "\n" + string.Format(header, item.Id, item.Name, item.CurrentYear);
-            });
-
-            return result;
-        }        
-
-
+            return new List<object> { m.Id, m.Name, m.CurrentYear };
+        }
     }
 }

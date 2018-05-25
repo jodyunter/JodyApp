@@ -13,7 +13,7 @@ namespace JodyApp.Service
         //probably need to somehow seperate these into config vs non config
         public ConfigTeamListViewModel GetAllTeams()
         {
-            var viewModel = new ConfigTeamListViewModel(new List<ConfigTeamViewModel>());
+            var viewModel = new ConfigTeamListViewModel(new List<BaseViewModel>());
 
             db.ConfigTeams.ToList().ForEach(t =>
             {
@@ -39,7 +39,7 @@ namespace JodyApp.Service
         public ConfigTeamListViewModel GetTeamsByDivisionName(string name)
         {
 
-            var viewModel = new ConfigTeamListViewModel(new List<ConfigTeamViewModel>());
+            var viewModel = new ConfigTeamListViewModel(new List<BaseViewModel>());
 
             db.ConfigTeams.Where(t => t.Division.Name == name).ToList().ForEach(t =>
             {

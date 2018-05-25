@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class ConfigTeamViewModel
+    public class ConfigTeamViewModel:BaseViewModel
     {
         public int? Id { get; set; }
         public string Name { get; set; }

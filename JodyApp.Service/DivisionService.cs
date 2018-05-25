@@ -15,14 +15,11 @@ namespace JodyApp.Service
     public class DivisionService:BaseService
     {
 
-        public DivisionService() : base() { Initialize(null); }
+        public DivisionService() : base() { }
 
         public DivisionService(JodyAppContext context):base(context)
-        {
-            Initialize(context);
+        {         
         }
-
-        public override void Initialize(JodyAppContext db) { }
 
         public List<Team> GetAllTeamsInDivision(Division division)
         {       
@@ -123,7 +120,11 @@ namespace JodyApp.Service
             dr.Division.Season.Year <= last).ToList();        
          
         }
-        
+
+        public static implicit operator DivisionService(ConfigService v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

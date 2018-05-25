@@ -21,11 +21,10 @@ namespace JodyApp.Service.Test
         public void Setup()
         {
             driver = new ScheduleTestDataDriver();
-            db = driver.db;
-            service = new ScheduleService(db);            
+            db = driver.db;            
             divisionService = new DivisionService(db);
+            service = new ScheduleService(db, divisionService);
 
-            
             driver.DeleteAllData();
             driver.InsertData();
         }

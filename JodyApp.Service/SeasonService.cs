@@ -25,6 +25,21 @@ namespace JodyApp.Service
             ScheduleService = scheduleService;
         }
 
+        public SeasonService(JodyAppContext db, LeagueService leagueService, ConfigService configService) : base(db)
+        {
+            ConfigService = configService;
+            DivisionService = new DivisionService(db);
+            ScheduleService = new ScheduleService(db, DivisionService);
+        }
+
+        public SeasonService(JodyAppContext db) : base(db)
+        {            
+            ConfigService = new ConfigService(db);
+            DivisionService = new DivisionService(db);
+            ScheduleService = new ScheduleService(db, DivisionService);
+        }
+
+
         public SeasonService() : base() { }
 
         public bool IsSeasonStarted(Season season)

@@ -25,8 +25,9 @@ namespace JodyApp.Service.Test
         {
             driver = new SimpleTestDataDriver();
             driver.Setup();
-            configService = new ConfigService(driver.db);
             leagueService = new LeagueService(driver.db);
+            configService = new ConfigService(driver.db, leagueService);
+            
 
             league = leagueService.CreateLeague("My League");
             leagueService.Save();
