@@ -12,21 +12,18 @@ namespace JodyApp.Service
     {        
 
         public JodyAppContext db { get; set;  }
+        
 
-        public abstract void Initialize(JodyAppContext db);
-
-        public BaseService() { db = null; Initialize(db);  }
+        public BaseService() { }
 
         public BaseService(JodyAppContext dbContext)
         {
-            db = dbContext;
-            Initialize(db);
+            db = dbContext;            
         }
 
         public BaseService(string ConnectionString)
         {
-            db = new JodyAppContext(ConnectionString);
-            Initialize(db);
+            db = new JodyAppContext(ConnectionString);            
         }
 
         public void Rollback()

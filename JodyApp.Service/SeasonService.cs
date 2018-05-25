@@ -13,19 +13,19 @@ namespace JodyApp.Service
 {
     public class SeasonService:BaseService
     {
-        public DivisionService divisionService = new DivisionService();  
-        public ConfigService configService = new ConfigService();
+        public ConfigService ConfigService { get; set; }
+        public DivisionService DivisionService { get; set; }
+        
+        public ScheduleService ScheduleService { get; set; }
 
-        public SeasonService(JodyAppContext context) : base(context) { Initialize(context); }
-
-        public SeasonService() : base() { Initialize(null); }
-        public override void Initialize(JodyAppContext db)
+        public SeasonService(JodyAppContext db, ConfigService configService, DivisionService divisionService, ScheduleService scheduleService):base(db)
         {
-            divisionService.db = db;
-            divisionService.Initialize(db);
-            configService.db = db;
-            configService.Initialize(db);
+            ConfigService = configService;
+            DivisionService = divisionService;
+            ScheduleService = scheduleService;
         }
+
+        public SeasonService() : base() { }
 
         public bool IsSeasonStarted(Season season)
         {
@@ -34,9 +34,7 @@ namespace JodyApp.Service
 
         public Season CreateNewSeason(ConfigCompetition referenceSeason, int year)
         {
-            var divisionService = new DivisionService(db);
-            var scheduleService = new ScheduleService(db);
-
+            
             Season season = new Season();
 
             season.League = referenceSeason.League;
@@ -47,7 +45,7 @@ namespace JodyApp.Service
             Dictionary<string, Team> seasonTeams = new Dictionary<string, Team>();
             Dictionary<string, ConfigScheduleRule> seasonScheduleRules = new Dictionary<string, ConfigScheduleRule>();
 
-            var activeConfigDivisions = configService.GetDivisions(referenceSeason).Where(cd => cd.IsActive(year)).ToList();
+            var activeConfigDivisions = ConfigService.GetDivisions(referenceSeason).Where(cd => cd.IsActive(year)).ToList();
             //loop once to create teams and new season divisions, order means we will not add a parent we haven't created yet
             activeConfigDivisions.OrderBy(d => d.Level).ToList().ForEach(configDivision =>            
             {
@@ -78,15 +76,15 @@ namespace JodyApp.Service
 
             seasonDivisions.Values.ToList().ForEach(seasonDiv =>
             {
-                divisionService.GetAllTeamsInDivision(seasonDiv).ForEach(team => { seasonDiv.SetRank(0, team); });
+                DivisionService.GetAllTeamsInDivision(seasonDiv).ForEach(team => { seasonDiv.SetRank(0, team); });
 
                 db.DivisionRanks.AddRange(seasonDiv.Rankings);
             });
 
-            var configRules = configService.GetScheduleRulesByCompetition(referenceSeason).Where(rule => rule.IsActive(year)).ToList();
+            var configRules = ConfigService.GetScheduleRulesByCompetition(referenceSeason).Where(rule => rule.IsActive(year)).ToList();
 
             season.Games = new List<Game>();
-            scheduleService.CreateGamesFromRules(configRules, seasonTeams, seasonDivisions, season.Games, 0);
+            ScheduleService.CreateGamesFromRules(configRules, seasonTeams, seasonDivisions, season.Games, 0);
             db.Games.AddRange(season.Games);
 
             season.SetupStandings();
@@ -99,9 +97,9 @@ namespace JodyApp.Service
         public void SortAllDivisions(Season season)
         {
             
-            List<Division> divisions = divisionService.GetDivisionsBySeason(season);
+            List<Division> divisions = DivisionService.GetDivisionsBySeason(season);
 
-            divisions.ForEach(div => { divisionService.SortByDivision(div); });
+            divisions.ForEach(div => { DivisionService.SortByDivision(div); });
 
             db.SaveChanges();
 
@@ -110,7 +108,7 @@ namespace JodyApp.Service
         public List<Team> GetTeamsInDivisionByRank(Division division)
         {
 
-            var teams = divisionService.GetAllTeamsInDivision(division).ToDictionary(t => t.Name, t => t);
+            var teams = DivisionService.GetAllTeamsInDivision(division).ToDictionary(t => t.Name, t => t);
 
             division.Rankings.Sort();
             int rank = 1;

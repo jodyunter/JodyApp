@@ -12,28 +12,74 @@ namespace JodyApp.Service
 {
     public class CompetitionService : BaseService
     {
-        SeasonService seasonService = new SeasonService();
-        PlayoffService playoffService = new PlayoffService();
+        SeasonService SeasonService { get; set; }
+        PlayoffService PlayoffService { get; set; }
+        LeagueService LeagueService { get; set; }
 
-        public CompetitionService():base(){ Initialize(null); }
-        public CompetitionService(JodyAppContext db) : base(db) { Initialize(db); }
-
-        public override void Initialize(JodyAppContext db)
+        public CompetitionService():base(){  }
+        public CompetitionService(JodyAppContext db, LeagueService leagueService, SeasonService seasonService, PlayoffService playoffService) : base(db)
         {
-            seasonService.db = db;
-            seasonService.Initialize(db);
-            playoffService.db = db;
-            playoffService.Initialize(db);
+            LeagueService = leagueService;
+            SeasonService = seasonService;
+            PlayoffService = playoffService;
         }
+
+        public Competition GetNextCompetition(League league)
+        {
+            if (LeagueService.IsYearDone(league))
+            {
+                return null;
+            }
+            else
+            {
+                //get all the possible competitions for this league
+                var referenceComps = league.GetActiveConfigCompetitions();
+
+                Competition currentComp = null;
+
+                for (int i = 0; i < referenceComps.Count; i++)
+                {
+                    //does the current year version exist?                
+                    //if yes, is it complete?
+                    //if yes, move on, we alreayd know at least one is not complete
+                    //if no return it
+                    //if no return it
+                    ConfigCompetition rc = referenceComps[i];
+
+                    switch (rc.Type)
+                    {
+                        case ConfigCompetition.SEASON:
+                            currentComp = db.Seasons.Where(s => s.Year == league.CurrentYear && s.Name == rc.Name).FirstOrDefault();
+                            break;
+                        case ConfigCompetition.PLAYOFF:
+                            currentComp = db.Playoffs.Where(s => s.Year == league.CurrentYear && s.Name == rc.Name).FirstOrDefault();
+                            break;
+
+                    }
+
+                    //if there is no competition for this one, create one and return it
+                    if (currentComp == null)
+                        return CreateCompetition(rc, league.CurrentYear);
+                    //if there is a current competition, and it is not complete, return it
+                    else if (!currentComp.Complete)
+                        return currentComp;
+
+                }
+
+                return currentComp;
+            }
+        }
+
+
 
         public Competition CreateCompetition(ConfigCompetition reference, int year)
         {
             switch(reference.Type)
             {
                 case ConfigCompetition.SEASON:
-                    return seasonService.CreateNewSeason(reference, year);                    
+                    return SeasonService.CreateNewSeason(reference, year);                    
                 case ConfigCompetition.PLAYOFF:
-                    return playoffService.CreateNewPlayoff(reference, year);                    
+                    return PlayoffService.CreateNewPlayoff(reference, year);                    
             }
             return null;
         }
@@ -49,7 +95,7 @@ namespace JodyApp.Service
             competition.PlayGames(games, random);
             if (competition is Season)
             {
-                seasonService.SortAllDivisions((Season)competition);
+                SeasonService.SortAllDivisions((Season)competition);
             }
         }
     }

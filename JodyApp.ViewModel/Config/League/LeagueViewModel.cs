@@ -10,14 +10,12 @@ namespace JodyApp.ViewModel
     {
         public int? Id { get; set; }
         public string Name { get; set; }
-        public int CurrentYear { get; set; }        
-        public string CurrentCompetition { get; set; }
+        public int CurrentYear { get; set; }                
 
-        public LeagueViewModel(int? id, string name, int currentYear,string currentCompetition)
+        public LeagueViewModel(int? id, string name, int currentYear)
         {
             this.Id = id;
-            this.Name = name;
-            this.CurrentCompetition = currentCompetition;            
+            this.Name = name;            
             this.CurrentYear = currentYear;
         }
     }

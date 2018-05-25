@@ -10,9 +10,9 @@ namespace JodyApp.ConsoleApp.Views
     public class TeamListView:BaseView
     {
         public string Header { get; set; }
-        public TeamListViewModel Model { get; set; }
+        public ConfigTeamListViewModel Model { get; set; }
 
-        public TeamListView(TeamListViewModel model)
+        public TeamListView(ConfigTeamListViewModel model)
         {
             this.Model = model;
         }

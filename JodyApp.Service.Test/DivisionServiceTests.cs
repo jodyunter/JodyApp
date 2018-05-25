@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using JodyApp.Service.Test.DataFolder;
 using JodyApp.Domain;
-using JodyApp.Domain.Config;
+
 using JodyApp.Domain.Table.Display;
 
 namespace JodyApp.Service.Test
@@ -21,6 +21,10 @@ namespace JodyApp.Service.Test
         SeasonService seasonService;
         ScheduleService scheduleService;
         LeagueService leagueService;
+        CompetitionService competitionService;
+        DivisionService divisionService;
+        ConfigService configService;
+        PlayoffService playoffService;
         League league;
         Season season;
 
@@ -33,9 +37,13 @@ namespace JodyApp.Service.Test
             
             driver.DeleteAllData();
             driver.InsertData();
-            scheduleService = new ScheduleService(db);                        
-            seasonService = new SeasonService(db);
             leagueService = new LeagueService(db);
+            divisionService = new DivisionService(db);
+            configService = new ConfigService(db, leagueService);            
+            competitionService = new CompetitionService(db, leagueService, seasonService, playoffService);
+            scheduleService = new ScheduleService(db, divisionService);
+            seasonService = new SeasonService(db, configService, divisionService, scheduleService);
+            
             league = leagueService.GetByName(driver.LeagueName);
             season = seasonService.GetSeason(league, "My Season", 1);
         }

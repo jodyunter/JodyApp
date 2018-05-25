@@ -47,11 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="League\LeagueListViewModel.cs" />
-    <Compile Include="League\LeagueViewModel.cs" />
+    <Compile Include="Config\League\LeagueListViewModel.cs" />
+    <Compile Include="Config\League\LeagueViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Team\TeamListViewModel.cs" />
-    <Compile Include="Team\TeamViewModel.cs" />
+    <Compile Include="Config\Team\ConfigTeamListViewModel.cs" />
+    <Compile Include="Config\Team\ConfigTeamViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

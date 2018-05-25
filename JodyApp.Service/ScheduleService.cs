@@ -11,12 +11,14 @@ namespace JodyApp.Service
 {
     public class ScheduleService : BaseService
     {
-        DivisionService divisionService = new DivisionService();
+        DivisionService DivisionService { get; set; }
 
-        public ScheduleService() : base() { Initialize(null);  }
-        public ScheduleService(JodyAppContext db) : base(db) { Initialize(db); }
-
-        public override void Initialize(JodyAppContext db) { divisionService.db = db; divisionService.Initialize(db); }
+        public ScheduleService() : base() { }
+        public ScheduleService(JodyAppContext db, DivisionService divisionService) : base(db)
+        {
+            DivisionService = divisionService;
+        }
+        
 
         //update to get last game number in database for season
         public List<Game> CreateGamesFromRules(List<ConfigScheduleRule> rules, 
@@ -51,7 +53,7 @@ namespace JodyApp.Service
                 {
                     homeTeams = new List<Team>();
 
-                    var list = divisionService.GetAllTeamsInDivision(d);
+                    var list = DivisionService.GetAllTeamsInDivision(d);
                     if (rule.Reverse) list.Reverse();
                     homeTeams.AddRange(list);
 
@@ -82,7 +84,7 @@ namespace JodyApp.Service
                     teamList.Add(team);
                     break;
                 case ConfigScheduleRule.BY_DIVISION:
-                    var list = divisionService.GetAllTeamsInDivision(division);
+                    var list = DivisionService.GetAllTeamsInDivision(division);
                     if (reverse) list.Reverse();
                     teamList.AddRange(list);
                     break;

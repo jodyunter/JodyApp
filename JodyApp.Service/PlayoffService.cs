@@ -10,22 +10,17 @@ using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Service
 {
-    public class PlayoffService:BaseService
+    public class PlayoffService : BaseService
     {
-        DivisionService divisionService = new DivisionService();
-        ConfigService configService = new ConfigService();
+        ConfigService ConfigService { get; set; }
 
-        public PlayoffService() : base() { Initialize(null); }
-        public PlayoffService(JodyAppContext db):base(db)
-        {
-            Initialize(db);
-        }
-
-        public override void Initialize(JodyAppContext db)
+        public PlayoffService() : base() {  }
+        public PlayoffService(JodyAppContext db, ConfigService configService):base(db)
         {            
-            divisionService.Initialize(db);            
-            configService.Initialize(db);
+            ConfigService = configService;
         }
+
+
         public Playoff CreateNewPlayoff(ConfigCompetition referencePlayoff, int year)
         {
             return CreateNewPlayoff(referencePlayoff, year, false);
@@ -45,7 +40,7 @@ namespace JodyApp.Service
             List<Group> newGroups = new List<Group>();            
             List<Series> newSeries = new List<Series>();
 
-            var activeConfigGroups = configService.GetGroups(referencePlayoff).Where(grp => grp.IsActive(year)).ToList();                                
+            var activeConfigGroups = ConfigService.GetGroups(referencePlayoff).Where(grp => grp.IsActive(year)).ToList();                                
 
             activeConfigGroups.ForEach(group =>            
             {
@@ -68,7 +63,7 @@ namespace JodyApp.Service
             db.Groups.AddRange(newGroups);
 
 
-            var activeConfigSeriesRules = configService.GetSeriesRules(referencePlayoff).Where(series => series.IsActive(year)).ToList();
+            var activeConfigSeriesRules = ConfigService.GetSeriesRules(referencePlayoff).Where(series => series.IsActive(year)).ToList();
 
             activeConfigSeriesRules.ForEach(seriesRule =>            
             {

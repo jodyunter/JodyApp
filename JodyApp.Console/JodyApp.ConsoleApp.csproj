@@ -51,10 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
+    <Compile Include="Commands\TeamConfigCommands.cs" />
     <Compile Include="Commands\DefaultCommands.cs" />
     <Compile Include="Commands\HelpCommands.cs" />
     <Compile Include="Commands\LeagueCommands.cs" />
-    <Compile Include="Commands\TeamCommands.cs" />
     <Compile Include="ConsoleCommand.cs" />
     <Compile Include="ProgramBackup.cs" />
     <Compile Include="Program.cs" />

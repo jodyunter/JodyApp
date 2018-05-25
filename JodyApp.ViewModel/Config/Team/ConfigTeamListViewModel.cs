@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class TeamListViewModel
+    public class ConfigTeamListViewModel
     {
-        public List<TeamViewModel> Items { get; set; }
-        public TeamListViewModel(List<TeamViewModel> items)
+        public List<ConfigTeamViewModel> Items { get; set; }
+        public ConfigTeamListViewModel(List<ConfigTeamViewModel> items)
         {
             Items = items;
         }

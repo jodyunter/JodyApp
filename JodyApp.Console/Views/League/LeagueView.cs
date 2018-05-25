@@ -17,7 +17,7 @@ namespace JodyApp.ConsoleApp.Views
 
         public override string GetView()
         {
-            return GetView("", new string[] { "Id", "Name", "Year", "Status" }, new object[] { Model.Id, Model.Name, Model.CurrentYear, Model.CurrentCompetition });
+            return GetView("", new string[] { "Id", "Name", "Year" }, new object[] { Model.Id, Model.Name, Model.CurrentYear });
         }
 
     }

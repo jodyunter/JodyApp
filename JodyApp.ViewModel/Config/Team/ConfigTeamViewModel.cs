@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class TeamViewModel
+    public class ConfigTeamViewModel
     {
         public int? Id { get; set; }
         public string Name { get; set; }
@@ -14,7 +14,7 @@ namespace JodyApp.ViewModel
         public string League { get; set; }
         public string Division { get; set; }
 
-        public TeamViewModel(int? id, string name, int skill, string league, string division)
+        public ConfigTeamViewModel(int? id, string name, int skill, string league, string division)
         {
             Id = id;
             Name = name;

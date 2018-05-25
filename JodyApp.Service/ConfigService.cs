@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
+using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public class ConfigService : BaseService
+    public partial class ConfigService : BaseService
     {
+        LeagueService LeagueService { get; set; }
+        
 
-        public ConfigService():base() { Initialize(null); }
-        public ConfigService(JodyAppContext db) : base(db) { Initialize(db); }
-        public override void Initialize(JodyAppContext db)
+        public ConfigService():base() { }
+        public ConfigService(JodyAppContext db, LeagueService leagueService) : base(db)
         {
-            this.db = db;
+            LeagueService = leagueService;
         }
+
         public List<ConfigDivision> GetDivisions(ConfigCompetition season)
         {
             return db.ConfigDivisions.Where(division => division.Competition.Id == season.Id).ToList();
@@ -97,6 +100,16 @@ namespace JodyApp.Service
             });
         }
 
+        public void ChangeDivision(ConfigTeamViewModel team, int leagueId, string newDivisionName)
+        {
+            var league = LeagueService.GetByName(team.League);
+            var configTeam = GetTeamById((int)team.Id);
+            
+            var division = GetDivisionByName(league, newDivisionName);
+
+            configTeam.Division = division;
+            
+        }
         public void ChangeDivision(ConfigTeam team, string newDivisionName)
         {
             //not good enough for division            
