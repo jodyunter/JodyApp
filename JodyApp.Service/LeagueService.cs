@@ -104,9 +104,9 @@ namespace JodyApp.Service
             
         }
 
-        public League GetById(int id)
+        public LeagueViewModel GetById(int id)
         {
-            return db.Leagues.Where(l => l.Id == id).FirstOrDefault();
+            return DomainToDTO(db.Leagues.Where(l => l.Id == id).FirstOrDefault());
         }
         public League CreateLeague(string name)
         {

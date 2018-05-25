@@ -8,7 +8,7 @@ namespace JodyApp.Domain.Config
 {
     public class ConfigTeam:BaseConfigItem
     {
-        public League League { get; set; }
+        virtual public League League { get; set; }
         public string Name { get; set; }
 
         public int Skill { get; set; }

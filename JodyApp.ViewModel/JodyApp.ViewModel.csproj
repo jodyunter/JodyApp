@@ -50,6 +50,8 @@
     <Compile Include="League\LeagueListViewModel.cs" />
     <Compile Include="League\LeagueViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Team\TeamListViewModel.cs" />
+    <Compile Include="Team\TeamViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

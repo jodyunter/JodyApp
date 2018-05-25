@@ -15,7 +15,7 @@ namespace JodyApp.ConsoleApp.Commands
         public static string View(int id)
         {
             LeagueService service = new LeagueService(JodyAppContext.Instance);
-            LeagueViewModel model = service.DomainToDTO(service.GetById(id));
+            LeagueViewModel model = service.GetById(id);
 
             LeagueView view = new LeagueView(model);
 
