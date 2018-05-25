@@ -13,9 +13,9 @@ namespace JodyApp.ConsoleApp.Views
 
         public abstract string Formatter { get; }
         public abstract string[] HeaderStrings { get; }        
-        public abstract List<object> GetRowFromModel(BaseViewModel model);
+        public abstract List<object> GetDataObjectFromModel(BaseViewModel model);
 
-        public abstract ListViewModel Model { get; set; }
+        public BaseListView(ListViewModel model) : base(model) { }
 
         public override string GetView()
         {
@@ -35,9 +35,9 @@ namespace JodyApp.ConsoleApp.Views
 
             if (listWithOptions) result += string.Format("{0,5}. None", 0);            
 
-            Model.Items.ForEach(item =>
+            ((ListViewModel)Model).Items.ForEach(item =>
             {
-                var data = GetRowFromModel(item);
+                var data = GetDataObjectFromModel(item);
                 if (listWithOptions) data.Add(count);
                 result += "\n" + string.Format(formatter, data.ToArray());
                 count++;

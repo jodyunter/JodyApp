@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
     <Compile Include="Commands\DivisionCommands.cs" />
+    <Compile Include="Commands\SeasonCommands.cs" />
     <Compile Include="Commands\TeamCommands.cs" />
     <Compile Include="Commands\DefaultCommands.cs" />
     <Compile Include="Commands\HelpCommands.cs" />
@@ -66,6 +67,9 @@
     <Compile Include="Views\Division\DivisionView.cs" />
     <Compile Include="Views\League\LeagueListView.cs" />
     <Compile Include="Views\League\LeagueView.cs" />
+    <Compile Include="Views\Season\SeasonView.cs" />
+    <Compile Include="Views\Season\StandingsRecordView.cs" />
+    <Compile Include="Views\Season\StandingsView.cs" />
     <Compile Include="Views\Team\TeamListView.cs" />
     <Compile Include="Views\Team\TeamView.cs" />
   </ItemGroup>

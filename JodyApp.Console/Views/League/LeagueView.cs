@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 namespace JodyApp.ConsoleApp.Views
 {
     public class LeagueView:BaseView
-    {
-        public LeagueViewModel Model { get; set; }
-        public LeagueView(LeagueViewModel model)
-        {
-            Model = model;
+    {        
+        public LeagueView(LeagueViewModel model):base(model)
+        {            
         }
 
         public override string GetView()
         {
-            return GetView("", new string[] { "Id", "Name", "Year" }, new object[] { Model.Id, Model.Name, Model.CurrentYear });
+            var m = (LeagueViewModel)Model;
+
+            return GetView("", new string[] { "Id", "Name", "Year" }, new object[] { m.Id, m.Name, m.CurrentYear });
         }
 
     }

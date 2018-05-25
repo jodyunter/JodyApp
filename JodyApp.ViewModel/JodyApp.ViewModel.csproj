@@ -56,10 +56,12 @@
     <Compile Include="Config\Team\ConfigTeamListViewModel.cs" />
     <Compile Include="Config\Team\ConfigTeamViewModel.cs" />
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Season\SeasonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,15 +11,13 @@ namespace JodyApp.ConsoleApp.Views
     public class LeagueListView:BaseListView
     {                
         public override string Formatter { get { return "{0,-5} {1,-15} {2,5}"; } }
-        public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Year" }; } }
-        public override ListViewModel Model { get; set; }
+        public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Year" }; } }        
 
-        public LeagueListView(LeagueListViewModel model)
-        {
-            Model = model;            
+        public LeagueListView(LeagueListViewModel model):base(model)
+        {            
         }
 
-        public override List<object> GetRowFromModel(BaseViewModel model)
+        public override List<object> GetDataObjectFromModel(BaseViewModel model)
         {
             var m = (LeagueViewModel)model;
 

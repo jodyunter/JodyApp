@@ -12,6 +12,7 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class LeagueCommands
     {
+
         public static string View(int id)
         {
             LeagueService service = new LeagueService(JodyAppContext.Instance);

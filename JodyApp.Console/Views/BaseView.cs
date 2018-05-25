@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,12 @@ namespace JodyApp.ConsoleApp.Views
 {
     public abstract class BaseView
     {
+        public BaseViewModel Model { get; set; }
+
+        public BaseView(BaseViewModel model)
+        {
+            this.Model = model;
+        }
         public abstract string GetView();
 
         public string GetView(string header, string[] fieldNames, object[] data)
