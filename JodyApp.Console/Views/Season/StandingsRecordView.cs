@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.ViewModel;
 
-namespace JodyApp.ConsoleApp.Views.Season
+namespace JodyApp.ConsoleApp.Views
 {
     public class StandingsRecordView : BaseView
     {

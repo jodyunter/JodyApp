@@ -8,6 +8,7 @@ using JodyApp.Domain.Table;
 using JodyApp.Database;
 
 using JodyApp.Domain.Config;
+using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
@@ -140,6 +141,18 @@ namespace JodyApp.Service
         public Season GetById(int id)
         {
             return db.Seasons.Where(s => s.Id == id).FirstOrDefault();
+        }
+
+        public ListViewModel GetAllByLeagueId(int leagueId)
+        {
+            var modelList = new List<BaseViewModel>();
+
+            db.Seasons.Where(s => s.League.Id == leagueId).ToList().ForEach(season =>
+            {
+                modelList.Add(new SeasonViewModel(season.Id, season.League.Name, season.Name, season.Year, season.Started, season.Complete, season.StartingDay, new List<StandingsRecordViewModel>()));
+            });
+
+            return new ListViewModel(modelList);
         }
 
         public List<Season> GetAll(int leagueId)

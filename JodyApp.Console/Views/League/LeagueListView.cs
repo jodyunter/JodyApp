@@ -13,7 +13,7 @@ namespace JodyApp.ConsoleApp.Views
         public override string Formatter { get { return "{0,-5} {1,-15} {2,5}"; } }
         public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Year" }; } }        
 
-        public LeagueListView(LeagueListViewModel model):base(model)
+        public LeagueListView(ListViewModel model):base(model)
         {            
         }
 

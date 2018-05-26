@@ -15,7 +15,7 @@ namespace JodyApp.ConsoleApp.Views
         public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Skill", "League", "Division" }; } }
         
 
-        public TeamListView(ConfigTeamListViewModel model):base(model)
+        public TeamListView(ListViewModel model):base(model)
         {            
         }
 

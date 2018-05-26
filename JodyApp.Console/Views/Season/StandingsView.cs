@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.ViewModel;
 
-namespace JodyApp.ConsoleApp.Views.Season
+namespace JodyApp.ConsoleApp.Views
 {
     public class StandingsView : BaseListView
     {
@@ -13,7 +13,7 @@ namespace JodyApp.ConsoleApp.Views.Season
 
         public override string[] HeaderStrings => new string[] {"R", "Name", "W", "L", "T", "Pts", "GP", "GF", "GA", "GD"};
 
-        public StandingsView(StandingsViewModel model) : base(model) { }
+        public StandingsView(ListViewModel model) : base(model) { }
 
         public override List<object> GetDataObjectFromModel(BaseViewModel model)
         {

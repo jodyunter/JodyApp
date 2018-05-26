@@ -21,7 +21,7 @@ namespace JodyApp.ConsoleApp.Views.Division
                 new string[] { "Id", "Name", "Short", "League", "Parent", "Level", "Order" },
                     new object[] { m.Id, m.Name, m.ShortName, m.League, m.Parent, m.Level, m.Order });
 
-            var teamView = new TeamListView(new ConfigTeamListViewModel(m.Teams.ToList<BaseViewModel>()));
+            var teamView = new TeamListView(new ListViewModel(m.Teams.ToList<BaseViewModel>()));
             var teamViewString = teamView.GetView();
 
             results += "\n" + "Teams:";

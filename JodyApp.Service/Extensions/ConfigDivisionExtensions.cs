@@ -12,7 +12,7 @@ namespace JodyApp.Service
     public partial class ConfigService
     {
 
-        public ConfigDivisionListViewModel GetAllDivisions()
+        public ListViewModel GetAllDivisions()
         {
             var divisions = new List<BaseViewModel>();
 
@@ -21,7 +21,7 @@ namespace JodyApp.Service
                 divisions.Add(DomainToDTO(d));
             });
 
-            return new ConfigDivisionListViewModel(divisions);
+            return new ListViewModel(divisions);
         }
         public ConfigDivisionViewModel GetDivisionModelById(int id)
         {

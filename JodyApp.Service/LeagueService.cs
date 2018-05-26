@@ -65,9 +65,9 @@ namespace JodyApp.Service
             return league;
         }
         
-        public LeagueListViewModel GetAll()
+        public ListViewModel GetAll()
         {
-            var result = new LeagueListViewModel(new List<BaseViewModel>());
+            var result = new ListViewModel(new List<BaseViewModel>());
 
             db.Leagues.ToList().ForEach(l =>
             {

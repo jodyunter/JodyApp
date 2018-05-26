@@ -10,7 +10,7 @@ namespace JodyApp.ConsoleApp.Views.Division
     public class DivisionListView : BaseListView
     {
 
-        public DivisionListView(ConfigDivisionListViewModel model):base(model)
+        public DivisionListView(ListViewModel model):base(model)
         {            
         }
 
