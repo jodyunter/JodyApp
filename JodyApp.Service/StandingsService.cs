@@ -15,22 +15,25 @@ namespace JodyApp.Service
         public StandingsService(JodyAppContext db) : base(db) { SeasonService = new SeasonService(db); }
         public StandingsService(JodyAppContext db, SeasonService seasonService) : base(db) { SeasonService = seasonService; }
 
-        public ListViewModel GetBySeasonAndDivisionName(Season season, string divisionName)
+        public ListViewModel GetBySeasonAndDivisionLevel(Season season, int divisionLevel)
         {
             SeasonService.SortAllDivisions(season);
-            var division = season.Divisions.Where(d => d.Name == divisionName).FirstOrDefault();
-            var teams = SeasonService.GetTeamsInDivisionByRank(division);
-
+            var divisions = season.Divisions.Where(d => d.Level == divisionLevel).OrderBy(d => d.Order);
             var recordModels = new List<BaseViewModel>();
 
-            int i = 1;
-            teams.ForEach(team =>
+            divisions.ToList().ForEach(division =>
             {
-                var model = new StandingsRecordViewModel(i, season.League.Name, division.Name, team.Name, team.Stats.Wins, team.Stats.Loses, team.Stats.Ties, team.Stats.Points, team.Stats.GamesPlayed, team.Stats.GoalsFor, team.Stats.GoalsAgainst, team.Stats.GoalDifference);
-                recordModels.Add(model);
-                i++;                
-            });
+                var teams = SeasonService.GetTeamsInDivisionByRank(division);
+                
+                int i = 1;
+                teams.ForEach(team =>
+                {
+                    var model = new StandingsRecordViewModel(i, season.League.Name, division.Name, team.Name, team.Stats.Wins, team.Stats.Loses, team.Stats.Ties, team.Stats.Points, team.Stats.GamesPlayed, team.Stats.GoalsFor, team.Stats.GoalsAgainst, team.Stats.GoalDifference);
+                    recordModels.Add(model);
+                    i++;
+                });
 
+            });
             return new ListViewModel(recordModels);
         }
     }

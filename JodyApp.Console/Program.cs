@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 
 namespace JodyApp.ConsoleApp
@@ -50,6 +51,7 @@ namespace JodyApp.ConsoleApp
 
         static void Run(JodyAppContext db)
         {
+            BaseView lastView = null;
             while (true)
             {
                 var consoleInput = ReadFromConsole();
@@ -60,10 +62,12 @@ namespace JodyApp.ConsoleApp
                     var cmd = new ConsoleCommand(consoleInput);
                     
                     // Execute the command:
-                    string result = Execute(cmd);
+                    var result = Execute(cmd, new List<BaseView>() { lastView });
 
                     // Write out the result:
-                    WriteToConsole(result);
+                    WriteToConsole(result.GetView());
+
+                    lastView = result;
                 }
                 catch (Exception ex)
                 {
@@ -75,20 +79,20 @@ namespace JodyApp.ConsoleApp
         }
 
 
-        static string Execute(ConsoleCommand command)
+        static BaseView Execute(ConsoleCommand command, List<BaseView> lastViews)
         {
             var badCommandMessage_NoClassName = string.Format("No commands found for {0}.", command.LibraryClassName);
             var badCommandMessage_NoMethodName = string.Format("No command {0} exists in {1}", command.Name, command.LibraryClassName);
 
             if (!_commandLibraries.ContainsKey(command.LibraryClassName))
             {
-                return badCommandMessage_NoClassName;
+                return new ErrorView(badCommandMessage_NoClassName);
 
             }
             var methodDictionary = _commandLibraries[command.LibraryClassName];
             if (!methodDictionary.ContainsKey(command.Name))
             {
-                return badCommandMessage_NoMethodName;
+                return new ErrorView(badCommandMessage_NoMethodName);
             }
 
             // Make sure the corret number of required arguments are provided:
@@ -102,13 +106,13 @@ namespace JodyApp.ConsoleApp
             var optionalParams = paramInfoList.Where(p => p.IsOptional == true);
             int requiredCount = requiredParams.Count();
             int optionalCount = optionalParams.Count();
-            int providedCount = command.Arguments.Count();
+            int providedCount = command.Arguments.Count() + 1; 
 
             if (requiredCount > providedCount)
             {
-                return string.Format(
+                return new ErrorView(string.Format(
                     "Missing required argument. {0} required, {1} optional, {2} provided",
-                    requiredCount, optionalCount, providedCount);
+                    requiredCount, optionalCount, providedCount));
             }
 
             // Make sure all arguments are coerced to the proper type, and that there is a 
@@ -167,12 +171,15 @@ namespace JodyApp.ConsoleApp
             Type commandLibaryClass =
                 current.GetType(_commandNamespace + "." + command.LibraryClassName);
 
-            object[] inputArgs = null;
+            var inputArgs = new List<object>();
+
             if (methodParameterValueList.Count > 0)
             {
-                inputArgs = methodParameterValueList.ToArray();
+                inputArgs.AddRange(methodParameterValueList);
             }
 
+            inputArgs[0] = lastViews;
+            
             var typeInfo = commandLibaryClass;
 
             // This will throw if the number of arguments provided does not match the number 
@@ -182,8 +189,8 @@ namespace JodyApp.ConsoleApp
                 var result = typeInfo.InvokeMember(
                     command.Name,
                     BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public,
-                    null, null, inputArgs);
-                return result.ToString();
+                    null, null, inputArgs.ToArray());
+                return (BaseView)result;
             }
             catch (TargetInvocationException ex)
             {

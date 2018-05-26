@@ -59,6 +59,7 @@
     <Compile Include="Commands\HelpCommands.cs" />
     <Compile Include="Commands\LeagueCommands.cs" />
     <Compile Include="ConsoleCommand.cs" />
+    <Compile Include="Input\InputMethods.cs" />
     <Compile Include="ProgramBackup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,8 +67,11 @@
     <Compile Include="Views\BaseView.cs" />
     <Compile Include="Views\Division\DivisionListView.cs" />
     <Compile Include="Views\Division\DivisionView.cs" />
+    <Compile Include="Views\ErrorView.cs" />
+    <Compile Include="Views\HelpView.cs" />
     <Compile Include="Views\League\LeagueListView.cs" />
     <Compile Include="Views\League\LeagueView.cs" />
+    <Compile Include="Views\Season\SeasonListView.cs" />
     <Compile Include="Views\Season\SeasonView.cs" />
     <Compile Include="Views\Season\StandingsRecordView.cs" />
     <Compile Include="Views\Season\StandingsView.cs" />

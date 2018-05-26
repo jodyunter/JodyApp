@@ -24,5 +24,28 @@ namespace JodyApp.ConsoleApp.Views
                 m.Rank, m.TeamName, m.Wins, m.Loses, m.Ties, m.Points, m.GamesPlayed, m.GoalsFor, m.GoalsAgainst, m.GoalDifference
             };
         }
+
+        public override string GetView()
+        {
+            var listModel = (ListViewModel)Model;
+
+            var result = "";
+            if (!(string.IsNullOrEmpty(Header))) result += Header + "\n";
+
+            listModel.Items.ForEach(model =>
+           {
+               var sm = (StandingsRecordViewModel)model;
+
+               if (sm.Rank == 1)
+               {
+                   result += "\n" + sm.DivisionName;
+                   result += "\n" + string.Format(Formatter, HeaderStrings);
+               }
+
+               result += "\n" + string.Format(Formatter, GetDataObjectFromModel(sm).ToArray());
+           });
+
+            return result;
+        }
     }
 }

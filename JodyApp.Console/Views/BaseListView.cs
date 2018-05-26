@@ -11,34 +11,36 @@ namespace JodyApp.ConsoleApp.Views
     {
         public string Header { get; set; }
 
+        public bool ListWithOptions { get; set; }
+
         public abstract string Formatter { get; }
         public abstract string[] HeaderStrings { get; }        
         public abstract List<object> GetDataObjectFromModel(BaseViewModel model);
 
-        public BaseListView(ListViewModel model) : base(model) { }
+        public BaseListView(ListViewModel model) : base(model) { ListWithOptions = false; }
 
         public override string GetView()
-        {
-            return GetView(false);
-        }
-        public string GetView(bool listWithOptions)
         {
             var formatter = Formatter;
 
             var result = "";
             if (!string.IsNullOrEmpty(Header)) result += Header + "\n";
-            if (listWithOptions) formatter = "{" + HeaderStrings.Length + "5}. " + formatter;
+            if (ListWithOptions) formatter = "{" + HeaderStrings.Length + ",5}. " + formatter;
 
-            result += string.Format(formatter, HeaderStrings);
+            var headerStrings = HeaderStrings.ToList();
+
+            if (ListWithOptions) headerStrings.Add("O");
+
+            result += string.Format(formatter, headerStrings.ToArray());
 
             int count = 1;
 
-            if (listWithOptions) result += string.Format("{0,5}. None", 0);            
+            if (ListWithOptions) result += string.Format("\n" + "{0,5}. None", 0);            
 
             ((ListViewModel)Model).Items.ForEach(item =>
             {
                 var data = GetDataObjectFromModel(item);
-                if (listWithOptions) data.Add(count);
+                if (ListWithOptions) data.Add(count);
                 result += "\n" + string.Format(formatter, data.ToArray());
                 count++;
             });

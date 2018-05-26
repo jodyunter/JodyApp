@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.ConsoleApp.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +11,19 @@ namespace JodyApp.ConsoleApp.Commands
     {
         // Methods used as console commands must be public and must return a string
 
-        public static string DoSomething(int id, string data)
+        public static string DoSomething(List<BaseView> lastViews, int id, string data)
         {
             return string.Format(
                 "I did something to the record Id {0} and save the data {1}", id, data);
         }
 
 
-        public static string DoSomethingElse(DateTime date)
+        public static string DoSomethingElse(List<BaseView> lastViews, DateTime date)
         {
             return string.Format("I did something else on {0}", date);
         }
 
-        public static string DoSomethingOptional(int id, string data = "No Data Provided")
+        public static string DoSomethingOptional(List<BaseView> lastViews, int id, string data = "No Data Provided")
         {
             var result = string.Format(
                 "I did something to the record Id {0} and save the data {1}", id, data);

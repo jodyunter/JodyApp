@@ -12,17 +12,16 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class StandingsCommands
     {
-        public static string GetStandings(int seasonId, string division)
+        public static BaseView GetStandings(List<BaseView> lastViews, int seasonId, int divisionLevel)
         {
             SeasonService seasonService = new SeasonService(JodyAppContext.Instance);
             StandingsService standingsService = new StandingsService(JodyAppContext.Instance);
 
-            var model = standingsService.GetBySeasonAndDivisionName(seasonService.GetById(seasonId), division);
+            var model = standingsService.GetBySeasonAndDivisionLevel(seasonService.GetById(seasonId), divisionLevel);
             var view = new StandingsView(model);
 
-            return view.GetView();
-            
-            
+            return view;
+                        
         }
     }
 }
