@@ -8,7 +8,16 @@ using System.Threading.Tasks;
 namespace JodyApp.ConsoleApp.Views
 {
     public class DivisionView : BaseView
-    {        
+    {
+        public override string[] ViewHeaders => new string[] { "Id", "Name", "Short", "League", "Parent", "Level", "Order" };
+        public override object[] ViewObjects
+        {
+            get
+            {
+                var m = (ConfigDivisionViewModel)Model;
+                return new object[] { m.Id, m.Name, m.ShortName, m.League, m.Parent, m.Level, m.Order };
+            }
+        }
         public DivisionView(ConfigDivisionViewModel model):base(model)
         {            
         }
@@ -16,10 +25,7 @@ namespace JodyApp.ConsoleApp.Views
         {
             var m = (ConfigDivisionViewModel)Model;
 
-            var results = 
-                GetView("",
-                new string[] { "Id", "Name", "Short", "League", "Parent", "Level", "Order" },
-                    new object[] { m.Id, m.Name, m.ShortName, m.League, m.Parent, m.Level, m.Order });
+            var results = base.GetView();
 
             var teamView = new TeamListView(new ListViewModel(m.Teams.ToList<BaseViewModel>()));
             var teamViewString = teamView.GetView();

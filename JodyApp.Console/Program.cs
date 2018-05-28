@@ -50,8 +50,7 @@ namespace JodyApp.ConsoleApp
         }
 
         static void Run(ApplicationContext context)
-        {
-            BaseView lastView = null;
+        {            
             while (true)
             {
                 var consoleInput = ReadFromConsole();
@@ -63,7 +62,7 @@ namespace JodyApp.ConsoleApp
                         RunExitRoutine();
                     }
                     // Create a ConsoleCommand instance:
-                    var cmd = new ConsoleCommand(consoleInput, context, new List<BaseView> { lastView });
+                    var cmd = new ConsoleCommand(consoleInput, context);
                     
                     // Execute the command:
                     var result = Execute(cmd);
@@ -71,7 +70,8 @@ namespace JodyApp.ConsoleApp
                     // Write out the result:
                     WriteToConsole(result.GetView());
 
-                    lastView = result;
+                    context.AddView(result);
+                    
                 }
                 catch (Exception ex)
                 {
@@ -108,7 +108,9 @@ namespace JodyApp.ConsoleApp
             // Validate proper # of required arguments provided. Some may be optional:
             var requiredParams = paramInfoList.Where(p => p.IsOptional == false);
             var optionalParams = paramInfoList.Where(p => p.IsOptional == true);
-            int requiredCount = requiredParams.Count();
+            int applicationArguments = command.ApplicationArguments.Count();
+
+            int requiredCount = requiredParams.Count() - applicationArguments;
             int optionalCount = optionalParams.Count();
             int providedCount = command.Arguments.Count(); 
 
@@ -137,11 +139,20 @@ namespace JodyApp.ConsoleApp
                     methodParameterValueList.Add(param.DefaultValue);
                 }
 
+                //these are the always included arguments
+                for (int i = 0; i < command.ApplicationArguments.Count(); i++)
+                {
+                    methodParameterValueList.RemoveAt(i);
+                    methodParameterValueList.Insert(i, command.ApplicationArguments[i]);
+
+                }
+                
                 // Now walk through all the arguments passed from the console and assign 
                 // accordingly. Any optional arguments not provided have already been set to 
                 // the default specified by the method signature:
-                for (int i = 0; i < command.Arguments.Count(); i++)
+                for (int i = applicationArguments; i < command.Arguments.Count() + applicationArguments; i++)
                 {
+                    int commandArgumentPosition = i - applicationArguments;
                     var methodParam = paramInfoList.ElementAt(i);
                     var typeRequired = methodParam.ParameterType;
                     object value = null;
@@ -149,7 +160,7 @@ namespace JodyApp.ConsoleApp
                     {
                         // Coming from the Console, all of our arguments are passed in as 
                         // strings. Coerce to the type to match the method paramter:
-                        value = CoerceArgument(typeRequired, command.Arguments.ElementAt(i));
+                        value = CoerceArgument(typeRequired, command.Arguments.ElementAt(commandArgumentPosition));
                         methodParameterValueList.RemoveAt(i);
                         methodParameterValueList.Insert(i, value);
                     }
@@ -226,15 +237,6 @@ namespace JodyApp.ConsoleApp
 
         static object CoerceArgument(Type requiredType, object input)
         {
-
-            if (input is List<BaseView>)
-            {
-                return (List<BaseView>)input;
-            }
-            else if (input is ApplicationContext)
-            {
-                return (ApplicationContext)input;
-            }
 
             var inputValue = (string)input;
             var requiredTypeCode = Type.GetTypeCode(requiredType);

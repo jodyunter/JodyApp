@@ -11,19 +11,19 @@ namespace JodyApp.ConsoleApp.Commands
     {
         // Methods used as console commands must be public and must return a string
 
-        public static BaseView DoSomething(ApplicationContext context, List<BaseView> lastViews, int id, string data)
+        public static BaseView DoSomething(ApplicationContext context, int id, string data)
         {
             return new MessageView(string.Format(
                 "I did something to the record Id {0} and save the data {1}", id, data));
         }
 
 
-        public static BaseView DoSomethingElse(ApplicationContext context, List<BaseView> lastViews, DateTime date)
+        public static BaseView DoSomethingElse(ApplicationContext context, DateTime date)
         {
             return new MessageView(string.Format("I did something else on {0}", date));
         }
 
-        public static BaseView DoSomethingOptional(ApplicationContext context, List<BaseView> lastViews, int id, string data = "No Data Provided")
+        public static BaseView DoSomethingOptional(ApplicationContext context, int id, string data = "No Data Provided")
         {
             var result = string.Format(
                 "I did something to the record Id {0} and save the data {1}", id, data);

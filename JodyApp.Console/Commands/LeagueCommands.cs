@@ -13,7 +13,7 @@ namespace JodyApp.ConsoleApp.Commands
     public class LeagueCommands
     {
 
-        public static BaseView View(ApplicationContext context, List<BaseView> lastViews, int id)
+        public static BaseView View(ApplicationContext context, int id)
         {
             var service = new LeagueService(JodyAppContext.Instance);
             var model = service.GetById(id);
@@ -22,22 +22,32 @@ namespace JodyApp.ConsoleApp.Commands
 
             return view;
         }
-        public static BaseView Create(ApplicationContext context, List<BaseView> lastViews, string name)
+        public static BaseView Create(ApplicationContext context, string name)
         {
             var service = new LeagueService(JodyAppContext.Instance);
             var model = service.DomainToDTO(service.CreateLeague(name));
             service.Save();
 
-            LeagueView view = new LeagueView(model);
+            var view = new LeagueView(model);
 
             return view;
             
         }
-        public static BaseView List(ApplicationContext context, List<BaseView> lastViews)
+        public static BaseView List(ApplicationContext context)
         {
             var service = new LeagueService(JodyAppContext.Instance);
             var view = new LeagueListView(service.GetAll());
             
+            return view;
+        }
+
+        public static BaseView Edit(ApplicationContext context, int id)
+        {
+            var service = new LeagueService(JodyAppContext.Instance);
+            var model = service.GetById(id);
+
+            var view = new LeagueView(model);
+            view.EditMode = true;
             return view;
         }
     }

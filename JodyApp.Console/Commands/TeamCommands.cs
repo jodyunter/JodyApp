@@ -13,17 +13,39 @@ namespace JodyApp.ConsoleApp.Commands
     public class TeamCommands
     {
         //probably want to switch these out to config commands            
-        public static BaseView View(ApplicationContext context, List<BaseView> lastViews, int id)
+        public static BaseView View(ApplicationContext context, int id)
         {
             var service = new ConfigService(JodyAppContext.Instance);
             var model = service.GetTeamModelById(id);
 
-            TeamView view = new TeamView(model);
+            var view = new TeamView(model);
 
             return view;
         }
 
-        public static BaseView List(ApplicationContext context, List<BaseView> lastViews)
+        public static BaseView Edit(ApplicationContext context, int id)
+        {
+            var view = View(context, id);
+            view.EditMode = true;
+
+            return view;
+        }
+
+        public static BaseView UpdateAttribute(ApplicationContext context, int selection, string newData = "None")
+        {
+            var view = context.GetLastView();
+            
+            if (selection == 0 || newData.Equals("None"))
+            {
+                return new MessageView("Nothing chosen to edit");
+            }
+            else 
+                view.UpdateAttribute(selection, newData);
+
+            return view;
+        }
+
+        public static BaseView List(ApplicationContext context)
         {
             var service = new ConfigService(JodyAppContext.Instance);
             var view = new TeamListView(service.GetAllTeams());
@@ -31,7 +53,7 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
 
-        public static BaseView ListByDivision(ApplicationContext context, List<BaseView> lastViews, string divisionName)
+        public static BaseView ListByDivision(ApplicationContext context, string divisionName)
         {
             var service = new ConfigService(JodyAppContext.Instance);
             var view = new TeamListView(service.GetTeamsByDivisionName(divisionName));
@@ -41,7 +63,7 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
         
-        public static BaseView ChangeDivision(ApplicationContext context, List<BaseView> lastViews, int teamId, string newDivisionName)
+        public static BaseView ChangeDivision(ApplicationContext context, int teamId, string newDivisionName)
         {
             var service = new ConfigService(JodyAppContext.Instance);
 

@@ -8,17 +8,25 @@ using System.Threading.Tasks;
 namespace JodyApp.ConsoleApp.Views
 {
     public class LeagueView:BaseView
-    {        
-        public LeagueView(LeagueViewModel model):base(model)
-        {            
-        }
+    {
+        public override string[] ViewHeaders => new string[] { "Id", "Name", "Year" };
+        public override string[] EditHeaders => new string[] { "Name" };
 
-        public override string GetView()
+        public override object[] ViewObjects
         {
-            var m = (LeagueViewModel)Model;
-
-            return GetView("", new string[] { "Id", "Name", "Year" }, new object[] { m.Id, m.Name, m.CurrentYear });
+            get
+            {
+                var m = (LeagueViewModel)Model;
+                return new object[] { m.Id, m.Name, m.CurrentYear };
+            }
         }
+        public override object[] EditObjects => new object[] { ((LeagueViewModel)Model).Name };
+
+        public LeagueView(LeagueViewModel model):base(model)
+        {                        
+        }
+
+
 
     }
 }

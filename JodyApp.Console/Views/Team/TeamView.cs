@@ -8,18 +8,48 @@ using System.Threading.Tasks;
 namespace JodyApp.ConsoleApp.Views
 {
     public class TeamView:BaseView
-    {        
+    {
 
+        public override string[] ViewHeaders => new string[] { "Id", "Name", "Skill", "League", "Division" };
+        public override object[] ViewObjects
+        {
+            get
+            {
+                var m = (ConfigTeamViewModel)Model;
+                return new object[] { m.Id, m.Name, m.Skill, m.League, m.Division };
+            }
+        }
+
+        public override string[] EditHeaders => new string[] { "Name", "Skill" };
+        public override object[] EditObjects
+        {
+            get
+            {
+                var m = (ConfigTeamViewModel)Model;
+                return new object[] { m.Name, m.Skill };
+            }
+        }
         public TeamView(ConfigTeamViewModel model):base(model)
         {         
         }
 
-        public override string GetView()
+        public override void UpdateAttribute(int selection, string value)
         {
             var m = (ConfigTeamViewModel)Model;
-            return GetView("",
-                new string[] { "Id", "Name", "Skill", "League", "Division" },
-                new object[] { m.Id, m.Name, m.Skill, m.League, m.Division });
+
+            switch (selection)
+            {
+                case 0:
+                    break;
+                case 1:
+                    m.Name = value;
+                    break;
+                case 2:
+                    m.Skill = int.Parse(value);
+                    break;
+            }
+
+            return;
         }
     }
 }

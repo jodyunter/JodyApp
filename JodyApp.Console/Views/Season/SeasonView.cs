@@ -9,15 +9,15 @@ namespace JodyApp.ConsoleApp.Views
 {
     public class SeasonView : BaseView
     {
-        public SeasonView(SeasonViewModel model) : base(model) { }
-
-        public override string GetView()
+        public override string[] ViewHeaders => new string[] { "Id", "League", "Name", "Year", "Started" };
+        public override object[] ViewObjects
         {
-            var m = (SeasonViewModel)Model;
-
-            return GetView("",
-                new string[] { "Id", "League", "Name", "Year", "Started" },
-                new object[] { m.Id, m.League, m.Name, m.Year, m.Started });
+            get
+            {
+                var m = (SeasonViewModel)Model;
+                return new object[] { m.Id, m.League, m.Name, m.Year, m.Started };
+            }
         }
+        public SeasonView(SeasonViewModel model) : base(model) { }
     }
 }

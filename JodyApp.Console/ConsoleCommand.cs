@@ -15,9 +15,11 @@ namespace JodyApp.ConsoleApp
         public string Name { get; set; }
         public string LibraryClassName { get; set; }        
 
-        public ConsoleCommand(string input, ApplicationContext context, List<BaseView> viewHistory)
+        public List<object> ApplicationArguments { get; set; }
+        public ConsoleCommand(string input, ApplicationContext context)
         {
             Arguments = new List<object>();
+            ApplicationArguments = new List<object>();
 
             // Ugly regex to split string on spaces, but preserve quoted text intact:
             var stringArray =
@@ -62,8 +64,7 @@ namespace JodyApp.ConsoleApp
                 }
             }
 
-            Arguments.Insert(0, viewHistory);
-            Arguments.Insert(0, context);
+            ApplicationArguments.Add(context);
         }
 
     }
