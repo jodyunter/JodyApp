@@ -14,7 +14,7 @@ namespace JodyApp.Service
         public JodyAppContext db { get; set;  }
         
 
-        public BaseService() { }
+        public BaseService() { db = new JodyAppContext(); }
 
         public BaseService(JodyAppContext dbContext)
         {
