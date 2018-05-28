@@ -18,7 +18,7 @@ namespace JodyApp.ConsoleApp.Commands
             var model = seasonService.GetAllByLeagueId(leagueId);
 
             SeasonListView view = new SeasonListView(model);
-
+            
             return view;
         }
         

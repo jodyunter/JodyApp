@@ -59,10 +59,10 @@ namespace JodyApp.ConsoleApp
                 try
                 {
                     // Create a ConsoleCommand instance:
-                    var cmd = new ConsoleCommand(consoleInput);
+                    var cmd = new ConsoleCommand(consoleInput, new List<BaseView> { lastView });
                     
                     // Execute the command:
-                    var result = Execute(cmd, new List<BaseView>() { lastView });
+                    var result = Execute(cmd);
 
                     // Write out the result:
                     WriteToConsole(result.GetView());
@@ -79,7 +79,7 @@ namespace JodyApp.ConsoleApp
         }
 
 
-        static BaseView Execute(ConsoleCommand command, List<BaseView> lastViews)
+        static BaseView Execute(ConsoleCommand command)
         {
             var badCommandMessage_NoClassName = string.Format("No commands found for {0}.", command.LibraryClassName);
             var badCommandMessage_NoMethodName = string.Format("No command {0} exists in {1}", command.Name, command.LibraryClassName);
@@ -176,9 +176,7 @@ namespace JodyApp.ConsoleApp
             if (methodParameterValueList.Count > 0)
             {
                 inputArgs.AddRange(methodParameterValueList);
-            }
-
-            inputArgs[0] = lastViews;
+            }            
             
             var typeInfo = commandLibaryClass;
 
@@ -222,8 +220,15 @@ namespace JodyApp.ConsoleApp
             return Console.ReadLine();
         }
 
-        static object CoerceArgument(Type requiredType, string inputValue)
+        static object CoerceArgument(Type requiredType, object input)
         {
+
+            if (input is List<BaseView>)
+            {
+                return (List<BaseView>)input;
+            }
+
+            var inputValue = (string)input;
             var requiredTypeCode = Type.GetTypeCode(requiredType);
             string exceptionMessage =
                 string.Format("Cannnot coerce the input argument {0} to required type {1}",
@@ -231,7 +236,7 @@ namespace JodyApp.ConsoleApp
 
             object result = null;
             switch (requiredTypeCode)
-            {
+            {                
                 case TypeCode.String:
                     result = inputValue;
                     break;
