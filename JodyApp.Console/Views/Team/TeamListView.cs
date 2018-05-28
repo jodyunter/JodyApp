@@ -10,9 +10,9 @@ namespace JodyApp.ConsoleApp.Views
     public class TeamListView:BaseListView
     {       
 
-        public override string Formatter { get { return "{0,-5} {1,-15} {2,5} {3, 15} {4,15}"; } }
+        public override string Formatter { get { return "{0,-5} {1,-15} {2,5} {3, 15} {4,15} {5,5} {6,5}"; } }
 
-        public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Skill", "League", "Division" }; } }
+        public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Skill", "League", "Division", "FirstYear", "LastYear" }; } }
         
 
         public TeamListView(ListViewModel model):base(model)
@@ -23,7 +23,11 @@ namespace JodyApp.ConsoleApp.Views
         {
             var t = (ConfigTeamViewModel)model;
 
-            return new List<object> { t.Id, t.Name, t.Skill, t.League, t.Division };
+            return new List<object> { t.Id, t.Name, t.Skill,
+                t.League,
+                t.Division,
+                t.FirstYear,
+                t.LastYear,};
         }
     }
 }
