@@ -9,7 +9,7 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public static class HelpCommands
     {
-        public static BaseView List(List<BaseView> lastViews, string nameSpace = "All", string method = "All")
+        public static BaseView List(ApplicationContext context, List<BaseView> lastViews, string nameSpace = "All", string method = "All")
         {
             var view = new HelpView(nameSpace, method);
 

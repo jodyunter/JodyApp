@@ -8,12 +8,16 @@ using System.Threading.Tasks;
 namespace JodyApp.ConsoleApp.Views
 {
     public abstract class BaseView
-    {
-        public BaseViewModel Model { get; set; }
+    { 
+        //eventually have an error message class so it can be a warning or not
+        public List<string> ErrorMessages { get; set; }
+        public bool Error { get; set; }
+        public virtual BaseViewModel Model { get; set; }
 
         public BaseView(BaseViewModel model)
         {
-            this.Model = model;
+            Model = model;
+            ErrorMessages = new List<string>();
         }
         public abstract string GetView();
 
@@ -31,6 +35,14 @@ namespace JodyApp.ConsoleApp.Views
 
             return result;
 
+        }
+
+        public void AddError(string message)
+        {
+            if (ErrorMessages == null) ErrorMessages = new List<string>();
+
+            ErrorMessages.Add(message);
+            Error = true;
         }
     }
 }

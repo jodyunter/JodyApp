@@ -12,12 +12,12 @@ namespace JodyApp.ConsoleApp.Commands
     public class SeasonCommands
     {
         
-        public static BaseView List(List<BaseView> lastViews, int leagueId)
+        public static BaseView List(ApplicationContext context, List<BaseView> lastViews, int leagueId)
         {
-            SeasonService seasonService = new SeasonService(JodyAppContext.Instance);
+            var seasonService = new SeasonService(JodyAppContext.Instance);
             var model = seasonService.GetAllByLeagueId(leagueId);
 
-            SeasonListView view = new SeasonListView(model);
+            var view = new SeasonListView(model);
             
             return view;
         }

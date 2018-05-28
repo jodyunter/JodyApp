@@ -12,11 +12,12 @@ namespace JodyApp.ConsoleApp
     {
         public JodyAppContext DbContext { get; set; }
         public League SelectedLeague { get; set; }
+        public string CurrentUser { get; set; }
 
         public ApplicationContext()
         {
             SelectedLeague = null;
-            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["Test"].ConnectionString;
+            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
             DbContext = new JodyAppContext(connectionString);
         }
     }

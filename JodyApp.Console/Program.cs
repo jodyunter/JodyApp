@@ -13,7 +13,7 @@ namespace JodyApp.ConsoleApp
         const string _readPrompt = "SportsApp> ";
         const string _commandNamespace = "JodyApp.ConsoleApp.Commands";
         public static Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> _commandLibraries;
-
+        public static ApplicationContext AppContext;
         static void Main(string[] args)
         {
             Console.Title = "Jody's App";
@@ -45,11 +45,11 @@ namespace JodyApp.ConsoleApp
                 _commandLibraries.Add(commandClass.Name, methodDictionary);
             }
 
-            JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
-            Run(db);
+            AppContext = new ApplicationContext();
+            Run(AppContext);
         }
 
-        static void Run(JodyAppContext db)
+        static void Run(ApplicationContext context)
         {
             BaseView lastView = null;
             while (true)
@@ -58,8 +58,12 @@ namespace JodyApp.ConsoleApp
                 if (string.IsNullOrWhiteSpace(consoleInput)) continue;
                 try
                 {
+                    if (consoleInput.ToUpper().Equals("QUIT"))
+                    {
+                        RunExitRoutine();
+                    }
                     // Create a ConsoleCommand instance:
-                    var cmd = new ConsoleCommand(consoleInput, new List<BaseView> { lastView });
+                    var cmd = new ConsoleCommand(consoleInput, context, new List<BaseView> { lastView });
                     
                     // Execute the command:
                     var result = Execute(cmd);
@@ -106,7 +110,7 @@ namespace JodyApp.ConsoleApp
             var optionalParams = paramInfoList.Where(p => p.IsOptional == true);
             int requiredCount = requiredParams.Count();
             int optionalCount = optionalParams.Count();
-            int providedCount = command.Arguments.Count() + 1; 
+            int providedCount = command.Arguments.Count(); 
 
             if (requiredCount > providedCount)
             {
@@ -226,6 +230,10 @@ namespace JodyApp.ConsoleApp
             if (input is List<BaseView>)
             {
                 return (List<BaseView>)input;
+            }
+            else if (input is ApplicationContext)
+            {
+                return (ApplicationContext)input;
             }
 
             var inputValue = (string)input;

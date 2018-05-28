@@ -14,20 +14,20 @@ namespace JodyApp.ConsoleApp.Commands
     public class DivisionCommands
     {
 
-        public static BaseView View(List<BaseView> lastViews, int id)
+        public static BaseView View(ApplicationContext context, List<BaseView> lastViews, int id)
         {
-            ConfigService service = new ConfigService(JodyAppContext.Instance);
-            ConfigDivisionViewModel model = service.GetDivisionModelById(id);
+            var service = new ConfigService(JodyAppContext.Instance);
+            var model = service.GetDivisionModelById(id);
 
-            DivisionView view = new DivisionView(model);
+            var view = new DivisionView(model);
 
             return view;
         }
 
-        public static BaseView List(List<BaseView> lastViews)
+        public static BaseView List(ApplicationContext context, List<BaseView> lastViews)
         {
-            ConfigService service = new ConfigService(JodyAppContext.Instance);
-            DivisionListView view = new DivisionListView(service.GetAllDivisions());
+            var service = new ConfigService(JodyAppContext.Instance);
+            var view = new DivisionListView(service.GetAllDivisions());
 
             return view;
         }

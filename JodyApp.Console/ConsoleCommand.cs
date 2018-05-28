@@ -15,7 +15,7 @@ namespace JodyApp.ConsoleApp
         public string Name { get; set; }
         public string LibraryClassName { get; set; }        
 
-        public ConsoleCommand(string input, List<BaseView> viewHistory)
+        public ConsoleCommand(string input, ApplicationContext context, List<BaseView> viewHistory)
         {
             Arguments = new List<object>();
 
@@ -63,6 +63,7 @@ namespace JodyApp.ConsoleApp
             }
 
             Arguments.Insert(0, viewHistory);
+            Arguments.Insert(0, context);
         }
 
     }

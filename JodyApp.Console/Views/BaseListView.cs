@@ -9,6 +9,8 @@ namespace JodyApp.ConsoleApp.Views
 {
     public abstract class BaseListView:BaseView
     {
+        public new ListViewModel Model { get; set; }
+
         public string Header { get; set; }
 
         public bool ListWithOptions { get; set; }
@@ -17,8 +19,10 @@ namespace JodyApp.ConsoleApp.Views
         public abstract string[] HeaderStrings { get; }        
         public abstract List<object> GetDataObjectFromModel(BaseViewModel model);
 
-        public BaseListView(ListViewModel model) : base(model) { ListWithOptions = false; }
+        public BaseListView(ListViewModel model) : base(model) { ListWithOptions = false; Model = model; }
 
+
+        //currently the default is 0 is NONE
         public override string GetView()
         {
             var formatter = Formatter;
@@ -29,7 +33,7 @@ namespace JodyApp.ConsoleApp.Views
 
             var headerStrings = HeaderStrings.ToList();
 
-            if (ListWithOptions) headerStrings.Add("O");
+            if (ListWithOptions) headerStrings.Add("Opt");
 
             result += string.Format(formatter, headerStrings.ToArray());
 
@@ -37,7 +41,7 @@ namespace JodyApp.ConsoleApp.Views
 
             if (ListWithOptions) result += string.Format("\n" + "{0,5}. None", 0);            
 
-            ((ListViewModel)Model).Items.ForEach(item =>
+            Model.Items.ForEach(item =>
             {
                 var data = GetDataObjectFromModel(item);
                 if (ListWithOptions) data.Add(count);
@@ -48,6 +52,24 @@ namespace JodyApp.ConsoleApp.Views
             return result;
         }
 
+        public BaseViewModel GetBySelection(int selectionId)
+        {
+            if (selectionId == 0)
+            {
+                return null;
+            }
 
+            if (selectionId >= Model.Items.Count)
+            {
+                AddError("Selection is not a valid option.");
+                return null;
+            }
+            else
+            {
+                return Model.Items[selectionId-1];
+            }
+
+
+        }
     }
 }
