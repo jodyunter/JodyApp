@@ -3,49 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using JodyApp.ConsoleApp.IO;
 using JodyApp.ConsoleApp.Views;
+using JodyApp.ConsoleApp.App;
 using JodyApp.Database;
 
 namespace JodyApp.ConsoleApp
 {
     class Program
-    {
-        const string _readPrompt = "SportsApp> ";
-        const string _commandNamespace = "JodyApp.ConsoleApp.Commands";
-        public static Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> _commandLibraries;
+    {                        
         public static ApplicationContext AppContext;
         static void Main(string[] args)
         {
             Console.Title = "Jody's App";
-
-            // Any static classes containing commands for use from the 
-            // console are located in the Commands namespace. Load 
-            // references to each type in that namespace via reflection:
-            _commandLibraries = new Dictionary<string, Dictionary<string,
-                    IEnumerable<ParameterInfo>>>();
-
-            // Use reflection to load all of the classes in the Commands namespace:
-            var q = from t in Assembly.GetExecutingAssembly().GetTypes()
-                    where t.IsClass && t.Namespace == _commandNamespace
-                    select t;
-            var commandClasses = q.ToList();
-
-            foreach (var commandClass in commandClasses)
-            {
-                // Load the method info from each class into a dictionary:
-                var methods = commandClass.GetMethods(BindingFlags.Static | BindingFlags.Public);
-                var methodDictionary = new Dictionary<string, IEnumerable<ParameterInfo>>();
-                foreach (var method in methods)
-                {
-                    string commandName = method.Name;
-                    methodDictionary.Add(commandName, method.GetParameters());
-                }
-
-                // Add the dictionary of methods for the current class into a dictionary of command classes:
-                _commandLibraries.Add(commandClass.Name, methodDictionary);
-            }
-
             AppContext = new ApplicationContext();
+
             Run(AppContext);
         }
 
@@ -53,7 +25,7 @@ namespace JodyApp.ConsoleApp
         {            
             while (true)
             {
-                var consoleInput = ReadFromConsole();
+                var consoleInput = IOMethods.ReadFromConsole(context);
                 if (string.IsNullOrWhiteSpace(consoleInput)) continue;
                 try
                 {
@@ -65,10 +37,10 @@ namespace JodyApp.ConsoleApp
                     var cmd = new ConsoleCommand(consoleInput, context);
                     
                     // Execute the command:
-                    var result = Execute(cmd);
+                    var result = Execute(context, cmd);
 
                     // Write out the result:
-                    WriteToConsole(result.GetView());
+                    IOMethods.WriteToConsole(result.GetView());
 
                     context.AddView(result);
                     
@@ -76,24 +48,24 @@ namespace JodyApp.ConsoleApp
                 catch (Exception ex)
                 {
                     // OOPS! Something went wrong - Write out the problem:
-                    WriteToConsole(ex.Message);
+                    IOMethods.WriteToConsole(ex.Message);
                 }
             }
 
         }
 
 
-        static BaseView Execute(ConsoleCommand command)
+        static BaseView Execute(ApplicationContext context, ConsoleCommand command)
         {
             var badCommandMessage_NoClassName = string.Format("No commands found for {0}.", command.LibraryClassName);
             var badCommandMessage_NoMethodName = string.Format("No command {0} exists in {1}", command.Name, command.LibraryClassName);
 
-            if (!_commandLibraries.ContainsKey(command.LibraryClassName))
+            if (!context.CommandLibraries.ContainsKey(command.LibraryClassName))
             {
                 return new ErrorView(badCommandMessage_NoClassName);
 
             }
-            var methodDictionary = _commandLibraries[command.LibraryClassName];
+            var methodDictionary = context.CommandLibraries[command.LibraryClassName];
             if (!methodDictionary.ContainsKey(command.Name))
             {
                 return new ErrorView(badCommandMessage_NoMethodName);
@@ -184,7 +156,7 @@ namespace JodyApp.ConsoleApp
 
             // Need the full Namespace for this:
             Type commandLibaryClass =
-                current.GetType(_commandNamespace + "." + command.LibraryClassName);
+                current.GetType(context.CommandNameSpace + "." + command.LibraryClassName);
 
             var inputArgs = new List<object>();
 
@@ -214,25 +186,9 @@ namespace JodyApp.ConsoleApp
 
         static void RunExitRoutine()
         {
-            WriteToConsole("Exiting Program, press enter to close the windoer");
+            IOMethods.WriteToConsole("Exiting Program, press enter to close the windoer");
             Console.ReadLine();
             Environment.Exit(0);
-        }
-        public static void WriteToConsole(string message = "")
-        {            
-            
-            if (message.Length > 0)
-            {
-                Console.WriteLine(message);
-            }
-        }
-
-
-        public static string ReadFromConsole(string promptMessage = "")
-        {
-            // Show a prompt, and get input:
-            Console.Write(_readPrompt + promptMessage);
-            return Console.ReadLine();
         }
 
         static object CoerceArgument(Type requiredType, object input)

@@ -58,8 +58,8 @@
     <Compile Include="Commands\DefaultCommands.cs" />
     <Compile Include="Commands\HelpCommands.cs" />
     <Compile Include="Commands\LeagueCommands.cs" />
-    <Compile Include="ConsoleCommand.cs" />
-    <Compile Include="Input\InputMethods.cs" />
+    <Compile Include="App\ConsoleCommand.cs" />
+    <Compile Include="IO\IOMethods.cs" />
     <Compile Include="ProgramBackup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

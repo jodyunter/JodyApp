@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,22 +12,25 @@ namespace JodyApp.ConsoleApp.Views
         public string NameSpace { get; set; }
         public string Method { get; set; }
 
-        public HelpView(string nameSpace, string method):base(null)
+        public Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> CommandLibraries;
+
+        public HelpView(string nameSpace, string method, Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> commandLibraries):base(null)
         {
             NameSpace = nameSpace;
             Method = method;
+            CommandLibraries = commandLibraries;
         }
 
         public override string GetView()
         {
-            var libraries = Program._commandLibraries;
+            var libraries = CommandLibraries;
             var nameSpaceKey = NameSpace.Contains("Commands") ? NameSpace : NameSpace + "Commands";
 
             var result = "";
             if (!libraries.ContainsKey(nameSpaceKey))
             {
                 result = "Command Libraries:";
-                Program._commandLibraries.Keys.ToList().ForEach(key =>
+                CommandLibraries.Keys.ToList().ForEach(key =>
                 {
                     result += "\n" + key;
                 });

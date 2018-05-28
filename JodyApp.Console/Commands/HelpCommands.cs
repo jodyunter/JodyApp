@@ -11,7 +11,7 @@ namespace JodyApp.ConsoleApp.Commands
     {
         public static BaseView List(ApplicationContext context, string nameSpace = "All", string method = "All")
         {
-            var view = new HelpView(nameSpace, method);
+            var view = new HelpView(nameSpace, method, context.CommandLibraries);
 
             return view;
         }

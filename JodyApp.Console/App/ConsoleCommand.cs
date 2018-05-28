@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace JodyApp.ConsoleApp
+namespace JodyApp.ConsoleApp.App
 {
     public class ConsoleCommand
     {
