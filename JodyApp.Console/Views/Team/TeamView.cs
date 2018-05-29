@@ -29,7 +29,7 @@ namespace JodyApp.ConsoleApp.Views
                 return new object[] { m.Name, m.Skill };
             }
         }
-        public TeamView(ConfigTeamViewModel model):base(model)
+        public TeamView(BaseViewModel model):base(model)
         {         
         }
 

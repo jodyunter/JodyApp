@@ -12,7 +12,7 @@ namespace JodyApp.Service
     {
         public override BaseViewModel GetModelById(int id)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override BaseViewModel DomainToDTO(DomainObject obj)

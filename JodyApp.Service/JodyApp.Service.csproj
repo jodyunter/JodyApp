@@ -50,6 +50,7 @@
     <Compile Include="BaseService.cs" />
     <Compile Include="CompetitionService.cs" />
     <Compile Include="ConfigService.cs" />
+    <Compile Include="ConfigServices\ConfigTeamService.cs" />
     <Compile Include="DivisionService.cs" />
     <Compile Include="Extensions\CompetitionExtensions.cs" />
     <Compile Include="Extensions\ConfigDivisionExtensions.cs" />

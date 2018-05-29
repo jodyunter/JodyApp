@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Commands
 {
-    public class TeamCommands
+    public class TeamCommands:BaseViewCommands
     {
-        public TeamCommands():base() { }
+        public TeamCommands():base() { Service = new ConfigService(); }
         //probably want to switch these out to config commands            
         public static BaseView View(ApplicationContext context, int id)
         {
@@ -24,6 +24,7 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
 
+        /*
         public BaseView Edit(ApplicationContext context, int id)
         {
             var view = View(context, id);
@@ -53,6 +54,8 @@ namespace JodyApp.ConsoleApp.Commands
 
             return view;
         }
+        */
+
 
         public BaseView ListByDivision(ApplicationContext context, string divisionName)
         {
@@ -79,5 +82,24 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
 
+        public override BaseView GetView(BaseViewModel model)
+        {
+            return new TeamView(model);
+        }
+
+        public override BaseListView GetList(ListViewModel model)
+        {
+            return new TeamListView(model);
+        }
+
+        public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
