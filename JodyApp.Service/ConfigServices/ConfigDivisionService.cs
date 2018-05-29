@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain;
+using JodyApp.Domain.Config;
 using JodyApp.ViewModel;
 
 namespace JodyApp.Service.ConfigServices
@@ -12,6 +13,10 @@ namespace JodyApp.Service.ConfigServices
     public class ConfigDivisionService : BaseService
     {
         public ConfigDivisionService(JodyAppContext db) : base(db) { }
+
+        public ConfigDivisionService():base()
+        {
+        }
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
@@ -38,6 +43,18 @@ namespace JodyApp.Service.ConfigServices
             if (id == null) return null;
 
             return db.ConfigDivisions.Where(t => t.Id == id).FirstOrDefault();
+        }
+
+        public ListViewModel GetByLeagueId(int leagueId)
+        {
+            var items = new List<BaseViewModel>();
+
+            db.ConfigDivisions.Where(t => t.League.Id == leagueId).ToList().ForEach(d =>
+           {
+               items.Add(DomainToDTO(d));
+           });
+
+            return new ListViewModel(items);
         }
     }
 }

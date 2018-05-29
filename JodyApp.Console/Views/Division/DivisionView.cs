@@ -18,7 +18,7 @@ namespace JodyApp.ConsoleApp.Views
                 return new object[] { m.Id, m.Name, m.ShortName, m.League, m.Parent, m.Level, m.Order };
             }
         }
-        public DivisionView(ConfigDivisionViewModel model):base(model)
+        public DivisionView(BaseViewModel model):base(model)
         {            
         }
         public override string GetView()
