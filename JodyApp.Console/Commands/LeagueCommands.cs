@@ -49,5 +49,23 @@ namespace JodyApp.ConsoleApp.Commands
         }
 
 
+        public static int SelectLeague(ApplicationContext context)
+        {
+            var searchId = -1;
+
+            var leagueCommands = new LeagueCommands();
+            var view = leagueCommands.List(context);
+            view.ListWithOptions = true;
+
+            var input = IOMethods.ReadFromConsole(context, "League To Search By>", view.GetView());
+
+            var searchSelection = (int)Program.CoerceArgument(typeof(int), input);
+
+            var viewModel = view.GetBySelection(searchSelection);
+
+            if (viewModel != null) searchId = (int)((LeagueViewModel)viewModel).Id;
+
+            return searchId;
+        }
     }
 }

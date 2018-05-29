@@ -13,8 +13,11 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public abstract class BaseViewCommands
     {
+        public const int SAVE = 1;
+        public const int NONE= 0;
+        public const int UNDO = 2;
         public BaseViewCommands() { }
-        
+
         public BaseService Service { get; set; }
         public abstract BaseView GetView(BaseViewModel model);
         public abstract BaseListView GetList(ListViewModel model);
@@ -59,9 +62,59 @@ namespace JodyApp.ConsoleApp.Commands
             var view = GetView(model);
 
             view.EditMode = true;
+            
+
             return view;
         }
 
+        //saves the most recent view
+        public BaseView Save(ApplicationContext context)
+        {
+            var lastView = context.GetLastView();            
+            Service.Save(context.GetLastView().Model);
+
+            return GetView(context.GetLastView().Model);
+        }
+
+        public BaseView Undo(ApplicationContext context)
+        {
+            context.RemoveLastView();
+            return context.GetLastView();
+        }
+        public BaseView Update(ApplicationContext context)
+        {
+            var selection = -1;
+            var view = context.GetLastView();
+            if (context.CurrentView != null) view = context.CurrentView;
+            
+            if (view == null) return new MessageView("Must Edit Something Prior to Updating");
+
+            var newView = GetView(view.Model);
+            newView.EditMode = true;
+            
+            var selectionInput = IOMethods.ReadFromConsole(context, "Enter Selection>");
+            selection = (int)Program.CoerceArgument(typeof(int), selectionInput);
+
+            while (selection >= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS || selection < 0)
+            {
+                selection -= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS;
+                var prompt = newView.EditHeaders[selection];
+
+                var dataInput = IOMethods.ReadFromConsole(context, "Enter New Value>");
+
+                newView.UpdateAttribute(prompt, dataInput);
+
+                selectionInput = IOMethods.ReadFromConsole(context, "Enter Selection>");
+                selection = (int)Program.CoerceArgument(typeof(int), selectionInput);
+
+            }
+
+            //handle save, undo, none here            
+            return newView;
+        }        
+        
+
+        /*
         public BaseView Update(ApplicationContext context, int selection, string newData = "None")
         {
             var view = context.GetLastView();
@@ -89,6 +142,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             return view;
         }
+        */
 
     }
 }

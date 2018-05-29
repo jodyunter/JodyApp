@@ -46,6 +46,7 @@ namespace JodyApp.Service.ConfigServices
 
             return teamList;
         }
+        
 
         public override BaseViewModel GetModelById(int id)
         {
@@ -82,6 +83,20 @@ namespace JodyApp.Service.ConfigServices
             if (id == null) return null;
 
             return db.ConfigTeams.Where(t => t.Id == id).FirstOrDefault();
+        }
+
+        public ListViewModel GetByLeague(int leagueId)
+        {
+            var items = new List<BaseViewModel>();
+
+            db.ConfigTeams.Where(t => t.League.Id == leagueId).ToList().ForEach(team =>
+            {
+                items.Add(DomainToDTO(team));
+            });
+
+            var teamList = new ListViewModel(items);
+
+            return teamList;
         }
     }
 }

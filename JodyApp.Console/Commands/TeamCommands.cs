@@ -1,6 +1,8 @@
-﻿using JodyApp.ConsoleApp.Views;
+﻿using JodyApp.ConsoleApp.IO;
+using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 using JodyApp.Service;
+using JodyApp.Service.ConfigServices;
 using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class TeamCommands:BaseViewCommands
     {
-        public TeamCommands():base() { Service = new ConfigService(); }
+        public TeamCommands():base() { Service = new ConfigTeamService(); }
         //probably want to switch these out to config commands            
         public static BaseView View(ApplicationContext context, int id)
         {
@@ -82,6 +84,20 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
 
+        public BaseView ListByLeague(ApplicationContext context, int leagueId = -55)
+        {
+            var searchId = -1;
+
+            if (leagueId == -55)
+            {
+                searchId = LeagueCommands.SelectLeague(context);                        
+            }
+            else
+                searchId = (int)leagueId;
+
+            return new TeamListView(((ConfigTeamService)Service).GetByLeague(searchId));
+        
+        }
         public override BaseView GetView(BaseViewModel model)
         {
             return new TeamView(model);

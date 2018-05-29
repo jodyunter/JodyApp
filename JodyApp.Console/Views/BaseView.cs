@@ -16,6 +16,8 @@ namespace JodyApp.ConsoleApp.Views
         public virtual BaseViewModel Model { get; set; }
         public bool EditMode { get; set; }
 
+        public bool IsViewNew = true;
+
         public virtual string Header { get; set; }
         public virtual string[] ViewHeaders { get; }
         public virtual object[] ViewObjects { get; }

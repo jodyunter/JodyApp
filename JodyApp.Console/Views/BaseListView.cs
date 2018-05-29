@@ -9,9 +9,7 @@ namespace JodyApp.ConsoleApp.Views
 {
     public abstract class BaseListView:BaseView
     {
-        public new ListViewModel Model { get; set; }
-
-        public string Header { get; set; }
+        public new ListViewModel Model { get; set; }        
 
         public bool ListWithOptions { get; set; }
 

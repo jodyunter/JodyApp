@@ -17,7 +17,7 @@ namespace JodyApp.ConsoleApp
         public League SelectedLeague { get; set; }
         public string CurrentUser { get; set; }
         public List<BaseView> ViewHistory { get; set; }
-
+        public BaseView CurrentView { get; set; }
         public string ReadPrompt { get; set; }
         public string CommandNameSpace { get; set; }
 
@@ -41,11 +41,29 @@ namespace JodyApp.ConsoleApp
         public void AddView(BaseView view)
         {
 
-            ViewHistory.Insert(0, view);
+            if (view.IsViewNew)
+            {
+                ViewHistory.Insert(0, view);
 
-            if (ViewHistory.Count > 20) ViewHistory.RemoveRange(20, 1);
+                if (ViewHistory.Count > 20) ViewHistory.RemoveRange(20, 1);
+                view.IsViewNew = false;
+            }
         }
 
+
+        public BaseView RemoveLastView()
+        {
+            for (int i = 0; i < ViewHistory.Count; i++)
+            {
+                if (!((ViewHistory[i] is ErrorView) || (ViewHistory[i] is MessageView)))
+                {
+                    ViewHistory.RemoveAt(i);
+                    return null;
+                }
+            }
+
+            return null;
+        }
         public BaseView GetLastView()
         {            
             for (int i = 0; i < ViewHistory.Count; i++)

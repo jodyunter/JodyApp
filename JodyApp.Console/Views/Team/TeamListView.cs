@@ -10,7 +10,7 @@ namespace JodyApp.ConsoleApp.Views
     public class TeamListView:BaseListView
     {       
 
-        public override string Formatter { get { return "{0,-5} {1,-15} {2,5} {3, 15} {4,15} {5,5} {6,5}"; } }
+        public override string Formatter { get { return "{0,-5} {1,-15} {2,5} {3, 20} {4,20} {5,5} {6,5}"; } }
 
         public override string[] HeaderStrings { get { return new string[] { "Id", "Name", "Skill", "League", "Division", "FirstYear", "LastYear" }; } }
         

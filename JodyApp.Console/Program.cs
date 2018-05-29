@@ -40,9 +40,11 @@ namespace JodyApp.ConsoleApp
                     var result = Execute(context, cmd);
 
                     // Write out the result:
-                    IOMethods.WriteToConsole(result.GetView());
-
-                    context.AddView(result);
+                    if (result != null)
+                    {
+                        IOMethods.WriteToConsole(result.GetView());
+                        context.AddView(result);
+                    }
                     
                 }
                 catch (Exception ex)
@@ -191,7 +193,7 @@ namespace JodyApp.ConsoleApp
             Environment.Exit(0);
         }
 
-        static object CoerceArgument(Type requiredType, object input)
+        public static object CoerceArgument(Type requiredType, object input)
         {
 
             var inputValue = (string)input;
