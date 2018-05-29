@@ -33,18 +33,16 @@ namespace JodyApp.ConsoleApp.Views
         {         
         }
 
-        public override void UpdateAttribute(int selection, string value)
+        public override void UpdateAttribute(string headerName, string value)
         {
             var m = (ConfigTeamViewModel)Model;
 
-            switch (selection)
+            switch (headerName)
             {
-                case 0:
-                    break;
-                case 1:
+                case "Name":
                     m.Name = value;
                     break;
-                case 2:
+                case "Skill":
                     m.Skill = int.Parse(value);
                     break;
             }

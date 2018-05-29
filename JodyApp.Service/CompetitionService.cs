@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Service
 {
-    public class CompetitionService : BaseService
+    public partial class CompetitionService : BaseService
     {        
 
         SeasonService SeasonService { get; set; }

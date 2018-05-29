@@ -10,7 +10,7 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public class TeamService : BaseService
+    public partial class TeamService : BaseService
     {        
 
         public TeamService(JodyAppContext instance):base(instance)

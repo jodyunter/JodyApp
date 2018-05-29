@@ -9,10 +9,11 @@ using JodyApp.Database;
 using System.Data.Entity;
 using JodyApp.Domain.Table;
 using JodyApp.Domain.Config;
+using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public class DivisionService:BaseService
+    public partial class DivisionService:BaseService
     {
 
         public DivisionService() : base() { }
@@ -121,10 +122,6 @@ namespace JodyApp.Service
          
         }
 
-        public static implicit operator DivisionService(ConfigService v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 

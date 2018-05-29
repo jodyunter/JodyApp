@@ -173,8 +173,8 @@ namespace JodyApp.ConsoleApp
             {
                 var result = typeInfo.InvokeMember(
                     command.Name,
-                    BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public,
-                    null, null, inputArgs.ToArray());
+                    BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.Public,
+                    null, context.CommandObjects[commandLibaryClass.Name], inputArgs.ToArray());
                 return (BaseView)result;
             }
             catch (TargetInvocationException ex)

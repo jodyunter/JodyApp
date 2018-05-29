@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace JodyApp.ConsoleApp.Views
 {
     public abstract class BaseView
-    { 
+    {
+        public const int NUMBER_OF_DEFAULT_EDIT_COMMANDS = 3;
         //eventually have an error message class so it can be a warning or not
         public List<string> ErrorMessages { get; set; }
         public bool Error { get; set; }
@@ -54,13 +55,16 @@ namespace JodyApp.ConsoleApp.Views
         public string GetEditView(string header, string[] fieldNames, object[] data)
         {
             var template = "{0,5}. {1,10} - {2,-15}";
-            var result = header;
-            
+            var result = header;            
 
-            for (int i = 0; i <= fieldNames.Length; i++)
+            result = string.Format(template, 0, "No Edit", "");
+            result += "\n" + string.Format(template, 1, "Save", "");
+            result += "\n" + string.Format(template, 2, "Undo", "");
+
+            for (int i = 0; i < fieldNames.Length; i++)
             {
-                if (i == 0) result = string.Format(template, 0, "No Edit", "");
-                else result += "\n" + string.Format(template, i, fieldNames[i-1], data[i-1]);
+
+                result += "\n" + string.Format(template, i + NUMBER_OF_DEFAULT_EDIT_COMMANDS, fieldNames[i], data[i]);
             }
 
             return result;
@@ -74,7 +78,7 @@ namespace JodyApp.ConsoleApp.Views
             Error = true;
         }
 
-        public virtual void UpdateAttribute(int selection, string value)
+        public virtual void UpdateAttribute(string headerName, string value)
         {
             return;
         }

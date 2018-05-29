@@ -10,7 +10,7 @@ using JodyApp.Domain.Playoffs;
 
 namespace JodyApp.Service
 {
-    public class PlayoffService : BaseService
+    public partial class PlayoffService : BaseService
     {
         ConfigService ConfigService { get; set; }
 

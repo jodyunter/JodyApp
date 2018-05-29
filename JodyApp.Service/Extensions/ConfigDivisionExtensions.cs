@@ -1,4 +1,5 @@
-﻿using JodyApp.Domain.Config;
+﻿using JodyApp.Domain;
+using JodyApp.Domain.Config;
 using JodyApp.ViewModel;
 using JodyApp.ViewModel;
 using System;
@@ -48,5 +49,23 @@ namespace JodyApp.Service
                 division.Level, division.Order, teamViewModelList);
         }
 
+        public override BaseViewModel GetModelById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel Save(BaseViewModel mdoel)
+        {
+            throw new NotImplementedException();
+        }
+        public override ListViewModel GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

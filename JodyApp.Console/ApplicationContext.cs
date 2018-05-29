@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 using JodyApp.Domain;
+using JodyApp.Service;
 
 namespace JodyApp.ConsoleApp
 {
@@ -21,6 +22,9 @@ namespace JodyApp.ConsoleApp
         public string CommandNameSpace { get; set; }
 
         public Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> CommandLibraries;
+        public Dictionary<string, object> CommandObjects;
+
+        public Dictionary<string, BaseService> ServiceLibraries;        
 
         public ApplicationContext()
         {
@@ -30,7 +34,8 @@ namespace JodyApp.ConsoleApp
             ViewHistory = new List<BaseView>();
             ReadPrompt = "SportsApp>";
             CommandNameSpace = "JodyApp.ConsoleApp.Commands";
-            SetupLibraries();
+            SetupCommandLibraries();
+            SetupServiceLibraries();
         }
 
         public void AddView(BaseView view)
@@ -54,13 +59,26 @@ namespace JodyApp.ConsoleApp
             return null;
         }
 
-        public void SetupLibraries()
+
+        public void SetupViewLibraries()
+        {
+            
+        }
+        public void SetupServiceLibraries()
+        {
+            ServiceLibraries = new Dictionary<string, BaseService>();
+
+            ServiceLibraries.Add("League", new LeagueService());
+        }
+
+        public void SetupCommandLibraries()
         {
             // Any static classes containing commands for use from the 
             // console are located in the Commands namespace. Load 
             // references to each type in that namespace via reflection:
             CommandLibraries = new Dictionary<string, Dictionary<string,
                     IEnumerable<ParameterInfo>>>();
+            CommandObjects = new Dictionary<string, object>();
 
             // Use reflection to load all of the classes in the Commands namespace:
             var q = from t in Assembly.GetExecutingAssembly().GetTypes()
@@ -70,17 +88,26 @@ namespace JodyApp.ConsoleApp
 
             foreach (var commandClass in commandClasses)
             {
-                // Load the method info from each class into a dictionary:
-                var methods = commandClass.GetMethods(BindingFlags.Static | BindingFlags.Public);
-                var methodDictionary = new Dictionary<string, IEnumerable<ParameterInfo>>();
-                foreach (var method in methods)
+                if (!commandClass.IsAbstract)
                 {
-                    string commandName = method.Name;
-                    methodDictionary.Add(commandName, method.GetParameters());
-                }
+                    //create an instance and add it to CommandObjects
+                    var ctor = commandClass.GetConstructor(new Type[] { });
+                    var instance = ctor.Invoke(null);
+                    CommandObjects.Add(commandClass.Name, instance);
 
-                // Add the dictionary of methods for the current class into a dictionary of command classes:
-                CommandLibraries.Add(commandClass.Name, methodDictionary);
+                    // Load the method info from each class into a dictionary:
+                    //var methods = commandClass.GetMethods(BindingFlags.Static | BindingFlags.Public);                
+                    var methods = commandClass.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+                    var methodDictionary = new Dictionary<string, IEnumerable<ParameterInfo>>();
+                    foreach (var method in methods)
+                    {
+                        string commandName = method.Name;
+                        methodDictionary.Add(commandName, method.GetParameters());
+                    }
+
+                    // Add the dictionary of methods for the current class into a dictionary of command classes:
+                    CommandLibraries.Add(commandClass.Name, methodDictionary);
+                }
             }
         }
     }

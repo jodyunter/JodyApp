@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Commands
 {
-    public static class HelpCommands
+    public class HelpCommands
     {
-        public static BaseView List(ApplicationContext context, string nameSpace = "All", string method = "All")
+        public HelpCommands() : base() { }
+        public BaseView List(ApplicationContext context, string nameSpace = "All", string method = "All")
         {
             var view = new HelpView(nameSpace, method, context.CommandLibraries);
 

@@ -13,8 +13,8 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class DivisionCommands
     {
-
-        public static BaseView View(ApplicationContext context, int id)
+        public DivisionCommands() : base() { }
+        public BaseView View(ApplicationContext context, int id)
         {
             var service = new ConfigService(JodyAppContext.Instance);
             var model = service.GetDivisionModelById(id);
@@ -24,7 +24,7 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
 
-        public static BaseView List(ApplicationContext context)
+        public BaseView List(ApplicationContext context)
         {
             var service = new ConfigService(JodyAppContext.Instance);
             var view = new DivisionListView(service.GetAllDivisions());

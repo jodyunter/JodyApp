@@ -7,23 +7,24 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Commands
 {
-    public static class DefaultCommands
+    public class DefaultCommands
     {
+        public DefaultCommands():base() { }
         // Methods used as console commands must be public and must return a string
 
-        public static BaseView DoSomething(ApplicationContext context, int id, string data)
+        public BaseView DoSomething(ApplicationContext context, int id, string data)
         {
             return new MessageView(string.Format(
                 "I did something to the record Id {0} and save the data {1}", id, data));
         }
 
 
-        public static BaseView DoSomethingElse(ApplicationContext context, DateTime date)
+        public BaseView DoSomethingElse(ApplicationContext context, DateTime date)
         {
             return new MessageView(string.Format("I did something else on {0}", date));
         }
 
-        public static BaseView DoSomethingOptional(ApplicationContext context, int id, string data = "No Data Provided")
+        public BaseView DoSomethingOptional(ApplicationContext context, int id, string data = "No Data Provided")
         {
             var result = string.Format(
                 "I did something to the record Id {0} and save the data {1}", id, data);

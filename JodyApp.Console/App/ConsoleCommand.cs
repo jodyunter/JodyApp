@@ -16,6 +16,7 @@ namespace JodyApp.ConsoleApp.App
         public string LibraryClassName { get; set; }        
 
         public List<object> ApplicationArguments { get; set; }
+        
         public ConsoleCommand(string input, ApplicationContext context)
         {
             Arguments = new List<object>();

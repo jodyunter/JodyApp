@@ -12,7 +12,7 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public class SeasonService:BaseService
+    public partial class SeasonService:BaseService
     {
         public ConfigService ConfigService { get; set; }
         public DivisionService DivisionService { get; set; }
@@ -143,26 +143,9 @@ namespace JodyApp.Service
             return db.Seasons.Where(s => s.Id == id).FirstOrDefault();
         }
 
-        public ListViewModel GetAllByLeagueId(int leagueId)
-        {
-            var modelList = new List<BaseViewModel>();
-
-            db.Seasons.Where(s => s.League.Id == leagueId).ToList().ForEach(season =>
-            {
-                modelList.Add(new SeasonViewModel(season.Id, season.League.Name, season.Name, season.Year, season.Started, season.Complete, season.StartingDay, new List<StandingsRecordViewModel>()));
-            });
-
-            return new ListViewModel(modelList);
-        }
-
         public List<Season> GetAll(int leagueId)
         {
             return db.Seasons.Where(s => s.League.Id == leagueId).ToList();
-        }
-
-        public List<Season> GetAll()
-        {
-            return db.Seasons.ToList();
         }
     }
 }

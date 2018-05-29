@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Views
 {
-    public class LeagueView:BaseView
+    public class LeagueView : BaseView
     {
         public override string[] ViewHeaders => new string[] { "Id", "Name", "Year" };
         public override string[] EditHeaders => new string[] { "Name" };
@@ -22,11 +22,25 @@ namespace JodyApp.ConsoleApp.Views
         }
         public override object[] EditObjects => new object[] { ((LeagueViewModel)Model).Name };
 
-        public LeagueView(LeagueViewModel model):base(model)
-        {                        
+        public LeagueView(BaseViewModel model) : base(model)
+        {
         }
 
+        public override void UpdateAttribute(string headerName, string value)
+        {
+            var m = (LeagueViewModel)Model;
 
+            switch (headerName)
+            {
+                case "Name":
+                    m.Name = value;
+                    break;
+            }
 
+            return;
+        }
     }
+
+
+
 }

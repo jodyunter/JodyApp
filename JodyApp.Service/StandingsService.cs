@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Service
 {
-    public class StandingsService:BaseService
+    public partial class StandingsService:BaseService
     {
         public SeasonService SeasonService { get; set; }
         public StandingsService(JodyAppContext db) : base(db) { SeasonService = new SeasonService(db); }

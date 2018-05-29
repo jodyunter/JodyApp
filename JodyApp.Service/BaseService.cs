@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Database;
+using JodyApp.Domain;
+using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
@@ -12,7 +14,8 @@ namespace JodyApp.Service
     {        
 
         public JodyAppContext db { get; set;  }
-        
+
+        protected static BaseService instance;        
 
         public BaseService() { db = new JodyAppContext(); }
 
@@ -49,6 +52,12 @@ namespace JodyApp.Service
         }
 
         public void Save() { db.SaveChanges(); }
+
+        public abstract BaseViewModel GetModelById(int id);
+        public abstract BaseViewModel DomainToDTO(DomainObject obj);
+        public abstract BaseViewModel Save(BaseViewModel model);
+
+        public abstract ListViewModel GetAll();
 
     }
 }

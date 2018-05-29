@@ -7,48 +7,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JodyApp.ConsoleApp.IO;
 
 namespace JodyApp.ConsoleApp.Commands
 {
-    public class LeagueCommands
+    public class LeagueCommands:BaseViewCommands
     {
+        public LeagueCommands() : base() { Service = new LeagueService();  }
 
-        public static BaseView View(ApplicationContext context, int id)
+        public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
-            var service = new LeagueService(JodyAppContext.Instance);
-            var model = service.GetById(id);
-
-            var view = new LeagueView(model);
-
-            return view;
+            int? id = data.ContainsKey("Id") ? GetIntFromString(data["Id"]) : null;
+            int? year = data.ContainsKey("Year") ? GetIntFromString(data["Year"]) : null;
+            
+            return new LeagueViewModel(
+                id,
+                data.ContainsKey("Name") ? data["Name"] : null,
+                year == null ? 0 : (int)year
+                );
         }
-        public static BaseView Create(ApplicationContext context, string name)
+
+        public static int? GetIntFromString(string input)
         {
-            var service = new LeagueService(JodyAppContext.Instance);
-            var model = service.DomainToDTO(service.CreateLeague(name));
-            service.Save();
-
-            var view = new LeagueView(model);
-
-            return view;
+            if (input != null) return int.Parse(input);
+            else return null;
+        }
+        public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
+        {                    
+             return IOMethods.GatherData(context, "New League", new List<string> { "Name" });
             
         }
-        public static BaseView List(ApplicationContext context)
+
+        public override BaseListView GetList(ListViewModel model)
         {
-            var service = new LeagueService(JodyAppContext.Instance);
-            var view = new LeagueListView(service.GetAll());
-            
-            return view;
+            return new LeagueListView(model);
         }
 
-        public static BaseView Edit(ApplicationContext context, int id)
+        public override BaseView GetView(BaseViewModel model)
         {
-            var service = new LeagueService(JodyAppContext.Instance);
-            var model = service.GetById(id);
-
-            var view = new LeagueView(model);
-            view.EditMode = true;
-            return view;
+            return new LeagueView(model);
         }
+
+
     }
 }

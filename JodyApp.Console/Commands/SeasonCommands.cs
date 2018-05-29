@@ -11,8 +11,9 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class SeasonCommands
     {
-        
-        public static BaseView List(ApplicationContext context, int leagueId)
+        public SeasonCommands() : base() { }
+
+        public BaseView List(ApplicationContext context, int leagueId)
         {
             var seasonService = new SeasonService(JodyAppContext.Instance);
             var model = seasonService.GetAllByLeagueId(leagueId);
@@ -22,11 +23,15 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
         
-        /*public static string View(int seasonId)
+        public BaseView View(ApplicationContext context, int seasonId)
         {
-            SeasonService seasonService = new SeasonService(JodyAppContext.Instance);
-            
+            var seasonService = new SeasonService(JodyAppContext.Instance);
+            var model = seasonService.DomainToDTO(seasonService.GetById(seasonId));
+
+            var view = new SeasonView(model);
+
+            return view;
         }
-        */
+       
     }
 }

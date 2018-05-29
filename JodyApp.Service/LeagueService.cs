@@ -11,10 +11,20 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public class LeagueService:BaseService
-    {        
+    public partial class LeagueService:BaseService
+    {
 
-
+        public static BaseService Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new LeagueService();
+                }
+                return instance;
+            }
+        }
         public LeagueService() : base() { }
         public LeagueService(JodyAppContext db) : base(db)
         {            
@@ -51,11 +61,6 @@ namespace JodyApp.Service
             return done;
             
         }
-
-        public LeagueViewModel GetById(int id)
-        {
-            return DomainToDTO(db.Leagues.Where(l => l.Id == id).FirstOrDefault());
-        }
         public League CreateLeague(string name)
         {
             var league = new League(name);
@@ -64,26 +69,14 @@ namespace JodyApp.Service
 
             return league;
         }
-        
-        public ListViewModel GetAll()
+
+        public League GetById(int? id)
         {
-            var result = new ListViewModel(new List<BaseViewModel>());
+            if (id == null) return null;
 
-            db.Leagues.ToList().ForEach(l =>
-            {
-                result.Items.Add(DomainToDTO(l));
-            });
-
-            return result;
+            return db.Leagues.Where(l => l.Id == (int)id).FirstOrDefault();
         }
 
-        public LeagueViewModel DomainToDTO(League league)
-        {
-            var viewModel = new LeagueViewModel(league.Id, league.Name, league.CurrentYear);
-            
-
-            return viewModel;
-        }
 
         
     }

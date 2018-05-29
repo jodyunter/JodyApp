@@ -9,7 +9,7 @@ using JodyApp.Domain;
 
 namespace JodyApp.Service
 {
-    public class ScheduleService : BaseService
+    public partial class ScheduleService : BaseService
     {
         DivisionService DivisionService { get; set; }
 

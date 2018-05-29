@@ -51,8 +51,16 @@
     <Compile Include="CompetitionService.cs" />
     <Compile Include="ConfigService.cs" />
     <Compile Include="DivisionService.cs" />
+    <Compile Include="Extensions\CompetitionExtensions.cs" />
     <Compile Include="Extensions\ConfigDivisionExtensions.cs" />
     <Compile Include="Extensions\ConfigTeamExtensions.cs" />
+    <Compile Include="Extensions\DivisionExtensions.cs" />
+    <Compile Include="Extensions\LeagueExtensions.cs" />
+    <Compile Include="Extensions\TeamExtensions.cs" />
+    <Compile Include="Extensions\StandingsExtensions.cs" />
+    <Compile Include="Extensions\ScheduleExtensions.cs" />
+    <Compile Include="Extensions\PlayoffExtensions.cs" />
+    <Compile Include="Extensions\SeasonExtensions.cs" />
     <Compile Include="LeagueService.cs" />
     <Compile Include="PlayoffService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +82,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ConfigServices\Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
