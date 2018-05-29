@@ -18,9 +18,13 @@ namespace JodyApp.ConsoleApp.IO
         }
 
 
-        public static string ReadFromConsole(ApplicationContext context, string promptMessage = "")
+        public static string ReadFromConsole(ApplicationContext context, string promptMessage = "", string extraInfo = "")
         {
-            // Show a prompt, and get input:
+            // Show a prompt, and get input
+            if (!(string.IsNullOrEmpty(extraInfo)))
+            {
+                Console.WriteLine(extraInfo);    
+            }
             Console.Write(context.ReadPrompt + promptMessage);
             return Console.ReadLine();
         }
@@ -30,7 +34,7 @@ namespace JodyApp.ConsoleApp.IO
             var result = new Dictionary<string, string>();
 
             for (int i = 0; i < prompts.Count; i++)
-            {
+            {                
                 result[prompts[i]] = ReadFromConsole(context, dataContext + ">" + prompts[i] + ">");
             }
 

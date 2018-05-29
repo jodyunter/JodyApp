@@ -50,6 +50,7 @@
     <Compile Include="BaseService.cs" />
     <Compile Include="CompetitionService.cs" />
     <Compile Include="ConfigService.cs" />
+    <Compile Include="ConfigServices\ConfigDivisionService.cs" />
     <Compile Include="ConfigServices\ConfigTeamService.cs" />
     <Compile Include="DivisionService.cs" />
     <Compile Include="Extensions\CompetitionExtensions.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="SeasonService.cs" />
     <Compile Include="StandingsService.cs" />
     <Compile Include="TeamService.cs" />
+    <Compile Include="TEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JodyApp.ViewModel\JodyApp.ViewModel.csproj">

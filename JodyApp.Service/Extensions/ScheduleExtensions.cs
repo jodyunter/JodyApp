@@ -29,6 +29,9 @@ namespace JodyApp.Service
             throw new NotImplementedException();
         }
 
-
+        public override DomainObject GetById(int? id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

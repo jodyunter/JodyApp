@@ -29,7 +29,7 @@ namespace JodyApp.Service
         public override BaseViewModel Save(BaseViewModel model)
         {
             var m = (LeagueViewModel)model;
-            var league = GetById(m.Id);
+            var league = (League)GetById(m.Id);
 
             if (league == null)
             {
@@ -56,6 +56,13 @@ namespace JodyApp.Service
             });
 
             return result;
+        }
+
+        public override DomainObject GetById(int? id)
+        {
+            if (id == null) return null;
+
+            return db.Leagues.Where(l => l.Id == (int)id).FirstOrDefault();
         }
 
     }

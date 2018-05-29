@@ -15,7 +15,7 @@ namespace JodyApp.Domain.Config
         virtual public ConfigDivision Division { get; set; }
 
         public ConfigTeam() { }
-        public ConfigTeam(int? id, string name, int skill, ConfigDivision division, League league, int? firstYear, int? lastYear):this(name, skill, division, League, firstYear, lastYear)
+        public ConfigTeam(int? id, string name, int skill, ConfigDivision division, League league, int? firstYear, int? lastYear):this(name, skill, division, league, firstYear, lastYear)
         {
             Id = id;
         }

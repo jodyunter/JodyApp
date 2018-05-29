@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,11 @@ using JodyApp.ViewModel;
 namespace JodyApp.Service.ConfigServices
 {
     public class ConfigTeamService : BaseService
-    {
+    {        
+
         public ConfigTeamService() : base() { }
 
-        public ConfigTeam GetById(int? id)
-        {
-            if (id == null) return null;
 
-            return db.ConfigTeams.Where(t => t.Id == id).FirstOrDefault();
-        }
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
             if (obj == null) return null;
@@ -26,7 +23,9 @@ namespace JodyApp.Service.ConfigServices
             var team = (ConfigTeam)obj;
 
             var model = new ConfigTeamViewModel(team.Id, team.Name, team.Skill,
+                team.League != null ? team.League.Id : null,
                 team.League != null ? team.League.Name : "None",
+                team.Division != null ? team.Division.Id : null,
             team.Division != null ? team.Division.Name : "None",
             team.FirstYear, team.LastYear);
 
@@ -58,23 +57,31 @@ namespace JodyApp.Service.ConfigServices
 
             var m = (ConfigTeamViewModel)model;
             var team = GetById(m.Id);
-            var league = db.Leagues.Where(l => l.Name == m.League).FirstOrDefault();
-            var division = db.ConfigDivisions.Where(d => d.League.Id == league.Id && d.Name == m.Name);
+            var leagueService = new LeagueService(db);
+            var configDivisionService = new ConfigDivisionService(db);
+
+            var league = m.League != null ? (League)leagueService.GetById(m.League.Id) : null;
+            var division = m.Division != null ? (ConfigDivision)configDivisionService.GetById(m.Division.Id) : null;
 
             if (team == null)
             {
                 //new entity
-                team = new ConfigTeam(m.Name, m.Skill, null, null, m.FirstYear, m.LastYear);
+                team = new ConfigTeam(m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);
             }
             else
             {
-                league.Name = m.Name;
-                league.CurrentYear = m.CurrentYear;
+                team = new ConfigTeam(m.Id, m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);
                 //what about reference comps? Different scren!
             }
 
             return DomainToDTO(league);
         }
-        
+
+        public override DomainObject GetById(int? id)
+        {
+            if (id == null) return null;
+
+            return db.ConfigTeams.Where(t => t.Id == id).FirstOrDefault();
+        }
     }
 }

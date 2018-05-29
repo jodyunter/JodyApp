@@ -107,7 +107,7 @@ namespace JodyApp.Service
 
         public void ChangeDivision(ConfigTeamViewModel team, int leagueId, string newDivisionName)
         {
-            var league = LeagueService.GetByName(team.League);
+            var league = (League)LeagueService.GetById(leagueId);
             var configTeam = GetTeamById((int)team.Id);
             
             var division = GetDivisionByName(league, newDivisionName);

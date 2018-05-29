@@ -32,7 +32,9 @@ namespace JodyApp.Service
         {
             if (team == null) return null;
             return new ConfigTeamViewModel(team.Id, team.Name, team.Skill,
+                team.League != null ? team.League.Id : null,
                 team.League != null ? team.League.Name : "None",
+                team.Division != null ? team.Division.Id : null,
                 team.Division != null ? team.Division.Name : "None",
                 team.FirstYear, team.LastYear);
         }

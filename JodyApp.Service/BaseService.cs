@@ -11,11 +11,10 @@ using JodyApp.ViewModel;
 namespace JodyApp.Service
 {
     public abstract class BaseService
-    {        
+    {
 
-        public JodyAppContext db { get; set;  }
+        public JodyAppContext db { get; set; }        
 
-        protected static BaseService instance;        
 
         public BaseService() { db = new JodyAppContext(); }
 
@@ -52,6 +51,8 @@ namespace JodyApp.Service
         }
 
         public void Save() { db.SaveChanges(); }
+
+        public abstract DomainObject GetById(int? id);
 
         public abstract BaseViewModel GetModelById(int id);
         public abstract BaseViewModel DomainToDTO(DomainObject obj);

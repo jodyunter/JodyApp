@@ -14,17 +14,6 @@ namespace JodyApp.Service
     public partial class LeagueService:BaseService
     {
 
-        public static BaseService Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new LeagueService();
-                }
-                return instance;
-            }
-        }
         public LeagueService() : base() { }
         public LeagueService(JodyAppContext db) : base(db)
         {            
@@ -68,13 +57,6 @@ namespace JodyApp.Service
             db.Leagues.Add(league);
 
             return league;
-        }
-
-        public League GetById(int? id)
-        {
-            if (id == null) return null;
-
-            return db.Leagues.Where(l => l.Id == (int)id).FirstOrDefault();
         }
 
 
