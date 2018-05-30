@@ -1,4 +1,5 @@
-﻿using JodyApp.ConsoleApp.IO;
+﻿using JodyApp.ConsoleApp.App;
+using JodyApp.ConsoleApp.IO;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 using JodyApp.Service;
@@ -32,6 +33,7 @@ namespace JodyApp.ConsoleApp.Commands
             return GetSelectedObject(context, "Choose Team>", view);            
             
         }
+        [Command]
         public BaseListView ListByDivision(ApplicationContext context, int divisionId = -1)
         {
             var searchId = -1;
@@ -53,6 +55,7 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
 
+        [Command]
         public BaseListView ListByLeague(ApplicationContext context, int leagueId = -55)
         {
             var searchId = -1;
@@ -80,7 +83,7 @@ namespace JodyApp.ConsoleApp.Commands
         
         public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
         {
-            var basicInput = IOMethods.GatherData(context, "New Team", new List<string> { "Name", "Skill", "First Year", "Last Year" });
+            var basicInput = Application.GatherData(context, "New Team", new List<string> { "Name", "Skill", "First Year", "Last Year" });
 
             ReferenceObject league = LeagueCommands.SelectLeague(context);
             ReferenceObject division = DivisionCommands.SelectDivisionWithLeagueId(context, (int)league.Id);

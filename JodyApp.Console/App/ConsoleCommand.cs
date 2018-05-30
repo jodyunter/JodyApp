@@ -67,7 +67,7 @@ namespace JodyApp.ConsoleApp.App
 
             ApplicationArguments.Add(context);
         }
-
+        
     }
 }
 

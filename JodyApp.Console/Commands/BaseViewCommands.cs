@@ -112,8 +112,9 @@ namespace JodyApp.ConsoleApp.Commands
             var newView = GetView(view.Model);
             newView.EditMode = true;
             
-            var selectionInput = IOMethods.ReadFromConsole(context, "Enter Selection>");
-            selection = (int)Program.CoerceArgument(typeof(int), selectionInput);
+            var selectionInput = Application.ReadFromConsole(context, "Enter Selection>");            
+
+            selection = (int)Application.CoerceArgument(typeof(int), selectionInput);
 
             while (selection >= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS || selection < 0)
             {
@@ -128,13 +129,12 @@ namespace JodyApp.ConsoleApp.Commands
                 }
                 else
                 {
-                    var dataInput = IOMethods.ReadFromConsole(context, "Enter New Value>");
-
+                    var dataInput = Application.ReadFromConsole(context, "Enter New Value>");                    
                     newView.UpdateAttribute(prompt, dataInput);
                 }
 
-                selectionInput = IOMethods.ReadFromConsole(context, "Enter Selection>");
-                selection = (int)Program.CoerceArgument(typeof(int), selectionInput);
+                selectionInput = Application.ReadFromConsole(context, "Enter Selection>");
+                selection = (int)Application.CoerceArgument(typeof(int), selectionInput);
 
             }
 
@@ -153,11 +153,13 @@ namespace JodyApp.ConsoleApp.Commands
         {
             view.ListWithOptions = true;
 
-            var input = IOMethods.ReadFromConsole(context, prompt, view.GetView());
+            var input = Application.ReadFromConsole(context, prompt, view.GetView());
 
-            var searchSelection = (int)Program.CoerceArgument(typeof(int), input);
+            var searchSelection = (int)Application.CoerceArgument(typeof(int), input);
 
             var viewModel = view.GetBySelection(searchSelection);
+
+            if (viewModel == null) return null;
 
             var selectedObject = new ReferenceObject(viewModel.Id, viewModel.Name);
 

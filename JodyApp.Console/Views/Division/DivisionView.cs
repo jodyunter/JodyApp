@@ -18,20 +18,29 @@ namespace JodyApp.ConsoleApp.Views
                 return new object[] { m.Id, m.Name, m.ShortName, m.League, m.Parent, m.Level, m.Order };
             }
         }
-        public DivisionView(BaseViewModel model):base(model)
-        {            
+        public DivisionView(BaseViewModel model) : base(model)
+        {
+        }
+
+        public string GetViewWithTeams()
+        {
+            var result = base.GetView();
+
+            var m = (ConfigDivisionViewModel)Model;
+
+            result += "\n" + "Teams:";
+            m.Teams.ForEach(ro =>
+            {
+                result += "\n" + ro.Name;
+            });
+
+            return result;
         }
         public override string GetView()
         {
             var m = (ConfigDivisionViewModel)Model;
 
-            var results = base.GetView();
-
-            var teamView = new TeamListView(new ListViewModel(m.Teams.ToList<BaseViewModel>()));
-            var teamViewString = teamView.GetView();
-
-            results += "\n" + "Teams:";
-            results += "\n" + teamViewString;
+            var results = GetViewWithTeams();
 
             return results;
 

@@ -13,11 +13,11 @@ namespace JodyApp.ViewModel
         public ReferenceObject Parent { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
-        public List<ConfigTeamViewModel> Teams { get; set; }
+        public List<ReferenceObject> Teams { get; set; }
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
 
-        public ConfigDivisionViewModel(int? id, int? leagueId, string league, string name, string shortName, int? parentId, string parent, int level, int order, List<ConfigTeamViewModel> teams, int? firstYear, int? lastYear)
+        public ConfigDivisionViewModel(int? id, int? leagueId, string league, string name, string shortName, int? parentId, string parent, int level, int order, List<ReferenceObject> teams, int? firstYear, int? lastYear)
         {
             Id = id;
             League = new ReferenceObject(leagueId, league);

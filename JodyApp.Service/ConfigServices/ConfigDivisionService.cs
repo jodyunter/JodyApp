@@ -26,13 +26,13 @@ namespace JodyApp.Service.ConfigServices
                 division.Name, division.ShortName,
                 division.Parent != null ? division.Parent.Id : null,
                 division.Parent != null ? division.Parent.Name : "None",
-                division.Level, division.Order, new List<ConfigTeamViewModel>(), division.FirstYear, division.LastYear);
+                division.Level, division.Order, new List<ReferenceObject>(), division.FirstYear, division.LastYear);
 
             var configTeamService = new ConfigTeamService(db);
 
             division.Teams.ForEach(team =>
             {
-                model.Teams.Add((ConfigTeamViewModel)configTeamService.DomainToDTO(team));
+                model.Teams.Add(new ReferenceObject(team.Id, team.Name));
             });
 
             return model;
@@ -41,7 +41,7 @@ namespace JodyApp.Service.ConfigServices
 
         public override ListViewModel GetAll()
         {
-            throw new NotImplementedException();
+            return CreateListViewModelFromList(db.ConfigDivisions.ToList<DomainObject>(), DomainToDTO);
         }
 
         public override BaseViewModel GetModelById(int id)

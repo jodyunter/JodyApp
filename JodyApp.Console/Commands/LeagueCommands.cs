@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.ConsoleApp.IO;
+using JodyApp.ConsoleApp.App;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -35,7 +36,7 @@ namespace JodyApp.ConsoleApp.Commands
         }
         public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
         {                    
-             return IOMethods.GatherData(context, "New League", new List<string> { "Name" });
+             return Application.GatherData(context, "New League", new List<string> { "Name" });
             
         }
 

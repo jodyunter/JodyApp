@@ -36,16 +36,8 @@ namespace JodyApp.Service.ConfigServices
 
         public override ListViewModel GetAll()
         {
-            var items = new List<BaseViewModel>();
-
-            db.ConfigTeams.ToList().ForEach(team =>
-            {
-                items.Add(DomainToDTO(team));
-            });
-
-            var teamList = new ListViewModel(items);
-
-            return teamList;
+            return CreateListViewModelFromList(db.ConfigTeams.ToList<DomainObject>(), DomainToDTO);
+            
         }
         
 
