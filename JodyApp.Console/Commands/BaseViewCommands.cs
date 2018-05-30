@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.IO;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.Service;
@@ -26,6 +27,9 @@ namespace JodyApp.ConsoleApp.Commands
 
         public Dictionary<string, Func<ApplicationContext, ReferenceObject>> InputDictionary = new Dictionary<string, Func<ApplicationContext, ReferenceObject>>();
 
+        public abstract Func<ApplicationContext, ReferenceObject> SelectMethod { get; }
+
+        [Command]
         public BaseView View(ApplicationContext context, int id)
         {            
             var model = Service.GetModelById(id);
@@ -34,6 +38,8 @@ namespace JodyApp.ConsoleApp.Commands
             
             return view;
         }
+
+        [Command]
         public BaseView Create(ApplicationContext context)
         {
             var data = GatherCreateData(context);
@@ -50,6 +56,8 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
 
         }
+
+        [Command]
         public BaseListView List(ApplicationContext context)
         {
             var view = GetList(Service.GetAll());
@@ -57,19 +65,27 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
 
-        public BaseView Edit(ApplicationContext context, int id)
-        {            
-            var model = Service.GetModelById(id);
+        [Command]
+        public BaseView Edit(ApplicationContext context, int? id = null)
+        {
+            var refObj = SelectMethod(context);
+
+            var model = Service.GetModelById((int)refObj.Id);
 
             var view = GetView(model);
 
+            view.Header = refObj.Name;
             view.EditMode = true;
-            
 
-            return view;
+            context.AddView(view);
+
+            IOMethods.WriteToConsole(view);
+
+            return Update(context);
         }
 
         //saves the most recent view
+        [Command]
         public BaseView Save(ApplicationContext context)
         {
             var lastView = context.GetLastView();            
@@ -78,11 +94,13 @@ namespace JodyApp.ConsoleApp.Commands
             return GetView(context.GetLastView().Model);
         }
 
+        [Command]
         public BaseView Undo(ApplicationContext context)
         {
             context.RemoveLastView();
             return context.GetLastView();
         }
+
         public BaseView Update(ApplicationContext context)
         {
             var selection = -1;
@@ -123,12 +141,27 @@ namespace JodyApp.ConsoleApp.Commands
             //handle save, undo, none here            
             return newView;
         }        
-        
+                
         protected int? GetNullableIntFromString(string input)
         {
             if (string.IsNullOrEmpty(input)) return null;
 
             return int.Parse(input);
+        }
+        
+        public static ReferenceObject GetSelectedObject(ApplicationContext context, string prompt, BaseListView view)
+        {
+            view.ListWithOptions = true;
+
+            var input = IOMethods.ReadFromConsole(context, prompt, view.GetView());
+
+            var searchSelection = (int)Program.CoerceArgument(typeof(int), input);
+
+            var viewModel = view.GetBySelection(searchSelection);
+
+            var selectedObject = new ReferenceObject(viewModel.Id, viewModel.Name);
+
+            return selectedObject;
         }
     }
 }

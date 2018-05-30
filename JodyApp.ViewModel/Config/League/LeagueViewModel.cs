@@ -9,8 +9,6 @@ namespace JodyApp.ViewModel
     public class LeagueViewModel:BaseViewModel
     {
 
-        public int? Id { get; set; }
-        public string Name { get; set; }
         public int CurrentYear { get; set; }                
 
         public LeagueViewModel(int? id, string name, int currentYear)

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 namespace JodyApp.ViewModel
 {
     public class ConfigDivisionViewModel:BaseViewModel
-    {
-        public int? Id { get; set; }
-        public ReferenceObject League { get; set; }
-        public string Name { get; set; }
+    {        
+        public ReferenceObject League { get; set; }        
         public string ShortName { get; set; }
         public ReferenceObject Parent { get; set; }
         public int Level { get; set; }

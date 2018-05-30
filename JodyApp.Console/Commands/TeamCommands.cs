@@ -14,21 +14,22 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class TeamCommands:BaseViewCommands
     {
+        public override Func<ApplicationContext, ReferenceObject> SelectMethod => SelectTeam;
+
         public TeamCommands() : base()
         {
             Service = new ConfigTeamService();
             InputDictionary.Add("League", LeagueCommands.SelectLeague);
-            InputDictionary.Add("Division", DivisionCommands.SelectDivisionNoId);
+            InputDictionary.Add("Division", DivisionCommands.SelectDivision);
         }
 
         public ReferenceObject SelectTeam(ApplicationContext context)
         {
             var league = LeagueCommands.SelectLeague(context);
 
-            var teamListView = (TeamListView)ListByLeague(context, (int)league.Id);
-            
+            var view = (TeamListView)ListByLeague(context, (int)league.Id);
 
-
+            return GetSelectedObject(context, "Choose Team>", view);            
             
         }
         public BaseListView ListByDivision(ApplicationContext context, int divisionId = -1)
@@ -38,7 +39,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             if (divisionId == -1)
             {
-                divisionRef = DivisionCommands.SelectDivisionNoId(context);
+                divisionRef = DivisionCommands.SelectDivision(context);
 
             }
 
@@ -82,7 +83,7 @@ namespace JodyApp.ConsoleApp.Commands
             var basicInput = IOMethods.GatherData(context, "New Team", new List<string> { "Name", "Skill", "First Year", "Last Year" });
 
             ReferenceObject league = LeagueCommands.SelectLeague(context);
-            ReferenceObject division = DivisionCommands.SelectDivision(context, (int)league.Id);
+            ReferenceObject division = DivisionCommands.SelectDivisionWithLeagueId(context, (int)league.Id);
 
             basicInput.Add("LeagueId", league.Id.ToString());
             basicInput.Add("LeagueName", league.Name);
@@ -91,7 +92,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             return basicInput;
         }
-
+        
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
             int? id = null;

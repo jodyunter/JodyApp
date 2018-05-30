@@ -82,5 +82,10 @@ namespace JodyApp.ConsoleApp.Views
         {
             return;
         }
+
+        public override string ToString()
+        {
+            return GetView();
+        }
     }
 }

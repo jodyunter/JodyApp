@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public abstract class BaseViewModel
+    public abstract class BaseViewModel:ReferenceObject
     {
+        public BaseViewModel() : base() { }
+        public BaseViewModel(int id, string name) : base(id, name) { }
     }
 }

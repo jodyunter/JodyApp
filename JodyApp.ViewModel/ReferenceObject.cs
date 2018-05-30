@@ -16,6 +16,7 @@ namespace JodyApp.ViewModel
             return Name;
         }
 
+        public ReferenceObject() { }
         public ReferenceObject(int? id, string name)
         {
             Id = id;

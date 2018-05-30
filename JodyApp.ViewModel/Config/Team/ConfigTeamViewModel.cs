@@ -8,9 +8,6 @@ namespace JodyApp.ViewModel
 {
     public class ConfigTeamViewModel:BaseViewModel
     {        
-
-        public int? Id { get; set; }
-        public string Name { get; set; }
         public int Skill { get; set; }        
         public ReferenceObject League { get; set; }        
         public ReferenceObject Division { get; set; }

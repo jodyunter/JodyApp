@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 using JodyApp.Domain;
@@ -119,8 +120,13 @@ namespace JodyApp.ConsoleApp
                     var methodDictionary = new Dictionary<string, IEnumerable<ParameterInfo>>();
                     foreach (var method in methods)
                     {
-                        string commandName = method.Name;
-                        methodDictionary.Add(commandName, method.GetParameters());
+                        var attribute = method.GetCustomAttributes(typeof(Command));
+                        if (attribute.Count() > 0)
+                        {
+                            string commandName = method.Name;
+                            methodDictionary.Add(commandName, method.GetParameters());
+                        }
+                        
                     }
 
                     // Add the dictionary of methods for the current class into a dictionary of command classes:

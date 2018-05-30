@@ -13,11 +13,13 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Commands
 {
-    public class DivisionCommands:BaseViewCommands
+    public class DivisionCommands : BaseViewCommands
     {
+        public override Func<ApplicationContext, ReferenceObject> SelectMethod => SelectDivision;
+
         public DivisionCommands() : base() { Service = new ConfigDivisionService(); }
 
-       
+
 
         public BaseListView ListByLeague(ApplicationContext context, int leagueId = -1)
         {
@@ -26,21 +28,21 @@ namespace JodyApp.ConsoleApp.Commands
 
             if (leagueId == -1)
             {
-                selectedLeague =LeagueCommands.SelectLeague(context);
+                selectedLeague = LeagueCommands.SelectLeague(context);
                 searchId = (int)selectedLeague.Id;
             }
 
             var listView = new DivisionListView(((ConfigDivisionService)Service).GetByLeagueId(searchId));
 
             return listView;
-            
-        }
 
-        public static ReferenceObject SelectDivisionNoId(ApplicationContext context)
-        {
-            return SelectDivision(context, -1);
         }
-        public static ReferenceObject SelectDivision(ApplicationContext context, int leagueId = -1)
+        
+        public static ReferenceObject SelectDivision(ApplicationContext context)
+        {
+            return SelectDivisionWithLeagueId(context, -1);
+        }
+        public static ReferenceObject SelectDivisionWithLeagueId(ApplicationContext context, int leagueId = -1)
         {
             ReferenceObject selectedLeague = null;
             int searchId = leagueId;
@@ -54,18 +56,10 @@ namespace JodyApp.ConsoleApp.Commands
             }
 
             var view = commands.ListByLeague(context, searchId);
-            view.ListWithOptions = true;
 
-            var input = IOMethods.ReadFromConsole(context, "Division To Search By>", view.GetView());
-
-            var searchSelection = (int)Program.CoerceArgument(typeof(int), input);
-
-            var viewModel = (ConfigDivisionViewModel)view.GetBySelection(searchSelection);
-
-            var selectedDivision = new ReferenceObject(viewModel.Id, viewModel.Name);
-
-            return selectedDivision;
+            return GetSelectedObject(context, "Choose Division>", view);
         }
+
 
         public override BaseView GetView(BaseViewModel model)
         {

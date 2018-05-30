@@ -13,6 +13,7 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class LeagueCommands:BaseViewCommands
     {
+        public override Func<ApplicationContext, ReferenceObject> SelectMethod => SelectLeague;
         public LeagueCommands() : base() { Service = new LeagueService();  }
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
@@ -53,17 +54,8 @@ namespace JodyApp.ConsoleApp.Commands
         {            
             var leagueCommands = new LeagueCommands();
             var view = leagueCommands.List(context);
-            view.ListWithOptions = true;
 
-            var input = IOMethods.ReadFromConsole(context, "League To Search By>", view.GetView());
-
-            var searchSelection = (int)Program.CoerceArgument(typeof(int), input);
-
-            var viewModel = (LeagueViewModel)view.GetBySelection(searchSelection);
-
-            var selectedLeague = new ReferenceObject(viewModel.Id, viewModel.Name);
-
-            return selectedLeague;
+            return GetSelectedObject(context, "Choose League>", view);            
         }
     }
 }
