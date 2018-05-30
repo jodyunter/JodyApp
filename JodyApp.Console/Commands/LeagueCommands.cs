@@ -49,7 +49,7 @@ namespace JodyApp.ConsoleApp.Commands
         }
 
 
-        public static BaseViewModel SelectLeague(ApplicationContext context)
+        public static ReferenceObject SelectLeague(ApplicationContext context)
         {            
             var leagueCommands = new LeagueCommands();
             var view = leagueCommands.List(context);
@@ -59,9 +59,11 @@ namespace JodyApp.ConsoleApp.Commands
 
             var searchSelection = (int)Program.CoerceArgument(typeof(int), input);
 
-            var viewModel = view.GetBySelection(searchSelection);
+            var viewModel = (LeagueViewModel)view.GetBySelection(searchSelection);
 
-            return viewModel;
+            var selectedLeague = new ReferenceObject(viewModel.Id, viewModel.Name);
+
+            return selectedLeague;
         }
     }
 }

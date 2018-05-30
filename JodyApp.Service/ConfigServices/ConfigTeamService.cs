@@ -73,9 +73,15 @@ namespace JodyApp.Service.ConfigServices
             }
             else
             {
-                team = new ConfigTeam(m.Id, m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);                
+                
+                var newTeam = new ConfigTeam(m.Id, m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);
+                db.Entry(team).CurrentValues.SetValues(newTeam);
+
+                team.Division = newTeam.Division;
+                team.League = newTeam.League;
             }
 
+            
             db.SaveChanges();
 
             return DomainToDTO(team);
@@ -90,16 +96,14 @@ namespace JodyApp.Service.ConfigServices
 
         public ListViewModel GetByLeague(int leagueId)
         {
-            var items = new List<BaseViewModel>();
-
-            db.ConfigTeams.Where(t => t.League.Id == leagueId).ToList().ForEach(team =>
-            {
-                items.Add(DomainToDTO(team));
-            });
-
-            var teamList = new ListViewModel(items);
-
-            return teamList;
+            return CreateListViewModelFromList(db.ConfigTeams.Where(t => t.League.Id == leagueId).ToList<DomainObject>(), DomainToDTO);
         }
+
+        public ListViewModel GetByDivisionId(int divisionId)
+        {
+            return CreateListViewModelFromList(db.ConfigTeams.Where(t => t.Division.Id == divisionId).ToList<DomainObject>(), DomainToDTO);
+
+        }
+
     }
 }

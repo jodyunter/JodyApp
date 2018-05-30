@@ -58,7 +58,22 @@ namespace JodyApp.Service
         public abstract BaseViewModel DomainToDTO(DomainObject obj);
         public abstract BaseViewModel Save(BaseViewModel model);
 
-        public abstract ListViewModel GetAll();                
+        public abstract ListViewModel GetAll();
+
+
+        public ListViewModel CreateListViewModelFromList(List<DomainObject> obj, Func<DomainObject, BaseViewModel> domainToDTO)
+        {
+            var items = new List<BaseViewModel>();
+
+            obj.ForEach(o =>
+            {
+                items.Add(DomainToDTO(o));
+            });
+
+            var teamList = new ListViewModel(items);
+
+            return teamList;
+        }
 
     }
 }

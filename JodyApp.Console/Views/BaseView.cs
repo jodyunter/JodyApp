@@ -9,7 +9,7 @@ namespace JodyApp.ConsoleApp.Views
 {
     public abstract class BaseView
     {
-        public const int NUMBER_OF_DEFAULT_EDIT_COMMANDS = 3;
+        public const int NUMBER_OF_DEFAULT_EDIT_COMMANDS = 1;
         //eventually have an error message class so it can be a warning or not
         public List<string> ErrorMessages { get; set; }
         public bool Error { get; set; }
@@ -60,8 +60,6 @@ namespace JodyApp.ConsoleApp.Views
             var result = header;            
 
             result = string.Format(template, 0, "No Edit", "");
-            result += "\n" + string.Format(template, 1, "Save", "");
-            result += "\n" + string.Format(template, 2, "Undo", "");
 
             for (int i = 0; i < fieldNames.Length; i++)
             {
@@ -80,7 +78,7 @@ namespace JodyApp.ConsoleApp.Views
             Error = true;
         }
 
-        public virtual void UpdateAttribute(string headerName, string value)
+        public virtual void UpdateAttribute(string headerName, object value)
         {
             return;
         }

@@ -14,40 +14,51 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class TeamCommands:BaseViewCommands
     {
-        public TeamCommands():base() { Service = new ConfigTeamService(); }
-
-        public BaseView ListByDivision(ApplicationContext context, string divisionName)
+        public TeamCommands() : base()
         {
-            var service = new ConfigService(JodyAppContext.Instance);
-            var view = new TeamListView(service.GetTeamsByDivisionName(divisionName));
-
-            view.Header = divisionName;
-
-            return view;
-        }
-        
-        public BaseView ChangeDivision(ApplicationContext context, int teamId, string newDivisionName)
-        {
-            var service = new ConfigService(JodyAppContext.Instance);
-
-            service.ChangeDivision(service.GetTeamById(teamId), newDivisionName);
-
-            service.Save();
-
-            var model = service.GetTeamModelById(teamId);
-
-            var view = new TeamView(model);
-
-            return view;
+            Service = new ConfigTeamService();
+            InputDictionary.Add("League", LeagueCommands.SelectLeague);
+            InputDictionary.Add("Division", DivisionCommands.SelectDivisionNoId);
         }
 
-        public BaseView ListByLeague(ApplicationContext context, int leagueId = -55)
+        public ReferenceObject SelectTeam(ApplicationContext context)
+        {
+            var league = LeagueCommands.SelectLeague(context);
+
+            var teamListView = (TeamListView)ListByLeague(context, (int)league.Id);
+            
+
+
+            
+        }
+        public BaseListView ListByDivision(ApplicationContext context, int divisionId = -1)
+        {
+            var searchId = -1;
+            var divisionRef = new ReferenceObject(null, null);
+
+            if (divisionId == -1)
+            {
+                divisionRef = DivisionCommands.SelectDivisionNoId(context);
+
+            }
+
+            searchId = (int)divisionRef.Id;
+
+            var service = new ConfigTeamService();
+            var view = new TeamListView(service.GetByDivisionId(searchId))
+            {
+                Header = divisionRef.Name
+            };
+            return view;
+        }
+
+        public BaseListView ListByLeague(ApplicationContext context, int leagueId = -55)
         {
             var searchId = -1;
 
             if (leagueId == -55)
             {
-                searchId = (int)((LeagueViewModel)LeagueCommands.SelectLeague(context)).Id;
+                searchId = (int)LeagueCommands.SelectLeague(context).Id;
             }
             else
                 searchId = (int)leagueId;
@@ -64,13 +75,14 @@ namespace JodyApp.ConsoleApp.Commands
         {
             return new TeamListView(model);
         }
-
+        
+        
         public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
         {
             var basicInput = IOMethods.GatherData(context, "New Team", new List<string> { "Name", "Skill", "First Year", "Last Year" });
 
-            LeagueViewModel league = (LeagueViewModel)LeagueCommands.SelectLeague(context);
-            ConfigDivisionViewModel division = (ConfigDivisionViewModel)DivisionCommands.SelectDivision(context, (int)league.Id);
+            ReferenceObject league = LeagueCommands.SelectLeague(context);
+            ReferenceObject division = DivisionCommands.SelectDivision(context, (int)league.Id);
 
             basicInput.Add("LeagueId", league.Id.ToString());
             basicInput.Add("LeagueName", league.Name);
@@ -96,5 +108,6 @@ namespace JodyApp.ConsoleApp.Commands
 
             return model;
         }
+        
     }
 }

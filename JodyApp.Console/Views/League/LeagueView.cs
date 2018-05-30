@@ -26,14 +26,14 @@ namespace JodyApp.ConsoleApp.Views
         {
         }
 
-        public override void UpdateAttribute(string headerName, string value)
+        public override void UpdateAttribute(string headerName, object value)
         {
             var m = (LeagueViewModel)Model;
 
             switch (headerName)
             {
                 case "Name":
-                    m.Name = value;
+                    m.Name = (string)value;
                     break;
             }
 

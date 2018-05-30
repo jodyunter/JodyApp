@@ -1,4 +1,5 @@
-﻿using JodyApp.ViewModel;
+﻿using JodyApp.ConsoleApp.Commands;
+using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,31 +32,34 @@ namespace JodyApp.ConsoleApp.Views
         }
         public TeamView(BaseViewModel model):base(model)
         {         
+            
         }
 
-        public override void UpdateAttribute(string headerName, string value)
+        public override void UpdateAttribute(string headerName, object value)
         {
             var m = (ConfigTeamViewModel)Model;
 
             switch (headerName)
             {
                 case "Name":
-                    m.Name = value;
+                    m.Name =(string)value;
                     break;
                 case "Skill":
-                    m.Skill = int.Parse(value);
+                    m.Skill = int.Parse((string)value);
                     break;
                 case "First Year":
-                    if (string.IsNullOrEmpty(value)) m.FirstYear = null;
-                    else m.FirstYear = int.Parse(value);
+                    if (string.IsNullOrEmpty((string)value)) m.FirstYear = null;
+                    else m.FirstYear = int.Parse((string)value);
                     break;
                 case "Last Year":
-                    if (string.IsNullOrEmpty(value)) m.LastYear = null;
-                    else m.LastYear = int.Parse(value);
+                    if (string.IsNullOrEmpty((string)value)) m.LastYear = null;
+                    else m.LastYear = int.Parse((string)value);
                     break;
                 case "League":
+                    m.League = (ReferenceObject)value;
                     break;
                 case "Division":
+                    m.Division = (ReferenceObject)value;
                     break;
 
             }

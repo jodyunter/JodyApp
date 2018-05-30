@@ -21,12 +21,12 @@ namespace JodyApp.ConsoleApp.Commands
 
         public BaseListView ListByLeague(ApplicationContext context, int leagueId = -1)
         {
-            LeagueViewModel selectedLeague = null;
+            ReferenceObject selectedLeague = null;
             int searchId = leagueId;
 
             if (leagueId == -1)
             {
-                selectedLeague = (LeagueViewModel)LeagueCommands.SelectLeague(context);
+                selectedLeague =LeagueCommands.SelectLeague(context);
                 searchId = (int)selectedLeague.Id;
             }
 
@@ -36,16 +36,20 @@ namespace JodyApp.ConsoleApp.Commands
             
         }
 
-        public static BaseViewModel SelectDivision(ApplicationContext context, int leagueId = -1)
+        public static ReferenceObject SelectDivisionNoId(ApplicationContext context)
         {
-            LeagueViewModel selectedLeague = null;
+            return SelectDivision(context, -1);
+        }
+        public static ReferenceObject SelectDivision(ApplicationContext context, int leagueId = -1)
+        {
+            ReferenceObject selectedLeague = null;
             int searchId = leagueId;
 
             var commands = new DivisionCommands();
 
             if (leagueId == -1)
             {
-                selectedLeague = (LeagueViewModel)LeagueCommands.SelectLeague(context);
+                selectedLeague = LeagueCommands.SelectLeague(context);
                 searchId = (int)selectedLeague.Id;
             }
 
@@ -56,9 +60,11 @@ namespace JodyApp.ConsoleApp.Commands
 
             var searchSelection = (int)Program.CoerceArgument(typeof(int), input);
 
-            var viewModel = view.GetBySelection(searchSelection);
+            var viewModel = (ConfigDivisionViewModel)view.GetBySelection(searchSelection);
 
-            return viewModel;            
+            var selectedDivision = new ReferenceObject(viewModel.Id, viewModel.Name);
+
+            return selectedDivision;
         }
 
         public override BaseView GetView(BaseViewModel model)

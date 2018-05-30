@@ -24,12 +24,14 @@ namespace JodyApp.ConsoleApp.Commands
         public abstract Dictionary<string, string> GatherCreateData(ApplicationContext context);
         public abstract BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data);
 
+        public Dictionary<string, Func<ApplicationContext, ReferenceObject>> InputDictionary = new Dictionary<string, Func<ApplicationContext, ReferenceObject>>();
+
         public BaseView View(ApplicationContext context, int id)
         {            
             var model = Service.GetModelById(id);
 
             var view = GetView(model);
-
+            
             return view;
         }
         public BaseView Create(ApplicationContext context)
@@ -100,9 +102,18 @@ namespace JodyApp.ConsoleApp.Commands
                 selection -= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS;
                 var prompt = newView.EditHeaders[selection];
 
-                var dataInput = IOMethods.ReadFromConsole(context, "Enter New Value>");
+                ReferenceObject objectInput = null;
+                if (InputDictionary.ContainsKey(prompt))
+                {
+                    objectInput = InputDictionary[prompt].Invoke(context);
+                    newView.UpdateAttribute(prompt, objectInput);
+                }
+                else
+                {
+                    var dataInput = IOMethods.ReadFromConsole(context, "Enter New Value>");
 
-                newView.UpdateAttribute(prompt, dataInput);
+                    newView.UpdateAttribute(prompt, dataInput);
+                }
 
                 selectionInput = IOMethods.ReadFromConsole(context, "Enter Selection>");
                 selection = (int)Program.CoerceArgument(typeof(int), selectionInput);
