@@ -70,7 +70,6 @@
     <Compile Include="SeasonService.cs" />
     <Compile Include="StandingsService.cs" />
     <Compile Include="TeamService.cs" />
-    <Compile Include="TEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JodyApp.ViewModel\JodyApp.ViewModel.csproj">

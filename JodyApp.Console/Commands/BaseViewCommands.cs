@@ -113,36 +113,11 @@ namespace JodyApp.ConsoleApp.Commands
             return newView;
         }        
         
-
-        /*
-        public BaseView Update(ApplicationContext context, int selection, string newData = "None")
+        protected int? GetNullableIntFromString(string input)
         {
-            var view = context.GetLastView();
+            if (string.IsNullOrEmpty(input)) return null;
 
-            int numberOfDefaultCommands = BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS;
-
-            if (selection == 0)
-            {
-                return new MessageView("Nothing chosen to edit");
-            }
-            else if (selection == 1)
-            {
-                Service.Save(view.Model);
-            }
-            else if (selection == 2)
-            {
-                IOMethods.WriteToConsole("We should be undoing here");
-            }
-            else if (newData.Equals("None"))
-            {
-                return new MessageView("Nothing chosen to edit");
-            }
-            else
-                view.UpdateAttribute(view.EditHeaders[selection - numberOfDefaultCommands], newData);
-
-            return view;
+            return int.Parse(input);
         }
-        */
-
     }
 }

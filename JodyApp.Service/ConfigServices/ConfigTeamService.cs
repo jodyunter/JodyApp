@@ -11,8 +11,9 @@ using JodyApp.ViewModel;
 namespace JodyApp.Service.ConfigServices
 {
     public class ConfigTeamService : BaseService
-    {        
+    {
 
+        public ConfigTeamService(Database.JodyAppContext db) : base(db) { }
         public ConfigTeamService() : base() { }
 
 
@@ -57,7 +58,7 @@ namespace JodyApp.Service.ConfigServices
         {
 
             var m = (ConfigTeamViewModel)model;
-            var team = GetById(m.Id);
+            var team = (ConfigTeam)GetById(m.Id);
             var leagueService = new LeagueService(db);
             var configDivisionService = new ConfigDivisionService(db);
 
@@ -68,14 +69,16 @@ namespace JodyApp.Service.ConfigServices
             {
                 //new entity
                 team = new ConfigTeam(m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);
+                db.ConfigTeams.Add(team);
             }
             else
             {
-                team = new ConfigTeam(m.Id, m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);
-                //what about reference comps? Different scren!
+                team = new ConfigTeam(m.Id, m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);                
             }
 
-            return DomainToDTO(league);
+            db.SaveChanges();
+
+            return DomainToDTO(team);
         }
 
         public override DomainObject GetById(int? id)

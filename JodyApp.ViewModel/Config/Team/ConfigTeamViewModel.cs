@@ -22,8 +22,8 @@ namespace JodyApp.ViewModel
             Id = id;
             Name = name;
             Skill = skill;
-            League = new ReferenceObject() { Id = leagueId, Name = league };
-            Division = new ReferenceObject() { Id = divisionId, Name = division };
+            League = new ReferenceObject(leagueId, league);
+            Division = new ReferenceObject(divisionId, division);
             FirstYear = firstYear;
             LastYear = lastYear;
         }

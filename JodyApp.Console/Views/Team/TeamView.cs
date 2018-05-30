@@ -20,13 +20,13 @@ namespace JodyApp.ConsoleApp.Views
             }
         }
 
-        public override string[] EditHeaders => new string[] { "Name", "Skill", "First Year", "Last Year" };
+        public override string[] EditHeaders => new string[] { "Name", "Skill", "League", "Division", "First Year", "Last Year" };
         public override object[] EditObjects
         {
             get
             {
                 var m = (ConfigTeamViewModel)Model;
-                return new object[] { m.Name, m.Skill, m.FirstYear, m.LastYear };
+                return new object[] { m.Name, m.Skill, m.League, m.Division, m.FirstYear, m.LastYear };
             }
         }
         public TeamView(BaseViewModel model):base(model)
@@ -52,6 +52,10 @@ namespace JodyApp.ConsoleApp.Views
                 case "Last Year":
                     if (string.IsNullOrEmpty(value)) m.LastYear = null;
                     else m.LastYear = int.Parse(value);
+                    break;
+                case "League":
+                    break;
+                case "Division":
                     break;
 
             }

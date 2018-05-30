@@ -20,27 +20,36 @@ namespace JodyApp.ConsoleApp.Commands
        
 
         public BaseListView ListByLeague(ApplicationContext context, int leagueId = -1)
-        {            
-            var selectedLeagueId = leagueId;
+        {
+            LeagueViewModel selectedLeague = null;
+            int searchId = leagueId;
 
-            if (selectedLeagueId == -1)
+            if (leagueId == -1)
             {
-                selectedLeagueId = LeagueCommands.SelectLeague(context);
+                selectedLeague = (LeagueViewModel)LeagueCommands.SelectLeague(context);
+                searchId = (int)selectedLeague.Id;
             }
 
-            var listView = new DivisionListView(((ConfigDivisionService)Service).GetByLeagueId(selectedLeagueId));
+            var listView = new DivisionListView(((ConfigDivisionService)Service).GetByLeagueId(searchId));
 
             return listView;
             
         }
 
-        public static int SelectDivision(ApplicationContext context, int leagueId = -1)
+        public static BaseViewModel SelectDivision(ApplicationContext context, int leagueId = -1)
         {
-            var searchId = -1;
-            var selectedLeagueId = leagueId;
+            LeagueViewModel selectedLeague = null;
+            int searchId = leagueId;
 
             var commands = new DivisionCommands();
-            var view = commands.ListByLeague(context);
+
+            if (leagueId == -1)
+            {
+                selectedLeague = (LeagueViewModel)LeagueCommands.SelectLeague(context);
+                searchId = (int)selectedLeague.Id;
+            }
+
+            var view = commands.ListByLeague(context, searchId);
             view.ListWithOptions = true;
 
             var input = IOMethods.ReadFromConsole(context, "Division To Search By>", view.GetView());
@@ -49,9 +58,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             var viewModel = view.GetBySelection(searchSelection);
 
-            if (viewModel != null) searchId = (int)((LeagueViewModel)viewModel).Id;
-
-            return searchId;
+            return viewModel;            
         }
 
         public override BaseView GetView(BaseViewModel model)

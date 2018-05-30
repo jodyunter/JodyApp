@@ -49,10 +49,8 @@ namespace JodyApp.ConsoleApp.Commands
         }
 
 
-        public static int SelectLeague(ApplicationContext context)
-        {
-            var searchId = -1;
-
+        public static BaseViewModel SelectLeague(ApplicationContext context)
+        {            
             var leagueCommands = new LeagueCommands();
             var view = leagueCommands.List(context);
             view.ListWithOptions = true;
@@ -63,9 +61,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             var viewModel = view.GetBySelection(searchSelection);
 
-            if (viewModel != null) searchId = (int)((LeagueViewModel)viewModel).Id;
-
-            return searchId;
+            return viewModel;
         }
     }
 }

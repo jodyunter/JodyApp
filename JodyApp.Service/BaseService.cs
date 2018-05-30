@@ -58,7 +58,7 @@ namespace JodyApp.Service
         public abstract BaseViewModel DomainToDTO(DomainObject obj);
         public abstract BaseViewModel Save(BaseViewModel model);
 
-        public abstract ListViewModel GetAll();
+        public abstract ListViewModel GetAll();                
 
     }
 }

@@ -24,30 +24,6 @@ namespace JodyApp.Service
 
             return new ListViewModel(divisions);
         }
-        public ConfigDivisionViewModel GetDivisionModelById(int id)
-        {
-            return DomainToDTO(GetDivisionById(id));
-        }
-
-
-        public ConfigDivisionViewModel DomainToDTO(ConfigDivision division)
-        {
-            if (division == null) return null;
-
-            var teamViewModelList = new List<ConfigTeamViewModel>();
-
-            division.Teams.ForEach(t =>
-            {
-                teamViewModelList.Add(DomainToDTO(t));
-            });
-            
-
-            return new ConfigDivisionViewModel(division.Id,
-                division.League == null ? "None" : division.League.Name,
-                division.Name, division.ShortName,
-                division.Parent == null ? "None" : division.Parent.Name,
-                division.Level, division.Order, teamViewModelList);
-        }
 
         public override BaseViewModel GetModelById(int id)
         {

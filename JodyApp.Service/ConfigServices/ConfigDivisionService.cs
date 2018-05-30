@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
@@ -20,7 +18,25 @@ namespace JodyApp.Service.ConfigServices
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
-            throw new NotImplementedException();
+            var division = (ConfigDivision)obj;
+
+            var model = new ConfigDivisionViewModel(division.Id, 
+                division.League != null ? division.League.Id : null,
+                division.League != null ? division.League.Name : "None",
+                division.Name, division.ShortName,
+                division.Parent != null ? division.Parent.Id : null,
+                division.Parent != null ? division.Parent.Name : "None",
+                division.Level, division.Order, new List<ConfigTeamViewModel>(), division.FirstYear, division.LastYear);
+
+            var configTeamService = new ConfigTeamService(db);
+
+            division.Teams.ForEach(team =>
+            {
+                model.Teams.Add((ConfigTeamViewModel)configTeamService.DomainToDTO(team));
+            });
+
+            return model;
+
         }
 
         public override ListViewModel GetAll()

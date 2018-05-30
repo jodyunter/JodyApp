@@ -47,7 +47,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             if (leagueId == -55)
             {
-                searchId = LeagueCommands.SelectLeague(context);                        
+                searchId = (int)((LeagueViewModel)LeagueCommands.SelectLeague(context)).Id;
             }
             else
                 searchId = (int)leagueId;
@@ -67,12 +67,34 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
         {
-            throw new NotImplementedException();
+            var basicInput = IOMethods.GatherData(context, "New Team", new List<string> { "Name", "Skill", "First Year", "Last Year" });
+
+            LeagueViewModel league = (LeagueViewModel)LeagueCommands.SelectLeague(context);
+            ConfigDivisionViewModel division = (ConfigDivisionViewModel)DivisionCommands.SelectDivision(context, (int)league.Id);
+
+            basicInput.Add("LeagueId", league.Id.ToString());
+            basicInput.Add("LeagueName", league.Name);
+            basicInput.Add("DivisionId", division.Id.ToString());
+            basicInput.Add("DivisionName", division.Name);
+
+            return basicInput;
         }
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
-            throw new NotImplementedException();
+            int? id = null;
+            string name = data["Name"];
+            int skill = int.Parse(data["Skill"]);
+            int leagueId = int.Parse(data["LeagueId"]);
+            string leagueName = data["LeagueName"];
+            int divisionId = int.Parse(data["DivisionId"]);
+            string divisionName = data["DivisionName"];
+            int? firstYear = GetNullableIntFromString(data["First Year"]);
+            int? lastYear = GetNullableIntFromString(data["Last Year"]);
+
+            var model = new ConfigTeamViewModel(id, name, skill, leagueId, leagueName, divisionId, divisionName, firstYear, lastYear);
+
+            return model;
         }
     }
 }

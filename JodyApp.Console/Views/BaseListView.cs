@@ -57,7 +57,7 @@ namespace JodyApp.ConsoleApp.Views
                 return null;
             }
 
-            if (selectionId >= Model.Items.Count)
+            if (selectionId > Model.Items.Count)
             {
                 AddError("Selection is not a valid option.");
                 return null;
