@@ -40,6 +40,11 @@ namespace JodyApp.ConsoleApp
             SetupServiceLibraries();
         }
 
+        public void SetCurrentView(BaseView view)
+        {
+            AddView(view);
+            CurrentView = view;
+        }
         public void AddView(BaseView view)
         {
 
