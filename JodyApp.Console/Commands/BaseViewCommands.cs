@@ -28,19 +28,33 @@ namespace JodyApp.ConsoleApp.Commands
         public Dictionary<string, Func<ApplicationContext, ReferenceObject>> InputDictionary = new Dictionary<string, Func<ApplicationContext, ReferenceObject>>();
 
         public abstract Func<ApplicationContext, ReferenceObject> SelectMethod { get; }
+        public abstract Action<ApplicationContext> ClearSelectedItem { get; }
 
+        [Command]
+        public BaseView Select(ApplicationContext context)
+        {
+            if (SelectMethod == null)
+            {
+                return new ErrorView("Cannot find a select method for this.");
+            }
+
+            ClearSelectedItem(context);
+
+            context.SelectedLeague = SelectMethod(context);
+
+            return new MessageView("Selected League Changed");
+        }
         [Command]
         public BaseView View(ApplicationContext context, int? id = null)
         {
-            if (id != null)
-            {
-                var model = Service.GetModelById((int)id);
+            if (id == null)
+                id = SelectMethod(context).Id;
+            
+            var model = Service.GetModelById((int)id);
 
-                var view = GetView(model);
+            var view = GetView(model);
 
-                return view;
-            }
-            else return new ErrorView("Tried to call View without an ID");
+            return view;            
         }
 
         [Command]

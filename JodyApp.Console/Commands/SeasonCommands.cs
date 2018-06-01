@@ -17,6 +17,8 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Func<ApplicationContext, ReferenceObject> SelectMethod => throw new NotImplementedException();
 
+        public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
+
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
             throw new NotImplementedException();
@@ -39,12 +41,10 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override BaseListView List(ApplicationContext context)
         {
-            if (context.SelectedLeague == null)
-            {
-                context.SelectedLeague = LeagueCommands.SelectLeague(context);
-            }
+            var league = LeagueCommands.SelectLeague(context);
+                
 
-            return GetList(((SeasonService)Service).GetAllByLeagueId((int)context.SelectedLeague.Id));
+            return GetList(((SeasonService)Service).GetAllByLeagueId((int)league.Id));
         }
 
     }

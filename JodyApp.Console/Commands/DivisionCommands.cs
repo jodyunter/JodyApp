@@ -17,6 +17,8 @@ namespace JodyApp.ConsoleApp.Commands
     {
         public override Func<ApplicationContext, ReferenceObject> SelectMethod => SelectDivision;
 
+        public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
+
         public DivisionCommands() : base() { Service = new ConfigDivisionService(); }
 
 

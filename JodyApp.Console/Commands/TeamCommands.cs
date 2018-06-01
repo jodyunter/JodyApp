@@ -17,6 +17,8 @@ namespace JodyApp.ConsoleApp.Commands
     {
         public override Func<ApplicationContext, ReferenceObject> SelectMethod => SelectTeam;
 
+        public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
+
         public TeamCommands() : base()
         {
             Service = new ConfigTeamService();
