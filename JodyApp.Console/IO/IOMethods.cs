@@ -29,13 +29,13 @@ namespace JodyApp.ConsoleApp.IO
 
 
         
-        public static string ReadFromConsole(string prompt, string promptMessage = "", string extraInfo = "")
+        public static string ReadFromConsole(ApplicationContext context, string promptMessage = "", string extraInfo = "")
         {
             if (!(string.IsNullOrEmpty(extraInfo)))
             {
                 Console.WriteLine(extraInfo);
             }
-            Console.Write(prompt + promptMessage);
+            Console.Write(context.ReadPrompt + promptMessage);
             return Console.ReadLine();
         }
 

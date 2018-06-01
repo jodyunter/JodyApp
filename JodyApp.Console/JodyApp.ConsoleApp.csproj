@@ -56,7 +56,6 @@
     <Compile Include="App\Attributes.cs" />
     <Compile Include="Commands\BaseViewCommands.cs" />
     <Compile Include="Commands\DivisionCommands.cs" />
-    <Compile Include="Views\InputView.cs" />
     <Compile Include="Commands\SeasonCommands.cs" />
     <Compile Include="Commands\StandingsCommands.cs" />
     <Compile Include="Commands\TeamCommands.cs" />
