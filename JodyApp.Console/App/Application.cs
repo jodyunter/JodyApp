@@ -20,13 +20,12 @@ namespace JodyApp.ConsoleApp.App
         }
 
 
-        public static string ReadFromConsole(ApplicationContext context, string promptMessage = "", string extraInfo = "")
+        public static BaseView ReadFromConsole(ApplicationContext context, string promptMessage = "", string extraInfo = "")
         {
             var consoleInput = IOMethods.ReadFromConsole(context, promptMessage, extraInfo);
 
-            PreProcessCommand(context, consoleInput);
-
-            return consoleInput;
+            return PreProcessCommand(context, consoleInput);
+            
         }
 
         public static Dictionary<string, string> GatherData(ApplicationContext context, string dataContext, List<string> prompts)
@@ -41,7 +40,7 @@ namespace JodyApp.ConsoleApp.App
             return result;
 
         }
-        public static string PreProcessCommand(ApplicationContext context, string input)
+        public static BaseView PreProcessCommand(ApplicationContext context, string input)
         {
             switch (input.ToUpper())
             {
@@ -49,9 +48,9 @@ namespace JodyApp.ConsoleApp.App
                     return RunExitRoutine();                    
                 case "BACK":
                     IOMethods.WriteToConsole(context.GetLastView());
-                    return null;                    
+                    return new MessageView("Returning to previous view");                    
                 default:
-                    return input;
+                    return null;
             }
         }
         public void Run()
@@ -216,7 +215,7 @@ namespace JodyApp.ConsoleApp.App
 
         }
 
-        static string RunExitRoutine()
+        static BaseView RunExitRoutine()
         {
             IOMethods.WriteToConsole("Exiting Program, press enter to close the windoer");
             Console.ReadLine();

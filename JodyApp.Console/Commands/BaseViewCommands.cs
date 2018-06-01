@@ -65,10 +65,19 @@ namespace JodyApp.ConsoleApp.Commands
             return view;
         }
 
+        //when editing we want to keep the initial view and the edited view.
+        //we want to keep editing without having to retype "Blah.Edit"
+        //we want to be able to use our pre-processing commands to back out
         [Command]
         public BaseView Edit(ApplicationContext context, int? id = null)
         {
             var refObj = SelectMethod(context);
+
+            //if nothing selected, assume we have to go back
+            if (refObj == null)
+            {
+                return context.GetLastView();
+            }
 
             var model = Service.GetModelById((int)refObj.Id);
 
@@ -79,8 +88,11 @@ namespace JodyApp.ConsoleApp.Commands
 
             context.AddView(view);
 
+            //at this point we have the object we want to edit.
+            //we can assume that if we get a null input we just go back
+            //display the edit view
             IOMethods.WriteToConsole(view);
-
+            
             return Update(context);
         }
 
