@@ -15,7 +15,7 @@ namespace JodyApp.ConsoleApp
         static void Main(string[] args)
         {
             Console.Title = "Jody's App";
-            ApplicationContext AppContext = new ApplicationContext();
+            ApplicationContext AppContext = new ApplicationContext("Sports App");
             Application app = new Application(AppContext);
 
 

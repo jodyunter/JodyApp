@@ -64,7 +64,9 @@ namespace JodyApp.ConsoleApp.Commands
             var leagueCommands = new LeagueCommands();
             var view = leagueCommands.List(context);
 
-            return GetSelectedObject(context, "Choose League>", view);            
+            context.SelectedLeague = GetSelectedObject(context, "Choose League>", view);
+
+            return context.SelectedLeague;
         }
 
         public void ClearSelectedLeague(ApplicationContext context)

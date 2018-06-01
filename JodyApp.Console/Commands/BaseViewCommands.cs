@@ -146,7 +146,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             selection = (int)Application.CoerceArgument(typeof(int), selectionInput);
 
-            while (selection >= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS || selection >= 0 || selectionInput != null)
+            while (selection >= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS && selection != 0 && selectionInput != null)
             {
                 selection -= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS;
                 var prompt = newView.EditHeaders[selection];
@@ -185,7 +185,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             var input = Application.ReadFromConsole(context, prompt, view.GetView());
 
-            if (input != null)
+            if (!(string.IsNullOrEmpty(input)))
             {
                 var searchSelection = (int)Application.CoerceArgument(typeof(int), input);
 

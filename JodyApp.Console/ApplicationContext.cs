@@ -15,8 +15,20 @@ namespace JodyApp.ConsoleApp
 {
     public class ApplicationContext
     {
+        private string _promptSplitter = ">";
+        private string _baseReadPrompt;
+        private ReferenceObject _selectedLeague;
         public JodyAppContext DbContext { get; set; }
-        public ReferenceObject SelectedLeague { get; set; }
+        public ReferenceObject SelectedLeague
+        {
+            get { return _selectedLeague; }
+            set
+            {
+                _selectedLeague = value;
+                //reset other selections here
+                SetReadPrompt();
+            }
+        }
         public string CurrentUser { get; set; }
         public List<BaseView> ViewHistory { get; set; }
         public BaseView CurrentView { get; set; }
@@ -28,16 +40,17 @@ namespace JodyApp.ConsoleApp
 
         public Dictionary<string, BaseService> ServiceLibraries;        
 
-        public ApplicationContext()
+        public ApplicationContext(string baseReadPrompt)
         {
             SelectedLeague = null;
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
             DbContext = new JodyAppContext(connectionString);
             ViewHistory = new List<BaseView>();
-            ReadPrompt = "SportsApp>";
+            _baseReadPrompt = baseReadPrompt;
             CommandNameSpace = "JodyApp.ConsoleApp.Commands";
             SetupCommandLibraries();
             SetupServiceLibraries();
+            SetReadPrompt();
         }
 
         public void SetCurrentView(BaseView view)
@@ -138,6 +151,15 @@ namespace JodyApp.ConsoleApp
                     // Add the dictionary of methods for the current class into a dictionary of command classes:
                     CommandLibraries.Add(commandClass.Name, methodDictionary);
                 }
+            }
+        }
+
+        void SetReadPrompt()
+        {
+            ReadPrompt = _baseReadPrompt + _promptSplitter;
+            if (SelectedLeague != null)
+            {
+                ReadPrompt += SelectedLeague.Name + _promptSplitter;
             }
         }
     }
