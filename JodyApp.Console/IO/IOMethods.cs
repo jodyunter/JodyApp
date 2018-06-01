@@ -28,15 +28,14 @@ namespace JodyApp.ConsoleApp.IO
         }
 
 
-        //should not call this directly, call from Application
-        public static string ReadFromConsole(ApplicationContext context, string promptMessage = "", string extraInfo = "")
-        {            
-            // Show a prompt, and get input
+        
+        public static string ReadFromConsole(string prompt, string promptMessage = "", string extraInfo = "")
+        {
             if (!(string.IsNullOrEmpty(extraInfo)))
             {
-                Console.WriteLine(extraInfo);    
+                Console.WriteLine(extraInfo);
             }
-            Console.Write(context.ReadPrompt + promptMessage);
+            Console.Write(prompt + promptMessage);
             return Console.ReadLine();
         }
 

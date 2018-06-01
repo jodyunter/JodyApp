@@ -1,4 +1,5 @@
-﻿using JodyApp.ConsoleApp.Views;
+﻿using JodyApp.ConsoleApp.IO;
+using JodyApp.ConsoleApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,18 @@ namespace JodyApp.ConsoleApp.Commands
         public DefaultCommands():base() { }
         // Methods used as console commands must be public and must return a string
 
+        public void QUIT(ApplicationContext context)
+        {
+            IOMethods.WriteToConsole("Exiting Program, press enter to close the windoer");
+            Console.ReadLine();
+            Environment.Exit(0);
+        }
+
+        public void BACK(ApplicationContext context)
+        {
+            context.CurrentView = context.GetLastView();
+            
+        }
         public BaseView DoSomething(ApplicationContext context, int id, string data)
         {
             return new MessageView(string.Format(

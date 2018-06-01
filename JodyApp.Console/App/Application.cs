@@ -20,12 +20,17 @@ namespace JodyApp.ConsoleApp.App
         }
 
 
-        public static BaseView ReadFromConsole(ApplicationContext context, string promptMessage = "", string extraInfo = "")
+        public static string ReadFromConsole(ApplicationContext context, string promptMessage = "", string extraInfo = "")
         {
-            var consoleInput = IOMethods.ReadFromConsole(context, promptMessage, extraInfo);
-
-            return PreProcessCommand(context, consoleInput);
+            return ReadFromConsole(context.ReadPrompt, promptMessage, extraInfo);
             
+        }
+
+        public static string ReadFromConsole(string prompt, string promptMessage = "", string extraInfo = "")
+        {
+            var consoleInput = IOMethods.ReadFromConsole(prompt, promptMessage, extraInfo);
+
+            return consoleInput;
         }
 
         public static Dictionary<string, string> GatherData(ApplicationContext context, string dataContext, List<string> prompts)
@@ -40,32 +45,35 @@ namespace JodyApp.ConsoleApp.App
             return result;
 
         }
-        public static BaseView PreProcessCommand(ApplicationContext context, string input)
-        {
-            switch (input.ToUpper())
-            {
-                case "QUIT":
-                    return RunExitRoutine();                    
-                case "BACK":
-                    IOMethods.WriteToConsole(context.GetLastView());
-                    return new MessageView("Returning to previous view");                    
-                default:
-                    return null;
-            }
-        }
+
         public void Run()
         {
-            while (true)
+            bool runApp = true;
+
+            while (runApp)
             {
                 var consoleInput = ReadFromConsole(Context);
                 if (string.IsNullOrWhiteSpace(consoleInput)) continue;
                 try
                 {                    
-                    // Create a ConsoleCommand instance:
-                    var cmd = new ConsoleCommand(consoleInput, Context);
 
-                    // Execute the command:
-                    Execute(Context, cmd);
+                    if (Context.CurrentView is InputView)
+                    {
+                        var view = (InputView)Context.CurrentView;
+                        view.GetView();
+
+                        if (view.Data.Count == 1)
+                        {
+
+                        }
+                        var cmd = new ConsoleCommand(consoleInput, Context);
+                        Execute(Context, cmd);
+                    }
+                    if (!(Context.CurrentView is InputView))
+                    {
+                        
+                    }
+                    
 
                     if (Context.CurrentView != null)
                     {
@@ -213,15 +221,6 @@ namespace JodyApp.ConsoleApp.App
                 throw ex.InnerException;
             }
 
-        }
-
-        static BaseView RunExitRoutine()
-        {
-            IOMethods.WriteToConsole("Exiting Program, press enter to close the windoer");
-            Console.ReadLine();
-            Environment.Exit(0);
-
-            return null;
         }
 
         public static object CoerceArgument(Type requiredType, object input)
