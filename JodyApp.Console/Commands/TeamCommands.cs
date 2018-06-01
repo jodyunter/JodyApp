@@ -90,7 +90,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             basicInput.Add("LeagueId", league.Id.ToString());
             basicInput.Add("LeagueName", league.Name);
-            basicInput.Add("DivisionId", division.Id.ToString());
+            basicInput.Add("DivisionId", division == null ? null : division.Id.ToString());
             basicInput.Add("DivisionName", division.Name);
 
             return basicInput;

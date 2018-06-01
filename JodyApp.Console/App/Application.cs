@@ -66,13 +66,11 @@ namespace JodyApp.ConsoleApp.App
                     var cmd = new ConsoleCommand(consoleInput, Context);
 
                     // Execute the command:
-                    var result = Execute(Context, cmd);
+                    Execute(Context, cmd);
 
-                    // Write out the result:
-                    if (result != null)
+                    if (Context.CurrentView != null)
                     {
-                        IOMethods.WriteToConsole(result.GetView());
-                        Context.AddView(result);
+                        IOMethods.WriteToConsole(Context.CurrentView.GetView());
                     }
 
                 }
@@ -85,20 +83,22 @@ namespace JodyApp.ConsoleApp.App
 
         }
 
-        BaseView Execute(ApplicationContext context, ConsoleCommand command)
+        void Execute(ApplicationContext context, ConsoleCommand command)
         {
             var badCommandMessage_NoClassName = string.Format("No commands found for {0}.", command.LibraryClassName);
             var badCommandMessage_NoMethodName = string.Format("No command {0} exists in {1}", command.Name, command.LibraryClassName);
 
             if (!context.CommandLibraries.ContainsKey(command.LibraryClassName))
             {
-                return new ErrorView(badCommandMessage_NoClassName);
+                context.SetCurrentView(new ErrorView(badCommandMessage_NoClassName));
+                return;
 
             }
             var methodDictionary = context.CommandLibraries[command.LibraryClassName];
             if (!methodDictionary.ContainsKey(command.Name))
             {
-                return new ErrorView(badCommandMessage_NoMethodName);
+                context.SetCurrentView(new ErrorView(badCommandMessage_NoMethodName));
+                return;
             }
 
             // Make sure the corret number of required arguments are provided:
@@ -118,9 +118,10 @@ namespace JodyApp.ConsoleApp.App
 
             if (requiredCount > providedCount)
             {
-                return new ErrorView(string.Format(
+                context.SetCurrentView(new ErrorView(string.Format(
                     "Missing required argument. {0} required, {1} optional, {2} provided",
-                    requiredCount, optionalCount, providedCount));
+                    requiredCount, optionalCount, providedCount)));
+                return;
             }
 
             // Make sure all arguments are coerced to the proper type, and that there is a 
@@ -205,7 +206,8 @@ namespace JodyApp.ConsoleApp.App
                     command.Name,
                     BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.Public,
                     null, context.CommandObjects[commandLibaryClass.Name], inputArgs.ToArray());
-                return (BaseView)result;
+                context.SetCurrentView((BaseView)result);
+                return;
             }
             catch (TargetInvocationException ex)
             {
