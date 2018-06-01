@@ -7,32 +7,24 @@ using System.Threading.Tasks;
 namespace JodyApp.ViewModel
 {
     public class SeasonViewModel:BaseViewModel
-    {
-        public int? Id { get; set; }
-        public string League { get; set; }
-        public string Name { get; set; }  
+    {        
+        public ReferenceObject League { get; set; }         
         public int Year { get; set; }  
         public bool Started { get; set; }
+        public string CompetitionType { get; set; }
         public bool Complete { get; set; }
         public int StartingDay { get; set; }
         
-        public List<StandingsRecordViewModel> TeamData { get; set; }
-
-        public SeasonViewModel(int? id, string league, string name, int year, bool started, bool complete, int startingDay, List<StandingsRecordViewModel> teamData)
+        public SeasonViewModel(int? id, int? leagueId, string league, string name, int year, string competitionType,  bool started, bool complete, int startingDay)
         {
             Id = id;
-            League = league;
+            League = new ReferenceObject(leagueId, league);
             Name = name;
             Year = year;
             Started = started;
             Complete = complete;
             StartingDay = startingDay;
-            TeamData = teamData;
-        }
-
-        public List<StandingsRecordViewModel> GetByDivision(string divisionName)
-        {
-            return TeamData.Where(td => td.DivisionName == divisionName).OrderBy(td => td.Rank).ToList();
+            CompetitionType = competitionType;
         }
 
     }

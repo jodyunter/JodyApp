@@ -30,13 +30,17 @@ namespace JodyApp.ConsoleApp.Commands
         public abstract Func<ApplicationContext, ReferenceObject> SelectMethod { get; }
 
         [Command]
-        public BaseView View(ApplicationContext context, int id)
-        {            
-            var model = Service.GetModelById(id);
+        public BaseView View(ApplicationContext context, int? id = null)
+        {
+            if (id != null)
+            {
+                var model = Service.GetModelById((int)id);
 
-            var view = GetView(model);
-            
-            return view;
+                var view = GetView(model);
+
+                return view;
+            }
+            else return new ErrorView("Tried to call View without an ID");
         }
 
         [Command]
@@ -58,7 +62,7 @@ namespace JodyApp.ConsoleApp.Commands
         }
 
         [Command]
-        public BaseListView List(ApplicationContext context)
+        public virtual BaseListView List(ApplicationContext context)
         {
             var view = GetList(Service.GetAll());
 

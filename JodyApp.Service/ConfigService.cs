@@ -75,31 +75,19 @@ namespace JodyApp.Service
         #region Teams  
         public void SetNewSkills(League league, Random random)
         {
-            int[,] data = new int[,]
-            {
-                {5, 100 },
-                {10, 90 },
-                {20, 80 },
-                {30, 70 },
-                {40, 60 },
-                {50,  50 },
-                {60,  40 },
-                {70,  30 },
-                {80,  20 },
-                {90,  10 },
-                {100,  5 },
-
-            };
-
+            int[] chanceToIncrease = new int[] { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0 };            
 
             GetTeams(league, league.CurrentYear).ForEach(team =>
             {
-                int up = data[team.Skill, 0];
-                int down = data[team.Skill, 1];
+                int max = 200;
+                int chgNum = 100;
+                int num = random.Next(0, max);
+                if (num <= chgNum)
+                {
+                    if (num <= chanceToIncrease[team.Skill]) team.Skill++;
+                    else team.Skill--;                                            
+                }                
 
-                int num = random.Next(0, 100);
-                if (num < 10) team.Skill -= 1;
-                if (num > 90) team.Skill += 1;
                 if (team.Skill > 10) team.Skill = 10;
                 if (team.Skill < 0) team.Skill = 0;
             });

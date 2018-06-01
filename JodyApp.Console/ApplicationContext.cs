@@ -9,13 +9,14 @@ using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Service;
+using JodyApp.ViewModel;
 
 namespace JodyApp.ConsoleApp
 {
     public class ApplicationContext
     {
         public JodyAppContext DbContext { get; set; }
-        public League SelectedLeague { get; set; }
+        public ReferenceObject SelectedLeague { get; set; }
         public string CurrentUser { get; set; }
         public List<BaseView> ViewHistory { get; set; }
         public BaseView CurrentView { get; set; }

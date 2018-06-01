@@ -24,9 +24,7 @@ namespace JodyApp.ConsoleApp.App
         {
             var consoleInput = IOMethods.ReadFromConsole(context, promptMessage, extraInfo);
 
-            PreProcessCommand(context, consoleInput);
-
-            return consoleInput;
+            return PreProcessCommand(context, consoleInput);
         }
 
         public static Dictionary<string, string> GatherData(ApplicationContext context, string dataContext, List<string> prompts)
@@ -49,7 +47,7 @@ namespace JodyApp.ConsoleApp.App
                     return RunExitRoutine();                    
                 case "BACK":
                     IOMethods.WriteToConsole(context.GetLastView());
-                    return null;                    
+                    return "0";                    
                 default:
                     return input;
             }

@@ -1,6 +1,8 @@
-﻿using JodyApp.ConsoleApp.Views;
+﻿using JodyApp.ConsoleApp.App;
+using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 using JodyApp.Service;
+using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,29 +11,41 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Commands
 {
-    public class SeasonCommands
+    public class SeasonCommands:BaseViewCommands
     {
-        public SeasonCommands() : base() { }
+        public SeasonCommands() : base() { Service = new SeasonService(); }
 
-        public BaseView List(ApplicationContext context, int leagueId)
+        public override Func<ApplicationContext, ReferenceObject> SelectMethod => throw new NotImplementedException();
+
+        public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
-            var seasonService = new SeasonService(JodyAppContext.Instance);
-            var model = seasonService.GetAllByLeagueId(leagueId);
-
-            var view = new SeasonListView(model);
-            
-            return view;
+            throw new NotImplementedException();
         }
-        
-        public BaseView View(ApplicationContext context, int seasonId)
+
+        public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
         {
-            var seasonService = new SeasonService(JodyAppContext.Instance);
-            var model = seasonService.DomainToDTO(seasonService.GetById(seasonId));
-
-            var view = new SeasonView(model);
-
-            return view;
+            throw new NotImplementedException();
         }
-       
+
+        public override BaseListView GetList(ListViewModel model)
+        {
+            return new SeasonListView(model);
+        }
+
+        public override BaseView GetView(BaseViewModel model)
+        {
+            return new SeasonView(model);
+        }
+
+        public override BaseListView List(ApplicationContext context)
+        {
+            if (context.SelectedLeague == null)
+            {
+                context.SelectedLeague = LeagueCommands.SelectLeague(context);
+            }
+
+            return GetList(((SeasonService)Service).GetAllByLeagueId((int)context.SelectedLeague.Id));
+        }
+
     }
 }

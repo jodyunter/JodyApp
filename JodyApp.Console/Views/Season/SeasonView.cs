@@ -18,6 +18,6 @@ namespace JodyApp.ConsoleApp.Views
                 return new object[] { m.Id, m.League, m.Name, m.Year, m.Started };
             }
         }
-        public SeasonView(SeasonViewModel model) : base(model) { }
+        public SeasonView(BaseViewModel model) : base(model) { }
     }
 }

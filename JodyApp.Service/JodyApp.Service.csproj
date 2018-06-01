@@ -62,7 +62,6 @@
     <Compile Include="Extensions\StandingsExtensions.cs" />
     <Compile Include="Extensions\ScheduleExtensions.cs" />
     <Compile Include="Extensions\PlayoffExtensions.cs" />
-    <Compile Include="Extensions\SeasonExtensions.cs" />
     <Compile Include="LeagueService.cs" />
     <Compile Include="PlayoffService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

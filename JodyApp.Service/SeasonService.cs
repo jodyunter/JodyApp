@@ -12,7 +12,7 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public partial class SeasonService:BaseService
+    public class SeasonService:BaseService
     {
         public ConfigService ConfigService { get; set; }
         public DivisionService DivisionService { get; set; }
@@ -138,14 +138,43 @@ namespace JodyApp.Service
             return db.Seasons.Where(s => s.Name == name && s.Year == year && s.League.Id == league.Id).FirstOrDefault();
         }
 
-        public Season GetById(int id)
+        public ListViewModel GetAllByLeagueId(int leagueId)
         {
-            return db.Seasons.Where(s => s.Id == id).FirstOrDefault();
+
+            return CreateListViewModelFromList(db.Seasons.Where(s => s.League.Id == leagueId).ToList<DomainObject>(), DomainToDTO);
         }
 
-        public List<Season> GetAll(int leagueId)
+        public SeasonViewModel DomainToDTO(Season season)
         {
-            return db.Seasons.Where(s => s.League.Id == leagueId).ToList();
+            if (season == null) return null;
+            return new SeasonViewModel(season.Id, season.League.Id, season.League.Name, season.Name, season.Year, "Season", season.Complete, season.Started, season.StartingDay);
+        }
+
+
+        public override BaseViewModel GetModelById(int id)
+        {
+            return DomainToDTO(db.Seasons.Where(s => s.Id == id).FirstOrDefault());
+        }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            var season = (Season)obj;
+            return new SeasonViewModel(season.Id, season.League.Id, season.League.Name, season.Name, season.Year, "Season", season.Started, season.Complete, season.StartingDay);
+        }
+
+        public override BaseViewModel Save(BaseViewModel mdoel)
+        {
+            throw new NotImplementedException();
+        }
+        public override ListViewModel GetAll()
+        {
+
+            return CreateListViewModelFromList(db.Seasons.ToList<DomainObject>(), DomainToDTO);
+        }
+
+        public override DomainObject GetById(int? id)
+        {
+            return db.Seasons.Where(s => s.Id == id).FirstOrDefault();
         }
     }
 }

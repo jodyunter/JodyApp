@@ -1,5 +1,6 @@
 ﻿using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
+using JodyApp.Domain;
 using JodyApp.Service;
 using JodyApp.ViewModel;
 using System;
@@ -18,7 +19,7 @@ namespace JodyApp.ConsoleApp.Commands
             var seasonService = new SeasonService(JodyAppContext.Instance);
             var standingsService = new StandingsService(JodyAppContext.Instance);
 
-            var model = standingsService.GetBySeasonAndDivisionLevel(seasonService.GetById(seasonId), divisionLevel);
+            var model = standingsService.GetBySeasonAndDivisionLevel((Season)seasonService.GetById(seasonId), divisionLevel);
             var view = new StandingsView(model);
 
             return view;

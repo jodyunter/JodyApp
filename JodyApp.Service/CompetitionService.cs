@@ -40,6 +40,21 @@ namespace JodyApp.Service
             PlayoffService = new PlayoffService(db);
         }
 
+        public Competition StartNextYear(int leagueId)
+        {
+            var league = (League)LeagueService.GetById(leagueId);
+
+            if (LeagueService.IsYearDone(league))
+            {
+                league.CurrentYear++;
+                LeagueService.Save();
+                return GetNextCompetition(league);
+            }
+            else
+            {
+                return null;
+            }
+        }
         public Competition GetNextCompetition(League league)
         {
             if (LeagueService.IsYearDone(league))
