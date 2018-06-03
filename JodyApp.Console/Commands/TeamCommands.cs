@@ -95,7 +95,7 @@ namespace JodyApp.ConsoleApp.Commands
             basicInput.Add("LeagueId", league.Id.ToString());
             basicInput.Add("LeagueName", league.Name);
             basicInput.Add("DivisionId", division == null ? null : division.Id.ToString());
-            basicInput.Add("DivisionName", division.Name);
+            basicInput.Add("DivisionName", division == null ? null : division.Name);
 
             return basicInput;
         }
@@ -107,7 +107,8 @@ namespace JodyApp.ConsoleApp.Commands
             int skill = int.Parse(data["Skill"]);
             int leagueId = int.Parse(data["LeagueId"]);
             string leagueName = data["LeagueName"];
-            int divisionId = int.Parse(data["DivisionId"]);
+            var divisionIdString = data["DivisionId"];
+            int? divisionId = divisionIdString == null ? (int?)null : int.Parse(divisionIdString);
             string divisionName = data["DivisionName"];
             int? firstYear = GetNullableIntFromString(data["First Year"]);
             int? lastYear = GetNullableIntFromString(data["Last Year"]);
