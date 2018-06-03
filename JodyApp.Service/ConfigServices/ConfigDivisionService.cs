@@ -46,7 +46,7 @@ namespace JodyApp.Service.ConfigServices
 
         public override BaseViewModel GetModelById(int id)
         {
-            throw new NotImplementedException();
+            return DomainToDTO(db.ConfigDivisions.Where(d => d.Id == id).FirstOrDefault());
         }
 
         public override BaseViewModel Save(BaseViewModel model)

@@ -14,7 +14,9 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class LeagueCommands:BaseViewCommands
     {
-        public override Func<ApplicationContext, ReferenceObject> SelectMethod => SelectLeague;
+        public static string SELECT_LEAGUE = "Choose League>";
+
+        public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => SelectLeague;
 
         public override Action<ApplicationContext> ClearSelectedItem => ClearSelectedLeague;
 
@@ -54,7 +56,7 @@ namespace JodyApp.ConsoleApp.Commands
         }
 
 
-        public static ReferenceObject SelectLeague(ApplicationContext context)
+        public static ReferenceObject SelectLeague(ApplicationContext context, string prompts)
         {            
             if (context.SelectedLeague != null)
             {
@@ -64,7 +66,7 @@ namespace JodyApp.ConsoleApp.Commands
             var leagueCommands = new LeagueCommands();
             var view = leagueCommands.List(context);
 
-            context.SelectedLeague = GetSelectedObject(context, "Choose League>", view);
+            context.SelectedLeague = GetSelectedObject(context, prompts, view);
 
             return context.SelectedLeague;
         }

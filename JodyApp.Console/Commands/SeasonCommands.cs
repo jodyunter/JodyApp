@@ -15,7 +15,7 @@ namespace JodyApp.ConsoleApp.Commands
     {
         public SeasonCommands() : base() { Service = new SeasonService(); }
 
-        public override Func<ApplicationContext, ReferenceObject> SelectMethod => throw new NotImplementedException();
+        public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => throw new NotImplementedException();
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
@@ -41,7 +41,7 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override BaseListView List(ApplicationContext context)
         {
-            var league = LeagueCommands.SelectLeague(context);
+            var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
                 
 
             return GetList(((SeasonService)Service).GetAllByLeagueId((int)league.Id));

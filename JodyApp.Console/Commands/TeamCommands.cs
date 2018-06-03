@@ -15,7 +15,8 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class TeamCommands:BaseViewCommands
     {
-        public override Func<ApplicationContext, ReferenceObject> SelectMethod => SelectTeam;
+        public static string SELECT_TEAM = "Select Team>";
+        public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => SelectTeam;
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
@@ -26,24 +27,25 @@ namespace JodyApp.ConsoleApp.Commands
             InputDictionary.Add("Division", DivisionCommands.SelectDivision);
         }
 
-        public ReferenceObject SelectTeam(ApplicationContext context)
+        public static ReferenceObject SelectTeam(ApplicationContext context, string prompt = "Select Team>")
         {
-            var league = LeagueCommands.SelectLeague(context);
+            var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
+            var commands = new TeamCommands();
 
-            var view = (TeamListView)ListByLeague(context, (int)league.Id);
+            var view = (TeamListView)commands.ListByLeague(context, (int)league.Id);
 
-            return GetSelectedObject(context, "Choose Team>", view);            
+            return GetSelectedObject(context, prompt, view);            
             
         }
         [Command]
-        public BaseListView ListByDivision(ApplicationContext context, int divisionId = -1)
+        public BaseListView ListByDivision(ApplicationContext context, int divisionId = -1, string prompt = "Select Division>")
         {
             var searchId = -1;
             var divisionRef = new ReferenceObject(null, null);
 
             if (divisionId == -1)
             {
-                divisionRef = DivisionCommands.SelectDivision(context);
+                divisionRef = DivisionCommands.SelectDivision(context, prompt);
 
             }
 
@@ -64,7 +66,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             if (leagueId == -55)
             {
-                searchId = (int)LeagueCommands.SelectLeague(context).Id;
+                searchId = (int)LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE).Id;
             }
             else
                 searchId = (int)leagueId;
@@ -87,7 +89,7 @@ namespace JodyApp.ConsoleApp.Commands
         {
             var basicInput = Application.GatherData(context, "New Team", new List<string> { "Name", "Skill", "First Year", "Last Year" });
 
-            ReferenceObject league = LeagueCommands.SelectLeague(context);
+            ReferenceObject league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
             ReferenceObject division = DivisionCommands.SelectDivisionWithLeagueId(context, (int)league.Id);
 
             basicInput.Add("LeagueId", league.Id.ToString());

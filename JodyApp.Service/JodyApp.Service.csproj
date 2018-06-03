@@ -57,7 +57,6 @@
     <Compile Include="Extensions\ConfigDivisionExtensions.cs" />
     <Compile Include="Extensions\ConfigTeamExtensions.cs" />
     <Compile Include="Extensions\DivisionExtensions.cs" />
-    <Compile Include="Extensions\LeagueExtensions.cs" />
     <Compile Include="Extensions\TeamExtensions.cs" />
     <Compile Include="Extensions\StandingsExtensions.cs" />
     <Compile Include="Extensions\ScheduleExtensions.cs" />

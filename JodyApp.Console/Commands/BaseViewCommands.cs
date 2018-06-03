@@ -25,13 +25,13 @@ namespace JodyApp.ConsoleApp.Commands
         public abstract Dictionary<string, string> GatherCreateData(ApplicationContext context);
         public abstract BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data);
 
-        public Dictionary<string, Func<ApplicationContext, ReferenceObject>> InputDictionary = new Dictionary<string, Func<ApplicationContext, ReferenceObject>>();
+        public Dictionary<string, Func<ApplicationContext, string, ReferenceObject>> InputDictionary = new Dictionary<string, Func<ApplicationContext, string, ReferenceObject>>();
 
-        public abstract Func<ApplicationContext, ReferenceObject> SelectMethod { get; }
+        public abstract Func<ApplicationContext, string, ReferenceObject> SelectMethod { get; }
         public abstract Action<ApplicationContext> ClearSelectedItem { get; }
 
         [Command]
-        public BaseView Select(ApplicationContext context)
+        public BaseView Select(ApplicationContext context, string prompt = "Select>")
         {
             if (SelectMethod == null)
             {
@@ -40,15 +40,15 @@ namespace JodyApp.ConsoleApp.Commands
 
             ClearSelectedItem(context);
 
-            context.SelectedLeague = SelectMethod(context);
+            context.SelectedLeague = SelectMethod(context, prompt);
 
             return new MessageView("Selected League Changed");
         }
         [Command]
-        public BaseView View(ApplicationContext context, int? id = null)
+        public BaseView View(ApplicationContext context, int? id = null, string prompt = "Select>")
         {
             if (id == null)
-                id = SelectMethod(context).Id;
+                id = SelectMethod(context, prompt).Id;
             
             var model = Service.GetModelById((int)id);
 
@@ -87,9 +87,9 @@ namespace JodyApp.ConsoleApp.Commands
         //we want to keep editing without having to retype "Blah.Edit"
         //we want to be able to use our pre-processing commands to back out
         [Command]
-        public BaseView Edit(ApplicationContext context, int? id = null)
+        public BaseView Edit(ApplicationContext context, int? id = null, string prompt = "Select>")
         {
-            var refObj = SelectMethod(context);
+            var refObj = SelectMethod(context, prompt);
 
             //if nothing selected, assume we have to go back
             if (refObj == null)
@@ -154,7 +154,7 @@ namespace JodyApp.ConsoleApp.Commands
                 ReferenceObject objectInput = null;
                 if (InputDictionary.ContainsKey(prompt))
                 {
-                    objectInput = InputDictionary[prompt].Invoke(context);
+                    objectInput = InputDictionary[prompt].Invoke(context, "Select>");
                     newView.UpdateAttribute(prompt, objectInput);
                 }
                 else
@@ -179,6 +179,7 @@ namespace JodyApp.ConsoleApp.Commands
             return int.Parse(input);
         }
         
+        //eventually have a way to exclude objects that were already selected
         public static ReferenceObject GetSelectedObject(ApplicationContext context, string prompt, BaseListView view)
         {
             view.ListWithOptions = true;

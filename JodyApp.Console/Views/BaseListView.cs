@@ -9,6 +9,7 @@ namespace JodyApp.ConsoleApp.Views
 {
     public abstract class BaseListView:BaseView
     {
+        //need a list of reference objects to exclude
         public new ListViewModel Model { get; set; }        
 
         public bool ListWithOptions { get; set; }
