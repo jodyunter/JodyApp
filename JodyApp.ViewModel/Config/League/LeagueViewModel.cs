@@ -17,6 +17,11 @@ namespace JodyApp.ViewModel
             this.Name = name;            
             this.CurrentYear = currentYear;
         }
-        
+
+        public override bool Validate()
+        {
+            
+        }
+
     }
 }
