@@ -17,6 +17,17 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => throw new NotImplementedException();
 
+        public static ReferenceObject SelectSeason(ApplicationContext context, string prompt = "Select Season>")
+        {
+            var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
+            var commands = new SeasonCommands();
+
+            var view = (SeasonListView)commands.List(context);
+
+            return GetSelectedObject(context, prompt, view);
+
+
+        }
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)

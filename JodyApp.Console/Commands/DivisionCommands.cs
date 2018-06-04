@@ -18,6 +18,7 @@ namespace JodyApp.ConsoleApp.Commands
     {
         public static string SELECT_DIVISION = "Select Division>";
         public static string SELECT_PARENT_DIVISION = "Select Parent>";
+        public static string SELECT_SEASON = "Place in Division>";
 
         public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => SelectDivision;
 
@@ -100,7 +101,7 @@ namespace JodyApp.ConsoleApp.Commands
             //parent division
             var parentDivision = SelectDivision(context, SELECT_PARENT_DIVISION);
 
-            var season = new ReferenceObject();
+            var season = SeasonCommands.SelectSeason(context, SELECT_SEASON);
             season = null;
 
             //name, shortname, level, order, first year, last year

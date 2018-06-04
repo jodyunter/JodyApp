@@ -14,7 +14,7 @@ namespace JodyApp.ConsoleApp.Views.Division
         {            
         }
 
-        public override string Formatter => "{0,5} {1,20} {2,10} {3,15} {4, 15}, {5,20} {6,5} {7,5} {8,5}";
+        public override string Formatter => "{0,5} {1,20} {2,10} {3,15} {4, 15} {5,20} {6,5} {7,5} {8,5}";
         public override string[] HeaderStrings => new string[] { "Id", "Name", "Short", "League", "Season", "Parent", "Level", "Order", "Teams" };
         
 
