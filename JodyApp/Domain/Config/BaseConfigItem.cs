@@ -11,8 +11,8 @@ namespace JodyApp.Domain.Config
         public BaseConfigItem() { }
         public BaseConfigItem(int? firstYear, int? lastYear)
         {
-            this.FirstYear = firstYear;
-            this.LastYear = lastYear;
+            FirstYear = firstYear;
+            LastYear = lastYear;
         }
         //can be null so we can plan ahead
         public int? FirstYear { get; set; }
