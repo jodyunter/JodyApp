@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JodyApp.Domain;
+﻿using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.ViewModel;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JodyApp.Service.ConfigServices
 {
@@ -86,16 +82,21 @@ namespace JodyApp.Service.ConfigServices
             return db.ConfigTeams.Where(t => t.Id == id).FirstOrDefault();
         }
 
-        public ListViewModel GetByLeague(int leagueId)
+        public ListViewModel GetModelByLeague(int leagueId)
         {
             return CreateListViewModelFromList(db.ConfigTeams.Where(t => t.League.Id == leagueId).ToList<DomainObject>(), DomainToDTO);
         }
 
-        public ListViewModel GetByDivisionId(int divisionId)
+        public ListViewModel GetModelByDivision(int divisionId)
         {
-            return CreateListViewModelFromList(db.ConfigTeams.Where(t => t.Division.Id == divisionId).ToList<DomainObject>(), DomainToDTO);
+            return CreateListViewModelFromList(GetByDivision(divisionId).ToList<DomainObject>(), DomainToDTO);
 
         }
+        public List<ConfigTeam> GetByDivision(int divisionId)
+        {
+            return db.ConfigTeams.Where(t => t.Division.Id == divisionId).ToList();
+        }
+        
 
     }
 }

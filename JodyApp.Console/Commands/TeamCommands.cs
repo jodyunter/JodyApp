@@ -52,7 +52,7 @@ namespace JodyApp.ConsoleApp.Commands
             searchId = (int)divisionRef.Id;
 
             var service = new ConfigTeamService();
-            var view = new TeamListView(service.GetByDivisionId(searchId))
+            var view = new TeamListView(service.GetModelByDivision(searchId))
             {
                 Header = divisionRef.Name
             };
@@ -71,7 +71,7 @@ namespace JodyApp.ConsoleApp.Commands
             else
                 searchId = (int)leagueId;
 
-            return new TeamListView(((ConfigTeamService)Service).GetByLeague(searchId));
+            return new TeamListView(((ConfigTeamService)Service).GetModelByLeague(searchId));
         
         }
         public override BaseView GetView(BaseViewModel model)

@@ -8,8 +8,10 @@ namespace JodyApp.ViewModel
 {
     public class ConfigDivisionViewModel:BaseViewModel
     {        
-        public ReferenceObject League { get; set; }        
+        public ReferenceObject League { get; set; }     
+        public ReferenceObject Season { get; set; }        
         public string ShortName { get; set; }
+
         public ReferenceObject Parent { get; set; }
         public int Level { get; set; }
         public int Order { get; set; }
@@ -17,10 +19,11 @@ namespace JodyApp.ViewModel
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
 
-        public ConfigDivisionViewModel(int? id, int? leagueId, string league, string name, string shortName, int? parentId, string parent, int level, int order, List<ReferenceObject> teams, int? firstYear, int? lastYear)
+        public ConfigDivisionViewModel(int? id, int? leagueId, string league, int? seasonId, string seasonName, string name, string shortName, int? parentId, string parent, int level, int order, List<ReferenceObject> teams, int? firstYear, int? lastYear)
         {
             Id = id;
             League = new ReferenceObject(leagueId, league);
+            Season = new ReferenceObject(seasonId, seasonName);
             Name = name;
             ShortName = shortName;
             Parent = new ReferenceObject(parentId, parent);

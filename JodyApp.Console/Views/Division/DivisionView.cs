@@ -9,15 +9,30 @@ namespace JodyApp.ConsoleApp.Views
 {
     public class DivisionView : BaseView
     {
-        public override string[] ViewHeaders => new string[] { "Id", "Name", "Short", "League", "Parent", "Level", "Order" };
+        public override string[] ViewHeaders => new string[] { "Id", "Name", "Short", "League", "Season", "Parent", "Level", "Order" };
         public override object[] ViewObjects
         {
             get
             {
                 var m = (ConfigDivisionViewModel)Model;
-                return new object[] { m.Id, m.Name, m.ShortName, m.League, m.Parent, m.Level, m.Order };
+                return new object[] { m.Id, m.Name, m.ShortName, m.League,
+                    m.Parent != null ? m.Parent.Name :"None",
+                    m.Level, m.Order };
             }
         }
+
+        public override string[] EditHeaders => new string[] { "Name", "Short", "League", "Season", "Parent", "Level", "Order" };
+        public override object[] EditObjects
+        {
+            get
+            {
+                var m = (ConfigDivisionViewModel)Model;
+                return new object[] { m.Name, m.ShortName, m.League,
+                    m.Season != null ? m.Season.Name : "None",
+                    m.Parent != null ? m.Parent.Name : "None", m.Level, m.Order};
+            }
+        }
+
         public DivisionView(BaseViewModel model) : base(model)
         {
         }

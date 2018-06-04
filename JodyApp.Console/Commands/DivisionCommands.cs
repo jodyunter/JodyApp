@@ -89,6 +89,8 @@ namespace JodyApp.ConsoleApp.Commands
         public static string INPUT_LEAGUENAME = "LEAGUENAME";
         public static string INPUT_PARENTID = "PARENTID";
         public static string INPUT_PARENTNAME = "PARENTNAME";
+        public static string INPUT_SEASONID = "SEASONID";
+        public static string INPUT_SEASONNAME = "SEASONNAME";
 
         //we can add teams to a division later by team if need be
         public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
@@ -98,6 +100,9 @@ namespace JodyApp.ConsoleApp.Commands
             //parent division
             var parentDivision = SelectDivision(context, SELECT_PARENT_DIVISION);
 
+            var season = new ReferenceObject();
+            season = null;
+
             //name, shortname, level, order, first year, last year
             var basicInput = Application.GatherData(context, "New Division", new List<string> { INPUT_NAME, INPUT_SHORTNAME, INPUT_LEVEL, INPUT_ORDER, INPUT_FIRSTYEAR, INPUT_LASTYEAR});
 
@@ -105,6 +110,9 @@ namespace JodyApp.ConsoleApp.Commands
             basicInput.Add(INPUT_LEAGUENAME, league.Name);
             basicInput.Add(INPUT_PARENTID, parentDivision == null ? null :parentDivision.Id.ToString());
             basicInput.Add(INPUT_PARENTNAME, parentDivision == null ? null : parentDivision.Name.ToString());
+            basicInput.Add(INPUT_SEASONID, season == null ? null : season.Id.ToString());
+            basicInput.Add(INPUT_SEASONNAME, season == null ? null : season.Name.ToString());
+
 
             //teams
             var done = false;
@@ -131,7 +139,49 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
-            throw new NotImplementedException();
+
+            int? leagueId = null;
+            string leagueName = null;
+            if (!string.IsNullOrEmpty(data[INPUT_LEAGUEID]))
+            {
+                leagueId = int.Parse(data[INPUT_LEAGUEID]);
+                leagueName = data[INPUT_LEAGUENAME];
+            }
+            int? parentId = null;
+            string parentName = null;
+            if (!string.IsNullOrEmpty(data[INPUT_PARENTID]))
+            {
+                parentId = int.Parse(data[INPUT_PARENTID]);
+                parentName = data[INPUT_PARENTNAME];
+            }
+
+            int? seasonId = null;
+            string seasonName = null;
+            if (!string.IsNullOrEmpty(data[INPUT_SEASONID]))
+            {
+                seasonId = int.Parse(data[INPUT_SEASONID]);
+                seasonName = data[INPUT_SEASONNAME];
+            }
+            string name = data[INPUT_NAME];
+            string shortName = data[INPUT_SHORTNAME];
+            int level = int.Parse(data[INPUT_LEVEL]);
+            int order = int.Parse(data[INPUT_ORDER]);
+            int? firstYear = GetNullableIntFromString(data["First Year"]);
+            int? lastYear = GetNullableIntFromString(data["Last Year"]);
+
+            var teams = new List<ReferenceObject>();
+
+           for (int i = 1; i <= data.Where(p => p.Key.Contains(INPUT_TEAMID)).Count(); i++)
+            {
+                var teamId = data[INPUT_TEAMID + i.ToString()];
+                var teamName = data[INPUT_TEAMNAME + i.ToString()];
+                teams.Add(new ReferenceObject(int.Parse(teamId), teamName));
+            }
+
+            var model = new ConfigDivisionViewModel(null, leagueId, leagueName, seasonId, seasonName, name, shortName,
+                parentId, parentName, level, order, teams, firstYear, lastYear);
+
+            return model;
         }
     }
 }
