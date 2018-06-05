@@ -14,7 +14,7 @@ namespace JodyApp.ConsoleApp.Commands
     public class SeasonCommands:BaseViewCommands
     {
         public SeasonCommands(ApplicationContext context) : base(context) { Service = new SeasonService(context.DbContext); }
-
+        public SeasonCommands() : base() { }
         public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => throw new NotImplementedException();
 
         public static ReferenceObject SelectSeason(ApplicationContext context, string prompt = "Select Season>")

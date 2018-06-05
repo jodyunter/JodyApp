@@ -21,6 +21,7 @@ namespace JodyApp.ConsoleApp.Commands
         public override Action<ApplicationContext> ClearSelectedItem => ClearSelectedLeague;
 
         public LeagueCommands(ApplicationContext context) : base(context) { Service = new LeagueService(context.DbContext);  }
+        public LeagueCommands() : base() { }
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
