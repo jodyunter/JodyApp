@@ -18,10 +18,5 @@ namespace JodyApp.ViewModel
             this.CurrentYear = currentYear;
         }
 
-        public override bool Validate()
-        {
-            
-        }
-
     }
 }

@@ -17,7 +17,7 @@ namespace JodyApp.ConsoleApp.Commands
         public const int SAVE = 1;
         public const int NONE= 0;
         public const int UNDO = 2;
-        public BaseViewCommands() { }
+        public BaseViewCommands(ApplicationContext context) { }
 
         public BaseService Service { get; set; }
         public abstract BaseView GetView(BaseViewModel model);

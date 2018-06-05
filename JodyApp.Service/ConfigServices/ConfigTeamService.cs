@@ -10,7 +10,7 @@ namespace JodyApp.Service.ConfigServices
     {
 
         public ConfigTeamService(Database.JodyAppContext db) : base(db) { }
-        public ConfigTeamService() : base() { }
+        //public ConfigTeamService() : base() { }
 
 
         public override BaseViewModel DomainToDTO(DomainObject obj)

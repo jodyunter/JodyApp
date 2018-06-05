@@ -10,7 +10,7 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class HelpCommands
     {
-        public HelpCommands() : base() { }
+        public HelpCommands(ApplicationContext context) : base() { }
 
         [Command]
         public BaseView List(ApplicationContext context, string nameSpace = "All", string method = "All")

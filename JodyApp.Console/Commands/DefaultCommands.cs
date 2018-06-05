@@ -10,7 +10,7 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class DefaultCommands
     {
-        public DefaultCommands():base() { }
+        public DefaultCommands(ApplicationContext context):base() { }
         // Methods used as console commands must be public and must return a string
 
         public void QUIT(ApplicationContext context)

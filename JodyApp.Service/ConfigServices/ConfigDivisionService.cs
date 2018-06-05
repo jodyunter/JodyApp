@@ -12,9 +12,9 @@ namespace JodyApp.Service.ConfigServices
     {
         public ConfigDivisionService(JodyAppContext db) : base(db) {  }
 
-        public ConfigDivisionService():base()
-        {
-        }
+        //public ConfigDivisionService():base()
+        //{
+        //}
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {

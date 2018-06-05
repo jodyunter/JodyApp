@@ -129,8 +129,10 @@ namespace JodyApp.ConsoleApp
                 if (!commandClass.IsAbstract)
                 {
                     //create an instance and add it to CommandObjects
-                    var ctor = commandClass.GetConstructor(new Type[] { });
-                    var instance = ctor.Invoke(null);
+                    //var ctor = commandClass.GetConstructor(new Type[] { typeof(ApplicationContext) });
+                    var ctor = commandClass.GetConstructors()[0];
+                    
+                    var instance = ctor.Invoke(new object[] { this });
                     CommandObjects.Add(commandClass.Name, instance);
 
                     // Load the method info from each class into a dictionary:

@@ -54,11 +54,8 @@
     <Compile Include="ConfigServices\ConfigTeamService.cs" />
     <Compile Include="DivisionService.cs" />
     <Compile Include="Extensions\CompetitionExtensions.cs" />
-    <Compile Include="Extensions\ConfigDivisionExtensions.cs" />
-    <Compile Include="Extensions\ConfigTeamExtensions.cs" />
     <Compile Include="Extensions\DivisionExtensions.cs" />
     <Compile Include="Extensions\TeamExtensions.cs" />
-    <Compile Include="Extensions\StandingsExtensions.cs" />
     <Compile Include="Extensions\ScheduleExtensions.cs" />
     <Compile Include="Extensions\PlayoffExtensions.cs" />
     <Compile Include="LeagueService.cs" />

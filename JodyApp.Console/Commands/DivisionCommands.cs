@@ -24,7 +24,7 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
-        public DivisionCommands() : base() { Service = new ConfigDivisionService(); }
+        public DivisionCommands(ApplicationContext context) : base(context) { Service = new ConfigDivisionService(context.DbContext); }
 
 
 
@@ -54,7 +54,7 @@ namespace JodyApp.ConsoleApp.Commands
             ReferenceObject selectedLeague = null;
             int searchId = leagueId;
 
-            var commands = new DivisionCommands();
+            var commands = new DivisionCommands(context);
 
             if (leagueId == -1)
             {

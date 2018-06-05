@@ -20,7 +20,7 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Action<ApplicationContext> ClearSelectedItem => ClearSelectedLeague;
 
-        public LeagueCommands() : base() { Service = new LeagueService();  }
+        public LeagueCommands(ApplicationContext context) : base(context) { Service = new LeagueService(context.DbContext);  }
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
@@ -63,7 +63,7 @@ namespace JodyApp.ConsoleApp.Commands
                 return context.SelectedLeague;
             }
 
-            var leagueCommands = new LeagueCommands();
+            var leagueCommands = new LeagueCommands(context);
             var view = leagueCommands.List(context);
 
             context.SelectedLeague = GetSelectedObject(context, prompts, view);

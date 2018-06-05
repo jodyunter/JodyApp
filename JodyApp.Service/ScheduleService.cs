@@ -12,8 +12,7 @@ namespace JodyApp.Service
     public partial class ScheduleService : BaseService
     {
         DivisionService DivisionService { get; set; }
-
-        public ScheduleService() : base() { }
+        
         public ScheduleService(JodyAppContext db, DivisionService divisionService) : base(db)
         {
             DivisionService = divisionService;

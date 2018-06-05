@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Service
 {
-    public partial class StandingsService:BaseService
+    public class StandingsService:BaseService
     {
         public SeasonService SeasonService { get; set; }
         public StandingsService(JodyAppContext db) : base(db) { SeasonService = new SeasonService(db); }
@@ -35,6 +35,30 @@ namespace JodyApp.Service
 
             });
             return new ListViewModel(recordModels);
+        }
+
+        public override BaseViewModel GetModelById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel Save(BaseViewModel mdoel)
+        {
+            throw new NotImplementedException();
+        }
+        public override ListViewModel GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DomainObject GetById(int? id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

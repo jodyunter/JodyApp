@@ -20,9 +20,9 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
-        public TeamCommands() : base()
+        public TeamCommands(ApplicationContext context) : base(context)
         {
-            Service = new ConfigTeamService();
+            Service = new ConfigTeamService(context.DbContext);
             InputDictionary.Add("League", LeagueCommands.SelectLeague);
             InputDictionary.Add("Division", DivisionCommands.SelectDivision);
         }
@@ -30,7 +30,7 @@ namespace JodyApp.ConsoleApp.Commands
         public static ReferenceObject SelectTeam(ApplicationContext context, string prompt = "Select Team>")
         {
             var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
-            var commands = new TeamCommands();
+            var commands = new TeamCommands(context);
 
             var view = (TeamListView)commands.ListByLeague(context, (int)league.Id);
 
@@ -51,7 +51,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             searchId = (int)divisionRef.Id;
 
-            var service = new ConfigTeamService();
+            var service = new ConfigTeamService(context.DbContext);
             var view = new TeamListView(service.GetModelByDivision(searchId))
             {
                 Header = divisionRef.Name

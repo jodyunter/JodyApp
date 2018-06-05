@@ -10,7 +10,7 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public partial class ConfigService : BaseService
+    public class ConfigService : BaseService
     {
         LeagueService LeagueService { get; set; }
         
@@ -307,6 +307,33 @@ namespace JodyApp.Service
         {
             return db.ConfigSeriesRules.Where(s => s.Id == id).FirstOrDefault();
         }
+
+        public override DomainObject GetById(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel GetModelById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel Save(BaseViewModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ListViewModel GetAll()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
+
+
     }
 }
