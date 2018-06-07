@@ -40,9 +40,6 @@ namespace JodyApp.Service
             ScheduleService = new ScheduleService(db, DivisionService);
         }
 
-
-        public SeasonService() : base() { }
-
         public bool IsSeasonStarted(Season season)
         {
             return season.Started;

@@ -16,8 +16,6 @@ namespace JodyApp.Service
     public partial class DivisionService:BaseService
     {
 
-        public DivisionService() : base() { }
-
         public DivisionService(JodyAppContext context):base(context)
         {         
         }

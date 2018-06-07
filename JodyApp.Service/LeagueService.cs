@@ -14,7 +14,6 @@ namespace JodyApp.Service
     public class LeagueService:BaseService
     {
 
-        public LeagueService() : base() { }
         public LeagueService(JodyAppContext db) : base(db)
         {            
         }

@@ -13,9 +13,8 @@ namespace JodyApp.Service
     public class ConfigService : BaseService
     {
         LeagueService LeagueService { get; set; }
-        
+       
 
-        public ConfigService():base() { }
         public ConfigService(JodyAppContext db, LeagueService leagueService) : base(db)
         {
             LeagueService = leagueService;

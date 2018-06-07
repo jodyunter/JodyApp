@@ -17,8 +17,6 @@ namespace JodyApp.Service
         PlayoffService PlayoffService { get; set; }
         LeagueService LeagueService { get; set; }
 
-        public CompetitionService():base(){  }
-
         public CompetitionService(JodyAppContext db, ConfigService configService) : base(db)
         {
             LeagueService = new LeagueService(db);

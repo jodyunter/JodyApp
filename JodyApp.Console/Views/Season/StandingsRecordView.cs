@@ -21,7 +21,7 @@ namespace JodyApp.ConsoleApp.Views
 
             }
         }
-        public StandingsRecordView(StandingsRecordViewModel model):base(model)
+        public StandingsRecordView(BaseViewModel model):base(model)
         {
 
         }        

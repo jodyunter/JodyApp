@@ -14,7 +14,6 @@ namespace JodyApp.Service
     {
         ConfigService ConfigService { get; set; }
 
-        public PlayoffService() : base() {  }
         public PlayoffService(JodyAppContext db, ConfigService configService):base(db)
         {            
             ConfigService = configService;

@@ -13,18 +13,25 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class SeasonCommands:BaseViewCommands
     {
-        public SeasonCommands(ApplicationContext context) : base(context) { Service = new SeasonService(context.DbContext); }
+        public SeasonCommands(ApplicationContext context) : base(context, "Season") { }
         public SeasonCommands() : base() { }
-        public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => throw new NotImplementedException();
+        public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => SelectSeason;
 
         public static ReferenceObject SelectSeason(ApplicationContext context, string prompt = "Select Season>")
         {
+            if (context.SelectedSeason != null)
+            {
+                return context.SelectedSeason;
+            }
+
             var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
             var commands = new SeasonCommands(context);
 
             var view = (SeasonListView)commands.List(context);
 
-            return GetSelectedObject(context, prompt, view);
+            context.SelectedSeason = GetSelectedObject(context, prompt, view);
+
+            return context.SelectedSeason;
 
 
         }

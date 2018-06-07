@@ -24,7 +24,7 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
-        public DivisionCommands(ApplicationContext context) : base(context) { Service = new ConfigDivisionService(context.DbContext); }
+        public DivisionCommands(ApplicationContext context) : base(context, "ConfigDivision") { }
         public DivisionCommands() : base() { }
 
 

@@ -18,7 +18,7 @@ namespace JodyApp.ConsoleApp.Commands
         public const int NONE= 0;
         public const int UNDO = 2;
         public BaseViewCommands() { }
-        public BaseViewCommands(ApplicationContext context) { }
+        public BaseViewCommands(ApplicationContext context, string serviceName) { Service = context.ServiceLibraries[serviceName]; }
 
         public BaseService Service { get; set; }
         public abstract BaseView GetView(BaseViewModel model);
@@ -46,7 +46,7 @@ namespace JodyApp.ConsoleApp.Commands
             return new MessageView("Selected League Changed");
         }
         [Command]
-        public BaseView View(ApplicationContext context, int? id = null, string prompt = "Select>")
+        public virtual BaseView View(ApplicationContext context, int? id = null, string prompt = "Select>")
         {
             if (id == null)
                 id = SelectMethod(context, prompt).Id;

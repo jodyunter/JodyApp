@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using JodyApp.ConsoleApp.App;
+using JodyApp.ConsoleApp.Commands;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Service;
+using JodyApp.Service.ConfigServices;
 using JodyApp.ViewModel;
 
 namespace JodyApp.ConsoleApp
@@ -18,13 +21,25 @@ namespace JodyApp.ConsoleApp
         private string _promptSplitter = ">";
         private string _baseReadPrompt;
         private ReferenceObject _selectedLeague;
+        private ReferenceObject _selectedSeason;
+
         public JodyAppContext DbContext { get; set; }
+        public ReferenceObject SelectedSeason
+        {
+            get { return _selectedSeason; }
+            set
+            {
+                _selectedSeason = value;
+                SetReadPrompt();
+            }
+        }
         public ReferenceObject SelectedLeague
         {
             get { return _selectedLeague; }
             set
             {
                 _selectedLeague = value;
+                _selectedSeason = null;
                 //reset other selections here
                 SetReadPrompt();
             }
@@ -48,8 +63,8 @@ namespace JodyApp.ConsoleApp
             ViewHistory = new List<BaseView>();
             _baseReadPrompt = baseReadPrompt;
             CommandNameSpace = "JodyApp.ConsoleApp.Commands";
-            SetupCommandLibraries();
             SetupServiceLibraries();
+            SetupCommandLibraries();
             SetReadPrompt();
         }
 
@@ -106,7 +121,11 @@ namespace JodyApp.ConsoleApp
         {
             ServiceLibraries = new Dictionary<string, BaseService>();
 
-            ServiceLibraries.Add("League", new LeagueService());
+            ServiceLibraries.Add("League", new LeagueService(DbContext));
+            ServiceLibraries.Add("ConfigTeam", new ConfigTeamService(DbContext));
+            ServiceLibraries.Add("ConfigDivision", new ConfigDivisionService(DbContext));
+            ServiceLibraries.Add("Season", new SeasonService(DbContext));
+            ServiceLibraries.Add("Standings", new StandingsService(DbContext));
         }
 
         public void SetupCommandLibraries()
@@ -126,12 +145,12 @@ namespace JodyApp.ConsoleApp
 
             foreach (var commandClass in commandClasses)
             {
-                if (!commandClass.IsAbstract)
+                if (!commandClass.IsAbstract && !commandClass.IsDefined(typeof(CompilerGeneratedAttribute)))
                 {
                     //create an instance and add it to CommandObjects
-                    var ctor = commandClass.GetConstructor(new Type[] { typeof(ApplicationContext) });                    
-                    
-                    var instance = ctor.Invoke(new object[] { });
+                    var ctor = commandClass.GetConstructor(BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance,
+                        null, new Type[] { GetType() }, null);
+                    var instance = ctor.Invoke(new object[] { this });
                     CommandObjects.Add(commandClass.Name, instance);
                     
                     // Load the method info from each class into a dictionary:
@@ -161,6 +180,10 @@ namespace JodyApp.ConsoleApp
             if (SelectedLeague != null)
             {
                 ReadPrompt += SelectedLeague.Name + _promptSplitter;
+                if (SelectedSeason != null)
+                {
+                    ReadPrompt += SelectedSeason.Name + _promptSplitter;
+                }
             }
         }
     }

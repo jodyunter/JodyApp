@@ -11,21 +11,6 @@ namespace JodyApp.Database
     public class JodyAppContext:DbContext
     {
 
-        private static JodyAppContext instance;
-        
-
-        public static JodyAppContext Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new JodyAppContext(CURRENT_DATABASE);
-                }
-                return instance;
-            }
-        }
-
         public const string HOME_PROD_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jody;Integrated Security=True";
         public const string HOME_TEST_CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=jodytest;Integrated Security=True";
         public const string WORK_TEST_CONNECTION_STRING = "Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True";
@@ -41,7 +26,8 @@ namespace JodyApp.Database
         public const int WORK_PROD = 2;
         public const int WORK_TEST = 3;
 
-        public static int CURRENT_DATABASE = WORK_TEST;
+        //public static int CURRENT_DATABASE = WORK_TEST;
+        public static int CURRENT_DATABASE = -1;
 
         public static string GetDataSource(int location) 
         {            
@@ -56,7 +42,7 @@ namespace JodyApp.Database
                 case WORK_TEST:
                     return string.Format(DATASOURCE_FORMAT, WORK_DATA_SOURCE, TEST);
                 default:
-                    return GetDataSource(WORK_PROD);
+                    return "BAD";
             }            
         }
         //public JodyAppContext() : base("Data Source=localhost;Initial Catalog=JodyTest;Integrated Security=True") { }        
