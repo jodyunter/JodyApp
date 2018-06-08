@@ -2,6 +2,8 @@
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Domain.Playoffs;
+using JodyApp.ViewModel;
+using JodyApp.ViewModel.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Service
 {
-    public partial class CompetitionService : BaseService
+    public class CompetitionService : BaseService
     {        
 
         SeasonService SeasonService { get; set; }
@@ -119,6 +121,62 @@ namespace JodyApp.Service
             return competition.GetNextGames(0);
         }
 
+        public List<Game> GetGames(Competition competition)
+        {
+            return competition.Games;
+        }
+        public ListViewModel GetModelForNextGames(int competitionId, string type)
+        {
+            Competition competition = null;
+
+            if (type == ConfigCompetitionViewModel.SEASON) competition = (Competition)SeasonService.GetById(competitionId);
+            else if (type == ConfigCompetitionViewModel.PLAYOFF) competition = (Competition)PlayoffService.GetById(competitionId);
+
+            var items = new List<GameViewModel>();
+
+            GetNextGames(competition).ForEach(g =>
+            {
+                items.Add(GameToDTO(competition, g));
+            });
+
+            return new ListViewModel(items.ToList<BaseViewModel>());
+        }
+
+        public ListViewModel GetModelForGames(int competitionId, string type)
+        {
+            Competition competition = null;
+
+            if (type == ConfigCompetitionViewModel.SEASON) competition = (Competition)SeasonService.GetById(competitionId);
+            else if (type == ConfigCompetitionViewModel.PLAYOFF) competition = (Competition)PlayoffService.GetById(competitionId);
+
+            var items = new List<GameViewModel>();
+
+            GetGames(competition).ForEach(g =>
+            {
+                items.Add(GameToDTO(competition, g));
+            });
+
+            return new ListViewModel(items.ToList<BaseViewModel>());
+        }
+        public GameViewModel GameToDTO(Competition competition, Game game)
+        {
+            var model = new GameViewModel(
+                game.Id,
+                game.HomeTeam == null ? null : game.HomeTeam.Id,
+                game.HomeTeam == null ? "None" : game.HomeTeam.Name,
+                                game.AwayTeam == null ? null : game.AwayTeam.Id,
+                game.AwayTeam == null ? "None" : game.AwayTeam.Name,
+                game.HomeScore,
+                game.AwayScore,
+                competition.Name,
+                competition.Year,
+                game.Day,
+                game.GameNumber, 
+                game.Complete);
+
+            return model;
+        }
+
         public void PlayGames(List<Game> games, Competition competition, Random random)
         {
             competition.PlayGames(games, random);
@@ -126,6 +184,30 @@ namespace JodyApp.Service
             {
                 SeasonService.SortAllDivisions((Season)competition);
             }
+        }
+
+        public override BaseViewModel GetModelById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel Save(BaseViewModel mdoel)
+        {
+            throw new NotImplementedException();
+        }
+        public override ListViewModel GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DomainObject GetById(int? id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

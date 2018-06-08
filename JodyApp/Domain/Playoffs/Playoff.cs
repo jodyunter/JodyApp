@@ -25,6 +25,9 @@ namespace JodyApp.Domain.Playoffs
         virtual public List<SeriesRule> SeriesRules { get; set; }
 
         virtual public Season Season { get; set; }
+        [NotMapped]
+        public List<Game> Games { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public Playoff() { CurrentRound = 0;  Series = new List<Series>(); }
 
         public Playoff(League league, string name, int year, bool started, bool complete, int startingDay, Season season):base()

@@ -65,5 +65,31 @@ namespace JodyApp.ConsoleApp.Commands
             return GetList(((SeasonService)Service).GetAllByLeagueId((int)league.Id));
         }
 
+        [Command]
+        public BaseListView ListNextGames(ApplicationContext context, int? seasonId = null)
+        {
+            if (seasonId == null)
+            {
+                seasonId = SelectSeason(context).Id;
+            }
+
+            var competitionService = new CompetitionService(context.DbContext);
+
+            return new GameListView(competitionService.GetModelForNextGames((int)seasonId, ConfigCompetitionViewModel.SEASON));
+        }
+
+        [Command]
+        public BaseListView ListGames(ApplicationContext context, int? seasonId = null)
+        {
+            if (seasonId == null)
+            {
+                seasonId = SelectSeason(context).Id;
+            }
+
+            var competitionService = new CompetitionService(context.DbContext);
+
+            return new GameListView(competitionService.GetModelForGames((int)seasonId, ConfigCompetitionViewModel.SEASON));
+        }
+
     }
 }

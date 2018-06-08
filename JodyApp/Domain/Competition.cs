@@ -10,7 +10,7 @@ namespace JodyApp.Domain
 {
     
     public interface Competition
-    {
+    {        
         int Year { get; set; }
         int StartingDay { get; set; }
         bool Complete { get; set; }
@@ -24,6 +24,7 @@ namespace JodyApp.Domain
         void ProcessGame(Game g);
         void StartCompetition();        
         //void FinishCompetition();
+        List<Game> Games { get; set; }
     
     }
 }

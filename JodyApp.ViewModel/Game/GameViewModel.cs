@@ -16,8 +16,9 @@ namespace JodyApp.ViewModel.Game
         public int Year { get; set; }
         public int DayNumber { get; set; }
         public int GameNumber { get; set; }
+        public bool Complete { get; set; }
 
-        public GameViewModel(int? id, int? homeTeamId, string homeTeamName, int? awayTeamId, string awayTeamName, int homeScore, int awayScore, string competition, int year, int dayNumber, int gameNumber)
+        public GameViewModel(int? id, int? homeTeamId, string homeTeamName, int? awayTeamId, string awayTeamName, int homeScore, int awayScore, string competition, int year, int dayNumber, int gameNumber, bool complete)
         {
             Id = id;
             HomeTeam = homeTeamId == null ? null : new ReferenceObject(homeTeamId, homeTeamName);
@@ -28,6 +29,7 @@ namespace JodyApp.ViewModel.Game
             Year = year;
             DayNumber = dayNumber;
             GameNumber = gameNumber;
+            Complete = complete;
         }
     }
 }
