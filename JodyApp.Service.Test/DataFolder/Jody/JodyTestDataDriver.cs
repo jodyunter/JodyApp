@@ -11,7 +11,7 @@ using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
 using System.Data.Entity;
 
-namespace JodyApp.Service.Test.DataFolder
+namespace JodyApp.Service.Test
 {
     public class JodyTestDataDriver : AbstractTestDataDriver
     {

@@ -19,7 +19,7 @@ namespace JodyApp.Domain.Config
         public int Order { get; set; }
 
         public ConfigCompetition() { }
-        public ConfigCompetition(League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
+        public ConfigCompetition(int? id, League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
         {
             League = league;
             Name = name;
@@ -28,6 +28,7 @@ namespace JodyApp.Domain.Config
             Reference = reference;
             FirstYear = firstYear;
             LastYear = lastYear;
+            Id = id;
         }
 
 

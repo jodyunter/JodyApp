@@ -47,7 +47,7 @@ namespace JodyApp.Service
         #region competition
         public ConfigCompetition CreateCompetition(League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
         {
-            var newComp = new ConfigCompetition(league, name, type, reference, order, firstYear, lastYear);
+            var newComp = new ConfigCompetition(null, league, name, type, reference, order, firstYear, lastYear);
             db.ConfigCompetitions.Add(newComp);
 
             return newComp;

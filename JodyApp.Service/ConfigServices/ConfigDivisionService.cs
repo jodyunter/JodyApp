@@ -51,6 +51,7 @@ namespace JodyApp.Service.ConfigServices
             return DomainToDTO(db.ConfigDivisions.Where(d => d.Id == id).FirstOrDefault());
         }
 
+        //todo: Add teams to save and competitions
         public override BaseViewModel Save(BaseViewModel model)
         {
             throw new NotImplementedException();

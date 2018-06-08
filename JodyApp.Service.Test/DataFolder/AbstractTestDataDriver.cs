@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 
-namespace JodyApp.Service.Test.DataFolder
+namespace JodyApp.Service.Test
 {
     public abstract class AbstractTestDataDriver
     {
@@ -117,7 +117,7 @@ namespace JodyApp.Service.Test.DataFolder
         
         public ConfigCompetition CreateAndAddConfigCompetition(League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
         {
-            ConfigCompetition competition = new ConfigCompetition(league, name, type, reference, order, firstYear, lastYear);
+            ConfigCompetition competition = new ConfigCompetition(null, league, name, type, reference, order, firstYear, lastYear);
 
             configCompetitions.Add(name, competition);
 

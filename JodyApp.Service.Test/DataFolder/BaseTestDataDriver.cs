@@ -9,7 +9,7 @@ using JodyApp.Domain.Config;
 using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
 
-namespace JodyApp.Service.Test.DataFolder
+namespace JodyApp.Service.Test
 {
     public class BaseTestDataDriver : AbstractTestDataDriver
     {

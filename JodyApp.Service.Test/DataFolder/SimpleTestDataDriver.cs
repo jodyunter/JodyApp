@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JodyApp.Service.Test.DataFolder
+namespace JodyApp.Service.Test
 {
     public class SimpleTestDataDriver : AbstractTestDataDriver
     {
@@ -81,7 +81,7 @@ namespace JodyApp.Service.Test.DataFolder
 
         public override void PrivateCreateSeasons()
         {
-            throw new NotImplementedException();
+            return;
         }
 
         public override void PrivateCreateSeries()

@@ -8,8 +8,8 @@ namespace JodyApp.ViewModel
 {
     public class ConfigCompetitionViewModel:BaseViewModel
     {
-        public static string PLAYOFF = "Playoff";
-        public static string SEASON = "Season";
+        public const string PLAYOFF = "Playoff";
+        public const string SEASON = "Season";
 
         public ReferenceObject League { get; set; }
         public string CompetitionType { get; set; }

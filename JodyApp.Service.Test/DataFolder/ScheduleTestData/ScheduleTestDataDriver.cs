@@ -7,7 +7,7 @@ using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Domain.Config;
 
-namespace JodyApp.Service.Test.DataFolder
+namespace JodyApp.Service.Test
 {
     public class ScheduleTestDataDriver:BaseTestDataDriver
     {        

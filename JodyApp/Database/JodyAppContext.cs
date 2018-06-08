@@ -27,7 +27,7 @@ namespace JodyApp.Database
         public const int WORK_TEST = 3;
 
         //public static int CURRENT_DATABASE = WORK_TEST;
-        public static int CURRENT_DATABASE = -1;
+        public static int CURRENT_DATABASE = WORK_TEST;
 
         public static string GetDataSource(int location) 
         {            
