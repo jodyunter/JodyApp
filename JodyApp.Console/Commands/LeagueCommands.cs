@@ -76,5 +76,41 @@ namespace JodyApp.ConsoleApp.Commands
         {
             context.SelectedLeague = null;            
         }
+        [Command]
+        public BaseView Play(ApplicationContext context, int? leagueId = null)
+        {
+            JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
+            LeagueService leagueService = new LeagueService(db);
+            CompetitionService competitionService = new CompetitionService(db);
+            SeasonService seasonService = new SeasonService(db);
+            DivisionService divisionService = new DivisionService(db);
+            ConfigService configService = new ConfigService(db);
+            PlayoffService playoffService = new PlayoffService(db);
+            StandingsService standingsService = new StandingsService(db);
+
+            if (context.SelectedLeague == null)
+            {
+                context.SelectedLeague = SelectLeague(context, "Choose which league to play>");
+            }
+            var League = leagueService.GetByName(context.SelectedLeague.Name);
+            
+            Random random = new Random();
+            if (leagueService.IsYearDone(League)) League.CurrentYear++;
+
+            while (!leagueService.IsYearDone(League))
+            {
+
+                var nextCompetition = competitionService.GetNextCompetition(League);
+
+                if (!nextCompetition.Started) nextCompetition.StartCompetition();
+                competitionService.PlayGames(competitionService.GetNextGames(nextCompetition), nextCompetition, random);
+
+                leagueService.Save();
+
+            }
+
+            return new MessageView("Done!");
+        }
+        
     }
 }

@@ -76,7 +76,14 @@ namespace JodyApp.Domain
 
         public int GetScore(Team team, Team opponent, Random random)
         {
-            return (int)random.NextDouble() * 1000 % (BASE_GAME_SCORE + (team.Skill - opponent.Skill) / 5);
+            int modifier = team.Skill - opponent.Skill;
+
+            int randomScore = random.Next(BASE_GAME_SCORE) * 10;
+
+            int finalScore = randomScore + modifier;
+
+            return finalScore / 10;
+
         }
 
         public bool IsOTPeriodRequired(int currentOtPeriod)
