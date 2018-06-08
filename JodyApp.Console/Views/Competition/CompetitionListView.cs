@@ -26,7 +26,7 @@ namespace JodyApp.ConsoleApp.Views.Division
                     m.CompetitionType,
                     m.ReferenceCompetition == null ? "None" : m.ReferenceCompetition.Name,
                     m.Order,
-                    mm.FirstYear,
+                    m.FirstYear,
                     m.LastYear};
 
         }
