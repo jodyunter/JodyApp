@@ -14,9 +14,48 @@ namespace JodyApp.Service.ConfigServices
     {
         public ConfigCompetitionService(JodyAppContext db) : base(db) { }
 
+        private string GetCompetitionTypeString(int type)
+        {
+            switch(type)
+            {
+                case ConfigCompetition.SEASON:
+                    return ConfigCompetitionViewModel.SEASON;
+                case ConfigCompetition.PLAYOFF:
+                    return ConfigCompetitionViewModel.PLAYOFF;
+                default:
+                    throw new ApplicationException("Bad type in Get Competition TypeString");
+            }
+        }
+
+        private int GetCompetitionTypeNumber(string type)
+        {
+            switch (type)
+            {
+                case ConfigCompetitionViewModel.SEASON:
+                    return ConfigCompetition.SEASON;
+                case ConfigCompetitionViewModel.PLAYOFF:
+                    return ConfigCompetition.PLAYOFF;
+                default:
+                    throw new ApplicationException("Bad type in Get Competition TypeString");
+            }
+        }
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
-            throw new NotImplementedException();
+            var c = (ConfigCompetition)obj;
+
+
+            var m = new ConfigCompetitionViewModel(c.Id, c.Name,
+                c.League == null ? null : c.League.Id,
+                c.League == null ? null : c.League.Name,
+                GetCompetitionTypeString(c.Type),
+                c.Reference == null ? null : c.Reference.Id,
+                c.Reference == null ? null : c.Reference.Name,
+                c.Order,
+                c.FirstYear,
+                c.LastYear);
+
+            return m;
+                
         }
 
         public override ListViewModel GetAll()
@@ -46,18 +85,7 @@ namespace JodyApp.Service.ConfigServices
             var refComp = (ConfigCompetition)GetById(m.ReferenceCompetition.Id);
             var league = (League)leagueService.GetById(m.League.Id);
 
-            var compType = 0;
-            switch (m.CompetitionType)
-            {
-                case ConfigCompetitionViewModel.SEASON:
-                    compType = ConfigCompetition.SEASON;
-                    break;
-                case ConfigCompetitionViewModel.PLAYOFF:
-                    compType = ConfigCompetition.PLAYOFF;
-                    break;
-                default:
-                    throw new Exception("Bad competition type.");
-            }
+            var compType = GetCompetitionTypeNumber(m.CompetitionType);
 
             if (competition == null)
             { 

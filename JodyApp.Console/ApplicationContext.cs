@@ -124,6 +124,7 @@ namespace JodyApp.ConsoleApp
             ServiceLibraries.Add("League", new LeagueService(DbContext));
             ServiceLibraries.Add("ConfigTeam", new ConfigTeamService(DbContext));
             ServiceLibraries.Add("ConfigDivision", new ConfigDivisionService(DbContext));
+            ServiceLibraries.Add("ConfigCompetition", new ConfigCompetitionService(DbContext));
             ServiceLibraries.Add("Season", new SeasonService(DbContext));
             ServiceLibraries.Add("Standings", new StandingsService(DbContext));
         }

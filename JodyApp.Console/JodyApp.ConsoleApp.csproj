@@ -55,6 +55,7 @@
     <Compile Include="App\Application.cs" />
     <Compile Include="App\Attributes.cs" />
     <Compile Include="Commands\BaseViewCommands.cs" />
+    <Compile Include="Commands\ComeptitionCommands.cs" />
     <Compile Include="Commands\DivisionCommands.cs" />
     <Compile Include="Commands\SeasonCommands.cs" />
     <Compile Include="Commands\StandingsCommands.cs" />
@@ -69,7 +70,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\BaseListView.cs" />
     <Compile Include="Views\BaseView.cs" />
-    <Compile Include="Views\CompetitionView.cs" />
+    <Compile Include="Views\Competition\CompetitionListView.cs" />
+    <Compile Include="Views\Competition\CompetitionView.cs" />
     <Compile Include="Views\Division\DivisionListView.cs" />
     <Compile Include="Views\Division\DivisionView.cs" />
     <Compile Include="Views\ErrorView.cs" />

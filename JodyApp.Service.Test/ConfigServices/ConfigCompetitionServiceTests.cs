@@ -9,6 +9,7 @@ using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace JodyApp.Service.Test.ConfigServices
 {
+    [TestClass]
     public class ConfigCompetitionServiceTests
     {
         ConfigCompetitionTestDataDriver driver;
@@ -27,8 +28,9 @@ namespace JodyApp.Service.Test.ConfigServices
         {
             var result = service.GetAll();
 
-            AreEqual(result, 2);
-
+            AreEqual(3, result.Items.Count());
         }
+
+        
     }
 }
