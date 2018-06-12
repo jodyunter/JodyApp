@@ -12,7 +12,7 @@ namespace JodyApp.ConsoleApp.Commands
     {
         public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => SelectPlayoff;
 
-        public override string CompetitionType { get { return ConfigCompetitionViewModel.SEASON; } }
+        public override string CompetitionType { get { return ConfigCompetitionViewModel.PLAYOFF; } }
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 

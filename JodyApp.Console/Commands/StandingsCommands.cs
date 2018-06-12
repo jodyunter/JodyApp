@@ -33,10 +33,7 @@ namespace JodyApp.ConsoleApp.Commands
         [Command]
         public override BaseView View(ApplicationContext context, int? id = null, string prompt = "Select>")
         {
-            if (context.SelectedSeason == null)
-            {
-                context.SelectedSeason = SeasonCommands.SelectSeason(context);
-            }
+            context.SelectedSeason = SeasonCommands.SelectSeason(context);
 
             int divisionLevel = int.Parse(Application.ReadFromConsole(context, "Enter Division Level>"));
 
