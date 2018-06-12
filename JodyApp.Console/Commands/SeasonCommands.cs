@@ -1,6 +1,5 @@
 ﻿using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.Views;
-using JodyApp.Database;
 using JodyApp.Service;
 using JodyApp.ViewModel;
 using System;
@@ -65,30 +64,40 @@ namespace JodyApp.ConsoleApp.Commands
             return GetList(((SeasonService)Service).GetAllByLeagueId((int)league.Id));
         }
 
+        //move this to games commands
         [Command]
-        public BaseListView ListNextGames(ApplicationContext context, int? seasonId = null)
+        public BaseListView ListNextGames(ApplicationContext context, int? seasonId = null, string competitionType = ConfigCompetitionViewModel.SEASON)
         {
-            if (seasonId == null)
-            {
-                seasonId = SelectSeason(context).Id;
-            }
+            seasonId = SelectSeason(context).Id;
 
-            var competitionService = new CompetitionService(context.DbContext);
+            var commands = new GameCommands();
 
-            return new GameListView(competitionService.GetModelForNextGames((int)seasonId, ConfigCompetitionViewModel.SEASON));
+            return commands.ListNextGames(context, seasonId, competitionType);
         }
 
+        //move this to games commands
         [Command]
-        public BaseListView ListGames(ApplicationContext context, int? seasonId = null)
+        public BaseListView ListGames(ApplicationContext context, int? seasonId = null, string competitionType = ConfigCompetitionViewModel.SEASON)
         {
-            if (seasonId == null)
-            {
-                seasonId = SelectSeason(context).Id;
-            }
+            seasonId = SelectSeason(context).Id;
 
-            var competitionService = new CompetitionService(context.DbContext);
+            var commands = new GameCommands();
 
-            return new GameListView(competitionService.GetModelForGames((int)seasonId, ConfigCompetitionViewModel.SEASON));
+            return commands.ListGames(context, seasonId, competitionType);
+        }
+
+        //move this to games commands
+        [Command]
+        public BaseListView ListGamesByTeam(ApplicationContext context, int? seasonId = null, string teamName = null, string competitionType = ConfigCompetitionViewModel.SEASON)
+        {
+            seasonId = SelectSeason(context).Id;
+
+            var commands = new GameCommands();
+
+            return commands.ListGamesByTeam(context, seasonId, teamName, competitionType);
+
+
+
         }
 
     }

@@ -1,14 +1,10 @@
 ﻿using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
-using JodyApp.Domain.Playoffs;
 using JodyApp.ViewModel;
-using JodyApp.ViewModel.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JodyApp.Service
 {
@@ -124,6 +120,11 @@ namespace JodyApp.Service
         public List<Game> GetGames(Competition competition)
         {
             return competition.Games;
+        }            
+
+        public List<Game> GetGames(Competition competition, string teamName)
+        {
+            return competition.Games.Where(g => g.HomeTeam.Name.Equals(teamName) || g.AwayTeam.Name.Equals(teamName)).ToList();
         }
         public ListViewModel GetModelForNextGames(int competitionId, string type)
         {
@@ -152,6 +153,25 @@ namespace JodyApp.Service
             var items = new List<GameViewModel>();
 
             GetGames(competition).ForEach(g =>
+            {
+                items.Add(GameToDTO(competition, g));
+            });
+
+            return new ListViewModel(items.ToList<BaseViewModel>());
+        }        
+
+        public ListViewModel GetModelForGames(int competitionId, string teamName, string type)
+        {
+            Competition competition = null;
+
+            if (type == ConfigCompetitionViewModel.SEASON) competition = (Competition)SeasonService.GetById(competitionId);
+            else if (type == ConfigCompetitionViewModel.PLAYOFF) competition = (Competition)PlayoffService.GetById(competitionId);
+
+
+
+            var items = new List<GameViewModel>();
+
+            GetGames(competition, teamName).ForEach(g =>
             {
                 items.Add(GameToDTO(competition, g));
             });
@@ -186,7 +206,19 @@ namespace JodyApp.Service
             }
         }
 
+
+        //not usable because we have know the type
         public override BaseViewModel GetModelById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BaseViewModel GetModelById(int id, string type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BaseViewModel GetModelById(int id, int type)
         {
             throw new NotImplementedException();
         }
@@ -205,7 +237,18 @@ namespace JodyApp.Service
             throw new NotImplementedException();
         }
 
+        //not usable because we have to know the type
         public override DomainObject GetById(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DomainObject GetById(int? id, int type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DomainObject GetById(int? id, string type)
         {
             throw new NotImplementedException();
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JodyApp.ViewModel.Game
+namespace JodyApp.ViewModel
 {
     public class GameViewModel:BaseViewModel
     {

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using JodyApp.ViewModel;
-using JodyApp.ViewModel.Game;
 
 namespace JodyApp.ConsoleApp.Views
 {
@@ -30,7 +25,8 @@ namespace JodyApp.ConsoleApp.Views
                 m.Competition,
                 m.Year,
                 m.DayNumber,
-                m.GameNumber
+                m.GameNumber,
+                m.Complete
             };
         }
     }

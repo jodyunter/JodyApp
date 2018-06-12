@@ -57,6 +57,8 @@
     <Compile Include="Commands\BaseViewCommands.cs" />
     <Compile Include="Commands\CompetitionCommands.cs" />
     <Compile Include="Commands\DivisionCommands.cs" />
+    <Compile Include="Commands\GameCommands.cs" />
+    <Compile Include="Commands\PlayoffCommands.cs" />
     <Compile Include="Commands\SeasonCommands.cs" />
     <Compile Include="Commands\SetupCommands.cs" />
     <Compile Include="Commands\StandingsCommands.cs" />
@@ -76,12 +78,17 @@
     <Compile Include="Views\Division\DivisionListView.cs" />
     <Compile Include="Views\Division\DivisionView.cs" />
     <Compile Include="Views\ErrorView.cs" />
+    <Compile Include="Views\Game\GameCompactListView.cs" />
     <Compile Include="Views\Game\GameListView.cs" />
     <Compile Include="Views\Game\GameView.cs" />
     <Compile Include="Views\MessageView.cs" />
     <Compile Include="Views\HelpView.cs" />
     <Compile Include="Views\League\LeagueListView.cs" />
     <Compile Include="Views\League\LeagueView.cs" />
+    <Compile Include="Views\Playoff\PlayoffListView.cs" />
+    <Compile Include="Views\Playoff\PlayoffView.cs" />
+    <Compile Include="Views\Playoff\SeriesListView.cs" />
+    <Compile Include="Views\Playoff\SeriesView.cs" />
     <Compile Include="Views\Season\SeasonListView.cs" />
     <Compile Include="Views\Season\SeasonView.cs" />
     <Compile Include="Views\Season\StandingsRecordView.cs" />
