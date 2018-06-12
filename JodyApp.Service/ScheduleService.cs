@@ -5,17 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Database;
 using JodyApp.Domain.Config;
-using JodyApp.Domain; 
+using JodyApp.Domain;
+using JodyApp.ViewModel;
+using System.Data.Entity;
 
 namespace JodyApp.Service
 {
-    public partial class ScheduleService : BaseService
+    public class ScheduleService : BaseService<DomainObject>
     {
         DivisionService DivisionService { get; set; }
-        
-        public ScheduleService(JodyAppContext db, DivisionService divisionService) : base(db)
+
+        public override DbSet<DomainObject> Entities => throw new NotImplementedException();
+
+        public ScheduleService(JodyAppContext db) : base(db)
         {
-            DivisionService = divisionService;
+            DivisionService = new DivisionService(db);
         }
         
 
@@ -91,5 +95,17 @@ namespace JodyApp.Service
                     break;
             }
         }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel Save(BaseViewModel mdoel)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

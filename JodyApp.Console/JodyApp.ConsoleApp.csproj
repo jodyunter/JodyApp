@@ -69,7 +69,6 @@
     <Compile Include="Commands\ConfigCommands\LeagueCommands.cs" />
     <Compile Include="App\ConsoleCommand.cs" />
     <Compile Include="IO\IOMethods.cs" />
-    <Compile Include="ProgramBackup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\BaseListView.cs" />

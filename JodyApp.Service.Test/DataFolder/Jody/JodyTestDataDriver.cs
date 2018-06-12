@@ -21,15 +21,13 @@ namespace JodyApp.Service.Test
         
         DivisionService divisionService;
         LeagueService leagueService;
-        CompetitionService competitionService;
-        ConfigService configService;
+        CompetitionService competitionService;        
         public JodyTestDataDriver() : base() { }
         public JodyTestDataDriver(JodyAppContext db) : base(db)
         {            
             divisionService = new DivisionService(db);
-            leagueService = new LeagueService(db);
-            configService = new ConfigService(db, leagueService);
-            competitionService = new CompetitionService(db, configService);
+            leagueService = new LeagueService(db);            
+            competitionService = new CompetitionService(db);
         }
 
         ConfigDivision League, Premier, Division1;

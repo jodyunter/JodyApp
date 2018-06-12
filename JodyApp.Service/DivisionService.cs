@@ -13,8 +13,9 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public partial class DivisionService:BaseService
+    public class DivisionService:BaseService<Division>
     {
+        public override DbSet<Division> Entities => db.Divisions;
 
         public DivisionService(JodyAppContext context):base(context)
         {         
@@ -119,6 +120,17 @@ namespace JodyApp.Service
             dr.Division.Season.Year <= last).ToList();        
          
         }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override BaseViewModel Save(BaseViewModel mdoel)
+        {
+            throw new NotImplementedException();
+        }
+
 
     }
 }

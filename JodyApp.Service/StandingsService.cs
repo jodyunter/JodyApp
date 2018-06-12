@@ -3,15 +3,19 @@ using JodyApp.Domain;
 using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JodyApp.Service
 {
-    public class StandingsService:BaseService
+    public class StandingsService:BaseService<DomainObject>
     {
         public SeasonService SeasonService { get; set; }
+
+        public override DbSet<DomainObject> Entities => throw new NotImplementedException();
+
         public StandingsService(JodyAppContext db) : base(db) { SeasonService = new SeasonService(db); }
         public StandingsService(JodyAppContext db, SeasonService seasonService) : base(db) { SeasonService = seasonService; }
 
@@ -37,11 +41,6 @@ namespace JodyApp.Service
             return new ListViewModel(recordModels);
         }
 
-        public override BaseViewModel GetModelById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
             throw new NotImplementedException();
@@ -51,14 +50,6 @@ namespace JodyApp.Service
         {
             throw new NotImplementedException();
         }
-        public override ListViewModel GetAll()
-        {
-            throw new NotImplementedException();
-        }
 
-        public override DomainObject GetById(int? id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

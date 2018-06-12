@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.IO;
 using JodyApp.ConsoleApp.Views;
+using JodyApp.Domain;
 using JodyApp.Service;
 using JodyApp.ViewModel;
 
@@ -20,7 +21,7 @@ namespace JodyApp.ConsoleApp.Commands
         public BaseViewCommands() { }
         public BaseViewCommands(ApplicationContext context, string serviceName) { Service = context.ServiceLibraries[serviceName]; }
 
-        public BaseService Service { get; set; }
+        public JService Service { get; set; }
         public abstract BaseView GetView(BaseViewModel model);
         public abstract BaseListView GetList(ListViewModel model);
         public abstract Dictionary<string, string> GatherCreateData(ApplicationContext context);

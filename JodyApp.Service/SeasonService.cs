@@ -9,35 +9,26 @@ using JodyApp.Database;
 
 using JodyApp.Domain.Config;
 using JodyApp.ViewModel;
+using JodyApp.Service.ConfigServices;
+using System.Data.Entity;
 
 namespace JodyApp.Service
 {
-    public class SeasonService:BaseService
+    public class SeasonService:BaseService<Season>
     {
-        public ConfigService ConfigService { get; set; }
+        public ConfigDivisionService ConfigDivisionService { get; set; }
+        public ConfigScheduleRuleService ScheduleRuleService { get; set; }
         public DivisionService DivisionService { get; set; }
         
         public ScheduleService ScheduleService { get; set; }
 
-        public SeasonService(JodyAppContext db, ConfigService configService, DivisionService divisionService, ScheduleService scheduleService):base(db)
-        {
-            ConfigService = configService;
-            DivisionService = divisionService;
-            ScheduleService = scheduleService;
-        }
-
-        public SeasonService(JodyAppContext db, LeagueService leagueService, ConfigService configService) : base(db)
-        {
-            ConfigService = configService;
-            DivisionService = new DivisionService(db);
-            ScheduleService = new ScheduleService(db, DivisionService);
-        }
+        public override DbSet<Season> Entities => db.Seasons;
 
         public SeasonService(JodyAppContext db) : base(db)
         {            
-            ConfigService = new ConfigService(db);
+            ConfigDivisionService = new ConfigDivisionService(db);
             DivisionService = new DivisionService(db);
-            ScheduleService = new ScheduleService(db, DivisionService);
+            ScheduleService = new ScheduleService(db);
         }
 
         public bool IsSeasonStarted(Season season)
@@ -58,7 +49,7 @@ namespace JodyApp.Service
             Dictionary<string, Team> seasonTeams = new Dictionary<string, Team>();
             Dictionary<string, ConfigScheduleRule> seasonScheduleRules = new Dictionary<string, ConfigScheduleRule>();
 
-            var activeConfigDivisions = ConfigService.GetDivisions(referenceSeason).Where(cd => cd.IsActive(year)).ToList();
+            var activeConfigDivisions = ConfigDivisionService.GetDivisions(referenceSeason).Where(cd => cd.IsActive(year)).ToList();
             //loop once to create teams and new season divisions, order means we will not add a parent we haven't created yet
             activeConfigDivisions.OrderBy(d => d.Level).ToList().ForEach(configDivision =>            
             {
@@ -94,7 +85,7 @@ namespace JodyApp.Service
                 db.DivisionRanks.AddRange(seasonDiv.Rankings);
             });
 
-            var configRules = ConfigService.GetScheduleRulesByCompetition(referenceSeason).Where(rule => rule.IsActive(year)).ToList();
+            var configRules = ScheduleRuleService.GetScheduleRulesByCompetition(referenceSeason).Where(rule => rule.IsActive(year)).ToList();
 
             season.Games = new List<Game>();
             ScheduleService.CreateGamesFromRules(configRules, seasonTeams, seasonDivisions, season.Games, 0);
@@ -135,18 +126,6 @@ namespace JodyApp.Service
             return db.Seasons.Where(s => s.Name == name && s.Year == year && s.League.Id == league.Id).FirstOrDefault();
         }
 
-        public SeasonViewModel DomainToDTO(Season season)
-        {
-            if (season == null) return null;
-            return new SeasonViewModel(season.Id, season.League.Id, season.League.Name, season.Name, season.Year, "Season", season.Complete, season.Started, season.StartingDay);
-        }
-
-
-        public override BaseViewModel GetModelById(int id)
-        {
-            return DomainToDTO(db.Seasons.Where(s => s.Id == id).FirstOrDefault());
-        }
-
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
             var season = (Season)obj;
@@ -157,15 +136,6 @@ namespace JodyApp.Service
         {
             throw new NotImplementedException();
         }
-        public override ListViewModel GetAll()
-        {
 
-            return CreateListViewModelFromList(db.Seasons.ToList<DomainObject>(), DomainToDTO);
-        }
-
-        public override DomainObject GetById(int? id)
-        {
-            return db.Seasons.Where(s => s.Id == id).FirstOrDefault();
-        }
     }
 }

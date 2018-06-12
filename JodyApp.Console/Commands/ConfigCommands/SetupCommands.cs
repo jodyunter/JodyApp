@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using JodyApp.Domain.Table;
 using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.Views;
+using JodyApp.Service.ConfigServices;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -32,12 +33,23 @@ namespace JodyApp.ConsoleApp.Commands
 
         [Command]
         public BaseView Setup(ApplicationContext context)
-        {
-            var configService = new ConfigService(context.DbContext);
+        {            
 
-            SetupConfig(context.DbContext, configService, (LeagueService)context.ServiceLibraries["League"]);
+            SetupConfig(context.DbContext,
+                (ConfigTeamService)context.ServiceLibraries["ConfigTeam"],
+                (ConfigDivisionService)context.ServiceLibraries["ConfigDivision"],
+                (ConfigScheduleRuleService)context.ServiceLibraries["ConfigSheduleRule"],
+                (ConfigCompetitionService)context.ServiceLibraries["ConfigCompetition"],
+                (ConfigSortingRuleService)context.ServiceLibraries["ConfigSortingRule"],
+                (LeagueService)context.ServiceLibraries["League"]);
 
-            SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null, configService, (LeagueService)context.ServiceLibraries["League"]);
+            SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null,
+                (ConfigCompetitionService)context.ServiceLibraries["ConfigCompetition"],
+                (ConfigDivisionService)context.ServiceLibraries["ConfigDivision"],
+                (ConfigGroupRuleService)context.ServiceLibraries["ConfigGroupRule"],
+                (ConfigGroupService)context.ServiceLibraries["ConfigGroup"],
+                (ConfigSeriesRuleService)context.ServiceLibraries["ConfigSeriesRule"],                
+                (LeagueService)context.ServiceLibraries["League"]);
 
             return new MessageView("Setup Done");
         }
@@ -46,77 +58,89 @@ namespace JodyApp.ConsoleApp.Commands
         [Command]
         public BaseView SetupSeason(ApplicationContext context)
         {
-            var configService = new ConfigService(context.DbContext);
+            SetupConfig(context.DbContext,
+                (ConfigTeamService)context.ServiceLibraries["ConfigTeam"],
+                (ConfigDivisionService)context.ServiceLibraries["ConfigDivision"],
+                (ConfigScheduleRuleService)context.ServiceLibraries["ConfigSheduleRule"],
+                (ConfigCompetitionService)context.ServiceLibraries["ConfigCompetition"],
+                (ConfigSortingRuleService)context.ServiceLibraries["ConfigSortingRule"],
+                (LeagueService)context.ServiceLibraries["League"]);
 
-            SetupConfig(context.DbContext, configService, (LeagueService)context.ServiceLibraries["League"]);
-
-            //SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null, configService, (LeagueService)context.ServiceLibraries["League"]);
 
             return new MessageView("Setup Done");
         }
         [Command]
         public BaseView SetupPlayoff(ApplicationContext context)
         {
-            var configService = new ConfigService(context.DbContext);
 
-            //SetupConfig(context.DbContext, configService, (LeagueService)context.ServiceLibraries["League"]);
-
-            SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null, configService, (LeagueService)context.ServiceLibraries["League"]);
+            SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null,
+                (ConfigCompetitionService)context.ServiceLibraries["ConfigCompetition"],
+                (ConfigDivisionService)context.ServiceLibraries["ConfigDivision"],
+                (ConfigGroupRuleService)context.ServiceLibraries["ConfigGroupRule"],
+                (ConfigGroupService)context.ServiceLibraries["ConfigGroup"],
+                (ConfigSeriesRuleService)context.ServiceLibraries["ConfigSeriesRule"],
+                (LeagueService)context.ServiceLibraries["League"]);
 
             return new MessageView("Setup Done");
         }
 
-        void SetupPlayoff(string leagueName, string name, int type, string referenceName, int order, int? firstYear, int? lastYear, ConfigService configService, LeagueService leagueService)
-        {
+        void SetupPlayoff(string leagueName, string name, int type, string referenceName, int order, int? firstYear, int? lastYear, 
+            ConfigCompetitionService configCompetitionService, ConfigDivisionService configDivisionService, 
+            ConfigGroupRuleService configGroupRuleService, ConfigGroupService configGroupService, 
+            ConfigSeriesRuleService configSeriesRuleService, LeagueService leagueService)
+        {            
             var League = leagueService.GetByName(leagueName);
-            var CCReference = configService.GetCompetitionByName(League, referenceName);
-            var CCPlayoff = configService.CreateCompetition(League, name, type, CCReference, order, firstYear, lastYear);
+            var CCReference = configCompetitionService.GetCompetitionByName(League, referenceName);
+            var CCPlayoff = configCompetitionService.CreateCompetition(League, name, type, CCReference, order, firstYear, lastYear);
 
-            var CDLeague = configService.GetDivisionByName(League, "League");
-            var CDCentral = configService.GetDivisionByName(League, CentralDivisionName);
-            var CDWest = configService.GetDivisionByName(League, WestDivisionName);
-            var CDEast = configService.GetDivisionByName(League, EastDivisionName);
-            var CDSouth = configService.GetDivisionByName(League, SouthDivisionName);
+            var CDLeague = configDivisionService.GetDivisionByName(League, "League");
+            var CDCentral = configDivisionService.GetDivisionByName(League, CentralDivisionName);
+            var CDWest = configDivisionService.GetDivisionByName(League, WestDivisionName);
+            var CDEast = configDivisionService.GetDivisionByName(League, EastDivisionName);
+            var CDSouth = configDivisionService.GetDivisionByName(League, SouthDivisionName);
 
-            var GPool = configService.CreateGroup("Playoff Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
-            configService.CreateGroupRuleFromDivision(GPool, "Playoff Pool Rule 1", CDLeague, 1, 12, firstYear, lastYear);
+            var GPool = configGroupService.CreateGroup("Playoff Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromDivision(GPool, "Playoff Pool Rule 1", CDLeague, 1, 12, firstYear, lastYear);
 
-            var SRQ1 = configService.CreateSeriesRule(CCPlayoff, "Q-1", 1, GPool, 5, GPool, 12, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQ2 = configService.CreateSeriesRule(CCPlayoff, "Q-2", 1, GPool, 6, GPool, 11, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQ3 = configService.CreateSeriesRule(CCPlayoff, "Q-3", 1, GPool, 7, GPool, 10, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQ4 = configService.CreateSeriesRule(CCPlayoff, "Q-4", 1, GPool, 8, GPool, 9, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRQ1 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "Q-1", 1, GPool, 5, GPool, 12, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRQ2 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "Q-2", 1, GPool, 6, GPool, 11, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRQ3 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "Q-3", 1, GPool, 7, GPool, 10, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRQ4 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "Q-4", 1, GPool, 8, GPool, 9, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
 
-            var GRound1Winners = configService.CreateGroup("Round 1 Winners", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 1", "Q-1", firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 2", "Q-2", firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 3", "Q-3", firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 4", "Q-4", firstYear, lastYear);
+            var GRound1Winners = configGroupService.CreateGroup("Round 1 Winners", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 1", "Q-1", firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 2", "Q-2", firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 3", "Q-3", firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(GRound1Winners, "Round 1 Winners 4", "Q-4", firstYear, lastYear);
 
-            var SRQF1 = configService.CreateSeriesRule(CCPlayoff, "QF-1", 2, GPool, 1, GRound1Winners, 4, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQF2 = configService.CreateSeriesRule(CCPlayoff, "QF-2", 2, GPool, 2, GRound1Winners, 3, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQF3 = configService.CreateSeriesRule(CCPlayoff, "QF-3", 2, GPool, 3, GRound1Winners, 2, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRQF4 = configService.CreateSeriesRule(CCPlayoff, "QF-4", 2, GPool, 4, GRound1Winners, 1, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRQF1 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "QF-1", 2, GPool, 1, GRound1Winners, 4, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRQF2 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "QF-2", 2, GPool, 2, GRound1Winners, 3, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRQF3 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "QF-3", 2, GPool, 3, GRound1Winners, 2, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRQF4 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "QF-4", 2, GPool, 4, GRound1Winners, 1, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
 
-            var SemiFinalPool = configService.CreateGroup("Semi Final Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP1", SRQF1.Name, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP2", SRQF2.Name, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP3", SRQF3.Name, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP4", SRQF4.Name, firstYear, lastYear);
+            var SemiFinalPool = configGroupService.CreateGroup("Semi Final Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP1", SRQF1.Name, firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP2", SRQF2.Name, firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP3", SRQF3.Name, firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(SemiFinalPool, "SFP4", SRQF4.Name, firstYear, lastYear);
 
-            var SRSF1 = configService.CreateSeriesRule(CCPlayoff, "SF-1", 3, SemiFinalPool, 1, SemiFinalPool, 4, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
-            var SRSF2 = configService.CreateSeriesRule(CCPlayoff, "SF-2", 3, SemiFinalPool, 2, SemiFinalPool, 3, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRSF1 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "SF-1", 3, SemiFinalPool, 1, SemiFinalPool, 4, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRSF2 = configSeriesRuleService.CreateSeriesRule(CCPlayoff, "SF-2", 3, SemiFinalPool, 2, SemiFinalPool, 3, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
 
-            var FinalPool = configService.CreateGroup("Final Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(FinalPool, "Final Pool 1", SRSF1.Name, firstYear, lastYear);
-            configService.CreateGroupRuleFromSeriesWinner(FinalPool, "Final Pool 2", SRSF2.Name, firstYear, lastYear);
+            var FinalPool = configGroupService.CreateGroup("Final Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(FinalPool, "Final Pool 1", SRSF1.Name, firstYear, lastYear);
+            configGroupRuleService.CreateGroupRuleFromSeriesWinner(FinalPool, "Final Pool 2", SRSF2.Name, firstYear, lastYear);
 
-            var SRFinal = configService.CreateSeriesRule(CCPlayoff, ChampionshipSeriesName, 4, FinalPool, 1, FinalPool, 2, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRFinal = configSeriesRuleService.CreateSeriesRule(CCPlayoff, ChampionshipSeriesName, 4, FinalPool, 1, FinalPool, 2, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
 
-            configService.Save();
+            leagueService.Save();
 
         }
         
-        void SetupConfig(JodyAppContext db, ConfigService configService, LeagueService leagueService)
+        void SetupConfig(JodyAppContext db, 
+            ConfigTeamService configTeamService, ConfigDivisionService configDivisionService, 
+            ConfigScheduleRuleService scheduleRuleservice, ConfigCompetitionService configCompetitionService, 
+            ConfigSortingRuleService configSortingRuleService, LeagueService leagueService)
         {
             League League;
             ConfigCompetition CCSeason;
@@ -133,33 +157,33 @@ namespace JodyApp.ConsoleApp.Commands
             driver.DeleteAllData();
 
             League = leagueService.CreateLeague(LeagueName);
-            CCSeason = configService.CreateCompetition(League, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, null);
+            CCSeason = configCompetitionService.CreateCompetition(League, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, null);
 
-            CTEdmonton = configService.CreateTeam("Edmonton", 5, null, League, 1, null);
-            CTCalgary = configService.CreateTeam("Calgary", 5, null, League, 1, null);
-            CTVancouver = configService.CreateTeam("Vancouver", 5, null, League, 1, null);
-            CTVictoria = configService.CreateTeam("Victoria", 5, null, League, 1, null);
-            CTSeattle = configService.CreateTeam("Seattle", 5, null, League, 1, null);
-            CTWinnipeg = configService.CreateTeam("Winnipeg", 5, null, League, 1, null);
-            CTSaskatoon = configService.CreateTeam("Saskatoon", 5, null, League, 1, null);
-            CTMinnesota = configService.CreateTeam("Minnesota", 5, null, League, 1, null);
-            CTColorado = configService.CreateTeam("Colorado", 5, null, League, 1, null);
-            CTChicago = configService.CreateTeam("Chicago", 5, null, League, 1, null);
-            CTDetroit = configService.CreateTeam("Detroit", 5, null, League, 1, null);
-            CTToronto = configService.CreateTeam("Toronto", 5, null, League, 1, null);
-            CTHamilton = configService.CreateTeam("Hamilton", 5, null, League, 1, null);
-            CTMontreal = configService.CreateTeam("Montreal", 5, null, League, 1, null);
-            CTOttawa = configService.CreateTeam("Ottawa", 5, null, League, 1, null);
-            CTWashington = configService.CreateTeam("Washington", 5, null, League, 1, null);
-            CTPittsburgh = configService.CreateTeam("Pittsburgh", 5, null, League, 1, null);
-            CTPhiladelphia = configService.CreateTeam("Philadelphia", 5, null, League, 1, null);
-            CTQuebecCity = configService.CreateTeam("Quebec City", 5, null, League, 1, null);
-            CTNewYork = configService.CreateTeam("New York", 5, null, League, 1, null);
-            CTTampaBay = configService.CreateTeam("Tampa Bay", 5, null, League, 1, null);
-            CTAtlanta = configService.CreateTeam("Atlanta", 5, null, League, 1, null);
-            CTDallas = configService.CreateTeam("Dallas", 5, null, League, 1, null);
-            CTColumbus = configService.CreateTeam("Columbus", 5, null, League, 1, null);
-            CTNashville = configService.CreateTeam("Nashville", 5, null, League, 1, null);
+            CTEdmonton = configTeamService.CreateTeam("Edmonton", 5, null, League, 1, null);
+            CTCalgary = configTeamService.CreateTeam("Calgary", 5, null, League, 1, null);
+            CTVancouver = configTeamService.CreateTeam("Vancouver", 5, null, League, 1, null);
+            CTVictoria = configTeamService.CreateTeam("Victoria", 5, null, League, 1, null);
+            CTSeattle = configTeamService.CreateTeam("Seattle", 5, null, League, 1, null);
+            CTWinnipeg = configTeamService.CreateTeam("Winnipeg", 5, null, League, 1, null);
+            CTSaskatoon = configTeamService.CreateTeam("Saskatoon", 5, null, League, 1, null);
+            CTMinnesota = configTeamService.CreateTeam("Minnesota", 5, null, League, 1, null);
+            CTColorado = configTeamService.CreateTeam("Colorado", 5, null, League, 1, null);
+            CTChicago = configTeamService.CreateTeam("Chicago", 5, null, League, 1, null);
+            CTDetroit = configTeamService.CreateTeam("Detroit", 5, null, League, 1, null);
+            CTToronto = configTeamService.CreateTeam("Toronto", 5, null, League, 1, null);
+            CTHamilton = configTeamService.CreateTeam("Hamilton", 5, null, League, 1, null);
+            CTMontreal = configTeamService.CreateTeam("Montreal", 5, null, League, 1, null);
+            CTOttawa = configTeamService.CreateTeam("Ottawa", 5, null, League, 1, null);
+            CTWashington = configTeamService.CreateTeam("Washington", 5, null, League, 1, null);
+            CTPittsburgh = configTeamService.CreateTeam("Pittsburgh", 5, null, League, 1, null);
+            CTPhiladelphia = configTeamService.CreateTeam("Philadelphia", 5, null, League, 1, null);
+            CTQuebecCity = configTeamService.CreateTeam("Quebec City", 5, null, League, 1, null);
+            CTNewYork = configTeamService.CreateTeam("New York", 5, null, League, 1, null);
+            CTTampaBay = configTeamService.CreateTeam("Tampa Bay", 5, null, League, 1, null);
+            CTAtlanta = configTeamService.CreateTeam("Atlanta", 5, null, League, 1, null);
+            CTDallas = configTeamService.CreateTeam("Dallas", 5, null, League, 1, null);
+            CTColumbus = configTeamService.CreateTeam("Columbus", 5, null, League, 1, null);
+            CTNashville = configTeamService.CreateTeam("Nashville", 5, null, League, 1, null);
 
             var WestTeams = new List<ConfigTeam>() { CTEdmonton, CTCalgary, CTVancouver, CTVictoria, CTSeattle };
             var CentralTeams = new List<ConfigTeam>() { CTWinnipeg, CTSaskatoon, CTMinnesota, CTColorado, CTChicago };
@@ -167,12 +191,12 @@ namespace JodyApp.ConsoleApp.Commands
             var AtlanticTeams = new List<ConfigTeam>() { CTWashington, CTPittsburgh, CTPhiladelphia, CTNewYork, CTQuebecCity };
             var SouthTeams = new List<ConfigTeam>() { CTAtlanta, CTDallas, CTNashville, CTColumbus, CTTampaBay };
 
-            CDLeague = configService.CreateDivision(League, CCSeason, "League", null, 1, 1, null, 1, null);
-            CDWest = configService.CreateDivision(League, CCSeason, WestDivisionName, "West", 2, 2, CDLeague, 1, null);
-            CDCentral = configService.CreateDivision(League, CCSeason, CentralDivisionName, "Central", 2, 3, CDLeague, 1, null);
-            CDEast = configService.CreateDivision(League, CCSeason, EastDivisionName, "East", 2, 3, CDLeague, 1, null);
-            CDAtlantic = configService.CreateDivision(League, CCSeason, AtlanticDivisionName, "Atlantic", 2, 4, CDLeague, 1, null);
-            CDSouth = configService.CreateDivision(League, CCSeason, SouthDivisionName, "South", 2, 5, CDLeague, 1, null);
+            CDLeague = configDivisionService.CreateDivision(League, CCSeason, "League", null, 1, 1, null, 1, null);
+            CDWest = configDivisionService.CreateDivision(League, CCSeason, WestDivisionName, "West", 2, 2, CDLeague, 1, null);
+            CDCentral = configDivisionService.CreateDivision(League, CCSeason, CentralDivisionName, "Central", 2, 3, CDLeague, 1, null);
+            CDEast = configDivisionService.CreateDivision(League, CCSeason, EastDivisionName, "East", 2, 3, CDLeague, 1, null);
+            CDAtlantic = configDivisionService.CreateDivision(League, CCSeason, AtlanticDivisionName, "Atlantic", 2, 4, CDLeague, 1, null);
+            CDSouth = configDivisionService.CreateDivision(League, CCSeason, SouthDivisionName, "South", 2, 5, CDLeague, 1, null);
 
             CDCentral.Teams.AddRange(CentralTeams);
             CDWest.Teams.AddRange(WestTeams);
@@ -180,21 +204,21 @@ namespace JodyApp.ConsoleApp.Commands
             CDAtlantic.Teams.AddRange(AtlanticTeams);
             CDSouth.Teams.AddRange(SouthTeams);
 
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 1", CDLeague, true, 1, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 2", CDEast, true, 2, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 3", CDWest, true, 2, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 4", CDAtlantic, true, 2, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 5", CDCentral, true, 2, 1, false, 1, null);
-            configService.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 6", CDSouth, true, 2, 1, false, 1, null);
+            scheduleRuleservice.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 1", CDLeague, true, 1, 1, false, 1, null);
+            scheduleRuleservice.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 2", CDEast, true, 2, 1, false, 1, null);
+            scheduleRuleservice.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 3", CDWest, true, 2, 1, false, 1, null);
+            scheduleRuleservice.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 4", CDAtlantic, true, 2, 1, false, 1, null);
+            scheduleRuleservice.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 5", CDCentral, true, 2, 1, false, 1, null);
+            scheduleRuleservice.CreateScheduleRuleByDivisionVsSelf(League, CCSeason, "Schedule Rule 6", CDSouth, true, 2, 1, false, 1, null);
 
 
-            configService.CreateSortingRule("Division Leaders 1", 1, CDLeague, CDEast, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-            configService.CreateSortingRule("Division Leaders 2", 1, CDLeague, CDWest, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-            configService.CreateSortingRule("Division Leaders 3", 1, CDLeague, CDCentral, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-            configService.CreateSortingRule("Division Leaders 4", 1, CDLeague, CDAtlantic, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
-            configService.CreateSortingRule("Division Leaders 5", 1, CDLeague, CDSouth, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
+            configSortingRuleService.CreateSortingRule("Division Leaders 1", 1, CDLeague, CDEast, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
+            configSortingRuleService.CreateSortingRule("Division Leaders 2", 1, CDLeague, CDWest, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
+            configSortingRuleService.CreateSortingRule("Division Leaders 3", 1, CDLeague, CDCentral, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
+            configSortingRuleService.CreateSortingRule("Division Leaders 4", 1, CDLeague, CDAtlantic, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
+            configSortingRuleService.CreateSortingRule("Division Leaders 5", 1, CDLeague, CDSouth, "1,2,3", 0, SortingRule.SINGLE_DIVISION, 1, null);
 
-            configService.Save();
+            configSortingRuleService.Save();
 
         }
 

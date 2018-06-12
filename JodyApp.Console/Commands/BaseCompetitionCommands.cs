@@ -42,8 +42,9 @@ namespace JodyApp.ConsoleApp.Commands
         {
             var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
 
+            var service = context.ServiceLibraries["Competition"];
 
-            return GetList(((CompetitionService)Service).GetAllByLeagueId((int)league.Id, CompetitionType));
+            return GetList(((CompetitionService)service).GetAllByLeagueId((int)league.Id, CompetitionType));
         }
 
         //move this to games commands

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,22 +8,23 @@ using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Domain.Playoffs;
+using JodyApp.Service.ConfigServices;
 using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public class PlayoffService : BaseService
+    public class PlayoffService : BaseService<Playoff>
     {
-        ConfigService ConfigService { get; set; }
 
-        public PlayoffService(JodyAppContext db, ConfigService configService):base(db)
-        {            
-            ConfigService = configService;
-        }
+        ConfigGroupRuleService ConfigGroupRuleService { get; set; }
+        ConfigSeriesRuleService ConfigSeriesRuleService { get; set; }
+
+        public override DbSet<Playoff> Entities => db.Playoffs;
 
         public PlayoffService(JodyAppContext db) :base(db)
         {
-            ConfigService = new ConfigService(db);
+            ConfigGroupRuleService = new ConfigGroupRuleService(db);
+            ConfigSeriesRuleService = new ConfigSeriesRuleService(db);
         }
 
         public Playoff CreateNewPlayoff(ConfigCompetition referencePlayoff, int year)
@@ -44,7 +46,7 @@ namespace JodyApp.Service
             List<Group> newGroups = new List<Group>();            
             List<Series> newSeries = new List<Series>();
 
-            var activeConfigGroups = ConfigService.GetGroups(referencePlayoff).Where(grp => grp.IsActive(year)).ToList();                                
+            var activeConfigGroups = ConfigGroupRuleService.GetGroups(referencePlayoff).Where(grp => grp.IsActive(year)).ToList();                                
 
             activeConfigGroups.ForEach(group =>            
             {
@@ -67,7 +69,7 @@ namespace JodyApp.Service
             db.Groups.AddRange(newGroups);
 
 
-            var activeConfigSeriesRules = ConfigService.GetSeriesRules(referencePlayoff).Where(series => series.IsActive(year)).ToList();
+            var activeConfigSeriesRules = ConfigSeriesRuleService.GetSeriesRules(referencePlayoff).Where(series => series.IsActive(year)).ToList();
 
             activeConfigSeriesRules.ForEach(seriesRule =>            
             {
@@ -142,11 +144,6 @@ namespace JodyApp.Service
             return db.Series.Where(s => s.Name == name).ToList();
         }
 
-        public override BaseViewModel GetModelById(int id)
-        {
-            return DomainToDTO(GetById(id));
-        }
-
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
             var playoff = (Playoff)obj;
@@ -156,16 +153,6 @@ namespace JodyApp.Service
         public override BaseViewModel Save(BaseViewModel mdoel)
         {
             throw new NotImplementedException();
-        }
-
-        public override ListViewModel GetAll()
-        {
-            return CreateListViewModelFromList(db.Playoffs.ToList<DomainObject>(), DomainToDTO);
-        }
-
-        public override DomainObject GetById(int? id)
-        {
-            return db.Playoffs.Where(p => p.Id == id).FirstOrDefault();
         }
 
     }

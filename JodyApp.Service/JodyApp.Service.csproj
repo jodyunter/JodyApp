@@ -49,15 +49,16 @@
   <ItemGroup>
     <Compile Include="BaseService.cs" />
     <Compile Include="CompetitionService.cs" />
-    <Compile Include="ConfigService.cs" />
     <Compile Include="ConfigServices\ConfigCompetitionService.cs" />
     <Compile Include="ConfigServices\ConfigDivisionService.cs" />
+    <Compile Include="ConfigServices\ConfigGroupRuleService.cs" />
+    <Compile Include="ConfigServices\ConfigGroupService.cs" />
+    <Compile Include="ConfigServices\ConfigSeriesRuleService.cs" />
+    <Compile Include="ConfigServices\ConfigSortingRuleService.cs" />
     <Compile Include="ConfigServices\ConfigTeamService.cs" />
+    <Compile Include="ConfigServices\ConfigScheduleRuleService.cs" />
     <Compile Include="DivisionService.cs" />
-    <Compile Include="Extensions\CompetitionSeasonExtensions.cs" />
-    <Compile Include="Extensions\DivisionExtensions.cs" />
-    <Compile Include="Extensions\TeamExtensions.cs" />
-    <Compile Include="Extensions\ScheduleExtensions.cs" />
+    <Compile Include="JService.cs" />
     <Compile Include="LeagueService.cs" />
     <Compile Include="PlayoffService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

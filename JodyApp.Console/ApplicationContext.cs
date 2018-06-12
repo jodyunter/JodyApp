@@ -67,7 +67,7 @@ namespace JodyApp.ConsoleApp
         public Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> CommandLibraries;
         public Dictionary<string, object> CommandObjects;
 
-        public Dictionary<string, BaseService> ServiceLibraries;        
+        public Dictionary<string, JService> ServiceLibraries;        
 
         public ApplicationContext(string baseReadPrompt)
         {
@@ -133,16 +133,22 @@ namespace JodyApp.ConsoleApp
         }
         public void SetupServiceLibraries()
         {
-            ServiceLibraries = new Dictionary<string, BaseService>();
+            ServiceLibraries = new Dictionary<string, JService>();
 
             ServiceLibraries.Add("League", new LeagueService(DbContext));
             ServiceLibraries.Add("ConfigTeam", new ConfigTeamService(DbContext));
             ServiceLibraries.Add("ConfigDivision", new ConfigDivisionService(DbContext));
             ServiceLibraries.Add("ConfigCompetition", new ConfigCompetitionService(DbContext));
+            ServiceLibraries.Add("ConfigScheduleRule", new ConfigScheduleRuleService(DbContext));
+            ServiceLibraries.Add("ConfigGroupRule", new ConfigGroupRuleService(DbContext));
+            ServiceLibraries.Add("ConfigGroup", new ConfigGroupService(DbContext));
+            ServiceLibraries.Add("ConfigSeriesRule", new ConfigSeriesRuleService(DbContext));
+            ServiceLibraries.Add("ConfigSortingRule", new ConfigSortingRuleService(DbContext));
             ServiceLibraries.Add("Season", new SeasonService(DbContext));
             ServiceLibraries.Add("Standings", new StandingsService(DbContext));
             ServiceLibraries.Add("Competition", new CompetitionService(DbContext));
             ServiceLibraries.Add("Playoff", new PlayoffService(DbContext));
+            
         }
 
         public void SetupCommandLibraries()

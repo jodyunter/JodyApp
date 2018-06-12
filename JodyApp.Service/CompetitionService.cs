@@ -5,38 +5,33 @@ using JodyApp.Service.ConfigServices;
 using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace JodyApp.Service
 {
-    public partial class CompetitionService : BaseService
+    public class CompetitionService : BaseService<DomainObject>
     {        
+
 
         SeasonService SeasonService { get; set; }
         PlayoffService PlayoffService { get; set; }
         LeagueService LeagueService { get; set; }        
         ConfigDivisionService ConfigDivisionService { get; set; }
         DivisionService DivisionService { get; set; }
+        ConfigScheduleRuleService ScheduleRuleService { get; set; }
+        ScheduleService ScheduleService { get; set; }
 
-        public CompetitionService(JodyAppContext db, ConfigService configService) : base(db)
-        {
-            LeagueService = new LeagueService(db);
-            SeasonService = new SeasonService(db, LeagueService, configService);
-            PlayoffService = new PlayoffService(db, configService);
-        }
-
-        public CompetitionService(JodyAppContext db, LeagueService leagueService, SeasonService seasonService, PlayoffService playoffService) : base(db)
-        {
-            LeagueService = leagueService;
-            SeasonService = seasonService;
-            PlayoffService = playoffService;
-        }
+        public override DbSet<DomainObject> Entities => throw new NotImplementedException();
 
         public CompetitionService(JodyAppContext db):base(db)
         {
             LeagueService = new LeagueService(db);
             SeasonService = new SeasonService(db);
             PlayoffService = new PlayoffService(db);
+            ConfigDivisionService = new ConfigDivisionService(db);
+            ScheduleRuleService = new ConfigScheduleRuleService(db);
+            ScheduleService = new ScheduleService(db);
         }
 
         public Competition StartNextYear(int leagueId)
@@ -218,21 +213,6 @@ namespace JodyApp.Service
         }
 
 
-        //not usable because we have know the type
-        public override BaseViewModel GetModelById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public BaseViewModel GetModelById(int id, string type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public BaseViewModel GetModelById(int id, int type)
-        {
-            throw new NotImplementedException();
-        }
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
@@ -243,26 +223,6 @@ namespace JodyApp.Service
         }
 
         public override BaseViewModel Save(BaseViewModel mdoel)
-        {
-            throw new NotImplementedException();
-        }
-        public override ListViewModel GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        //not usable because we have to know the type
-        public override DomainObject GetById(int? id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DomainObject GetById(int? id, int type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DomainObject GetById(int? id, string type)
         {
             throw new NotImplementedException();
         }
@@ -280,7 +240,7 @@ namespace JodyApp.Service
             Dictionary<string, Team> seasonTeams = new Dictionary<string, Team>();
             Dictionary<string, ConfigScheduleRule> seasonScheduleRules = new Dictionary<string, ConfigScheduleRule>();
 
-            var activeConfigDivisions = ConfigService.GetDivisions(referenceSeason).Where(cd => cd.IsActive(year)).ToList();
+            var activeConfigDivisions = ConfigDivisionService.GetDivisions(referenceSeason).Where(cd => cd.IsActive(year)).ToList();
             //loop once to create teams and new season divisions, order means we will not add a parent we haven't created yet
             activeConfigDivisions.OrderBy(d => d.Level).ToList().ForEach(configDivision =>
             {
@@ -316,7 +276,7 @@ namespace JodyApp.Service
                 db.DivisionRanks.AddRange(seasonDiv.Rankings);
             });
 
-            var configRules = ConfigService.GetScheduleRulesByCompetition(referenceSeason).Where(rule => rule.IsActive(year)).ToList();
+            var configRules = ScheduleRuleService.GetScheduleRulesByCompetition(referenceSeason).Where(rule => rule.IsActive(year)).ToList();
 
             season.Games = new List<Game>();
             ScheduleService.CreateGamesFromRules(configRules, seasonTeams, seasonDivisions, season.Games, 0);

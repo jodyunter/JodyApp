@@ -4,14 +4,17 @@ using JodyApp.Domain.Config;
 using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JodyApp.Service.ConfigServices
 {
-    public class ConfigCompetitionService:BaseService
+    public class ConfigCompetitionService:BaseService<ConfigCompetition>
     {
+        public override DbSet<ConfigCompetition> Entities => db.ConfigCompetitions;
+
         public ConfigCompetitionService(JodyAppContext db) : base(db) { }
 
         private string GetCompetitionTypeString(int type)
@@ -58,23 +61,6 @@ namespace JodyApp.Service.ConfigServices
                 
         }
 
-        public override ListViewModel GetAll()
-        {
-            return CreateListViewModelFromList(db.ConfigCompetitions.ToList<DomainObject>(), DomainToDTO);
-        }
-
-        public override DomainObject GetById(int? id)
-        {
-            if (id == null) return null;
-
-            return db.ConfigCompetitions.Where(c => c.Id == id).FirstOrDefault();
-        }
-
-        public override BaseViewModel GetModelById(int id)
-        {
-            return DomainToDTO(GetById(id));
-        }
-
         public override BaseViewModel Save(BaseViewModel model)
         {
             var m = (ConfigCompetitionViewModel)model;
@@ -89,7 +75,7 @@ namespace JodyApp.Service.ConfigServices
 
             if (competition == null)
             { 
-                competition = new ConfigCompetition(null, league, m.Name, compType, refComp, m.Order, m.FirstYear, m.LastYear);
+                competition = CreateCompetition(league, m.Name, compType, refComp, m.Order, m.FirstYear, m.LastYear);                
                 db.ConfigCompetitions.Add(competition);
             }
             else
@@ -105,5 +91,31 @@ namespace JodyApp.Service.ConfigServices
 
             return DomainToDTO(competition);
         }
+
+        //should go to the save?
+        public ConfigCompetition CreateCompetition(League league, string name, int type, ConfigCompetition reference, int order, int? firstYear, int? lastYear)
+        {
+            var newComp = new ConfigCompetition(null, league, name, type, reference, order, firstYear, lastYear);
+            db.ConfigCompetitions.Add(newComp);
+
+            return newComp;
+        }
+
+
+        public ConfigCompetition GetCompetitionByName(League league, string name)
+        {
+            return db.ConfigCompetitions.Where(c => c.League.Id == league.Id && c.Name == name).FirstOrDefault();
+        }
+
+        public List<ConfigCompetition> GetCompetitionsByLeague(League league, int year)
+        {
+            return db.ConfigCompetitions.Where(c =>
+                    c.League.Id == league.Id &&
+                    c.FirstYear != null && c.FirstYear <= year &&
+                    (c.LastYear == null || c.LastYear >= year)).ToList();
+        }
+
+
+
     }
 }

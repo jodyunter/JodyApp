@@ -57,5 +57,6 @@ namespace JodyApp.ConsoleApp.Commands
         {
             return new BaseCompetitionView(model);
         }
+
     }
 }

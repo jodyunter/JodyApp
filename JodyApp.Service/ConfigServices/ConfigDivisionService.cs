@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using JodyApp.Database;
 using JodyApp.Domain;
@@ -8,8 +9,10 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service.ConfigServices
 {
-    public class ConfigDivisionService : BaseService
+    public class ConfigDivisionService : BaseService<ConfigDivision>
     {
+        public override DbSet<ConfigDivision> Entities => db.ConfigDivisions;
+
         public ConfigDivisionService(JodyAppContext db) : base(db) {  }
 
         //public ConfigDivisionService():base()
@@ -39,16 +42,6 @@ namespace JodyApp.Service.ConfigServices
 
             return model;
 
-        }
-
-        public override ListViewModel GetAll()
-        {
-            return CreateListViewModelFromList(db.ConfigDivisions.ToList<DomainObject>(), DomainToDTO);
-        }
-
-        public override BaseViewModel GetModelById(int id)
-        {
-            return DomainToDTO(db.ConfigDivisions.Where(d => d.Id == id).FirstOrDefault());
         }
 
         //todo: Add teams to save and competitions
@@ -92,13 +85,6 @@ namespace JodyApp.Service.ConfigServices
         //    return DomainToDTO(team);
         //}
 
-        public override DomainObject GetById(int? id)
-        {
-            if (id == null) return null;
-
-            return db.ConfigDivisions.Where(t => t.Id == id).FirstOrDefault();
-        }
-
         public ListViewModel GetByLeagueId(int leagueId)
         {
             var items = new List<BaseViewModel>();
@@ -115,5 +101,27 @@ namespace JodyApp.Service.ConfigServices
         {
             return db.ConfigDivisions.Where(division => division.Competition.Id == season.Id).ToList();
         }
+        
+        public ConfigDivision CreateDivision(League league, ConfigCompetition competition, string name,
+                                            string shortName, int level, int order, ConfigDivision parent,
+                                            int? firstYear, int? lastYear)
+        {
+            var division = new ConfigDivision(league, competition, name, shortName, level, order, parent, firstYear, lastYear);
+            db.ConfigDivisions.Add(division);
+
+            return division;
+        }
+
+        public ConfigDivision GetDivisionByName(League league, string name)
+        {
+            return db.ConfigDivisions.Where(d => d.League.Id == league.Id && d.Name == name).FirstOrDefault();
+        }
+
+        public ConfigDivision GetDivisionById(int id)
+        {
+            return db.ConfigDivisions.Where(d => d.Id == id).FirstOrDefault();
+        }
+        
+
     }
 }

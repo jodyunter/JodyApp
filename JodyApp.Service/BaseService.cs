@@ -10,19 +10,20 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public abstract class BaseService
+    public abstract class BaseService<T> : JService where T : DomainObject
     {
+        public abstract DbSet<T> Entities { get; }
 
-        public JodyAppContext db { get; set; }        
+        public JodyAppContext db { get; set; }
 
         public BaseService(JodyAppContext dbContext)
         {
-            db = dbContext;            
+            db = dbContext;
         }
 
         public BaseService(string ConnectionString)
         {
-            db = new JodyAppContext(ConnectionString);            
+            db = new JodyAppContext(ConnectionString);
         }
 
         public void Rollback()
@@ -49,13 +50,24 @@ namespace JodyApp.Service
 
         public void Save() { db.SaveChanges(); }
 
-        public abstract DomainObject GetById(int? id);
+        public DomainObject GetById(int? id)
+        {
+            return Entities.Where(d => d.Id == id).FirstOrDefault();
+        }
 
-        public abstract BaseViewModel GetModelById(int id);
+        public BaseViewModel GetModelById(int id)
+        {
+            var entity = GetById(id);
+            if (entity == null) return null;
+            else return DomainToDTO(entity);
+        }
         public abstract BaseViewModel DomainToDTO(DomainObject obj);
         public abstract BaseViewModel Save(BaseViewModel model);
 
-        public abstract ListViewModel GetAll();
+        public ListViewModel GetAll()
+        {
+            return CreateListViewModelFromList(Entities.ToList<DomainObject>(), DomainToDTO);
+        }
 
 
         public ListViewModel CreateListViewModelFromList(List<DomainObject> obj, Func<DomainObject, BaseViewModel> domainToDTO)
@@ -71,6 +83,5 @@ namespace JodyApp.Service
 
             return teamList;
         }
-
     }
 }

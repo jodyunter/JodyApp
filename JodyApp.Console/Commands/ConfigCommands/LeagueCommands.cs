@@ -83,8 +83,7 @@ namespace JodyApp.ConsoleApp.Commands
             LeagueService leagueService = new LeagueService(db);
             CompetitionService competitionService = new CompetitionService(db);
             SeasonService seasonService = new SeasonService(db);
-            DivisionService divisionService = new DivisionService(db);
-            ConfigService configService = new ConfigService(db);
+            DivisionService divisionService = new DivisionService(db);            
             PlayoffService playoffService = new PlayoffService(db);
             StandingsService standingsService = new StandingsService(db);
 

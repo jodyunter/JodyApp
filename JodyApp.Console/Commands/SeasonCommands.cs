@@ -37,5 +37,6 @@ namespace JodyApp.ConsoleApp.Commands
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
         public override string CompetitionType { get { return ConfigCompetitionViewModel.SEASON; } }
+
     }
 }

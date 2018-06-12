@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.Domain.Config;
 using JodyApp.ViewModel;
+using System.Data.Entity;
 
 namespace JodyApp.Service
 {
-    public class LeagueService:BaseService
+    public class LeagueService:BaseService<League>
     {
+        public override DbSet<League> Entities => db.Leagues;
 
         public LeagueService(JodyAppContext db) : base(db)
         {            
@@ -58,12 +60,6 @@ namespace JodyApp.Service
             return league;
         }
 
-
-        public override BaseViewModel GetModelById(int id)
-        {
-            return DomainToDTO(db.Leagues.Where(l => l.Id == id).FirstOrDefault());
-        }
-
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
             var league = (League)obj;
@@ -98,24 +94,6 @@ namespace JodyApp.Service
             return DomainToDTO(league);
         }
 
-        public override ListViewModel GetAll()
-        {
-            var result = new ListViewModel(new List<BaseViewModel>());
-
-            db.Leagues.ToList().ForEach(l =>
-            {
-                result.Items.Add(DomainToDTO(l));
-            });
-
-            return result;
-        }
-
-        public override DomainObject GetById(int? id)
-        {
-            if (id == null) return null;
-
-            return db.Leagues.Where(l => l.Id == (int)id).FirstOrDefault();
-        }
 
     }
 }

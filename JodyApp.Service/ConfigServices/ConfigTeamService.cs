@@ -1,13 +1,16 @@
 ﻿using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace JodyApp.Service.ConfigServices
 {
-    public class ConfigTeamService : BaseService
+    public class ConfigTeamService : BaseService<ConfigTeam>
     {
+        public override DbSet<ConfigTeam> Entities => db.ConfigTeams;
 
         public ConfigTeamService(Database.JodyAppContext db) : base(db) { }
         //public ConfigTeamService() : base() { }
@@ -30,18 +33,6 @@ namespace JodyApp.Service.ConfigServices
 
         }
 
-        public override ListViewModel GetAll()
-        {
-            return CreateListViewModelFromList(db.ConfigTeams.ToList<DomainObject>(), DomainToDTO);
-            
-        }
-        
-
-        public override BaseViewModel GetModelById(int id)
-        {
-            return DomainToDTO(db.ConfigTeams.Where(t => t.Id == id).FirstOrDefault());
-        }
-
         public override BaseViewModel Save(BaseViewModel model)
         {
 
@@ -56,8 +47,7 @@ namespace JodyApp.Service.ConfigServices
             if (team == null)
             {
                 //new entity
-                team = new ConfigTeam(m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);
-                db.ConfigTeams.Add(team);
+                team = CreateTeam(m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);                
             }
             else
             {
@@ -74,14 +64,6 @@ namespace JodyApp.Service.ConfigServices
 
             return DomainToDTO(team);
         }
-
-        public override DomainObject GetById(int? id)
-        {
-            if (id == null) return null;
-
-            return db.ConfigTeams.Where(t => t.Id == id).FirstOrDefault();
-        }
-
         public ListViewModel GetModelByLeague(int leagueId)
         {
             return CreateListViewModelFromList(db.ConfigTeams.Where(t => t.League.Id == leagueId).ToList<DomainObject>(), DomainToDTO);
@@ -96,7 +78,47 @@ namespace JodyApp.Service.ConfigServices
         {
             return db.ConfigTeams.Where(t => t.Division.Id == divisionId).ToList();
         }
-        
+         
+        public void SetNewSkills(League league, Random random)
+        {
+            int[] chanceToIncrease = new int[] { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0 };
 
+            GetByLeagueAndYear(league, league.CurrentYear).ForEach(team =>
+            {
+                int max = 200;
+                int chgNum = 100;
+                int num = random.Next(0, max);
+                if (num <= chgNum)
+                {
+                    if (num <= chanceToIncrease[team.Skill]) team.Skill++;
+                    else team.Skill--;
+                }
+
+                if (team.Skill > 10) team.Skill = 10;
+                if (team.Skill < 0) team.Skill = 0;
+            });
+        }
+
+        public List<ConfigTeam> GetByLeagueAndYear(League league, int currentYear)
+        {
+            return db.ConfigTeams.Where(team =>
+            team.League.Id == league.Id &&
+            team.FirstYear != null &&
+            team.FirstYear <= currentYear &&
+            (team.LastYear == null || team.LastYear >= currentYear)
+            ).ToList();
+        }
+
+        public ConfigTeam CreateTeam(string name, int skill, ConfigDivision division, League league, int? firstYear, int? lastYear)
+        {
+            var newTeam = new ConfigTeam(name, skill, division, league, firstYear, lastYear);
+            db.ConfigTeams.Add(newTeam);
+            return newTeam;
+        }
+
+        public ConfigTeam GetByName(string name)
+        {
+            return db.ConfigTeams.Where(t => t.Name == name).FirstOrDefault();
+        }        
     }
 }
