@@ -110,5 +110,10 @@ namespace JodyApp.Service.ConfigServices
 
             return new ListViewModel(items);
         }
+
+        public List<ConfigDivision> GetDivisions(ConfigCompetition season)
+        {
+            return db.ConfigDivisions.Where(division => division.Competition.Id == season.Id).ToList();
+        }
     }
 }
