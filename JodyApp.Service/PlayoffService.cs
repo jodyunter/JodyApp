@@ -155,6 +155,12 @@ namespace JodyApp.Service
             throw new NotImplementedException();
         }
 
+        public ListViewModel GetSeriesModelsByPlayoffId(int playoffId)
+        {
+            var seriesService = new SeriesService(db);
+            return seriesService.CreateListViewModelFromList(db.Series.Where(s => s.Playoff.Id == playoffId).ToList<DomainObject>(), seriesService.DomainToDTO);
+        }
+
     }
 
 }

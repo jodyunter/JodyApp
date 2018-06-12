@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JodyApp.ConsoleApp.Views.Game
+namespace JodyApp.ConsoleApp.Views
 {
     public class GameCompactListView : BaseListView
     {

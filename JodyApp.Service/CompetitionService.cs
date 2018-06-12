@@ -176,7 +176,7 @@ namespace JodyApp.Service
 
             return new ListViewModel(items.ToList<BaseViewModel>());
         }
-        public GameViewModel GameToDTO(Competition competition, Game game)
+        public static GameViewModel GameToDTO(Competition competition, Game game)
         {
             var model = new GameViewModel(
                 game.Id,

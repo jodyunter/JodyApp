@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.Views;
+using JodyApp.Service;
 using JodyApp.ViewModel;
 
 namespace JodyApp.ConsoleApp.Commands
@@ -56,6 +58,23 @@ namespace JodyApp.ConsoleApp.Commands
         public override BaseView GetView(BaseViewModel model)
         {
             return new BaseCompetitionView(model);
+        }
+
+        [Command]
+        public BaseView ViewSeries(ApplicationContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Command]
+        public BaseListView ListSeries(ApplicationContext context)
+        {
+            var playoffService = (PlayoffService)context.ServiceLibraries["Playoff"];
+
+            var playoffId = SelectPlayoff(context).Id;
+
+            return new SeriesListView(playoffService.GetSeriesModelsByPlayoffId((int)playoffId));
+
         }
 
     }
