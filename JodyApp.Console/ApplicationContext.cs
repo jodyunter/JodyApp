@@ -22,14 +22,27 @@ namespace JodyApp.ConsoleApp
         private string _baseReadPrompt;
         private ReferenceObject _selectedLeague;
         private ReferenceObject _selectedSeason;
+        private ReferenceObject _selectedPlayoff;
 
         public JodyAppContext DbContext { get; set; }
+
+        public ReferenceObject SelectedPlayoff
+        {
+            get { return _selectedPlayoff; }
+            set
+            {
+                _selectedSeason = null;
+                _selectedPlayoff = value;
+                SetReadPrompt();
+            }
+        }
         public ReferenceObject SelectedSeason
         {
             get { return _selectedSeason; }
             set
             {
                 _selectedSeason = value;
+                _selectedPlayoff = null;
                 SetReadPrompt();
             }
         }
@@ -40,6 +53,7 @@ namespace JodyApp.ConsoleApp
             {
                 _selectedLeague = value;
                 _selectedSeason = null;
+                _selectedPlayoff = null;
                 //reset other selections here
                 SetReadPrompt();
             }
@@ -186,6 +200,10 @@ namespace JodyApp.ConsoleApp
                 if (SelectedSeason != null)
                 {
                     ReadPrompt += SelectedSeason.Name + _promptSplitter;
+                }
+                else if (SelectedPlayoff != null)
+                {
+                    ReadPrompt += SelectedPlayoff.Name + _promptSplitter;
                 }
             }
         }

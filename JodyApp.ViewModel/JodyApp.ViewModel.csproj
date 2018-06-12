@@ -47,16 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Competition\CompetitionViewModel.cs" />
     <Compile Include="Config\Competition\ConfigCompetitionViewModel.cs" />
     <Compile Include="Config\Division\ConfigDivisionViewModel.cs" />
     <Compile Include="Config\League\LeagueViewModel.cs" />
     <Compile Include="Game\GameViewModel.cs" />
     <Compile Include="ListViewModel.cs" />
+    <Compile Include="Competition\Playoff\PlayoffViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Config\Team\ConfigTeamViewModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="ReferenceObject.cs" />
-    <Compile Include="Season\SeasonViewModel.cs" />
+    <Compile Include="Competition\Season\SeasonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

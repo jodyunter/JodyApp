@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ConsoleApp.Views
 {
-    public class SeasonView : BaseView
+    public class BaseCompetitionView:BaseView
     {
+        public BaseCompetitionView(BaseViewModel model) : base(model) { }
+
         public override string[] ViewHeaders => new string[] { "Id", "League", "Name", "Year", "Started" };
         public override object[] ViewObjects
         {
             get
             {
-                var m = (SeasonViewModel)Model;
+                var m = (CompetitionViewModel)Model;
                 return new object[] { m.Id, m.League, m.Name, m.Year, m.Started };
             }
         }
-        public SeasonView(BaseViewModel model) : base(model) { }
     }
 }

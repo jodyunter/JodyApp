@@ -8,12 +8,12 @@ using System.Linq;
 
 namespace JodyApp.Service
 {
-    public class CompetitionService : BaseService
+    public partial class CompetitionService : BaseService
     {        
 
         SeasonService SeasonService { get; set; }
         PlayoffService PlayoffService { get; set; }
-        LeagueService LeagueService { get; set; }
+        LeagueService LeagueService { get; set; }        
 
         public CompetitionService(JodyAppContext db, ConfigService configService) : base(db)
         {
@@ -206,6 +206,14 @@ namespace JodyApp.Service
             }
         }
 
+        public ListViewModel GetAllByLeagueId(int leagueId, string type)
+        {
+            if (type == ConfigCompetitionViewModel.SEASON) return CreateListViewModelFromList(db.Seasons.Where(s => s.League.Id == leagueId).ToList<DomainObject>(), DomainToDTO);
+            if (type == ConfigCompetitionViewModel.PLAYOFF) return CreateListViewModelFromList(db.Playoffs.Where(p => p.League.Id == leagueId).ToList<DomainObject>(), DomainToDTO);
+
+            return null;
+        }
+
 
         //not usable because we have know the type
         public override BaseViewModel GetModelById(int id)
@@ -225,7 +233,10 @@ namespace JodyApp.Service
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
-            throw new NotImplementedException();
+            var competition = (Competition)obj;
+            string competitionType = (competition is Season) ? "Season":"Playoff";
+
+            return new CompetitionViewModel(obj.Id, competition.League.Id, competition.League.Name, competition.Name, competition.Year, competitionType, competition.Started, competition.Complete, competition.StartingDay);
         }
 
         public override BaseViewModel Save(BaseViewModel mdoel)

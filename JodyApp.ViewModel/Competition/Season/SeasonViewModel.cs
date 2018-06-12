@@ -6,26 +6,10 @@ using System.Threading.Tasks;
 
 namespace JodyApp.ViewModel
 {
-    public class SeasonViewModel:BaseViewModel
-    {        
-        public ReferenceObject League { get; set; }         
-        public int Year { get; set; }  
-        public bool Started { get; set; }
-        public string CompetitionType { get; set; }
-        public bool Complete { get; set; }
-        public int StartingDay { get; set; }
-        
+    public class SeasonViewModel:CompetitionViewModel
+    {                
         public SeasonViewModel(int? id, int? leagueId, string league, string name, int year, string competitionType,  bool started, bool complete, int startingDay)
-        {
-            Id = id;
-            League = new ReferenceObject(leagueId, league);
-            Name = name;
-            Year = year;
-            Started = started;
-            Complete = complete;
-            StartingDay = startingDay;
-            CompetitionType = competitionType;
-        }
+            : base(id, leagueId, league, name, year, competitionType, started, complete, startingDay) { }
 
     }
 

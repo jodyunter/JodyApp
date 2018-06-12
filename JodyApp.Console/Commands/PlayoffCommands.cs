@@ -8,15 +8,35 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.ConsoleApp.Commands
 {
-    public class PlayoffCommands : BaseViewCommands
+    public class PlayoffCommands : BaseCompetitionCommands
     {
-        public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => throw new NotImplementedException();
+        public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => SelectPlayoff;
+
+        public override string CompetitionType { get { return ConfigCompetitionViewModel.SEASON; } }
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
         public PlayoffCommands() { }
         public PlayoffCommands(ApplicationContext context):base(context, "Playoff") {}
 
+        public static ReferenceObject SelectPlayoff(ApplicationContext context, string prompt = "Select Playoff>")
+        {
+            if (context.SelectedPlayoff != null)
+            {
+                return context.SelectedPlayoff;
+            }
+
+            var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
+            var commands = new PlayoffCommands(context);
+
+            var view = (BaseCompetitionListView)commands.List(context);
+
+            context.SelectedPlayoff = GetSelectedObject(context, prompt, view);
+
+            return context.SelectedPlayoff;
+
+
+        }
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
@@ -30,12 +50,12 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override BaseListView GetList(ListViewModel model)
         {
-            return new PlayoffListView(model);
+            return new BaseCompetitionListView(model);
         }
 
         public override BaseView GetView(BaseViewModel model)
         {
-            throw new NotImplementedException();
+            return new BaseCompetitionView(model);
         }
     }
 }

@@ -7,9 +7,9 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.ConsoleApp.Views
 {
-    public class SeasonListView : BaseListView
+    public class BaseCompetitionListView : BaseListView
     {
-        public SeasonListView(ListViewModel model) : base(model) { }
+        public BaseCompetitionListView(ListViewModel model) : base(model) { }
 
         public override string Formatter => "{0,5} {1,15} {2,20} {3,5} {4,10} {5,10}";
 
@@ -17,7 +17,7 @@ namespace JodyApp.ConsoleApp.Views
 
         public override List<object> GetDataObjectFromModel(BaseViewModel model)
         {
-            var m = (SeasonViewModel)model;
+            var m = (CompetitionViewModel)model;
 
             return new List<object> { m.Id, m.League, m.Name, m.Year, m.CompetitionType, m.Started };
         }

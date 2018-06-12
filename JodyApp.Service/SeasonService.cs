@@ -135,12 +135,6 @@ namespace JodyApp.Service
             return db.Seasons.Where(s => s.Name == name && s.Year == year && s.League.Id == league.Id).FirstOrDefault();
         }
 
-        public ListViewModel GetAllByLeagueId(int leagueId)
-        {
-
-            return CreateListViewModelFromList(db.Seasons.Where(s => s.League.Id == leagueId).ToList<DomainObject>(), DomainToDTO);
-        }
-
         public SeasonViewModel DomainToDTO(Season season)
         {
             if (season == null) return null;

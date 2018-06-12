@@ -7,10 +7,11 @@ using JodyApp.Database;
 using JodyApp.Domain;
 using JodyApp.Domain.Config;
 using JodyApp.Domain.Playoffs;
+using JodyApp.ViewModel;
 
 namespace JodyApp.Service
 {
-    public partial class PlayoffService : BaseService
+    public class PlayoffService : BaseService
     {
         ConfigService ConfigService { get; set; }
 
@@ -139,6 +140,32 @@ namespace JodyApp.Service
         public List<Series> GetSeries(string name)
         {            
             return db.Series.Where(s => s.Name == name).ToList();
+        }
+
+        public override BaseViewModel GetModelById(int id)
+        {
+            return DomainToDTO(GetById(id));
+        }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            var playoff = (Playoff)obj;
+            return new PlayoffViewModel(playoff.Id, playoff.League.Id, playoff.League.Name, playoff.Name, playoff.Year, "Season", playoff.Started, playoff.Complete, playoff.StartingDay);
+        }
+
+        public override BaseViewModel Save(BaseViewModel mdoel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ListViewModel GetAll()
+        {
+            return CreateListViewModelFromList(db.Playoffs.ToList<DomainObject>(), DomainToDTO);
+        }
+
+        public override DomainObject GetById(int? id)
+        {
+            return db.Playoffs.Where(p => p.Id == id).FirstOrDefault();
         }
 
     }
