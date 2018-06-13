@@ -146,7 +146,7 @@ namespace JodyApp.Service
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
-            var playoff = (Playoff)obj;
+            var playoff = (Playoff)obj;            
             return new PlayoffViewModel(playoff.Id, playoff.League.Id, playoff.League.Name, playoff.Name, playoff.Year, "Season", playoff.Started, playoff.Complete, playoff.StartingDay);
         }
 

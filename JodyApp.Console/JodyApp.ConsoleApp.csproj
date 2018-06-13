@@ -77,6 +77,7 @@
     <Compile Include="Views\Competition\Config\CompetitionListView.cs" />
     <Compile Include="Views\Competition\Config\CompetitionView.cs" />
     <Compile Include="Views\Competition\BaseCompetitionListView.cs" />
+    <Compile Include="Views\Competition\Playoff\PlayoffView.cs" />
     <Compile Include="Views\Division\DivisionListView.cs" />
     <Compile Include="Views\Division\DivisionView.cs" />
     <Compile Include="Views\ErrorView.cs" />
