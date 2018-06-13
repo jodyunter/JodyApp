@@ -145,7 +145,8 @@ namespace JodyApp.ConsoleApp
                 { SERVICE_STANDINGS, new StandingsService(DbContext) },
                 { SERVICE_COMPETITION, new CompetitionService(DbContext) },
                 { SERVICE_PLAYOFF, new PlayoffService(DbContext) },
-                { SERVICE_SERIES, new SeriesService(DbContext) }
+                { SERVICE_SERIES, new SeriesService(DbContext) },
+                { SERVICE_DIVISION, new DivisionService(DbContext) }
             };
 
         }

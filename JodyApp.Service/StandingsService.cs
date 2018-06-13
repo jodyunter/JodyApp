@@ -12,12 +12,30 @@ namespace JodyApp.Service
 {
     public class StandingsService:BaseService<DomainObject>
     {
-        public SeasonService SeasonService { get; set; }
+        public SeasonService SeasonService { get; set; }        
 
         public override DbSet<DomainObject> Entities => throw new NotImplementedException();
 
-        public StandingsService(JodyAppContext db) : base(db) { SeasonService = new SeasonService(db); }
-        public StandingsService(JodyAppContext db, SeasonService seasonService) : base(db) { SeasonService = seasonService; }
+        public StandingsService(JodyAppContext db) : base(db) { SeasonService = new SeasonService(db);}
+        
+        public ListViewModel GetModelsBySeasonIdAndDivisionId(int seasonId, int divisionId)
+        {
+            var season = (Season)SeasonService.GetById(seasonId);
+            var division = season.Divisions.Where(d => d.Id == divisionId).FirstOrDefault();
+
+            var recordModels = new List<BaseViewModel>();
+            
+            var teams = SeasonService.GetTeamsInDivisionByRank(division);
+            
+            teams.ForEach(team =>
+            {
+                var model = new StandingsRecordViewModel(team.Stats.Rank, season.League.Name, division.Name, team.Name, team.Stats.Wins, team.Stats.Loses, team.Stats.Ties, team.Stats.Points, team.Stats.GamesPlayed, team.Stats.GoalsFor, team.Stats.GoalsAgainst, team.Stats.GoalDifference);
+                recordModels.Add(model);                
+            });
+
+            return new ListViewModel(recordModels);
+
+        }
 
         public ListViewModel GetBySeasonAndDivisionLevel(Season season, int divisionLevel)
         {
@@ -28,18 +46,16 @@ namespace JodyApp.Service
             divisions.ToList().ForEach(division =>
             {
                 var teams = SeasonService.GetTeamsInDivisionByRank(division);
-                
-                int i = 1;
+                                            
                 teams.ForEach(team =>
                 {
-                    var model = new StandingsRecordViewModel(i, season.League.Name, division.Name, team.Name, team.Stats.Wins, team.Stats.Loses, team.Stats.Ties, team.Stats.Points, team.Stats.GamesPlayed, team.Stats.GoalsFor, team.Stats.GoalsAgainst, team.Stats.GoalDifference);
-                    recordModels.Add(model);
-                    i++;
+                    var model = new StandingsRecordViewModel(team.Stats.Rank, season.League.Name, division.Name, team.Name, team.Stats.Wins, team.Stats.Loses, team.Stats.Ties, team.Stats.Points, team.Stats.GamesPlayed, team.Stats.GoalsFor, team.Stats.GoalsAgainst, team.Stats.GoalDifference);
+                    recordModels.Add(model);                    
                 });
 
             });
             return new ListViewModel(recordModels);
-        }
+        }        
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {

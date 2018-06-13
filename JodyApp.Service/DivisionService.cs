@@ -52,6 +52,11 @@ namespace JodyApp.Service
 
             return divisions;
         }
+
+        public ListViewModel GetModelsBySeasonId(int seasonId)
+        {
+            return CreateListViewModelFromList(db.Divisions.Where(d => d.Season.Id == seasonId).ToList<DomainObject>(), DomainToDTO);
+        }
         public List<Division> GetDivisionsBySeason(Season season)
         {
             return db.Divisions.Where(d => d.Season.Id == season.Id).ToList();
@@ -123,7 +128,7 @@ namespace JodyApp.Service
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
-            throw new NotImplementedException();
+            return new ReferenceViewModel((int)obj.Id, ((Division)obj).Name);
         }
 
         public override BaseViewModel Save(BaseViewModel mdoel)

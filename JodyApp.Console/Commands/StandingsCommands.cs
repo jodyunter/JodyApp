@@ -38,8 +38,7 @@ namespace JodyApp.ConsoleApp.Commands
             int divisionLevel = int.Parse(Application.ReadFromConsole(context, "Enter Division Level>"));
 
             return View(context, (int)context.SelectedSeason.Id, divisionLevel);
-        }
-
+        }      
 
         public override BaseView GetView(BaseViewModel model)
         {
@@ -59,6 +58,21 @@ namespace JodyApp.ConsoleApp.Commands
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
             throw new NotImplementedException();
+        }
+
+        [Command]
+        public BaseListView ViewByDivision(ApplicationContext context)
+        {
+            var selectedSeason = SeasonCommands.SelectSeason(context);
+
+            var divisionService = (DivisionService)context.ServiceLibraries[SERVICE_DIVISION];
+
+            var selectedDivision = GetSelectedObject(context, "select division>", new ReferenceObjectListView(divisionService.GetModelsBySeasonId((int)selectedSeason.Id)));
+
+            var service = (StandingsService)Service;
+
+            return GetList(service.GetModelsBySeasonIdAndDivisionId((int)selectedSeason.Id, (int)selectedDivision.Id));
+            
         }
     }
 }

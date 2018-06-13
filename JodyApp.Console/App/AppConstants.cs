@@ -22,6 +22,7 @@ namespace JodyApp.ConsoleApp.App
         public const string SERVICE_COMPETITION = "Competition";
         public const string SERVICE_PLAYOFF = "Playoff";
         public const string SERVICE_SERIES = "Series";
+        public const string SERVICE_DIVISION = "Division";
 
     }
 }

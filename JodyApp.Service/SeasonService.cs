@@ -112,13 +112,12 @@ namespace JodyApp.Service
         public List<Team> GetTeamsInDivisionByRank(Division division)
         {
 
-            var teams = DivisionService.GetAllTeamsInDivision(division).ToDictionary(t => t.Name, t => t);
+            var teams = DivisionService.GetAllTeamsInDivision(division);
 
             division.Rankings.Sort();
-            int rank = 1;
-            division.Rankings.ForEach(r => { teams[r.Team.Name].Stats.Rank = rank; rank++; });
+            division.Rankings.ForEach(r => { teams.Where(t => t.Name == r.Team.Name).ToList().ForEach(t => { t.Stats.Rank = r.Rank; }); });
 
-            return teams.Values.ToList();
+            return teams.OrderBy(t => t.Stats.Rank).ToList();
         }
 
         public Season GetSeason(League league, string name, int year)

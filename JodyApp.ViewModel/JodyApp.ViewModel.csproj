@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Competition\CompetitionViewModel.cs" />
     <Compile Include="Competition\Playoff\SeriesViewModel.cs" />
+    <Compile Include="Competition\Season\SeasonDivisionViewModel.cs" />
+    <Compile Include="Competition\Season\StandingsRecordViewModel.cs" />
     <Compile Include="Config\Competition\ConfigCompetitionViewModel.cs" />
     <Compile Include="Config\Division\ConfigDivisionViewModel.cs" />
     <Compile Include="Config\League\LeagueViewModel.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="ReferenceObject.cs" />
     <Compile Include="Competition\Season\SeasonViewModel.cs" />
+    <Compile Include="ReferenceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
