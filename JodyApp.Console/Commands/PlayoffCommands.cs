@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.Views;
-using JodyApp.Service;
+using static JodyApp.ConsoleApp.App.AppConstants;
 using JodyApp.ViewModel;
 
 namespace JodyApp.ConsoleApp.Commands
@@ -16,10 +16,10 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override string CompetitionType { get { return ConfigCompetitionViewModel.PLAYOFF; } }
 
-        public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
+        public override Action<ApplicationContext> ClearSelectedItem => ClearSelectedPlayoff;
 
         public PlayoffCommands() { }
-        public PlayoffCommands(ApplicationContext context):base(context, "Playoff") {}
+        public PlayoffCommands(ApplicationContext context):base(context, SERVICE_PLAYOFF) {}
 
         public static ReferenceObject SelectPlayoff(ApplicationContext context, string prompt = "Select Playoff>")
         {
@@ -57,24 +57,12 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override BaseView GetView(BaseViewModel model)
         {
-            return new BaseCompetitionView(model);
+            return new PlayoffView(model);
         }
 
-        [Command]
-        public BaseView ViewSeries(ApplicationContext context)
+        public static void ClearSelectedPlayoff(ApplicationContext context)
         {
-            throw new NotImplementedException();
-        }
-
-        [Command]
-        public BaseListView ListSeries(ApplicationContext context)
-        {
-            var playoffService = (PlayoffService)context.ServiceLibraries["Playoff"];
-
-            var playoffId = SelectPlayoff(context).Id;
-
-            return new SeriesListView(playoffService.GetSeriesModelsByPlayoffId((int)playoffId));
-
+            context.SelectedPlayoff = null;
         }
 
     }

@@ -9,8 +9,7 @@ using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -24,7 +23,7 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
-        public DivisionCommands(ApplicationContext context) : base(context, "ConfigDivision") { }
+        public DivisionCommands(ApplicationContext context) : base(context, SERVICE_CONFIGDIVISION) { }
         public DivisionCommands() : base() { }
 
 

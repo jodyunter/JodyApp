@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using JodyApp.ConsoleApp.App;
-using JodyApp.ConsoleApp.Commands;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
-using JodyApp.Domain;
 using JodyApp.Service;
 using JodyApp.Service.ConfigServices;
 using JodyApp.ViewModel;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp
 {
@@ -133,22 +130,24 @@ namespace JodyApp.ConsoleApp
         }
         public void SetupServiceLibraries()
         {
-            ServiceLibraries = new Dictionary<string, JService>();
+            ServiceLibraries = new Dictionary<string, JService>
+            {
+                { SERVICE_LEAGUE, new LeagueService(DbContext) },
+                { SERVICE_CONFIGTEAM, new ConfigTeamService(DbContext) },
+                { SERVICE_CONFIGDIVISION, new ConfigDivisionService(DbContext) },
+                { SERVICE_CONFIGCOMPETITION, new ConfigCompetitionService(DbContext) },
+                { SERVICE_CONFIGSCHEDULERULE, new ConfigScheduleRuleService(DbContext) },
+                { SERVICE_CONFIGGROUPRULE, new ConfigGroupRuleService(DbContext) },
+                { SERVICE_CONFIGGROUP, new ConfigGroupService(DbContext) },
+                { SERVICE_CONFIGSERIESRULE, new ConfigSeriesRuleService(DbContext) },
+                { SERVICE_CONFIGSORTINGRULE, new ConfigSortingRuleService(DbContext) },
+                { SERVICE_SEASON, new SeasonService(DbContext) },
+                { SERVICE_STANDINGS, new StandingsService(DbContext) },
+                { SERVICE_COMPETITION, new CompetitionService(DbContext) },
+                { SERVICE_PLAYOFF, new PlayoffService(DbContext) },
+                { SERVICE_SERIES, new SeriesService(DbContext) }
+            };
 
-            ServiceLibraries.Add("League", new LeagueService(DbContext));
-            ServiceLibraries.Add("ConfigTeam", new ConfigTeamService(DbContext));
-            ServiceLibraries.Add("ConfigDivision", new ConfigDivisionService(DbContext));
-            ServiceLibraries.Add("ConfigCompetition", new ConfigCompetitionService(DbContext));
-            ServiceLibraries.Add("ConfigScheduleRule", new ConfigScheduleRuleService(DbContext));
-            ServiceLibraries.Add("ConfigGroupRule", new ConfigGroupRuleService(DbContext));
-            ServiceLibraries.Add("ConfigGroup", new ConfigGroupService(DbContext));
-            ServiceLibraries.Add("ConfigSeriesRule", new ConfigSeriesRuleService(DbContext));
-            ServiceLibraries.Add("ConfigSortingRule", new ConfigSortingRuleService(DbContext));
-            ServiceLibraries.Add("Season", new SeasonService(DbContext));
-            ServiceLibraries.Add("Standings", new StandingsService(DbContext));
-            ServiceLibraries.Add("Competition", new CompetitionService(DbContext));
-            ServiceLibraries.Add("Playoff", new PlayoffService(DbContext));
-            
         }
 
         public void SetupCommandLibraries()

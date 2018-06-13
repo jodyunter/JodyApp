@@ -17,10 +17,10 @@ namespace JodyApp.ConsoleApp.Views
 
             var m = (PlayoffViewModel)Model;
 
+            var seriesList = new SeriesListView(m.SeriesViews);
+            result += "\n" + seriesList.GetView();
 
-
-
-            return null;
+            return result;
         }
     }
 }

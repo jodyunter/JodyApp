@@ -3,16 +3,13 @@ using JodyApp.ConsoleApp.Views;
 using JodyApp.Service;
 using JodyApp.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
     public class SeasonCommands:BaseCompetitionCommands
     {
-        public SeasonCommands(ApplicationContext context) : base(context, "Season") { }
+        public SeasonCommands(ApplicationContext context) : base(context, SERVICE_SEASON) { }
         public SeasonCommands() : base() { }
         public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => SelectSeason;
 
@@ -34,9 +31,14 @@ namespace JodyApp.ConsoleApp.Commands
 
 
         }
-        public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
+        public override Action<ApplicationContext> ClearSelectedItem => ClearSelectedSeason;
 
         public override string CompetitionType { get { return ConfigCompetitionViewModel.SEASON; } }
+
+        public static void ClearSelectedSeason(ApplicationContext context)
+        {
+            context.SelectedSeason = null;
+        }
 
     }
 }

@@ -12,6 +12,7 @@ using JodyApp.Domain.Table;
 using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.Service.ConfigServices;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -36,20 +37,20 @@ namespace JodyApp.ConsoleApp.Commands
         {            
 
             SetupConfig(context.DbContext,
-                (ConfigTeamService)context.ServiceLibraries["ConfigTeam"],
-                (ConfigDivisionService)context.ServiceLibraries["ConfigDivision"],
-                (ConfigScheduleRuleService)context.ServiceLibraries["ConfigSheduleRule"],
-                (ConfigCompetitionService)context.ServiceLibraries["ConfigCompetition"],
-                (ConfigSortingRuleService)context.ServiceLibraries["ConfigSortingRule"],
-                (LeagueService)context.ServiceLibraries["League"]);
+                (ConfigTeamService)context.ServiceLibraries[SERVICE_CONFIGTEAM],
+                (ConfigDivisionService)context.ServiceLibraries[SERVICE_CONFIGDIVISION],
+                (ConfigScheduleRuleService)context.ServiceLibraries[SERVICE_CONFIGSCHEDULERULE],
+                (ConfigCompetitionService)context.ServiceLibraries[SERVICE_CONFIGCOMPETITION],
+                (ConfigSortingRuleService)context.ServiceLibraries[SERVICE_CONFIGSORTINGRULE],
+                (LeagueService)context.ServiceLibraries[SERVICE_LEAGUE]);
 
             SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null,
-                (ConfigCompetitionService)context.ServiceLibraries["ConfigCompetition"],
-                (ConfigDivisionService)context.ServiceLibraries["ConfigDivision"],
-                (ConfigGroupRuleService)context.ServiceLibraries["ConfigGroupRule"],
-                (ConfigGroupService)context.ServiceLibraries["ConfigGroup"],
-                (ConfigSeriesRuleService)context.ServiceLibraries["ConfigSeriesRule"],                
-                (LeagueService)context.ServiceLibraries["League"]);
+                (ConfigCompetitionService)context.ServiceLibraries[SERVICE_CONFIGCOMPETITION],
+                (ConfigDivisionService)context.ServiceLibraries[SERVICE_CONFIGDIVISION],
+                (ConfigGroupRuleService)context.ServiceLibraries[SERVICE_CONFIGGROUPRULE],
+                (ConfigGroupService)context.ServiceLibraries[SERVICE_CONFIGGROUP],
+                (ConfigSeriesRuleService)context.ServiceLibraries[SERVICE_CONFIGSERIESRULE],                
+                (LeagueService)context.ServiceLibraries[SERVICE_LEAGUE]);
 
             return new MessageView("Setup Done");
         }
@@ -59,12 +60,12 @@ namespace JodyApp.ConsoleApp.Commands
         public BaseView SetupSeason(ApplicationContext context)
         {
             SetupConfig(context.DbContext,
-                (ConfigTeamService)context.ServiceLibraries["ConfigTeam"],
-                (ConfigDivisionService)context.ServiceLibraries["ConfigDivision"],
-                (ConfigScheduleRuleService)context.ServiceLibraries["ConfigSheduleRule"],
-                (ConfigCompetitionService)context.ServiceLibraries["ConfigCompetition"],
-                (ConfigSortingRuleService)context.ServiceLibraries["ConfigSortingRule"],
-                (LeagueService)context.ServiceLibraries["League"]);
+                (ConfigTeamService)context.ServiceLibraries[SERVICE_CONFIGTEAM],
+                (ConfigDivisionService)context.ServiceLibraries[SERVICE_CONFIGDIVISION],
+                (ConfigScheduleRuleService)context.ServiceLibraries[SERVICE_CONFIGSCHEDULERULE],
+                (ConfigCompetitionService)context.ServiceLibraries[SERVICE_CONFIGCOMPETITION],
+                (ConfigSortingRuleService)context.ServiceLibraries[SERVICE_CONFIGSORTINGRULE],
+                (LeagueService)context.ServiceLibraries[SERVICE_LEAGUE]);
 
 
             return new MessageView("Setup Done");
@@ -72,14 +73,13 @@ namespace JodyApp.ConsoleApp.Commands
         [Command]
         public BaseView SetupPlayoff(ApplicationContext context)
         {
-
             SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null,
-                (ConfigCompetitionService)context.ServiceLibraries["ConfigCompetition"],
-                (ConfigDivisionService)context.ServiceLibraries["ConfigDivision"],
-                (ConfigGroupRuleService)context.ServiceLibraries["ConfigGroupRule"],
-                (ConfigGroupService)context.ServiceLibraries["ConfigGroup"],
-                (ConfigSeriesRuleService)context.ServiceLibraries["ConfigSeriesRule"],
-                (LeagueService)context.ServiceLibraries["League"]);
+                (ConfigCompetitionService)context.ServiceLibraries[SERVICE_CONFIGCOMPETITION],
+                (ConfigDivisionService)context.ServiceLibraries[SERVICE_CONFIGDIVISION],
+                (ConfigGroupRuleService)context.ServiceLibraries[SERVICE_CONFIGGROUPRULE],
+                (ConfigGroupService)context.ServiceLibraries[SERVICE_CONFIGGROUP],
+                (ConfigSeriesRuleService)context.ServiceLibraries[SERVICE_CONFIGSERIESRULE],
+                (LeagueService)context.ServiceLibraries[SERVICE_LEAGUE]);
 
             return new MessageView("Setup Done");
         }

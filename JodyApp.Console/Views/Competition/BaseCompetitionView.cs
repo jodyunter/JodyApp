@@ -11,13 +11,13 @@ namespace JodyApp.ConsoleApp.Views
     {
         public BaseCompetitionView(BaseViewModel model) : base(model) { }
 
-        public override string[] ViewHeaders => new string[] { "Id", "League", "Name", "Year", "Started" };
+        public override string[] ViewHeaders => new string[] { "Id", "League", "Name", "Year", "Started", "Complete" };
         public override object[] ViewObjects
         {
             get
             {
                 var m = (CompetitionViewModel)Model;
-                return new object[] { m.Id, m.League, m.Name, m.Year, m.Started };
+                return new object[] { m.Id, m.League, m.Name, m.Year, m.Started, m.Complete };
             }
         }
     }

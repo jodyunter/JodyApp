@@ -146,8 +146,10 @@ namespace JodyApp.Service
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
-            var playoff = (Playoff)obj;            
-            return new PlayoffViewModel(playoff.Id, playoff.League.Id, playoff.League.Name, playoff.Name, playoff.Year, "Season", playoff.Started, playoff.Complete, playoff.StartingDay);
+            var playoff = (Playoff)obj;
+            var seriesViews = CreateListViewModelFromList(playoff.Series.ToList<DomainObject>(), SeriesService.StaticDomainToDTO);
+
+            return new PlayoffViewModel(playoff.Id, playoff.League.Id, playoff.League.Name, playoff.Name, playoff.Year, "Season", playoff.Started, playoff.Complete, playoff.StartingDay, seriesViews);
         }
 
         public override BaseViewModel Save(BaseViewModel mdoel)
@@ -156,9 +158,8 @@ namespace JodyApp.Service
         }
 
         public ListViewModel GetSeriesModelsByPlayoffId(int playoffId)
-        {
-            var seriesService = new SeriesService(db);
-            return seriesService.CreateListViewModelFromList(db.Series.Where(s => s.Playoff.Id == playoffId).ToList<DomainObject>(), seriesService.DomainToDTO);
+        {            
+            return BaseService<DomainObject>.CreateListViewModelFromList(db.Series.Where(s => s.Playoff.Id == playoffId).ToList<DomainObject>(), SeriesService.StaticDomainToDTO);
         }
 
     }

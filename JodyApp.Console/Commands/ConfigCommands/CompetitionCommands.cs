@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -20,7 +21,7 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
-        public CompetitionCommands(ApplicationContext context) : base(context, "ConfigCompetition") { }
+        public CompetitionCommands(ApplicationContext context) : base(context, SERVICE_CONFIGCOMPETITION) { }
         public CompetitionCommands() : base() { }
 
         public override BaseView GetView(BaseViewModel model)

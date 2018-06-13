@@ -17,7 +17,7 @@ namespace JodyApp.Service
 
         public SeriesService(JodyAppContext db) : base(db) { }
 
-        public override BaseViewModel DomainToDTO(DomainObject obj)
+        public static BaseViewModel StaticDomainToDTO(DomainObject obj)
         {
             var series = (Series)obj;
 
@@ -29,12 +29,22 @@ namespace JodyApp.Service
            });
 
             return new SeriesViewModel((int)obj.Id, series.Name, series.Playoff.Name, series.Playoff.Year,
-                series.HomeTeam.Name, series.AwayTeam.Name, series.Round, gameList);
+                series.HomeTeam.Name, series.HomeWins, series.AwayTeam.Name, series.AwayWins, series.Round, gameList);
+        }
+
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            return StaticDomainToDTO(obj);
         }
 
         public override BaseViewModel Save(BaseViewModel model)
         {
             throw new NotImplementedException();
+        }
+
+        public ListViewModel GetByPlayoffId(int playoffId)
+        {
+            return CreateListViewModelFromList(db.Series.Where(s => s.Playoff.Id == playoffId).ToList<DomainObject>(), DomainToDTO);
         }
     }
 }

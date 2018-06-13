@@ -42,9 +42,9 @@ namespace JodyApp.ConsoleApp.Commands
 
             ClearSelectedItem(context);
 
-            context.SelectedLeague = SelectMethod(context, prompt);
+            SelectMethod(context, prompt);
 
-            return new MessageView("Selected League Changed");
+            return new MessageView("Selected Item Changed");
         }
         [Command]
         public virtual BaseView View(ApplicationContext context, int? id = null, string prompt = "Select>")

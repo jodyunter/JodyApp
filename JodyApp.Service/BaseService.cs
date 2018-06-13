@@ -70,13 +70,13 @@ namespace JodyApp.Service
         }
 
 
-        public ListViewModel CreateListViewModelFromList(List<DomainObject> obj, Func<DomainObject, BaseViewModel> domainToDTO)
+        public static ListViewModel CreateListViewModelFromList(List<DomainObject> obj, Func<DomainObject, BaseViewModel> domainToDTO)
         {
             var items = new List<BaseViewModel>();
 
             obj.ForEach(o =>
             {
-                items.Add(DomainToDTO(o));
+                items.Add(domainToDTO(o));
             });
 
             var teamList = new ListViewModel(items);

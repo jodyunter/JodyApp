@@ -4,9 +4,7 @@ using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using JodyApp.Service;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -16,7 +14,7 @@ namespace JodyApp.ConsoleApp.Commands
 
         public BaseCompetitionCommands() { }
         public BaseCompetitionCommands(ApplicationContext context, string serviceType) : base(context, serviceType) { }
-        public BaseCompetitionCommands(ApplicationContext context) : base(context, "Competition") { }
+        public BaseCompetitionCommands(ApplicationContext context) : base(context, SERVICE_COMPETITION) { }
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
         {
@@ -42,9 +40,9 @@ namespace JodyApp.ConsoleApp.Commands
         {
             var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
 
-            var service = context.ServiceLibraries["Competition"];
+            var service = (CompetitionService)context.ServiceLibraries[AppConstants.SERVICE_COMPETITION];
 
-            return GetList(((CompetitionService)service).GetAllByLeagueId((int)league.Id, CompetitionType));
+            return GetList(service.GetAllByLeagueId((int)league.Id, CompetitionType));
         }
 
         //move this to games commands

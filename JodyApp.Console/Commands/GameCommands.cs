@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.Service;
 using JodyApp.ViewModel;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
     public class GameCommands:BaseViewCommands
     {
         public GameCommands() { }
-        public GameCommands(ApplicationContext context):base(context, "Competition") { }
+        public GameCommands(ApplicationContext context):base(context, SERVICE_COMPETITION) { }
 
         public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => throw new NotImplementedException();
 
@@ -43,7 +41,7 @@ namespace JodyApp.ConsoleApp.Commands
         public BaseListView ListNextGames(ApplicationContext context, int? competitionId, string competitionType)
         {
 
-            var competitionService = (CompetitionService)context.ServiceLibraries["Competition"];
+            var competitionService = (CompetitionService)context.ServiceLibraries[AppConstants.SERVICE_COMPETITION];
 
             return new GameListView(competitionService.GetModelForNextGames((int)competitionId, ConfigCompetitionViewModel.SEASON));
         }
@@ -53,7 +51,7 @@ namespace JodyApp.ConsoleApp.Commands
         public BaseListView ListGames(ApplicationContext context, int? competitionId, string competitionType)
         {
 
-            var competitionService = (CompetitionService)context.ServiceLibraries["Competition"];
+            var competitionService = (CompetitionService)context.ServiceLibraries[AppConstants.SERVICE_COMPETITION];
 
             return new GameListView(competitionService.GetModelForGames((int)competitionId, competitionType));
         }
@@ -66,7 +64,7 @@ namespace JodyApp.ConsoleApp.Commands
             if (teamName == null)
                 teamName = TeamCommands.SelectTeam(context).Name;
 
-            var competitionService = (CompetitionService)context.ServiceLibraries["Competition"];
+            var competitionService = (CompetitionService)context.ServiceLibraries[AppConstants.SERVICE_COMPETITION];
 
             return new GameListView(competitionService.GetModelForGames((int)competitionid, teamName, competitionType));
 

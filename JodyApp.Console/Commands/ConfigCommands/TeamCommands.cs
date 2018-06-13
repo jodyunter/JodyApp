@@ -7,9 +7,7 @@ using JodyApp.Service.ConfigServices;
 using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -21,7 +19,7 @@ namespace JodyApp.ConsoleApp.Commands
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
         public TeamCommands() : base() { }
-        public TeamCommands(ApplicationContext context) : base(context, "ConfigTeam")
+        public TeamCommands(ApplicationContext context) : base(context, SERVICE_CONFIGTEAM)
         {            
             InputDictionary.Add("League", LeagueCommands.SelectLeague);
             InputDictionary.Add("Division", DivisionCommands.SelectDivision);
@@ -51,7 +49,7 @@ namespace JodyApp.ConsoleApp.Commands
 
             searchId = (int)divisionRef.Id;
 
-            var service = context.ServiceLibraries["ConfigTeam"];
+            var service = context.ServiceLibraries[SERVICE_CONFIGTEAM];
             var view = new TeamListView(((ConfigTeamService)service).GetModelByDivision(searchId))
             {
                 Header = divisionRef.Name

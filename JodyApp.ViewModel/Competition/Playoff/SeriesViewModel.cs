@@ -11,11 +11,13 @@ namespace JodyApp.ViewModel
         public string PlayoffName { get; set; }
         public int Year { get; set; }
         public String HomeTeamName { get; set; }
+        public int HomeWins { get; set; }
         public String AwayTeamName { get; set; }
+        public int AwayWins { get; set; }
         public int Round { get; set; }
         public List<GameViewModel> Games { get; set; }
 
-        public SeriesViewModel(int id, string name, string playoffName, int year, string homeTeamName, string awayTeamName, int round, List<GameViewModel> games)
+        public SeriesViewModel(int id, string name, string playoffName, int year, string homeTeamName, int homeWins, string awayTeamName, int awayWins, int round, List<GameViewModel> games)
         {
             Id = id;
             Name = name;
@@ -25,6 +27,8 @@ namespace JodyApp.ViewModel
             AwayTeamName = awayTeamName;
             Round = round;
             Games = games;
+            HomeWins = homeWins;
+            AwayWins = awayWins;
         }
     }
 }

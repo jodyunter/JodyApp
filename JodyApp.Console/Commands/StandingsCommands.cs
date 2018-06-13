@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -17,13 +18,12 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Action<ApplicationContext> ClearSelectedItem => throw new NotImplementedException();
 
-        public StandingsCommands(ApplicationContext context) : base(context, "Standings") { }        
+        public StandingsCommands(ApplicationContext context) : base(context, SERVICE_STANDINGS) { }        
         public BaseView View(ApplicationContext context, int seasonId, int divisionLevel)
         {
-            var seasonService = (SeasonService)context.ServiceLibraries["Season"];
-            var standingsService = (StandingsService)context.ServiceLibraries["Standings"];
+            var seasonService = (SeasonService)context.ServiceLibraries[SERVICE_SEASON];            
 
-            var model = standingsService.GetBySeasonAndDivisionLevel((Season)seasonService.GetById(seasonId), divisionLevel);
+            var model = ((StandingsService)Service).GetBySeasonAndDivisionLevel((Season)seasonService.GetById(seasonId), divisionLevel);
             var view = new StandingsView(model);
 
             return view;

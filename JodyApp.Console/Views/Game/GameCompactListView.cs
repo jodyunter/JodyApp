@@ -11,9 +11,9 @@ namespace JodyApp.ConsoleApp.Views
     {
         public GameCompactListView(ListViewModel model) : base(model) { }
 
-        public override string Formatter => "{0,5}. {1,20} {2,5}:{3,5} {4,20} {5, 5}";
+        public override string Formatter => "{0,5}. {1,20} {2,5}:{3,-5} {4,-20} {5, 5}";
 
-        public override string[] HeaderStrings => new string[] { "No.", "Home", "Sc", "Sc", "Away", "Complete" };
+        public override string[] HeaderStrings => new string[] { "No", "Home", "", "", "Away", "Complete" };
 
         public override List<object> GetDataObjectFromModel(BaseViewModel model)
         {
@@ -24,8 +24,8 @@ namespace JodyApp.ConsoleApp.Views
                 m.GameNumber,
                 m.HomeTeam.Name,
                 m.HomeScore,
-                m.AwayTeam.Name,
                 m.AwayScore,
+                m.AwayTeam.Name,
                 m.Complete
             };
         }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.ConsoleApp.IO;
 using JodyApp.ConsoleApp.App;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
@@ -20,7 +21,7 @@ namespace JodyApp.ConsoleApp.Commands
 
         public override Action<ApplicationContext> ClearSelectedItem => ClearSelectedLeague;
 
-        public LeagueCommands(ApplicationContext context) : base(context, "League") { }
+        public LeagueCommands(ApplicationContext context) : base(context, SERVICE_LEAGUE) { }
         public LeagueCommands() : base() { }
 
         public override BaseViewModel ConstructViewModelFromData(Dictionary<string, string> data)
@@ -57,7 +58,7 @@ namespace JodyApp.ConsoleApp.Commands
         }
 
 
-        public static ReferenceObject SelectLeague(ApplicationContext context, string prompts)
+        public static ReferenceObject SelectLeague(ApplicationContext context, string prompts = "Select League>")
         {            
             if (context.SelectedLeague != null)
             {
