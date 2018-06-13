@@ -29,6 +29,7 @@ namespace JodyApp.Service
             ConfigDivisionService = new ConfigDivisionService(db);
             DivisionService = new DivisionService(db);
             ScheduleService = new ScheduleService(db);
+            ScheduleRuleService = new ConfigScheduleRuleService(db);
         }
 
         public bool IsSeasonStarted(Season season)

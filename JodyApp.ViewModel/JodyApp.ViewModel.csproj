@@ -63,6 +63,7 @@
     <Compile Include="ReferenceObject.cs" />
     <Compile Include="Competition\Season\SeasonViewModel.cs" />
     <Compile Include="ReferenceViewModel.cs" />
+    <Compile Include="YearDetailsView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

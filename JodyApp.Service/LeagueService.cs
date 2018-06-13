@@ -94,6 +94,10 @@ namespace JodyApp.Service
             return DomainToDTO(league);
         }
 
+        public BaseViewModel GetLeagueWinners(int leagueId)
+        {
+
+        }
 
     }
 }

@@ -111,6 +111,14 @@ namespace JodyApp.ConsoleApp.Commands
 
             return new MessageView("Done!");
         }
+
+        [Command]
+        public BaseView ViewChampions(ApplicationContext context)
+        {
+            var league = SelectLeague(context);
+
+
+        }
         
     }
 }

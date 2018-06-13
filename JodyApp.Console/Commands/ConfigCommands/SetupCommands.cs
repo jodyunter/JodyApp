@@ -66,8 +66,7 @@ namespace JodyApp.ConsoleApp.Commands
                 (ConfigCompetitionService)context.ServiceLibraries[SERVICE_CONFIGCOMPETITION],
                 (ConfigSortingRuleService)context.ServiceLibraries[SERVICE_CONFIGSORTINGRULE],
                 (LeagueService)context.ServiceLibraries[SERVICE_LEAGUE]);
-
-
+            
             return new MessageView("Setup Done");
         }
         [Command]
