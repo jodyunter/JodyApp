@@ -21,7 +21,7 @@ namespace JodyApp.Service.CompetitionServices
         {
             DivisionService = new DivisionService(db);
         }
-        
+       
 
         //update to get last game number in database for season
         public List<Game> CreateGamesFromRules(List<ConfigScheduleRule> rules, 

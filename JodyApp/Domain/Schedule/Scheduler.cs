@@ -70,9 +70,9 @@ namespace JodyApp.Domain.Config
 
             return lastGameNumber;
         }
-    
+
         public static Game SetupGame(int lastGameNumber, Team home, Team away)
-            {
+        {
             return new Game
             {
                 HomeTeam = home,
@@ -82,9 +82,27 @@ namespace JodyApp.Domain.Config
                 CanTie = true,
                 Complete = false,
                 GameNumber = ++lastGameNumber
-                };
+            };
+
+        }
+
+        public Dictionary<int, List<Game>> OrganizeGamesByDay(List<Game> games)
+        {
+            var gameMap = new Dictionary<int, List<Game>>();
+
+            games.ForEach(g =>
+            {
+                if (!(gameMap.ContainsKey(g.Day)))
+                {
+                    gameMap.Add(g.Day, new List<Game>());
+                }
+
+                gameMap[g.Day].Add(g);
+            });
+
+            return gameMap;
+        }
 
 
-            }
     }
 }
