@@ -96,7 +96,7 @@ namespace JodyApp.Service
 
         public BaseViewModel GetLeagueWinners(int leagueId)
         {
-
+            return null;
         }
 
     }

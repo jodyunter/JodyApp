@@ -79,14 +79,13 @@ namespace JodyApp.ConsoleApp.Commands
         }
         [Command]
         public BaseView Play(ApplicationContext context, int? leagueId = null)
-        {
-            JodyAppContext db = new JodyAppContext(JodyAppContext.CURRENT_DATABASE);
-            LeagueService leagueService = new LeagueService(db);
-            CompetitionService competitionService = new CompetitionService(db);
-            SeasonService seasonService = new SeasonService(db);
-            DivisionService divisionService = new DivisionService(db);            
-            PlayoffService playoffService = new PlayoffService(db);
-            StandingsService standingsService = new StandingsService(db);
+        {            
+            LeagueService leagueService = new LeagueService(context.DbContext);
+            CompetitionService competitionService = new CompetitionService(context.DbContext);
+            SeasonService seasonService = new SeasonService(context.DbContext);
+            DivisionService divisionService = new DivisionService(context.DbContext);            
+            PlayoffService playoffService = new PlayoffService(context.DbContext);
+            StandingsService standingsService = new StandingsService(context.DbContext);
 
             if (context.SelectedLeague == null)
             {
@@ -116,7 +115,7 @@ namespace JodyApp.ConsoleApp.Commands
         public BaseView ViewChampions(ApplicationContext context)
         {
             var league = SelectLeague(context);
-
+            return null;
 
         }
         

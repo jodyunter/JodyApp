@@ -46,5 +46,25 @@ namespace JodyApp.Service
         {
             return CreateListViewModelFromList(db.Series.Where(s => s.Playoff.Id == playoffId).ToList<DomainObject>(), DomainToDTO);
         }
+
+        public ListViewModel GetBySeriesName(string seriesName)
+        {
+            return CreateListViewModelFromList(db.Series.Where(s => s.Name.Equals(seriesName)).ToList<DomainObject>(), DomainToDTO);
+        }
+
+        public ListViewModel GetSeriesNames()
+        {
+            var stringList = db.Series.Select(s => s.Name).ToList();
+
+            var resultList = new List<ReferenceViewModel>();
+
+            int count = 0;
+            stringList.ForEach(s =>
+            {
+                resultList.Add(new ReferenceViewModel(count, s));
+            });
+
+            return new ListViewModel(resultList.ToList<BaseViewModel>());
+        }
     }
 }

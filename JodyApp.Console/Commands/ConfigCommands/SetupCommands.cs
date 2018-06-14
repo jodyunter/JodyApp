@@ -151,7 +151,7 @@ namespace JodyApp.ConsoleApp.Commands
             ConfigDivision CDLeague, CDWest, CDEast, CDCentral, CDAtlantic, CDSouth;
 
 
-            SimpleTestDataDriver driver = new SimpleTestDataDriver();
+            SimpleTestDataDriver driver = new SimpleTestDataDriver(db);
 
             driver.DeleteAllData();
 

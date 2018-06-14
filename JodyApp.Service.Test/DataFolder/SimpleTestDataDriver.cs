@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace JodyApp.Service.Test
 {
     public class SimpleTestDataDriver : AbstractTestDataDriver
     {
+        public SimpleTestDataDriver(JodyAppContext db) : base(db) { }
         public SimpleTestDataDriver() : base() { }
         public override void PrivateCreateConfigCompetitions()
         {

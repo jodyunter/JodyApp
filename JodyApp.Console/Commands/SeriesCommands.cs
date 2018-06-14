@@ -60,5 +60,15 @@ namespace JodyApp.ConsoleApp.Commands
 
             return view;
         }
+
+        [Command]
+        public BaseListView ListByName(ApplicationContext context)
+        {            
+            var view = new ReferenceObjectListView(((SeriesService)Service).GetSeriesNames());
+
+            var selectedObject = GetSelectedObject(context, "Series Name>", view);
+
+            return new SeriesListView(((SeriesService)Service).GetBySeriesName(selectedObject.Name));
+        }
     }
 }
