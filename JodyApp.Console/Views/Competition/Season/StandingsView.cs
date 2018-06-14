@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using JodyApp.ViewModel;
 
 namespace JodyApp.ConsoleApp.Views
@@ -27,7 +23,7 @@ namespace JodyApp.ConsoleApp.Views
 
         public override string GetView()
         {
-            var listModel = (ListViewModel)Model;
+            var listModel = Model;
 
             var result = "";
             if (!(string.IsNullOrEmpty(Header))) result += Header + "\n";

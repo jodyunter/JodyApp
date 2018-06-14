@@ -19,7 +19,7 @@ namespace JodyApp.ViewModel
         public int GamesPlayed { get; set; }
         public int GoalsFor { get; set; }
         public int GoalsAgainst { get; set; }
-        public int GoalDifference { get; set; }
+        public int GoalDifference { get; set; }        
 
         public StandingsRecordViewModel(int rank, string leagueName, string divisionName, string teamName, int wins, int loses, int ties, int points, int gamesPlayed, int goalsFor, int goalsAgainst, int goalDifference)
         {
