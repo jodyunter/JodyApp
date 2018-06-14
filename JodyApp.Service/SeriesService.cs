@@ -28,8 +28,9 @@ namespace JodyApp.Service
             gameList.Add(CompetitionService.GameToDTO(series.Playoff, game));
            });
 
+            
             return new SeriesViewModel((int)obj.Id, series.Name, series.Playoff.Name, series.Playoff.Year,
-                series.HomeTeam.Name, series.HomeWins, series.AwayTeam.Name, series.AwayWins, series.Round, gameList);
+                series.GetWinner().Name, series.GetTeamWins(series.GetWinner()), series.GetLoser().Name, series.GetTeamWins(series.GetLoser()), series.Round, gameList);
         }
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
@@ -52,9 +53,13 @@ namespace JodyApp.Service
             return CreateListViewModelFromList(db.Series.Where(s => s.Name.Equals(seriesName)).ToList<DomainObject>(), DomainToDTO);
         }
 
+        public ListViewModel GetByTeam(int configTeamId)
+        {
+            return CreateListViewModelFromList(db.Series.Where(s => s.HomeTeam.Parent.Id == configTeamId || s.AwayTeam.Parent.Id == configTeamId).ToList<DomainObject>(), StaticDomainToDTO);
+        }
         public ListViewModel GetSeriesNames()
         {
-            var stringList = db.Series.Select(s => s.Name).ToList();
+            var stringList = db.Series.Select(s => s.Name).Distinct().ToList();
 
             var resultList = new List<ReferenceViewModel>();
 

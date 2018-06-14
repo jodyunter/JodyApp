@@ -70,5 +70,14 @@ namespace JodyApp.ConsoleApp.Commands
 
             return new SeriesListView(((SeriesService)Service).GetBySeriesName(selectedObject.Name));
         }
+
+        [Command]
+        public BaseListView ListByTeam(ApplicationContext context)
+        {
+            var teamRef = TeamCommands.SelectTeam(context);
+
+            return new SeriesListView(((SeriesService)Service).GetByTeam((int)teamRef.Id));
+            
+        }
     }
 }

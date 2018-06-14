@@ -22,7 +22,7 @@ namespace JodyApp.ConsoleApp.Views
             if (seriesName.Length > 10) seriesName = seriesName.Substring(0, 10);
             return new List<object>()
             {
-               m.Year, seriesName, m.Round, m.HomeTeamName, m.HomeWins, m.AwayWins, m.AwayTeamName
+               m.Year, seriesName, m.Round, m.WinnerTeamName, m.WinnerWins, m.LoserTeamName, m.LoserWins
             };
         }
     }
