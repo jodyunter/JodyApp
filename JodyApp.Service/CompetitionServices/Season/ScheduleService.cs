@@ -9,7 +9,7 @@ using JodyApp.Domain;
 using JodyApp.ViewModel;
 using System.Data.Entity;
 
-namespace JodyApp.Service
+namespace JodyApp.Service.CompetitionServices
 {
     public class ScheduleService : BaseService<DomainObject>
     {

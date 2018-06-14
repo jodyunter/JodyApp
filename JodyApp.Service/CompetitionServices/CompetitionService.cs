@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace JodyApp.Service
+namespace JodyApp.Service.CompetitionServices
 {
     public class CompetitionService : BaseService<DomainObject>
     {        

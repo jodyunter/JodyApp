@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JodyApp.ConsoleApp.App;
 using JodyApp.ConsoleApp.Views;
-using JodyApp.Service;
+using JodyApp.Service.CompetitionServices;
 using JodyApp.ViewModel;
 using static JodyApp.ConsoleApp.App.AppConstants;
 

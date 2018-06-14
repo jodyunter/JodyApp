@@ -1,13 +1,9 @@
 ﻿using JodyApp.ConsoleApp.Views;
-using JodyApp.Database;
 using JodyApp.Service;
 using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JodyApp.ConsoleApp.IO;
+using JodyApp.Service.CompetitionServices;
 using JodyApp.ConsoleApp.App;
 using static JodyApp.ConsoleApp.App.AppConstants;
 

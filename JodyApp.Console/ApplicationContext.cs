@@ -8,6 +8,7 @@ using JodyApp.ConsoleApp.Views;
 using JodyApp.Database;
 using JodyApp.Service;
 using JodyApp.Service.ConfigServices;
+using JodyApp.Service.CompetitionServices;
 using JodyApp.ViewModel;
 using static JodyApp.ConsoleApp.App.AppConstants;
 

@@ -3,7 +3,7 @@ using JodyApp.ConsoleApp.Views;
 using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
-using JodyApp.Service;
+using JodyApp.Service.CompetitionServices;
 using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands

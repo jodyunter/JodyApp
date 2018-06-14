@@ -4,7 +4,7 @@ using static JodyApp.ConsoleApp.App.AppConstants;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.ViewModel;
 using JodyApp.ConsoleApp.App;
-using JodyApp.Service;
+using JodyApp.Service.CompetitionServices;
 
 namespace JodyApp.ConsoleApp.Commands
 {

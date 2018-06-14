@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
-    <Compile Include="CompetitionService.cs" />
+    <Compile Include="CompetitionServices\CompetitionService.cs" />
+    <Compile Include="CompetitionServices\Playoff\GroupRuleService.cs" />
+    <Compile Include="CompetitionServices\Playoff\GroupService.cs" />
     <Compile Include="ConfigServices\ConfigCompetitionService.cs" />
     <Compile Include="ConfigServices\ConfigDivisionService.cs" />
     <Compile Include="ConfigServices\ConfigGroupRuleService.cs" />
@@ -60,12 +62,12 @@
     <Compile Include="DivisionService.cs" />
     <Compile Include="JService.cs" />
     <Compile Include="LeagueService.cs" />
-    <Compile Include="PlayoffService.cs" />
+    <Compile Include="CompetitionServices\Playoff\PlayoffService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScheduleService.cs" />
-    <Compile Include="SeasonService.cs" />
-    <Compile Include="SeriesService.cs" />
-    <Compile Include="StandingsService.cs" />
+    <Compile Include="CompetitionServices\Season\ScheduleService.cs" />
+    <Compile Include="CompetitionServices\Season\SeasonService.cs" />
+    <Compile Include="CompetitionServices\Playoff\SeriesService.cs" />
+    <Compile Include="CompetitionServices\Season\StandingsService.cs" />
     <Compile Include="TeamService.cs" />
   </ItemGroup>
   <ItemGroup>

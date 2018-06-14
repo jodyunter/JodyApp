@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 using JodyApp.Domain;
 using JodyApp.Database;
 using JodyApp.Domain.Config;
-using JodyApp.Domain.Table;
 using JodyApp.Domain.Playoffs;
-using System.Data.Entity;
+using JodyApp.Service.CompetitionServices;
+
 
 namespace JodyApp.Service.Test
 {
     public class JodyTestDataDriver : AbstractTestDataDriver
     {
-        String LeagueName = "Jody League";
-        String PlayoffName = "Playoffs";
-        String RegularSeasonName = "Regular Season";
+        string LeagueName = "Jody League";
+        string PlayoffName = "Playoffs";
+        string RegularSeasonName = "Regular Season";
         
         DivisionService divisionService;
         LeagueService leagueService;

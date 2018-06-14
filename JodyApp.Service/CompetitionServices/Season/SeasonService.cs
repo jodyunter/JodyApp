@@ -12,7 +12,7 @@ using JodyApp.ViewModel;
 using JodyApp.Service.ConfigServices;
 using System.Data.Entity;
 
-namespace JodyApp.Service
+namespace JodyApp.Service.CompetitionServices
 {
     public class SeasonService:BaseService<Season>
     {
@@ -135,6 +135,11 @@ namespace JodyApp.Service
         public override BaseViewModel Save(BaseViewModel mdoel)
         {
             throw new NotImplementedException();
+        }
+
+        public Season GetByYearAndName(int year, string name)
+        {
+            return db.Seasons.Where(s => s.Year == year && s.Name.Equals(name)).FirstOrDefault();
         }
 
     }

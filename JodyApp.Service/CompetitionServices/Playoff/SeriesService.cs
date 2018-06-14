@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JodyApp.Service
+namespace JodyApp.Service.CompetitionServices
 {
     public class SeriesService : BaseService<Series>
     {

@@ -55,7 +55,7 @@ namespace JodyApp.Service
         {
             var league = new League(name);
 
-            db.Leagues.Add(league);
+            Entities.Add(league);
 
             return league;
         }

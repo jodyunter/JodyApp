@@ -5,9 +5,7 @@ using JodyApp.Service;
 using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using JodyApp.Service.CompetitionServices;
 using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
@@ -23,7 +21,7 @@ namespace JodyApp.ConsoleApp.Commands
         {
             var seasonService = (SeasonService)context.ServiceLibraries[SERVICE_SEASON];            
 
-            var model = ((StandingsService)Service).GetBySeasonAndDivisionLevel((Season)seasonService.GetById(seasonId), divisionLevel);
+            var model = ((StandingsService)Service).GetModelBySeasonAndDivisionLevel(seasonId, divisionLevel);
             var view = new StandingsView(model);
 
             return view;
@@ -73,6 +71,16 @@ namespace JodyApp.ConsoleApp.Commands
 
             return GetList(service.GetModelsBySeasonIdAndDivisionId((int)selectedSeason.Id, (int)selectedDivision.Id));
             
+        }
+
+        [Command]
+        public BaseListView ViewByTeam(ApplicationContext context)
+        {
+            var selectedTeam = TeamCommands.SelectTeam(context);
+
+            var service = (StandingsService)Service;
+
+            return GetList(service.GetModelsByTeam((int)selectedTeam.Id));
         }
     }
 }
