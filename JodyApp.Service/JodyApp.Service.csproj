@@ -49,8 +49,6 @@
   <ItemGroup>
     <Compile Include="BaseService.cs" />
     <Compile Include="CompetitionServices\CompetitionService.cs" />
-    <Compile Include="CompetitionServices\Playoff\GroupRuleService.cs" />
-    <Compile Include="CompetitionServices\Playoff\GroupService.cs" />
     <Compile Include="ConfigServices\ConfigCompetitionService.cs" />
     <Compile Include="ConfigServices\ConfigDivisionService.cs" />
     <Compile Include="ConfigServices\ConfigGroupRuleService.cs" />
