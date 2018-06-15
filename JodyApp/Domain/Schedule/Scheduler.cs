@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JodyApp.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +17,56 @@ namespace JodyApp.Domain.Config
                 lastGameNumber = ScheduleGames(games, lastGameNumber, HomeTeams, AwayTeams, playHomeAndAway);
             }
 
+            var gameMap = SortGamesIntoDays(games);
+
+            if (gameMap.ContainsKey(-1))
+            {
+                gameMap[-1].ForEach(game =>
+                {
+                    bool placed = false;
+
+                    int day = 1;
+                    while (!placed && gameMap.ContainsKey(day))
+                    {
+                        if (DoesTeamPlayInList(gameMap[day], game.HomeTeam, game.AwayTeam))
+                        {
+                            day++;
+                        }
+                        else
+                        {
+                            game.Day = day;
+                            gameMap[day].Add(game);
+                            placed = true;
+                        }
+                    }
+
+                    if (!placed)
+                    {
+                        gameMap.Add(day, new List<Game>());
+                        gameMap[day].Add(game);
+                    }
+                        
+                });
+            }
             return lastGameNumber;
         }
 
 
+        public static bool DoesTeamPlayInList(List<Game> games, Team a, Team b)
+        {
+            bool found = false;
+
+            for (int i = 0; i < games.Count && !found; i++)
+            {
+                if (games[i].HomeTeam.Equals(a) || games[i].AwayTeam.Equals(a) ||
+                        games[i].HomeTeam.Equals(b) || games[i].AwayTeam.Equals(b))
+                {
+                    found = true;
+                }
+            }
+
+            return found;
+        }
         //need arrays to do this correctly, may need to sort prior to this method
         public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway)
         {
@@ -37,6 +84,19 @@ namespace JodyApp.Domain.Config
             }
 
             return lastGameNumber;
+        }
+
+        public static Dictionary<int, List<Game>> SortGamesIntoDays(List<Game> games)
+        {
+            var gameMap = new Dictionary<int, List<Game>>();
+
+            games.ForEach(game =>
+            {
+                if (!(gameMap.ContainsKey(game.Day))) gameMap.Add(game.Day, new List<Game>());
+                gameMap[game.Day].Add(game);
+            });
+
+            return gameMap;
         }
 
         public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, bool playHomeAndAway)
@@ -81,7 +141,8 @@ namespace JodyApp.Domain.Config
                 AwayScore = 0,
                 CanTie = true,
                 Complete = false,
-                GameNumber = ++lastGameNumber
+                GameNumber = ++lastGameNumber,
+                Day = -1;
             };
 
         }
