@@ -61,6 +61,7 @@
     <Compile Include="Commands\ConfigCommands\DivisionCommands.cs" />
     <Compile Include="Commands\GameCommands.cs" />
     <Compile Include="Commands\PlayoffCommands.cs" />
+    <Compile Include="Commands\ScheduleCommands.cs" />
     <Compile Include="Commands\SeasonCommands.cs" />
     <Compile Include="Commands\ConfigCommands\SetupCommands.cs" />
     <Compile Include="Commands\SeriesCommands.cs" />
