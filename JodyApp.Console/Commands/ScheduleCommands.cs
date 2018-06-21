@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using JodyApp.ConsoleApp.Views;
 using JodyApp.ViewModel;
+using static JodyApp.ConsoleApp.App.AppConstants;
 
 namespace JodyApp.ConsoleApp.Commands
 {
     public class ScheduleCommands : BaseViewCommands
     {
         public ScheduleCommands() { }
-        public PlayoffCommands(ApplicationContext context) : base(context, SERVICE_PLAYOFF) { }
+        public ScheduleCommands(ApplicationContext context) : base(context, SERVICE_SCHEDULE) { }
 
         public override Func<ApplicationContext, string, ReferenceObject> SelectMethod => throw new NotImplementedException();
 
