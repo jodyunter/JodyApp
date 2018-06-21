@@ -4,6 +4,7 @@ using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using System.Collections.Generic;
 using JodyApp.Domain.Config;
 using JodyApp.Domain;
+using System.Linq;
 
 namespace JodyApp.Data.Test.Domain.Schedule
 {
@@ -90,7 +91,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
 
             var scheduleGames = new List<Game>();
 
-            int lastGameNumber = Scheduler.ScheduleGames(scheduleGames, 25, TeamTests.CreateBasicTeams(teams).ToArray(), null, true);
+            int lastGameNumber = Scheduler.ScheduleGames(scheduleGames, 25, TeamTests.CreateBasicTeams(teams).ToArray(), null, true, 1);
 
             AreEqual(55, lastGameNumber);
             AreEqual(30, scheduleGames.Count);
@@ -116,7 +117,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
             Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
 
             var scheduleGames = new List<Game>();
-            Scheduler.ScheduleGames(scheduleGames, 5, TeamTests.CreateBasicTeams(teams).ToArray(), new Team[] { }, true);
+            Scheduler.ScheduleGames(scheduleGames, 5, TeamTests.CreateBasicTeams(teams).ToArray(), new Team[] { }, true, 1);
 
             AreEqual(30, scheduleGames.Count);
 
@@ -145,7 +146,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
             Scheduler.ScheduleGames(scheduleGames, 0,
                 TeamTests.CreateBasicTeams(homeTeams).ToArray(),
                 TeamTests.CreateBasicTeams(awayTeams).ToArray(),
-                false);
+                false, 1);
 
             ScheduleValidator.ProcessGames(data, scheduleGames);
 
@@ -180,7 +181,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
             Scheduler.ScheduleGames(scheduleGames, 0,
                 TeamTests.CreateBasicTeams(homeTeams).ToArray(),
                 TeamTests.CreateBasicTeams(awayTeams).ToArray(),
-                true);
+                true, 1);
 
             ScheduleValidator.ProcessGames(data, scheduleGames);
 
@@ -214,7 +215,7 @@ namespace JodyApp.Data.Test.Domain.Schedule
             Scheduler.ScheduleGames(scheduleGames, 0, 
                 TeamTests.CreateBasicTeams(homeTeams).ToArray(),
                 TeamTests.CreateBasicTeams(homeTeams).ToArray(),
-                false);
+                false, 1);
 
             ScheduleValidator.ProcessGames(data, scheduleGames);
 
@@ -234,8 +235,114 @@ namespace JodyApp.Data.Test.Domain.Schedule
         [TestMethod]
         public void ShouldSetupGameNumbers()
         {
-            throw new NotImplementedException();
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 0,
+                TeamTests.CreateBasicTeams(homeTeams).ToArray(),
+                TeamTests.CreateBasicTeams(homeTeams).ToArray(),
+                false, 1);
+
+            int count = 1;
+            scheduleGames.OrderBy(s => s.GameNumber).ToList().ForEach(g =>
+           {
+               AreEqual(count, g.GameNumber);
+               count++;
+           });
+            
         }
 
+        [TestMethod]
+        public void ShouldSortGamesIntoDays()
+        {
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+            var homeTeamArray = TeamTests.CreateBasicTeams(homeTeams).ToArray();
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 0,
+                homeTeamArray,
+                homeTeamArray,
+                false, 1);
+
+            var gamesInDays = Scheduler.SortGamesIntoDays(scheduleGames);
+
+            AreEqual(13, gamesInDays.Count);
+
+        }
+
+        [TestMethod]
+        public void TeamShouldPlayInDayHomeTeam()
+        {
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+            var homeTeamArray = TeamTests.CreateBasicTeams(homeTeams).ToArray();
+            var team7 = TeamTests.CreateBasicTeam("Team 7", 5);
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 0,
+                homeTeamArray,
+                homeTeamArray,
+                false, 1);
+
+            IsTrue(Scheduler.DoesTeamPlayInDay(scheduleGames, homeTeamArray[5], team7, 1));            
+
+        }
+
+        [TestMethod]
+        public void TeamsShouldNotPlayInDay()
+        {
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+            var homeTeamArray = TeamTests.CreateBasicTeams(homeTeams).ToArray();
+            var team7 = TeamTests.CreateBasicTeam("Team 7", 5);
+            var team8 = TeamTests.CreateBasicTeam("Team 8", 5);
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 0,
+                homeTeamArray,
+                homeTeamArray,
+                false, 1);
+
+            IsFalse(Scheduler.DoesTeamPlayInDay(scheduleGames, team8, team7, 1));
+        }
+        [TestMethod]
+        public void TeamShouldPlayInDayAwayTeam()
+        {
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+            var homeTeamArray = TeamTests.CreateBasicTeams(homeTeams).ToArray();
+            var team7 = TeamTests.CreateBasicTeam("Team 7", 5);
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 0,
+                homeTeamArray,
+                homeTeamArray,
+                false, 1);
+
+            IsTrue(Scheduler.DoesTeamPlayInDay(scheduleGames, team7, homeTeamArray[5], 1));
+        }
+        [TestMethod]
+        public void TeamShouldPlayInDayBoth()
+        {
+            string[] homeTeams = { "Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6" };
+            var homeTeamArray = TeamTests.CreateBasicTeams(homeTeams).ToArray();            
+
+            Dictionary<string, ScheduleCounts> data = new Dictionary<string, ScheduleCounts>();
+
+            var scheduleGames = new List<Game>();
+            Scheduler.ScheduleGames(scheduleGames, 0,
+                homeTeamArray,
+                homeTeamArray,
+                false, 1);
+
+            IsTrue(Scheduler.DoesTeamPlayInDay(scheduleGames, homeTeamArray[5], homeTeamArray[3], 1));
+        }
     }
 }

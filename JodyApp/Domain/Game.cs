@@ -133,10 +133,10 @@ namespace JodyApp.Domain
             return null;
         }
 
-        public static String GameFormat = "{0,-15}{1,5} : {2,-5}{3,15}";
+        public static String GameFormat = "Day {4, 5} {0,-15}{1,5} : {2,-5}{3,15}";
         public override string ToString()
         {
-            return String.Format(GameFormat, HomeTeam.Name, HomeScore, AwayScore, AwayTeam.Name);
+            return String.Format(GameFormat, HomeTeam.Name, HomeScore, AwayScore, AwayTeam.Name, Day);
         }
     }
 }

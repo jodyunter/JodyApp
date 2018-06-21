@@ -10,48 +10,26 @@ namespace JodyApp.Domain.Config
     public class Scheduler
     {
 
-        public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int rounds)
+        public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int firstDay, int rounds)
         {
             for (int i = 0; i < rounds; i++)
             {
-                lastGameNumber = ScheduleGames(games, lastGameNumber, HomeTeams, AwayTeams, playHomeAndAway);
+                lastGameNumber = ScheduleGames(games, lastGameNumber, HomeTeams, AwayTeams, playHomeAndAway, firstDay);
             }
 
-            var gameMap = SortGamesIntoDays(games);
-
-            if (gameMap.ContainsKey(-1))
-            {
-                gameMap[-1].ForEach(game =>
-                {
-                    bool placed = false;
-
-                    int day = 1;
-                    while (!placed && gameMap.ContainsKey(day))
-                    {
-                        if (DoesTeamPlayInList(gameMap[day], game.HomeTeam, game.AwayTeam))
-                        {
-                            day++;
-                        }
-                        else
-                        {
-                            game.Day = day;
-                            gameMap[day].Add(game);
-                            placed = true;
-                        }
-                    }
-
-                    if (!placed)
-                    {
-                        gameMap.Add(day, new List<Game>());
-                        gameMap[day].Add(game);
-                    }
-                        
-                });
-            }
             return lastGameNumber;
         }
 
 
+        public static bool DoesTeamPlayInDay(List<Game> games, Team a, Team b, int day)
+        {
+            if (games.Where(g => g.Day == day && (g.HomeTeam.Name == a.Name || g.AwayTeam.Name == a.Name || g.HomeTeam.Name == b.Name || g.AwayTeam.Name == b.Name)).FirstOrDefault() != null)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
         public static bool DoesTeamPlayInList(List<Game> games, Team a, Team b)
         {
             bool found = false;
@@ -67,8 +45,10 @@ namespace JodyApp.Domain.Config
 
             return found;
         }
-        //need arrays to do this correctly, may need to sort prior to this method
-        public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway)
+        
+        //need to add a starting day so we don't have to pass ALL games in ALL the time
+        //this way we can start a playoffs on a certian day and not have to retrieve all games.
+        public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int firstDay)
         {
             if (AwayTeams == null || AwayTeams.Length == 0)
             {
@@ -82,6 +62,28 @@ namespace JodyApp.Domain.Config
                     lastGameNumber = AddGames(lastGameNumber, games, HomeTeams[i], AwayTeams[j], playHomeAndAway);
                 }
             }
+
+            
+
+            //put games into days
+            //we are only scheduling games that are -1 first
+            games.Where(g => g.Day == -1).ToList().ForEach(g =>
+            {
+                bool scheduled = false;
+                int day = firstDay;
+
+                while (!scheduled)
+                {
+                    if (!DoesTeamPlayInDay(games, g.HomeTeam, g.AwayTeam, day))
+                    {
+                        g.Day = day;
+                        scheduled = true;
+                    }
+                    else
+                        day++;
+                }
+
+            });
 
             return lastGameNumber;
         }
@@ -142,28 +144,17 @@ namespace JodyApp.Domain.Config
                 CanTie = true,
                 Complete = false,
                 GameNumber = ++lastGameNumber,
-                Day = -1;
+                Day = -1
             };
 
         }
 
-        public Dictionary<int, List<Game>> OrganizeGamesByDay(List<Game> games)
-        {
-            var gameMap = new Dictionary<int, List<Game>>();
+    }
 
-            games.ForEach(g =>
-            {
-                if (!(gameMap.ContainsKey(g.Day)))
-                {
-                    gameMap.Add(g.Day, new List<Game>());
-                }
-
-                gameMap[g.Day].Add(g);
-            });
-
-            return gameMap;
-        }
-
+    //eventually use this class to pass rules for games
+    public class ScheduledGameRules
+    {
 
     }
+
 }
