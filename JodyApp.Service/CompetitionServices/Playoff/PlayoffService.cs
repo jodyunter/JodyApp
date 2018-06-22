@@ -13,7 +13,7 @@ using JodyApp.ViewModel;
 
 namespace JodyApp.Service.CompetitionServices
 {
-    public class PlayoffService : BaseService<Playoff>
+    public class PlayoffService : BaseService<Playoff>, ICompetitionService
     {
 
         ConfigGroupRuleService ConfigGroupRuleService { get; set; }
@@ -29,7 +29,7 @@ namespace JodyApp.Service.CompetitionServices
             SeasonService = new SeasonService(db);
         }
 
-        public Playoff CreateNewPlayoff(ConfigCompetition referencePlayoff, int year)
+        public Competition CreateCompetition(ConfigCompetition referencePlayoff, int year)
         {
             return CreateNewPlayoff(referencePlayoff, year, false);
         }
@@ -178,6 +178,11 @@ namespace JodyApp.Service.CompetitionServices
             db.GroupRules.Add(newGroupRule);
 
             return newGroupRule;
+        }
+
+        public List<DomainObject> GetByLeagueId(int leagueId)
+        {
+            return db.Playoffs.Where(s => s.League.Id == leagueId).ToList<DomainObject>();
         }
     }
 

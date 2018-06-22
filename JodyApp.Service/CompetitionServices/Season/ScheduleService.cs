@@ -13,13 +13,13 @@ namespace JodyApp.Service.CompetitionServices
 {
     public class ScheduleService : BaseService<DomainObject>
     {
-        DivisionService DivisionService { get; set; }
+        DivisionService DivisionService { get; set; }          
 
         public override DbSet<DomainObject> Entities => throw new NotImplementedException();
 
         public ScheduleService(JodyAppContext db) : base(db)
         {
-            DivisionService = new DivisionService(db);
+            DivisionService = new DivisionService(db);            
         }
        
 
@@ -105,7 +105,6 @@ namespace JodyApp.Service.CompetitionServices
         {
             throw new NotImplementedException();
         }
-
 
     }
 }

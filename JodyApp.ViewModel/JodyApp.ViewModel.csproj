@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Competition\CompetitionViewModel.cs" />
     <Compile Include="Competition\Playoff\SeriesViewModel.cs" />
+    <Compile Include="Competition\ScheduleDayViewModel.cs" />
     <Compile Include="Competition\ScheduleViewModel.cs" />
     <Compile Include="Competition\Season\SeasonDivisionViewModel.cs" />
     <Compile Include="Competition\Season\StandingsRecordViewModel.cs" />

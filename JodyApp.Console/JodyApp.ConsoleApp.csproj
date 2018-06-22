@@ -83,6 +83,8 @@
     <Compile Include="Views\Competition\Playoff\PlayoffView.cs" />
     <Compile Include="Views\Competition\Config\Division\DivisionListView.cs" />
     <Compile Include="Views\Competition\Config\Division\DivisionView.cs" />
+    <Compile Include="Views\Competition\ScheduleDayView.cs" />
+    <Compile Include="Views\Competition\ScheduleView.cs" />
     <Compile Include="Views\ReferenceObjectListView.cs" />
     <Compile Include="Views\ErrorView.cs" />
     <Compile Include="Views\Game\GameCompactListView.cs" />

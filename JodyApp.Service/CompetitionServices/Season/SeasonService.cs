@@ -14,7 +14,7 @@ using System.Data.Entity;
 
 namespace JodyApp.Service.CompetitionServices
 {
-    public class SeasonService:BaseService<Season>
+    public class SeasonService:BaseService<Season>, ICompetitionService
     {
         public ConfigDivisionService ConfigDivisionService { get; set; }
         public ConfigScheduleRuleService ScheduleRuleService { get; set; }
@@ -37,7 +37,7 @@ namespace JodyApp.Service.CompetitionServices
             return season.Started;
         }
 
-        public Season CreateNewSeason(ConfigCompetition referenceSeason, int year)
+        public Competition CreateCompetition(ConfigCompetition referenceSeason, int year)
         {
             
             Season season = new Season();
@@ -140,6 +140,11 @@ namespace JodyApp.Service.CompetitionServices
         public Season GetByYearAndName(int year, string name)
         {
             return db.Seasons.Where(s => s.Year == year && s.Name.Equals(name)).FirstOrDefault();
+        }
+
+        public List<DomainObject> GetByLeagueId(int leagueId )
+        {
+            return db.Seasons.Where(s => s.League.Id == leagueId).ToList<DomainObject>();
         }
 
     }

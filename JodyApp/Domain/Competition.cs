@@ -11,6 +11,7 @@ namespace JodyApp.Domain
     
     public interface Competition
     {        
+        int? Id { get; set; }
         int Year { get; set; }
         int StartingDay { get; set; }
         bool Complete { get; set; }

@@ -149,7 +149,7 @@ namespace JodyApp.ConsoleApp
                 { SERVICE_SERIES, new SeriesService(DbContext) },
                 { SERVICE_DIVISION, new DivisionService(DbContext) },
                 { SERVICE_SCHEDULE, new ScheduleService(DbContext) }
-            };
+            };            
 
         }
 
