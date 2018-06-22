@@ -41,7 +41,7 @@ namespace JodyApp.ConsoleApp.Commands
         public BaseListView ListNextGames(ApplicationContext context, int? competitionId, string competitionType)
         {
 
-            var competitionService = (CompetitionService)context.ServiceLibraries[AppConstants.SERVICE_COMPETITION];
+            var competitionService = (CompetitionService)context.ServiceLibraries[SERVICE_COMPETITION];
 
             return new GameListView(competitionService.GetModelForNextGames((int)competitionId, ConfigCompetitionViewModel.SEASON));
         }
@@ -51,7 +51,7 @@ namespace JodyApp.ConsoleApp.Commands
         public BaseListView ListGames(ApplicationContext context, int? competitionId, string competitionType)
         {
 
-            var competitionService = (CompetitionService)context.ServiceLibraries[AppConstants.SERVICE_COMPETITION];
+            var competitionService = (CompetitionService)context.ServiceLibraries[SERVICE_COMPETITION];
 
             return new GameListView(competitionService.GetModelForGames((int)competitionId, competitionType));
         }
@@ -64,12 +64,25 @@ namespace JodyApp.ConsoleApp.Commands
             if (teamName == null)
                 teamName = TeamCommands.SelectTeam(context).Name;
 
-            var competitionService = (CompetitionService)context.ServiceLibraries[AppConstants.SERVICE_COMPETITION];
+            var competitionService = (CompetitionService)context.ServiceLibraries[SERVICE_COMPETITION];
 
             return new GameListView(competitionService.GetModelForGames((int)competitionid, teamName, competitionType));
 
 
 
+        }
+
+        public BaseView GetScheduleByDay(ApplicationContext context, int? competitionid, int? firstDay, int? lastDay)
+        {
+
+            var competitionSevice = (CompetitionService)context.ServiceLibraries[SERVICE_COMPETITION];
+            var scheduleService = (ScheduleService)context.ServiceLibraries[SERVICE_COMPETITION];
+
+            var competition = (Competition)competitionSevice.GetById(competitionid);
+
+            return scheduleService.GetScheduleByDay(competition, firstDay, lastDay);
+                        
+            
         }
 
     }
