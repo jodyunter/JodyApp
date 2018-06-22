@@ -72,15 +72,14 @@ namespace JodyApp.ConsoleApp.Commands
 
         }
 
-        public BaseView GetScheduleByDay(ApplicationContext context, int? competitionid, int? firstDay, int? lastDay)
+        [Command]
+        public BaseView GetScheduleByDay(ApplicationContext context, int? competitionid = null, int? firstDay = null, int? lastDay = null)
         {
 
-            var competitionSevice = (CompetitionService)context.ServiceLibraries[SERVICE_COMPETITION];
-            var scheduleService = (ScheduleService)context.ServiceLibraries[SERVICE_COMPETITION];
-
-            var competition = (Competition)competitionSevice.GetById(competitionid);
-
-            return scheduleService.GetScheduleByDay(competition, firstDay, lastDay);
+            var competitionService = (CompetitionService)context.ServiceLibraries[SERVICE_COMPETITION];            
+            var scheduleService = (ScheduleService)context.ServiceLibraries[SERVICE_SCHEDULE];
+            
+            return new ScheduleView(scheduleService.GetScheduleByDay(null, firstDay, lastDay));
                         
             
         }

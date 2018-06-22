@@ -106,8 +106,10 @@ namespace JodyApp.Service.CompetitionServices
             throw new NotImplementedException();
         }
 
-        public ScheduleViewModel GetScheduleByDay(Competition competition, int? firstDay, int? lastDay)
+        public ScheduleViewModel GetScheduleByDay(DomainObject competitionObject, int? firstDay, int? lastDay)
         {
+            var competition = (Competition)competitionObject;
+
             var games = GetModelForGames(
                 db.Games.Where(g =>
 

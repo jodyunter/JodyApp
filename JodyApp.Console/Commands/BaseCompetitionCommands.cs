@@ -40,7 +40,7 @@ namespace JodyApp.ConsoleApp.Commands
         {
             var league = LeagueCommands.SelectLeague(context, LeagueCommands.SELECT_LEAGUE);
 
-            var service = (CompetitionService)context.ServiceLibraries[AppConstants.SERVICE_COMPETITION];
+            var service = (CompetitionService)context.ServiceLibraries[SERVICE_COMPETITION];
 
             return GetList(service.GetAllByLeagueId((int)league.Id, CompetitionType));
         }

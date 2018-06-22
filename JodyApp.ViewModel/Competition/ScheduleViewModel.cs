@@ -8,8 +8,8 @@ namespace JodyApp.ViewModel
 {
     public class ScheduleViewModel:BaseViewModel
     {
-        CompetitionViewModel Competition { get; set; }
-        ListViewModel ScheduleDayViewModels { get; set; }
+        public CompetitionViewModel Competition { get; set; }
+        public ListViewModel ScheduleDayViewModels { get; set; }
 
         public ScheduleViewModel():base() { }
 
