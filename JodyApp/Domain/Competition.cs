@@ -26,6 +26,7 @@ namespace JodyApp.Domain
         void StartCompetition();        
         //void FinishCompetition();
         List<Game> Games { get; set; }
+        string Type { get; set; }
     
     }
 }

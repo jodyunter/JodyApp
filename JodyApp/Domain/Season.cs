@@ -31,6 +31,9 @@ namespace JodyApp.Domain
 
         virtual public League League { get; set; }
 
+        [NotMapped]
+        public String Type { get { return "Season"; } set { } }
+
         public Season() { }
         public Season(League league, string name, int year, bool started, bool complete, int startingDay)
         {

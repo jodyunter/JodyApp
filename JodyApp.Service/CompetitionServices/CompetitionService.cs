@@ -18,6 +18,7 @@ namespace JodyApp.Service.CompetitionServices
         PlayoffService PlayoffService { get; set; }
         LeagueService LeagueService { get; set; }
         ConfigDivisionService ConfigDivisionService { get; set; }        
+        ScheduleService ScheduleService { get; set; }
 
         public override DbSet<DomainObject> Entities => throw new NotImplementedException();
 
@@ -26,7 +27,8 @@ namespace JodyApp.Service.CompetitionServices
             LeagueService = new LeagueService(db);
             SeasonService = new SeasonService(db);
             PlayoffService = new PlayoffService(db);
-            ConfigDivisionService = new ConfigDivisionService(db);         
+            ConfigDivisionService = new ConfigDivisionService(db);
+            ScheduleService = new ScheduleService(db);
         }
 
         public Competition StartNextYear(int leagueId)
@@ -120,68 +122,37 @@ namespace JodyApp.Service.CompetitionServices
         {
             var competition = (Competition)GetServiceByType(type).GetById(competitionId);
 
-            return GetModelForGames(GetNextGames(competition), competition);
+            return ScheduleService.GetModelForGames(GetNextGames(competition), competition);
         }
 
         public ListViewModel GetModelForGames(int competitionId, string type)
         {
             var competition = (Competition)GetServiceByType(type).GetById(competitionId);
 
-            return GetModelForGames(GetGames(competition), competition);
+            return ScheduleService.GetModelForGames(GetGames(competition), competition);
         }
 
         public ICompetitionService GetServiceByType(string type)
         {
-            if (type == ConfigCompetitionViewModel.SEASON) return (ICompetitionService)SeasonService;
-            else if (type == ConfigCompetitionViewModel.PLAYOFF) return (ICompetitionService)PlayoffService;
+            if (type == ConfigCompetitionViewModel.SEASON) return SeasonService;
+            else if (type == ConfigCompetitionViewModel.PLAYOFF) return PlayoffService;
 
             return null;
         }
 
         public ICompetitionService GetServiceByType(int type)
         {
-            if (type == ConfigCompetition.SEASON) return (ICompetitionService)SeasonService;
-            else if (type == ConfigCompetition.PLAYOFF) return (ICompetitionService)PlayoffService;
+            if (type == ConfigCompetition.SEASON) return SeasonService;
+            else if (type == ConfigCompetition.PLAYOFF) return PlayoffService;
 
             return null;
         }
 
-        public ListViewModel GetModelForGames(List<Game> games, Competition competition)
-        {
-            var items = new List<GameViewModel>();
-
-            games.ForEach(g =>
-            {
-
-                items.Add(GameToDTO(competition, g));
-            });
-
-
-            return new ListViewModel(items.ToList<BaseViewModel>());
-        }
         public ListViewModel GetModelForGames(int competitionId, string teamName, string type)
         {
             var competition = (Competition)GetServiceByType(type).GetById(competitionId);
 
-            return GetModelForGames(GetGames(competition, teamName), competition);
-        }
-        public static GameViewModel GameToDTO(Competition competition, Game game)
-        {
-            var model = new GameViewModel(
-                game.Id,
-                game.HomeTeam == null ? null : game.HomeTeam.Id,
-                game.HomeTeam == null ? "None" : game.HomeTeam.Name,
-                                game.AwayTeam == null ? null : game.AwayTeam.Id,
-                game.AwayTeam == null ? "None" : game.AwayTeam.Name,
-                game.HomeScore,
-                game.AwayScore,
-                competition.Name,
-                competition.Year,
-                game.Day,
-                game.GameNumber,
-                game.Complete);
-
-            return model;
+            return ScheduleService.GetModelForGames(GetGames(competition, teamName), competition);
         }
 
         public void PlayGames(List<Game> games, Competition competition, Random random)
@@ -204,12 +175,16 @@ namespace JodyApp.Service.CompetitionServices
 
 
 
-        public override BaseViewModel DomainToDTO(DomainObject obj)
+        public static BaseViewModel StaticDomainToDTO(DomainObject obj)
         {
             var competition = (Competition)obj;
             string competitionType = (competition is Season) ? "Season" : "Playoff";
 
             return new CompetitionViewModel(obj.Id, competition.League.Id, competition.League.Name, competition.Name, competition.Year, competitionType, competition.Started, competition.Complete, competition.StartingDay);
+        }
+        public override BaseViewModel DomainToDTO(DomainObject obj)
+        {
+            return StaticDomainToDTO(obj);
         }
 
         public override BaseViewModel Save(BaseViewModel mdoel)

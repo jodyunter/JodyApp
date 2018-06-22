@@ -25,7 +25,7 @@ namespace JodyApp.Service.CompetitionServices
 
             series.Games.ForEach(game =>
            {
-            gameList.Add(CompetitionService.GameToDTO(series.Playoff, game));
+            gameList.Add(ScheduleService.GameToDTO(series.Playoff, game));
            });
 
             

@@ -47,19 +47,22 @@ namespace JodyApp.Domain.Config
         }
         
         //need to add a starting day so we don't have to pass ALL games in ALL the time
+        //what if we schedule some then add some later, will all games be in memory??
         //this way we can start a playoffs on a certian day and not have to retrieve all games.
         public static int ScheduleGames(List<Game> games, int lastGameNumber, Team[] HomeTeams, Team[] AwayTeams, bool playHomeAndAway, int firstDay)
         {
             if (AwayTeams == null || AwayTeams.Length == 0)
             {
-                return ScheduleGames(games, lastGameNumber, HomeTeams, playHomeAndAway);
+                lastGameNumber = ScheduleGames(games, lastGameNumber, HomeTeams, playHomeAndAway);
             }
-
-            for (int i = 0; i < HomeTeams.Length; i++)
+            else
             {
-                for (int j = 0; j < AwayTeams.Length; j++)
+                for (int i = 0; i < HomeTeams.Length; i++)
                 {
-                    lastGameNumber = AddGames(lastGameNumber, games, HomeTeams[i], AwayTeams[j], playHomeAndAway);
+                    for (int j = 0; j < AwayTeams.Length; j++)
+                    {
+                        lastGameNumber = AddGames(lastGameNumber, games, HomeTeams[i], AwayTeams[j], playHomeAndAway);
+                    }
                 }
             }
 

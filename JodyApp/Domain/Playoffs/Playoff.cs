@@ -24,6 +24,9 @@ namespace JodyApp.Domain.Playoffs
         virtual public List<Team> PlayoffTeams { get; set; }        
         virtual public List<SeriesRule> SeriesRules { get; set; }
 
+        [NotMapped]
+        public string Type {  get { return "Playoff"; } set { } }
+
         virtual public Season Season { get; set; }
         [NotMapped]
         public List<Game> Games { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

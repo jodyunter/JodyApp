@@ -13,22 +13,22 @@ namespace JodyApp.Service.CompetitionServices
 {
     public class ScheduleService : BaseService<DomainObject>
     {
-        DivisionService DivisionService { get; set; }          
+        DivisionService DivisionService { get; set; }
 
         public override DbSet<DomainObject> Entities => throw new NotImplementedException();
 
         public ScheduleService(JodyAppContext db) : base(db)
         {
-            DivisionService = new DivisionService(db);            
+            DivisionService = new DivisionService(db);
         }
-       
+
 
         //update to get last game number in database for season
-        public List<Game> CreateGamesFromRules(List<ConfigScheduleRule> rules, 
-                    Dictionary<string, Team> teams, 
+        public List<Game> CreateGamesFromRules(List<ConfigScheduleRule> rules,
+                    Dictionary<string, Team> teams,
                     Dictionary<string, Division> divisions,
                     List<Game> games, int lastGameNumber)
-        {                        
+        {
             rules.ForEach(rule =>
             {
                 lastGameNumber = CreateGamesFromRule(rule, teams, divisions, games, lastGameNumber);
@@ -37,11 +37,11 @@ namespace JodyApp.Service.CompetitionServices
             return games;
         }
 
-        public int CreateGamesFromRule(ConfigScheduleRule rule, 
+        public int CreateGamesFromRule(ConfigScheduleRule rule,
             Dictionary<string, Team> seasonTeams,
             Dictionary<string, Division> seasonDivisions,
             List<Game> games, int lastGameNumber)
-        {        
+        {
 
             var homeTeams = new List<Team>();
             var awayTeams = new List<Team>();
@@ -78,7 +78,7 @@ namespace JodyApp.Service.CompetitionServices
             }
             return lastGameNumber;
         }
-        
+
         public void AddTeamsToListFromRule(List<Team> teamList, int ruleType, Team team, Division division, bool reverse)
         {
             switch (ruleType)
@@ -106,5 +106,57 @@ namespace JodyApp.Service.CompetitionServices
             throw new NotImplementedException();
         }
 
+        public ScheduleViewModel GetGames(Competition competition, int? firstDay, int? lastDay)
+        {
+            var games = GetModelForGames(
+                db.Games.Where(g =>
+
+               (competition != null &&
+               (g.Season != null && g.Season.Id == competition.Id || g.Series != null && g.Series.Playoff.Id == competition.Id))
+               ||
+               (competition == null &&
+               firstDay == null ? true : g.Day >= firstDay &&
+               lastDay == null ? true : g.Day <= lastDay
+               )
+            ).ToList(), competition);
+
+            return new ScheduleViewModel(new CompetitionViewModel(competition.Id, competition.League.Id, competition.League.Name, competition.Name, competition.Year, competition.Type, competition.Started, competition.Complete, competition.StartingDay),                
+               games);
+        }
+
+        public ListViewModel GetModelForGames(List<Game> games, Competition competition)
+        {
+            var items = new List<GameViewModel>();
+
+            games.ForEach(g =>
+            {
+
+                items.Add(GameToDTO(competition, g));
+            });
+
+
+            return new ListViewModel(items.ToList<BaseViewModel>());
+        }
+
+
+        public static GameViewModel GameToDTO(Competition competition, Game game)
+        {
+            var model = new GameViewModel(
+                game.Id,
+                game.HomeTeam == null ? null : game.HomeTeam.Id,
+                game.HomeTeam == null ? "None" : game.HomeTeam.Name,
+                                game.AwayTeam == null ? null : game.AwayTeam.Id,
+                game.AwayTeam == null ? "None" : game.AwayTeam.Name,
+                game.HomeScore,
+                game.AwayScore,
+                competition.Name,
+                competition.Year,
+                game.Day,
+                game.GameNumber,
+                game.Complete);
+
+            return model;
+        }
     }
+
 }
