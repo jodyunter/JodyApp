@@ -87,9 +87,9 @@ namespace JodyApp.Domain.Config
             return new ConfigScheduleRule()
             {
                 Name = name,
-                HomeType = ConfigScheduleRule.BY_DIVISION,
+                HomeType = BY_DIVISION,
                 HomeDivision = division,
-                AwayType = ConfigScheduleRule.NONE,
+                AwayType = NONE,
                 PlayHomeAway = playHomeAway,
                 Rounds = rounds,
                 League = league,

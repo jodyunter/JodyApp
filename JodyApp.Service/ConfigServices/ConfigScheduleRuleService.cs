@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Service.ConfigServices
 {
-    public class ConfigScheduleRuleService:BaseService<ConfigScheduleRule>
+    public class ConfigScheduleRuleService : BaseService<ConfigScheduleRule>
     {
         public override DbSet<ConfigScheduleRule> Entities => db.ConfigScheduleRules;
 
@@ -75,7 +75,7 @@ namespace JodyApp.Service.ConfigServices
 
             return rule;
         }
-        
+
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
             throw new NotImplementedException();
@@ -84,6 +84,39 @@ namespace JodyApp.Service.ConfigServices
         public override BaseViewModel Save(BaseViewModel model)
         {
             throw new NotImplementedException();
+        }
+
+        public int GetScheduleRuleConstant(string constant)
+        {
+            switch(constant)
+            {
+                case ScheduleRuleViewModel.TYPE_DIVISION:
+                    return ConfigScheduleRule.BY_DIVISION;
+                case ScheduleRuleViewModel.TYPE_DIVISION_LEVEL:
+                    return ConfigScheduleRule.BY_DIVISION_LEVEL;
+                case ScheduleRuleViewModel.TYPE_TEAM:
+                    return ConfigScheduleRule.BY_TEAM;
+                case ScheduleRuleViewModel.TYPE_NONE:
+                    return ConfigScheduleRule.NONE;
+                default:
+                    return -5000;
+            }
+        }
+        public string GetScheduleRuleConstant(int constant)
+        {
+            switch (constant)
+            {
+                case ConfigScheduleRule.BY_DIVISION:
+                    return ScheduleRuleViewModel.TYPE_DIVISION;
+                case ConfigScheduleRule.BY_DIVISION_LEVEL:
+                    return ScheduleRuleViewModel.TYPE_DIVISION_LEVEL;
+                case ConfigScheduleRule.BY_TEAM:
+                    return ScheduleRuleViewModel.TYPE_TEAM;
+                case ConfigScheduleRule.NONE:
+                    return ScheduleRuleViewModel.TYPE_NONE;                    
+                default:
+                    return "Bad data";
+            }
         }
     }
 }
