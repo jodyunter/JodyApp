@@ -80,6 +80,8 @@
     <Compile Include="Views\Competition\Config\CompetitionListView.cs" />
     <Compile Include="Views\Competition\Config\CompetitionView.cs" />
     <Compile Include="Views\Competition\BaseCompetitionListView.cs" />
+    <Compile Include="Views\Competition\Config\Division\ScheduleRuleListView.cs" />
+    <Compile Include="Views\Competition\Config\Division\ScheduleRuleView.cs" />
     <Compile Include="Views\Competition\Playoff\PlayoffView.cs" />
     <Compile Include="Views\Competition\Config\Division\DivisionListView.cs" />
     <Compile Include="Views\Competition\Config\Division\DivisionView.cs" />
