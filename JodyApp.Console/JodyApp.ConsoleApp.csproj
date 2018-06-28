@@ -59,6 +59,7 @@
     <Compile Include="Commands\BaseViewCommands.cs" />
     <Compile Include="Commands\ConfigCommands\CompetitionCommands.cs" />
     <Compile Include="Commands\ConfigCommands\DivisionCommands.cs" />
+    <Compile Include="Commands\ConfigCommands\ScheduleRuleCommands.cs" />
     <Compile Include="Commands\GameCommands.cs" />
     <Compile Include="Commands\PlayoffCommands.cs" />
     <Compile Include="Commands\ScheduleCommands.cs" />
