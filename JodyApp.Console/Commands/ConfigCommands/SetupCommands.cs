@@ -18,15 +18,15 @@ namespace JodyApp.ConsoleApp.Commands
 {
     public class SetupCommands
     {
-        static string LeagueName = "Jody's League";
-        static string RegularSeasonName = "Regular Season";
-        static string PlayoffName = "Playoffs";
-        static string CentralDivisionName = "Central Division";
-        static string WestDivisionName = "West Division";
-        static string EastDivisionName = "East Division";
-        static string AtlanticDivisionName = "Atlantic Division";
-        static string SouthDivisionName = "South Division";
-        static string ChampionshipSeriesName = "Championship Series";
+        static string LEAGUENAME = "Jody's League";
+        static string REGULARSEASONNAME = "Regular Season";
+        static string PLAYOFFNAME = "Playoffs";
+        static string CENTRALDIVISIONNAME = "Central Division";
+        static string WESTDIVISIONNAME = "West Division";
+        static string EASTDIVISIONNAME = "East Division";
+        static string ATLANTICDIVISIONNAME = "Atlantic Division";
+        static string SOUTHDIVISIONNAME = "South Division";
+        static string CHAMPIONSHIPSERIES = "Championship Series";
 
         public SetupCommands() { }
 
@@ -44,13 +44,29 @@ namespace JodyApp.ConsoleApp.Commands
                 (ConfigSortingRuleService)context.ServiceLibraries[SERVICE_CONFIGSORTINGRULE],
                 (LeagueService)context.ServiceLibraries[SERVICE_LEAGUE]);
 
-            SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null,
+            SetupPlayoff(LEAGUENAME, PLAYOFFNAME, ConfigCompetition.PLAYOFF, REGULARSEASONNAME, 2, 1, null,
                 (ConfigCompetitionService)context.ServiceLibraries[SERVICE_CONFIGCOMPETITION],
                 (ConfigDivisionService)context.ServiceLibraries[SERVICE_CONFIGDIVISION],
                 (ConfigGroupRuleService)context.ServiceLibraries[SERVICE_CONFIGGROUPRULE],
                 (ConfigGroupService)context.ServiceLibraries[SERVICE_CONFIGGROUP],
                 (ConfigSeriesRuleService)context.ServiceLibraries[SERVICE_CONFIGSERIESRULE],                
                 (LeagueService)context.ServiceLibraries[SERVICE_LEAGUE]);
+
+            return new MessageView("Setup Done");
+        }
+
+        [Command]
+        public BaseView SetupColour(ApplicationContext context)
+        {
+
+            SetupColourConfig(context.DbContext,
+                (ConfigTeamService)context.ServiceLibraries[SERVICE_CONFIGTEAM],
+                (ConfigDivisionService)context.ServiceLibraries[SERVICE_CONFIGDIVISION],
+                (ConfigScheduleRuleService)context.ServiceLibraries[SERVICE_CONFIGSCHEDULERULE],
+                (ConfigCompetitionService)context.ServiceLibraries[SERVICE_CONFIGCOMPETITION],
+                (ConfigSortingRuleService)context.ServiceLibraries[SERVICE_CONFIGSORTINGRULE],
+                (LeagueService)context.ServiceLibraries[SERVICE_LEAGUE]);
+
 
             return new MessageView("Setup Done");
         }
@@ -72,7 +88,7 @@ namespace JodyApp.ConsoleApp.Commands
         [Command]
         public BaseView SetupPlayoff(ApplicationContext context)
         {
-            SetupPlayoff(LeagueName, PlayoffName, ConfigCompetition.PLAYOFF, RegularSeasonName, 2, 1, null,
+            SetupPlayoff(LEAGUENAME, PLAYOFFNAME, ConfigCompetition.PLAYOFF, REGULARSEASONNAME, 2, 1, null,
                 (ConfigCompetitionService)context.ServiceLibraries[SERVICE_CONFIGCOMPETITION],
                 (ConfigDivisionService)context.ServiceLibraries[SERVICE_CONFIGDIVISION],
                 (ConfigGroupRuleService)context.ServiceLibraries[SERVICE_CONFIGGROUPRULE],
@@ -93,10 +109,10 @@ namespace JodyApp.ConsoleApp.Commands
             var CCPlayoff = configCompetitionService.CreateCompetition(League, name, type, CCReference, order, firstYear, lastYear);
 
             var CDLeague = configDivisionService.GetDivisionByName(League, "League");
-            var CDCentral = configDivisionService.GetDivisionByName(League, CentralDivisionName);
-            var CDWest = configDivisionService.GetDivisionByName(League, WestDivisionName);
-            var CDEast = configDivisionService.GetDivisionByName(League, EastDivisionName);
-            var CDSouth = configDivisionService.GetDivisionByName(League, SouthDivisionName);
+            var CDCentral = configDivisionService.GetDivisionByName(League, CENTRALDIVISIONNAME);
+            var CDWest = configDivisionService.GetDivisionByName(League, WESTDIVISIONNAME);
+            var CDEast = configDivisionService.GetDivisionByName(League, EASTDIVISIONNAME);
+            var CDSouth = configDivisionService.GetDivisionByName(League, SOUTHDIVISIONNAME);
 
             var GPool = configGroupService.CreateGroup("Playoff Pool", CCPlayoff, new List<ConfigGroupRule>(), CDLeague, firstYear, lastYear);
             configGroupRuleService.CreateGroupRuleFromDivision(GPool, "Playoff Pool Rule 1", CDLeague, 1, 12, firstYear, lastYear);
@@ -130,12 +146,49 @@ namespace JodyApp.ConsoleApp.Commands
             configGroupRuleService.CreateGroupRuleFromSeriesWinner(FinalPool, "Final Pool 1", SRSF1.Name, firstYear, lastYear);
             configGroupRuleService.CreateGroupRuleFromSeriesWinner(FinalPool, "Final Pool 2", SRSF2.Name, firstYear, lastYear);
 
-            var SRFinal = configSeriesRuleService.CreateSeriesRule(CCPlayoff, ChampionshipSeriesName, 4, FinalPool, 1, FinalPool, 2, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
+            var SRFinal = configSeriesRuleService.CreateSeriesRule(CCPlayoff, CHAMPIONSHIPSERIES, 4, FinalPool, 1, FinalPool, 2, ConfigSeriesRule.TYPE_BEST_OF, 4, false, null, firstYear, lastYear);
 
             leagueService.Save();
 
         }
-        
+
+
+        void SetupColourConfig(JodyAppContext db,
+            ConfigTeamService configTeamService, ConfigDivisionService configDivisionService,
+            ConfigScheduleRuleService scheduleRuleservice, ConfigCompetitionService configCompetitionService,
+            ConfigSortingRuleService configSortingRuleService, LeagueService leagueService)
+        {
+            League ColourLeague;
+            ConfigCompetition CCSeason;
+            ConfigDivision CDLeague;
+            var teamList = new List<ConfigTeam>();
+
+            var skills = new int[] { 0, 0, 0 };
+            var names = new string[] { "Red", "Blue", "Yellow" };
+
+            //SimpleTestDataDriver driver = new SimpleTestDataDriver(db);
+
+            //driver.DeleteAllData();
+
+
+            ColourLeague = leagueService.CreateLeague("Colour League");
+            CCSeason = configCompetitionService.CreateCompetition(ColourLeague, "Colour Season", ConfigCompetition.SEASON, null, 1, 1, null);
+
+            int i = 0;
+            names.ToList().ForEach(name =>
+            {
+                teamList.Add(configTeamService.CreateTeam(names[i], skills[i], null, ColourLeague, 1, null)); 
+                i++;
+            });
+
+            CDLeague = configDivisionService.CreateDivision(ColourLeague, CCSeason, "Colour League", null, 1, 1, null, 1, null);
+            CDLeague.Teams.AddRange(teamList);
+
+            scheduleRuleservice.CreateScheduleRuleByDivisionVsSelf(ColourLeague, CCSeason, "Schedule Rule 1", CDLeague, true, 5, 1, false, 1, null);
+
+            configSortingRuleService.Save();
+
+        }
         void SetupConfig(JodyAppContext db, 
             ConfigTeamService configTeamService, ConfigDivisionService configDivisionService, 
             ConfigScheduleRuleService scheduleRuleservice, ConfigCompetitionService configCompetitionService, 
@@ -155,8 +208,8 @@ namespace JodyApp.ConsoleApp.Commands
 
             driver.DeleteAllData();
 
-            League = leagueService.CreateLeague(LeagueName);
-            CCSeason = configCompetitionService.CreateCompetition(League, RegularSeasonName, ConfigCompetition.SEASON, null, 1, 1, null);
+            League = leagueService.CreateLeague(LEAGUENAME);
+            CCSeason = configCompetitionService.CreateCompetition(League, REGULARSEASONNAME, ConfigCompetition.SEASON, null, 1, 1, null);
 
             CTEdmonton = configTeamService.CreateTeam("Edmonton", 5, null, League, 1, null);
             CTCalgary = configTeamService.CreateTeam("Calgary", 5, null, League, 1, null);
@@ -191,11 +244,11 @@ namespace JodyApp.ConsoleApp.Commands
             var SouthTeams = new List<ConfigTeam>() { CTAtlanta, CTDallas, CTNashville, CTColumbus, CTTampaBay };
 
             CDLeague = configDivisionService.CreateDivision(League, CCSeason, "League", null, 1, 1, null, 1, null);
-            CDWest = configDivisionService.CreateDivision(League, CCSeason, WestDivisionName, "West", 2, 2, CDLeague, 1, null);
-            CDCentral = configDivisionService.CreateDivision(League, CCSeason, CentralDivisionName, "Central", 2, 3, CDLeague, 1, null);
-            CDEast = configDivisionService.CreateDivision(League, CCSeason, EastDivisionName, "East", 2, 3, CDLeague, 1, null);
-            CDAtlantic = configDivisionService.CreateDivision(League, CCSeason, AtlanticDivisionName, "Atlantic", 2, 4, CDLeague, 1, null);
-            CDSouth = configDivisionService.CreateDivision(League, CCSeason, SouthDivisionName, "South", 2, 5, CDLeague, 1, null);
+            CDWest = configDivisionService.CreateDivision(League, CCSeason, WESTDIVISIONNAME, "West", 2, 2, CDLeague, 1, null);
+            CDCentral = configDivisionService.CreateDivision(League, CCSeason, CENTRALDIVISIONNAME, "Central", 2, 3, CDLeague, 1, null);
+            CDEast = configDivisionService.CreateDivision(League, CCSeason, EASTDIVISIONNAME, "East", 2, 3, CDLeague, 1, null);
+            CDAtlantic = configDivisionService.CreateDivision(League, CCSeason, ATLANTICDIVISIONNAME, "Atlantic", 2, 4, CDLeague, 1, null);
+            CDSouth = configDivisionService.CreateDivision(League, CCSeason, SOUTHDIVISIONNAME, "South", 2, 5, CDLeague, 1, null);
 
             CDCentral.Teams.AddRange(CentralTeams);
             CDWest.Teams.AddRange(WestTeams);
