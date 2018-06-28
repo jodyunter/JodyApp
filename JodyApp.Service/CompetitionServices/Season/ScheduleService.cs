@@ -60,7 +60,7 @@ namespace JodyApp.Service.CompetitionServices
                     if (rule.Reverse) list.Reverse();
                     homeTeams.AddRange(list);
 
-                    lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), null, rule.PlayHomeAway, rule.Rounds);
+                    lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), null, rule.PlayHomeAway, 1);
                 });
             }
             else
@@ -73,9 +73,10 @@ namespace JodyApp.Service.CompetitionServices
                 AddTeamsToListFromRule(homeTeams, rule.HomeType, homeTeam, homeDivision, rule.Reverse);
                 AddTeamsToListFromRule(awayTeams, rule.AwayType, awayTeam, awayDivision, rule.Reverse);
 
-                lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, rule.Rounds);
+                lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, 1);
 
             }
+
             return lastGameNumber;
         }
 
