@@ -60,7 +60,6 @@ namespace JodyApp.Service.CompetitionServices
                     if (rule.Reverse) list.Reverse();
                     homeTeams.AddRange(list);
 
-                    lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), null, rule.PlayHomeAway, 1);
                 });
             }
             else
@@ -71,10 +70,13 @@ namespace JodyApp.Service.CompetitionServices
                 var awayDivision = rule.AwayDivision == null ? null : seasonDivisions[rule.AwayDivision.Name];
 
                 AddTeamsToListFromRule(homeTeams, rule.HomeType, homeTeam, homeDivision, rule.Reverse);
-                AddTeamsToListFromRule(awayTeams, rule.AwayType, awayTeam, awayDivision, rule.Reverse);
+                AddTeamsToListFromRule(awayTeams, rule.AwayType, awayTeam, awayDivision, rule.Reverse);                
 
+            }
+
+            for (int i = 0; i < rule.Rounds; i++)
+            {
                 lastGameNumber = Scheduler.ScheduleGames(games, lastGameNumber, homeTeams.ToArray(), awayTeams.ToArray(), rule.PlayHomeAway, 1);
-
             }
 
             return lastGameNumber;

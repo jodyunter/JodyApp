@@ -31,11 +31,13 @@ namespace JodyApp.ConsoleApp.Commands
         [Command]
         public override BaseView View(ApplicationContext context, int? id = null, string prompt = "Select>")
         {
-            context.SelectedSeason = SeasonCommands.SelectSeason(context);
+            var seasonId = SeasonCommands.SelectSeason(context).Id;
+
+            SeasonCommands.ClearSelectedSeason(context);
 
             int divisionLevel = int.Parse(Application.ReadFromConsole(context, "Enter Division Level>"));
 
-            return View(context, (int)context.SelectedSeason.Id, divisionLevel);
+            return View(context, (int)seasonId, divisionLevel);
         }      
 
         public override BaseView GetView(BaseViewModel model)
