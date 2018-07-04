@@ -48,11 +48,9 @@ namespace JodyApp.Service.ConfigServices
 
 
             var m = new ConfigCompetitionViewModel(c.Id, c.Name,
-                c.League == null ? null : c.League.Id,
-                c.League == null ? null : c.League.Name,
+                GetReferenceObject(c.League),
                 GetCompetitionTypeString(c.Type),
-                c.Reference == null ? null : c.Reference.Id,
-                c.Reference == null ? null : c.Reference.Name,
+                GetReferenceObject(c.Reference),
                 c.Order,
                 c.FirstYear,
                 c.LastYear);

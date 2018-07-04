@@ -178,8 +178,12 @@ namespace JodyApp.ConsoleApp.Commands
                 teams.Add(new ReferenceObject(int.Parse(teamId), teamName));
             }
 
-            var model = new ConfigDivisionViewModel(null, leagueId, leagueName, seasonId, seasonName, name, shortName,
-                parentId, parentName, level, order, teams, firstYear, lastYear);
+            var model = new ConfigDivisionViewModel(null, 
+                new ReferenceObject(leagueId, leagueName), 
+                new ReferenceObject(seasonId, seasonName),
+                name, shortName,
+                new ReferenceObject(parentId, parentName),
+                level, order, teams, firstYear, lastYear);
 
             return model;
         }

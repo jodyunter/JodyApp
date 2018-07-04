@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigDivision:BaseConfigItem
+    public class ConfigDivision:BaseConfigItem, IReferenceableDomainObject
     {
         private string _shortName;
 

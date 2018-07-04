@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigCompetition:BaseConfigItem
+    public class ConfigCompetition:BaseConfigItem, IReferenceableDomainObject
     {
         public const int SEASON = 0;
         public const int PLAYOFF = 1;

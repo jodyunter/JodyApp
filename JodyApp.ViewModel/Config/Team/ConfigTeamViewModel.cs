@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JodyApp.ViewModel
+﻿namespace JodyApp.ViewModel
 {
     public class ConfigTeamViewModel:BaseViewModel
     {        
@@ -14,13 +8,13 @@ namespace JodyApp.ViewModel
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
 
-        public ConfigTeamViewModel(int? id, string name, int skill, int? leagueId, string league, int? divisionId, string division, int? firstYear, int? lastYear)
+        public ConfigTeamViewModel(int? id, string name, int skill, ReferenceObject league, ReferenceObject division, int? firstYear, int? lastYear)
         {
             Id = id;
             Name = name;
             Skill = skill;
-            League = leagueId == null ? null : new ReferenceObject(leagueId, league);
-            Division = divisionId == null ? null : new ReferenceObject(divisionId, division);
+            League = league;
+            Division = division;
             FirstYear = firstYear;
             LastYear = lastYear;
         }

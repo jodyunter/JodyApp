@@ -180,7 +180,7 @@ namespace JodyApp.Service.CompetitionServices
             var competition = (Competition)obj;
             string competitionType = (competition is Season) ? "Season" : "Playoff";
 
-            return new CompetitionViewModel(obj.Id, competition.League.Id, competition.League.Name, competition.Name, competition.Year, competitionType, competition.Started, competition.Complete, competition.StartingDay);
+            return new CompetitionViewModel(obj.Id, GetReferenceObject(competition.League), competition.Name, competition.Year, competitionType, competition.Started, competition.Complete, competition.StartingDay);
         }
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {

@@ -15,7 +15,7 @@ namespace JodyApp.Domain.Config
     //group 3: Play a play off series
     //group 4: Setup new division based on series winners and play more games
     //group 5: Setup final round of playoff series and games
-    public class ConfigScheduleRule:BaseConfigItem
+    public class ConfigScheduleRule:BaseConfigItem, IReferenceableDomainObject
     {
         //rules with opponents implied
         public const int BY_DIVISION_LEVEL = 2;  //use this to first sort all teams by division level, then they all play games against each other

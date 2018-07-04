@@ -24,13 +24,10 @@ namespace JodyApp.Service.ConfigServices
             var division = (ConfigDivision)obj;
 
             var model = new ConfigDivisionViewModel(division.Id, 
-                division.League != null ? division.League.Id : null,
-                division.League != null ? division.League.Name : "None",
-                division.Competition != null ? division.Competition.Id : null,
-                division.Competition != null ? division.Competition.Name : "None",
+                GetReferenceObject(division.League),
+                GetReferenceObject(division.Competition),
                 division.Name, division.ShortName,
-                division.Parent != null ? division.Parent.Id : null,
-                division.Parent != null ? division.Parent.Name : "None",
+                GetReferenceObject(division.Parent),
                 division.Level, division.Order, new List<ReferenceObject>(), division.FirstYear, division.LastYear);
 
             var configTeamService = new ConfigTeamService(db);

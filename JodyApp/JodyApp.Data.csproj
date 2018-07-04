@@ -71,6 +71,7 @@
     <Compile Include="Domain\Playoffs\GroupRule.cs" />
     <Compile Include="Domain\Playoffs\Series.cs" />
     <Compile Include="Domain\Playoffs\SeriesRule.cs" />
+    <Compile Include="Domain\ReferenceableDomainObject.cs" />
     <Compile Include="Domain\Schedule\Scheduler.cs" />
     <Compile Include="Domain\Config\ConfigScheduleRule.cs" />
     <Compile Include="Domain\Schedule\ScheduleValidator.cs" />

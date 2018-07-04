@@ -78,7 +78,21 @@ namespace JodyApp.Service.ConfigServices
 
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
-            throw new NotImplementedException();
+            var rule = (ConfigScheduleRule)obj;
+
+            var model = new ScheduleRuleViewModel(GetReferenceObject(rule.League),
+                GetScheduleRuleConstant(rule.HomeType),
+                GetReferenceObject(rule.HomeTeam),
+                GetReferenceObject(rule.HomeDivision),
+                GetScheduleRuleConstant(rule.AwayType),
+                GetReferenceObject(rule.AwayTeam),
+                GetReferenceObject(rule.AwayDivision),
+                rule.PlayHomeAway, rule.Rounds, rule.DivisionLevel, rule.Order,
+                GetReferenceObject(rule.Competition),
+                rule.Reverse
+                );
+
+            return model;
         }
 
         public override BaseViewModel Save(BaseViewModel model)

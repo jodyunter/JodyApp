@@ -1,8 +1,5 @@
 ﻿using JodyApp.ConsoleApp.App;
-using JodyApp.ConsoleApp.IO;
 using JodyApp.ConsoleApp.Views;
-using JodyApp.Database;
-using JodyApp.Service;
 using JodyApp.Service.ConfigServices;
 using JodyApp.ViewModel;
 using System;
@@ -111,7 +108,7 @@ namespace JodyApp.ConsoleApp.Commands
             int? firstYear = GetNullableIntFromString(data["First Year"]);
             int? lastYear = GetNullableIntFromString(data["Last Year"]);
 
-            var model = new ConfigTeamViewModel(id, name, skill, leagueId, leagueName, divisionId, divisionName, firstYear, lastYear);
+            var model = new ConfigTeamViewModel(id, name, skill, new ReferenceObject(leagueId, leagueName), new ReferenceObject(divisionId, divisionName), firstYear, lastYear);
 
             return model;
         }

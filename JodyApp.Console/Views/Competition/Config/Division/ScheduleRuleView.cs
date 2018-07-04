@@ -15,10 +15,11 @@ namespace JodyApp.ConsoleApp.Views
             get
             {
                 var m = (ScheduleRuleViewModel)Model;
-                return new object[] { m.Id, m.Name, m.ShortName, m.League,
+                return null;
+                    /*new object[] { m.Id, m.Name, m.ShortName, m.League,
                     m.Season != null ? m.Season.Name : "None",
                     m.Parent != null ? m.Parent.Name :"None",
-                    m.Level, m.Order };
+                    m.Level, m.Order };*/
             }
         }
 

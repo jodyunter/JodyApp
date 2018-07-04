@@ -10,7 +10,7 @@ using JodyApp.Domain.Config;
 namespace JodyApp.Domain
 {    
     [Table("Teams")]
-    public class Team : DomainObject, IComparable<Team>
+    public class Team : DomainObject, IComparable<Team>, IReferenceableDomainObject
     {               
         public string Name { get; set; }
         public int Skill { get; set; }

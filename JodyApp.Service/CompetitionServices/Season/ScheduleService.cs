@@ -125,7 +125,7 @@ namespace JodyApp.Service.CompetitionServices
                )
             ).ToList(), competition);
 
-            return new ScheduleViewModel(new CompetitionViewModel(competition.Id, competition.League.Id, competition.League.Name, competition.Name, competition.Year, competition.Type, competition.Started, competition.Complete, competition.StartingDay),                
+            return new ScheduleViewModel(new CompetitionViewModel(competition.Id, GetReferenceObject(competition.League), competition.Name, competition.Year, competition.Type, competition.Started, competition.Complete, competition.StartingDay),                
                games);
         }
 
@@ -148,10 +148,8 @@ namespace JodyApp.Service.CompetitionServices
         {
             var model = new GameViewModel(
                 game.Id,
-                game.HomeTeam == null ? null : game.HomeTeam.Id,
-                game.HomeTeam == null ? "None" : game.HomeTeam.Name,
-                                game.AwayTeam == null ? null : game.AwayTeam.Id,
-                game.AwayTeam == null ? "None" : game.AwayTeam.Name,
+                GetReferenceObject(game.HomeTeam),
+                GetReferenceObject(game.AwayTeam),                
                 game.HomeScore,
                 game.AwayScore,
                 competition.Name,

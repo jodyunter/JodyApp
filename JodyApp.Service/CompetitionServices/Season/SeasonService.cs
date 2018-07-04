@@ -129,7 +129,7 @@ namespace JodyApp.Service.CompetitionServices
         public override BaseViewModel DomainToDTO(DomainObject obj)
         {
             var season = (Season)obj;
-            return new SeasonViewModel(season.Id, season.League.Id, season.League.Name, season.Name, season.Year, "Season", season.Started, season.Complete, season.StartingDay);
+            return new SeasonViewModel(season.Id, GetReferenceObject(season.League), season.Name, season.Year, "Season", season.Started, season.Complete, season.StartingDay);
         }
 
         public override BaseViewModel Save(BaseViewModel mdoel)

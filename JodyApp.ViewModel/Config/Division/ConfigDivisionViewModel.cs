@@ -19,14 +19,14 @@ namespace JodyApp.ViewModel
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
 
-        public ConfigDivisionViewModel(int? id, int? leagueId, string league, int? seasonId, string seasonName, string name, string shortName, int? parentId, string parent, int level, int order, List<ReferenceObject> teams, int? firstYear, int? lastYear)
+        public ConfigDivisionViewModel(int? id, ReferenceObject league, ReferenceObject season, string name, string shortName, ReferenceObject parent, int level, int order, List<ReferenceObject> teams, int? firstYear, int? lastYear)
         {
             Id = id;
-            League = new ReferenceObject(leagueId, league);
-            Season = new ReferenceObject(seasonId, seasonName);
+            League = league;
+            Season = season;
             Name = name;
             ShortName = shortName;
-            Parent = new ReferenceObject(parentId, parent);
+            Parent = parent;
             Level = level;
             Order = order;
             Teams = teams;

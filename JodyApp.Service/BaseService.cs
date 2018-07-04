@@ -83,5 +83,10 @@ namespace JodyApp.Service
 
             return teamList;
         }
+
+        public static ReferenceObject GetReferenceObject(IReferenceableDomainObject obj)
+        {            
+            return obj != null ? new ReferenceObject(obj.Id, obj.Name): null;
+        }
     }
 }

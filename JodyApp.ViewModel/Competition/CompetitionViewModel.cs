@@ -15,10 +15,10 @@ namespace JodyApp.ViewModel
         public bool Complete { get; set; }
         public int StartingDay { get; set; }
 
-        public CompetitionViewModel(int? id, int? leagueId, string league, string name, int year, string competitionType, bool started, bool complete, int startingDay)
+        public CompetitionViewModel(int? id, ReferenceObject league, string name, int year, string competitionType, bool started, bool complete, int startingDay)
         {
             Id = id;
-            League = new ReferenceObject(leagueId, league);
+            League = league;
             Name = name;
             Year = year;
             Started = started;

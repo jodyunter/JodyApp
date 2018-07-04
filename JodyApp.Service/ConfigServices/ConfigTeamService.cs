@@ -23,10 +23,8 @@ namespace JodyApp.Service.ConfigServices
             var team = (ConfigTeam)obj;
 
             var model = new ConfigTeamViewModel(team.Id, team.Name, team.Skill,
-                team.League != null ? team.League.Id : null,
-                team.League != null ? team.League.Name : "None",
-                team.Division != null ? team.Division.Id : null,
-            team.Division != null ? team.Division.Name : "None",
+                GetReferenceObject(team.League),
+                GetReferenceObject(team.Division),
             team.FirstYear, team.LastYear);
 
             return model;
@@ -52,9 +50,11 @@ namespace JodyApp.Service.ConfigServices
             else
             {
                 
+                //retrieve the team (see above) and set the basic values automatically.
                 var newTeam = new ConfigTeam(m.Id, m.Name, m.Skill, division, league, m.FirstYear, m.LastYear);
                 db.Entry(team).CurrentValues.SetValues(newTeam);
 
+                //all objects must be manually retrieved and then set down here.
                 team.Division = newTeam.Division;
                 team.League = newTeam.League;
             }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain
 {
-    public class League:DomainObject
+    public class League:DomainObject, IReferenceableDomainObject
     {
         public string Name { get; set; }
         public int CurrentYear { get; set; }

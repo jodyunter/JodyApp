@@ -18,13 +18,13 @@ namespace JodyApp.ViewModel
         public int? FirstYear { get; set; }
         public int? LastYear { get; set; }
 
-        public ConfigCompetitionViewModel(int? id, string name, int? leagueId, string leagueName, string competitionType, int? refId, string refName, int order, int? firstYear, int? lastYear)
+        public ConfigCompetitionViewModel(int? id, string name, ReferenceObject league, string competitionType, ReferenceObject refComp, int order, int? firstYear, int? lastYear)
         {
             Id = id;
             Name = name;
-            League = leagueId == null ? null : new ReferenceObject(leagueId, leagueName);
+            League = league;
             CompetitionType = competitionType;
-            ReferenceCompetition = refId == null ? null : new ReferenceObject(refId, refName);
+            ReferenceCompetition = refComp;
             Order = order;
             FirstYear = firstYear;
             LastYear = lastYear;

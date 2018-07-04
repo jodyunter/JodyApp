@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JodyApp.Domain.Config
 {
-    public class ConfigTeam:BaseConfigItem
+    public class ConfigTeam:BaseConfigItem, IReferenceableDomainObject
     {
         virtual public League League { get; set; }
         public string Name { get; set; }

@@ -149,7 +149,7 @@ namespace JodyApp.Service.CompetitionServices
             var playoff = (Playoff)obj;
             var seriesViews = CreateListViewModelFromList(playoff.Series.ToList<DomainObject>(), SeriesService.StaticDomainToDTO);
 
-            return new PlayoffViewModel(playoff.Id, playoff.League.Id, playoff.League.Name, playoff.Name, playoff.Year, "Season", playoff.Started, playoff.Complete, playoff.StartingDay, seriesViews);
+            return new PlayoffViewModel(playoff.Id, GetReferenceObject(playoff.League), playoff.Name, playoff.Year, "Season", playoff.Started, playoff.Complete, playoff.StartingDay, seriesViews);
         }
 
         public override BaseViewModel Save(BaseViewModel mdoel)

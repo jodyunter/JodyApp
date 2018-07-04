@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JodyApp.ViewModel
+﻿namespace JodyApp.ViewModel
 {
     public class GameViewModel:BaseViewModel
     {
@@ -18,11 +12,11 @@ namespace JodyApp.ViewModel
         public int GameNumber { get; set; }
         public bool Complete { get; set; }
 
-        public GameViewModel(int? id, int? homeTeamId, string homeTeamName, int? awayTeamId, string awayTeamName, int homeScore, int awayScore, string competition, int year, int dayNumber, int gameNumber, bool complete)
+        public GameViewModel(int? id, ReferenceObject homeTeam, ReferenceObject awayTeam, int homeScore, int awayScore, string competition, int year, int dayNumber, int gameNumber, bool complete)
         {
             Id = id;
-            HomeTeam = homeTeamId == null ? null : new ReferenceObject(homeTeamId, homeTeamName);
-            AwayTeam = awayTeamId == null ? null : new ReferenceObject(awayTeamId, awayTeamName);
+            HomeTeam = homeTeam;
+            AwayTeam = awayTeam;
             HomeScore = homeScore;
             AwayScore = awayScore;
             Competition = competition;
