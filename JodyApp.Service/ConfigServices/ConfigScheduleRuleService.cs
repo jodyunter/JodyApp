@@ -80,7 +80,8 @@ namespace JodyApp.Service.ConfigServices
         {
             var rule = (ConfigScheduleRule)obj;
 
-            var model = new ScheduleRuleViewModel(GetReferenceObject(rule.League),
+            var model = new ScheduleRuleViewModel(rule.Id, 
+                GetReferenceObject(rule.League),
                 GetScheduleRuleConstant(rule.HomeType),
                 GetReferenceObject(rule.HomeTeam),
                 GetReferenceObject(rule.HomeDivision),

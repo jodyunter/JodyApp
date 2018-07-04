@@ -29,12 +29,13 @@
            
         public bool Reverse { get; set; } //reverse default order
 
-        public ScheduleRuleViewModel(ReferenceObject league, 
+        public ScheduleRuleViewModel(int? id, ReferenceObject league, 
             string homeType, ReferenceObject homeTeam, ReferenceObject homeDivision, 
             string awayType, ReferenceObject awayTeam, ReferenceObject awayDivision,
             bool playHomeAndAway, int rounds, int divisionLevel, int order, 
             ReferenceObject competition, bool reverse)
         {
+            Id = id;
             League = league;
             HomeType = homeType;
             HomeTeam = homeTeam;

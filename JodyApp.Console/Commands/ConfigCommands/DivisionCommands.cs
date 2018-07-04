@@ -1,9 +1,5 @@
 ﻿using JodyApp.ConsoleApp.App;
-using JodyApp.ConsoleApp.IO;
 using JodyApp.ConsoleApp.Views;
-using JodyApp.ConsoleApp.Views.Division;
-using JodyApp.Database;
-using JodyApp.Service;
 using JodyApp.Service.ConfigServices;
 using JodyApp.ViewModel;
 using System;
