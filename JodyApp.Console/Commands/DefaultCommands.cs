@@ -1,5 +1,7 @@
-﻿using JodyApp.ConsoleApp.IO;
+﻿using JodyApp.ConsoleApp.App;
+using JodyApp.ConsoleApp.IO;
 using JodyApp.ConsoleApp.Views;
+using JodyApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

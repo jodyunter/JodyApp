@@ -22,6 +22,15 @@ namespace JodyApp.Service.ConfigServices
             return db.ConfigScheduleRules.Where(sr => sr.Competition.Id == competition.Id).ToList();
         }
 
+        public List<ConfigScheduleRule> GetByLeagueId(int leagueId)
+        {
+            return Entities.Where(sr => sr.League.Id == leagueId).ToList();
+        }
+        public ListViewModel GetModelsByLeagueId(int leagueId )
+        {
+            return new ListViewModel(GetByLeagueId(leagueId).Select(sr => DomainToDTO(sr)).ToList());
+        }
+
         public ConfigScheduleRule GetScheduleRuleByName(League league, ConfigCompetition competition, string name)
         {
             return db.ConfigScheduleRules.Where(sr => sr.Name == name && sr.League.Id == league.Id && sr.Competition.Id == competition.Id).FirstOrDefault();
@@ -90,7 +99,9 @@ namespace JodyApp.Service.ConfigServices
                 GetReferenceObject(rule.AwayDivision),
                 rule.PlayHomeAway, rule.Rounds, rule.DivisionLevel, rule.Order,
                 GetReferenceObject(rule.Competition),
-                rule.Reverse
+                rule.Reverse,
+                rule.FirstYear,
+                rule.LastYear
                 );
 
             return model;

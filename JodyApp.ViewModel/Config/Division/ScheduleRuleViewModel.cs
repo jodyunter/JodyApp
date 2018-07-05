@@ -29,11 +29,14 @@
            
         public bool Reverse { get; set; } //reverse default order
 
+        public int? FirstYear { get; set; }
+        public int? LastYear { get; set; }
+
         public ScheduleRuleViewModel(int? id, ReferenceObject league, 
             string homeType, ReferenceObject homeTeam, ReferenceObject homeDivision, 
             string awayType, ReferenceObject awayTeam, ReferenceObject awayDivision,
             bool playHomeAndAway, int rounds, int divisionLevel, int order, 
-            ReferenceObject competition, bool reverse)
+            ReferenceObject competition, bool reverse, int? firstYear, int? lastYear)
         {
             Id = id;
             League = league;
@@ -49,6 +52,8 @@
             Order = order;
             Competition = competition;
             Reverse = reverse;
+            FirstYear = firstYear;
+            LastYear = lastYear;
         }
     }
 }

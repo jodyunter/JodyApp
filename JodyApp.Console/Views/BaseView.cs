@@ -87,5 +87,30 @@ namespace JodyApp.ConsoleApp.Views
         {
             return GetView();
         }
+
+        public ReferenceObject GetRefObj(object obj)
+        {
+            return (ReferenceObject)obj;
+        }
+
+        public string GetString(object obj)
+        {
+            return (string)obj;
+        }
+        public int GetInt(object obj)
+        {
+            return int.Parse((string)obj);
+        }
+
+        public int? GetNullInt(object obj)
+        {
+            if (string.IsNullOrEmpty((string)obj)) return null;
+            else return int.Parse((string)obj);
+        }
+
+        public bool GetBool(object obj)
+        {
+            return bool.Parse((string)obj);
+        }
     }
 }

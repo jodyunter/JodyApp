@@ -23,7 +23,14 @@ namespace JodyApp.ConsoleApp
         private ReferenceObject _selectedPlayoff;
 
         public JodyAppContext DbContext { get; set; }
+        public string LastCommandLibrary { get; set; }
 
+        public void ClearSelectedItems()
+        {
+            _selectedLeague = null;
+            _selectedSeason = null;
+            _selectedPlayoff = null;
+        }
         public ReferenceObject SelectedPlayoff
         {
             get { return _selectedPlayoff; }

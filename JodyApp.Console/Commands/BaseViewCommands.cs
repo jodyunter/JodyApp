@@ -108,12 +108,9 @@ namespace JodyApp.ConsoleApp.Commands
 
             context.AddView(view);
 
-            //at this point we have the object we want to edit.
-            //we can assume that if we get a null input we just go back
-            //display the edit view
-            IOMethods.WriteToConsole(view);
-            
-            return Update(context);
+            //we should use the "Update <value>" command to update
+            return view;
+                        
         }
 
         //saves the most recent view
@@ -133,9 +130,9 @@ namespace JodyApp.ConsoleApp.Commands
             return context.GetLastView();
         }
 
-        public BaseView Update(ApplicationContext context)
-        {
-            var selection = -1;
+        [Command]
+        public BaseView Update(ApplicationContext context, int selection = -1)
+        {            
             var view = context.GetLastView();
             if (context.CurrentView != null) view = context.CurrentView;
             
@@ -143,16 +140,15 @@ namespace JodyApp.ConsoleApp.Commands
 
             var newView = GetView(view.Model);
             newView.EditMode = true;
-            
-            var selectionInput = Application.ReadFromConsole(context, "Enter Selection>");            
 
-            selection = (int)Application.CoerceArgument(typeof(int), selectionInput);
+            //var selectionInput = Application.ReadFromConsole(context, "Enter Selection>");                                
+            //selection = (int)Application.CoerceArgument(typeof(int), selectionInput);
 
-            while (selection >= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS && selection != 0 && selectionInput != null)
+            if (selection >= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS && selection != 0)
             {
                 selection -= BaseView.NUMBER_OF_DEFAULT_EDIT_COMMANDS;
                 var prompt = newView.EditHeaders[selection];
-
+                context.ClearSelectedItems();
                 ReferenceObject objectInput = null;
                 if (InputDictionary.ContainsKey(prompt))
                 {
@@ -164,9 +160,6 @@ namespace JodyApp.ConsoleApp.Commands
                     var dataInput = Application.ReadFromConsole(context, "Enter New Value>");                    
                     newView.UpdateAttribute(prompt, dataInput);
                 }
-
-                selectionInput = Application.ReadFromConsole(context, "Enter Selection>");
-                selection = (int)Application.CoerceArgument(typeof(int), selectionInput);
 
             }
 

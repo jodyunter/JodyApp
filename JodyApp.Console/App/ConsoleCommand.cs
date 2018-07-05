@@ -32,18 +32,27 @@ namespace JodyApp.ConsoleApp.App
                 // The first element is always the command:
                 if (i == 0)
                 {
-                    this.Name = stringArray[i];
+                    Name = stringArray[i];
 
                     // Set the default:
-                    this.LibraryClassName = "DefaultCommands";
+                    if (context.LastCommandLibrary != null)
+                    {
+                        LibraryClassName = context.LastCommandLibrary;
+                    }
+                    else
+                    {
+                        LibraryClassName = "DefaultCommands";                        
+                    }
                     string[] s = stringArray[0].Split('.');
                     if (s.Length == 2)
                     {
-                        this.LibraryClassName = s[0];
-                        this.Name = s[1];
+                        LibraryClassName = s[0];
+                        Name = s[1];
 
-                        if (!LibraryClassName.Contains("Commands")) this.LibraryClassName += "Commands";
+                        if (!LibraryClassName.Contains("Commands")) LibraryClassName += "Commands";
                     }
+
+                    context.LastCommandLibrary = LibraryClassName;
                 }
                 else
                 {

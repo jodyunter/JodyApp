@@ -73,20 +73,6 @@ namespace JodyApp.ConsoleApp.Commands
             return new DivisionListView(model);
         }
 
-        public static string INPUT_NAME = "Name";
-        public static string INPUT_SHORTNAME = "Short Name";
-        public static string INPUT_LEVEL = "Level";
-        public static string INPUT_ORDER = "Order";
-        public static string INPUT_FIRSTYEAR = "First Year";
-        public static string INPUT_LASTYEAR = "Last Year";
-        public static string INPUT_TEAMNAME = "TEAMNAME_";
-        public static string INPUT_TEAMID = "TEAMID_";
-        public static string INPUT_LEAGUEID = "LEAGUEID";
-        public static string INPUT_LEAGUENAME = "LEAGUENAME";
-        public static string INPUT_PARENTID = "PARENTID";
-        public static string INPUT_PARENTNAME = "PARENTNAME";
-        public static string INPUT_SEASONID = "SEASONID";
-        public static string INPUT_SEASONNAME = "SEASONNAME";
 
         //we can add teams to a division later by team if need be
         public override Dictionary<string, string> GatherCreateData(ApplicationContext context)
@@ -115,7 +101,7 @@ namespace JodyApp.ConsoleApp.Commands
             int teamCount = 0;
 
             while (!done)
-            {
+            {                
                 var nextTeam = TeamCommands.SelectTeam(context, "Add Team>");
                 if (nextTeam == null)
                 {
@@ -162,8 +148,8 @@ namespace JodyApp.ConsoleApp.Commands
             string shortName = data[INPUT_SHORTNAME];
             int level = int.Parse(data[INPUT_LEVEL]);
             int order = int.Parse(data[INPUT_ORDER]);
-            int? firstYear = GetNullableIntFromString(data["First Year"]);
-            int? lastYear = GetNullableIntFromString(data["Last Year"]);
+            int? firstYear = GetNullableIntFromString(data[INPUT_FIRSTYEAR]);
+            int? lastYear = GetNullableIntFromString(data[INPUT_LASTYEAR]);
 
             var teams = new List<ReferenceObject>();
 
